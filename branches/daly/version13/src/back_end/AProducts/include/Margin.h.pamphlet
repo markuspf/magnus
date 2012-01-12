@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/AProducts/include/Margin.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Chars.h"
+#include "error.h"
+
+@
+\section{define}
+<<define>>=
+#define DEBUG_RAW 1
+
+#ifdef DEBUG_RAW
+#  define DEBUG_PRINT(ostr,object)			{ ::debugPrint( (ostr), (object) ); }
+#  define DEBUG_PRINT_WORD(ostr,group,word)		{ (ostr) << (word); }
+#  define DEBUG_PRINT_VECTOR_WORDS(ostr,group,vector)	{ (ostr) << (vector); }
+#else
+#  define DEBUG_PRINT(ostr,object)			{ (ostr) << (object); }
+#  define DEBUG_PRINT_WORD(ostr,group,word)		{ (group).printWord( (ostr), (word) ); }
+#  define DEBUG_PRINT_VECTOR_WORDS(ostr,group,vector)	{ (group).printVectorOfWords( (ostr), (vector) ); }
+#endif
+
+@
+\section{class Margin}
+<<class Margin>>=
+class Margin : public Chars 
+{
+public:
+
+  Margin( ) : Chars(), ptr(0) { }
+
+  void set( Margin& t ); 
+
+  ~Margin() { 
+    if( ptr ) 
+      *(Chars *)ptr = (Chars)(*this); 
+  }
+
+  Margin *ptr;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/AProducts/include/Margin.h
+#ifndef _MARGIN_H_
+#define _MARGIN_H_
+
+<<license>>
+<<include>>
+<<define>>
+
+void debugPrint( ostream& ostr, const class SubgroupOfOneRelatorGroup& S );
+void debugPrint( ostream& ostr, const class OneRelatorGroup& G );
+void debugPrint( ostream& ostr, const class OneRelatorGroupRep& G );
+void debugPrint( ostream& ostr, const class HNNExtOfORGroupGeneric& H );
+
+<<class Margin>>
+
+extern Margin globalMargin;
+extern int  rightMargin;
+
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

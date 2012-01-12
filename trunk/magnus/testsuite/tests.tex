@@ -1,0 +1,291 @@
+
+\documentclass{article}
+\begin{document}
+
+
+\begin{enumerate}
+
+\item Object (Abelian groups): $G=<a>$
+\begin{itemize}
+
+\item Is $G$ trivial? E: n  R: n
+
+\item Is $G$ finite? E: n R: n
+
+\item Is $G$ free-abelian E: y R: y
+
+\item Is $G$ automatic? E: y R: y (all abelian gps are automatic)
+
+\item Is $G$ hyperbolic? E:y R:y (all abelian groups are hyperbolic) 
+\end{itemize}
+\item Object (Abelian groups): $G=\left<a;a^7>\right>$
+\begin{itemize}
+
+\item Is $G$ trivial? E: n R: n
+
+\item Is $G$ finite? E: y R: y
+
+\item Is $G$ free-abelian E: n R: n
+
+\item Is $G$ automatic? E: y R: y (all abelian gps are automatic)
+
+\item Is $G$ hyperbolic? E:y R:y (all abelian groups are hyperbolic)
+\item Compute the order of $G$: E:7 R:7
+\item Compute the canonical decomposition of $G$:
+E: $Z_7$ R: $Z_7$
+\item Compute the canonical decomposition of $G$ abelianized
+E: $Z_7$ R: $Z_7$
+\item Enumerate subgroups of $G$:
+E: trivial group and $G$. 
+%bug
+R: Fatal Error and Magnus dies.
+\end{itemize}
+\item Object (Abelian groups): $G=\left<a,b; b^7 \right>$ 
+\begin{itemize}
+
+\item Is $G$ trivial? E: n R: n
+
+\item Is $G$ finite? E:n R:n 
+
+\item Is $G$ free-abelian E:n  R: n
+
+\item Is $G$ automatic? E:y  R: y (all abelian gps are automatic)
+
+\item Is $G$ hyperbolic? E: y R:y (all abelian groups are hyperbolic)
+
+\item Compute the order of $G$
+E: Infinite R: Infinite
+\item Compute the order of the torsion subgroup of $G$
+E: 7 R: 7
+\item Compute the canonical decomosition of $G$:
+E: $Z \times Z_7$ R: $Z \times Z_7$
+
+
+\item Compute the torsion subgroup of $G$
+E: $gp(b)$ R: $gp(b)$ 
+\item Enumerate subgroups of $G$:
+E: All subgroups of $Z$ and $Z_7$ 
+%bug:
+R: Fatal error and magnus dies.
+\end{itemize}
+\item Object (Abelian groups): $G=\left<a,b; a=b^{-1} \right>$
+\begin{itemize}
+
+\item Is $G$ trivial? E: n R: n
+
+\item Is $G$ finite? E:n R:n 
+
+\item Is $G$ free-abelian E:y  R: y
+
+\item Is $G$ automatic? E:y  R: y (all abelian gps are automatic)
+
+\item Is $G$ hyperbolic? E: y R:y (all abelian groups are hyperbolic)
+\end{itemize}
+Note: this group is isomorphic to the infinite cyclic group.
+
+\item Object (Abelian groups)
+
+$G=\left<a,b; Bab=ab, Aba=ab \right>$.
+\begin{itemize}
+
+
+\item Is $G$ trivial? E:y  R:n 
+
+\item Is $G$ finite? E: Yes R: no 
+
+\item Is $G$ free-abelian E: No R: y
+
+\item Is $G$ automatic? E:y R:y  (all abelian gps are automatic)
+
+\item Is $G$ hyperbolic? E:y  R:y (all abelian groups are hyperbolic)
+\end{itemize}
+\item Object (Free nilpotent groups)
+
+$G=\left<x,y \right>$, class 2. 
+
+\begin{itemize}
+
+\item Compute the 1st term of the lower central series of $G:$ 
+
+E: $gp(x,y)$  R: $gp(x,y).$ 
+
+\item Compute the 2nd term of the lower central series of $G:$
+
+E: $gp([y,x])$ R:$gp([y,x]).$
+
+\item Compute the 3rd term of the lower central series of $G:$
+
+E: The trivial group, R: No answer at all 
+
+\item Compute the Hirsch number of $G:$
+
+E: 3, R:3.
+
+\item Compute a basis for $G$:
+
+E: $ \{x,y, [y,x]  \}$, R: $\{ x,y, [y,x]  \}$
+
+\end{itemize}
+
+\item Object (Free nilpotent groups)
+
+$G=\left<x,y \right>$, class 4. 
+\begin{itemize}
+\item Compute the 1st term of the lower central series of $G:$ 
+
+
+
+E: $gp(x,y)$  R: $gp(x,y).$ 
+
+\item Compute the 2nd term of the lower central series of $G:$
+
+E: $gp \left([y,x], [y,x,y], [y,x,x], [y,x,y,y], [y,x,x,y], [y,x,x,x] \right)$ 
+
+Use the notation: $x^{-1}=X$ and $y^{-1}=Y$:
+
+R: \begin{eqnarray*}
+gp (YXyx, 
+XYXy x^2, 
+Y^{2} X^{2} y^2 x, 
+Y^{2}Xy^2x,
+X^{2}YXyx, \\
+XYXy x^2, 
+Y^{2}Xy^2 x,
+X^{2}YXy x^3,
+X^{2}Yx y^2 x,
+Y^{3} X y^3 x ) \end{eqnarray*}
+
+
+Note: the reason that the expected answer is as above is that it is obtained from basic commutators on $\{x,y\}$ of weights 2 and higher. The answer Magnus gives may also be correct, but it is less economical.
+
+\item Compute the 3rd term of the lower central series of $G:$
+
+E: $gp\left([y,x,y],[y,x,x],[y,x,y,y],[y,x,x,y],[y,x,x,x]\right)$
+
+R: $gp \left(XyXyXYXyx^2, XYxYXyxy, X^2Y^2x,yXY,Xy x^3, XY^2Xyx^2y,XYxY^2Xyxy^2 \right).$
+
+Same comment as in previous item. 
+
+\item Compute the Hirsch number of $G:$
+
+E: 8 , R: 8.
+
+\item Compute a basis for $G$:
+
+E: $\{ x,y, [y,x],[y,x,y],[y,x,x],[y,x,y,y],[y,x,x,y],[y,x,x,x] \}$, 
+
+E: $\{ x,y, [y,x],[y,x,y],[y,x,x],[y,x,y,y],[y,x,x,y],[y,x,x,x]. \}$ 
+
+\end{itemize}
+
+\item Objects: Consider the following nilpotent groups of class 4:
+\[S=\left<x,y ; [y,x,y,y]^6 [y,x,x,y] [y,x,x,x] \right>\]and
+\[T=\left<x,y ; [y,x,y,y]^3 [y,x,x,y] [y,x,x,x]^2\right>.\]
+
+\begin{itemize}
+\item Are $S$ and $T$ isomorphic?
+
+E: No. (This is a known fact).
+
+R: Magnus can't answer this question.
+
+\end{itemize}
+
+\item Object (finitely presented groups)
+
+$G=\left<a,b,c; c=[a,b], [c,a], [c,b] \right>$.
+
+\begin{itemize}
+
+\item Is $G$ trivial? E:No  R:No 
+
+%Notice the bug in the next item:
+\item Is $G$ Nilpotent of class 2? E:Yes R:No
+
+\item Is $G$ Finite? E:No R:No
+
+\item Is $G$ abelian E:No R: No
+\end{itemize}
+\item Object (finitely presented group)
+
+$G=\left<a,b; [[a,b],a], [[a,b],b] \right>$
+
+\begin{itemize}
+\item Is $G$ trivial? E:No  R:No
+
+%Again, notice the bug:
+\item Is $G$ Nilpotent of class 2? E:Yes R:No
+
+
+\item Is $G$ Finite? E:No R:No
+
+\item Is $G$ abelian E:No R:No
+\end{itemize}
+
+\item Object (Nilpotent Group)
+
+\[G=<t,a,b,c,d,e,t; t^{-1}at=ab^2, t^{-1}bt=bc, t^{-1}ct=d,t^{-1}dt=de^2, \]\[ t^{-1}et=e, ab=ba, ac=ca, ad=da, ae=ea, bc=cb, bd=db, be=eb, cd=dc,  ce=ec, de=ed > \]
+
+\begin{itemize}
+
+\item Is $G$ trivial? E:No  R:No
+
+\item Is $G$ Finite? E:No R:No
+
+\item Is $G$ abelian E:No R:No
+
+\item Is $G$ free nilpotent? E:No R:No
+
+\item Compute nilpotentcy class of $G$: E:5 R:Magnus ran and did not provide answer after 256 computation units expended.
+\end{itemize}
+
+\item Object (Finitely Presented Group)
+
+\[G=<a_1,a_2,a_3,a_4,t; \] \[ t^{-1}a_1t=a_1a_2, t^{-1}a_2t=a_2a_3,t^{-1}a_3t=a_3a_4, t^{-1}a_4t=a_4, a_1a_2=a_2a_1, a_1a_3=a_3a_1,
+a_1a_4=a_4a_1, a_2a_3=a_3a_2, \]\[ a_2a_4=a_4a_2,a_3a_4=a_4a_3>\]
+\begin{itemize}
+
+\item Is $G$ trivial? E:No  R:No
+
+%Notice bug.
+\item Is $G$ Nilpotent of class 4? E:Y R:N
+
+\item Is $G$ Nilpotent of class 5: E:N R:N
+
+\item Is $G$ Finite? E:No R:No
+
+\item Is $G$ abelian E:No R:No
+\end{itemize}
+\item Objects (map between two isomorphic copies of the free nilpotent group
+of class 4)
+$G_1=<x,y>$, $G_2=<a,b>$
+Define the map on the generating set \{x,y\} as:
+$x \mapsto a^2$, $y \mapsto ab$
+%bug:
+Magnus simply does not create the map at all.
+\item Object (finitely presented group)
+$G=\left<a,b; a^2, b^4, [a,b] \right>$
+\begin{itemize}
+\item Is $G$ abelian? E:Y R:Y
+\item Is $G$ trivial? E:N R:N
+\item Is $G$ finite? E:Y R:Y
+\item Is $G$ free abelian? E:N R:N
+\item Compute the order of $G$. E:8 R:8
+\item Compute the torsion subgroup of $G$:
+E: G R: $gp(a,a^{-1}b)$.
+Remark: Magnus' answer is correct, but it would be ``nicer" to get $G$.
+\item Compute the order of the torsion subgroup: E:8 R:8
+\item Compute the canonical decomposition:
+E: $Z_2 \times Z_4$ R: $Z_2 \times Z_4.$
+\item Compute the torsion-free rank of $G$:
+E:0 R:0
+\item Find a permutation representation for $G$:
+E: $a=(1 4 )(2 3 )(5 6 )(7 8 ), b=(1 7 5 2 )(3 4 8 6 )$
+R: $a=(1 4 )(2 3 )(5 6 )(7 8 ), b=(1 7 5 2 )(3 4 8 6 )$.
+\item Enumerate subgroups of $G$.
+E: The trivial group, $gp(a)$,$gp(b^2)$,$gp(b)$, $G$.
+%bug:
+R: Internal fatal error and Magnus quits.
+\end{itemize}
+\end{enumerate}
+\end{document}

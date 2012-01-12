@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Global Message Templates</TITLE>
+<META NAME="description" CONTENT="Global Message Templates">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00331400000000000000"></A><A NAME="global_defns"></A>
+<BR>
+Global Message Templates
+</H3>
+
+<P>
+The <I>FE</I> responds to a number of events by sending essentially the
+same message to the <I>SM</I>. The <I>SM</I> may initialize templates for these
+messsages at startup with the following messages to the <I>FE</I>. The
+<EM>message</EM> is always delimited by <TT>{}</TT> if it contains
+whitespace:
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+The <EM>message</EM> is to be sent to the <I>SM</I> when the end user wishes
+to quit. The front end does not exit until it gets the
+<TT>confirm_quit_</TT> message, described below.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+The <EM>message</EM> is to be sent to the <I>SM</I> when the end user
+requests a view on a subproblem (see &#167;<A HREF="node63.html#predefined_views">2.3.3</A>).  It is
+<I>Hot</I> text, and may contain the references <TT>${viewID}</TT> to
+the enclosing view, and <TT>${probViewID}</TT> to the subproblem for
+which the view was requested.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+The <EM>message</EM> is to be sent to the <I>SM</I> when the ARCs given to
+any subproblem may have been changed by the end user.  It can only be
+sent when the enclosing problem is in a suspended state, or has not
+been started yet. It is <I>Hot</I> text, and may contain the references
+<TT>${probViewID}</TT>, <TT>${ARCSlotID}</TT>, <TT>${value}</TT>.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+The <EM>message</EM> is to be sent to the <I>SM</I> when the end user starts
+a problem.  It is <I>Hot</I> text, and may contain the reference
+<TT>${viewID}</TT> to the <EM>viewID</EM> of the problem.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+The <EM>message</EM> is to be sent to the <I>SM</I> when the end user
+suspends a problem.  It is <I>Hot</I> text, and may contain the reference
+<TT>${viewID}</TT> to the <EM>viewID</EM> of the problem.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+The <EM>message</EM> is to be sent to the <I>SM</I> when the end user resumes
+a problem.  It is <I>Hot</I> text, and may contain the reference
+<TT>${viewID}</TT> to the <EM>viewID</EM> of the problem.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+The <EM>message</EM> is to be sent to the <I>SM</I> when the end user terminates
+a problem.  It is <I>Hot</I> text, and may contain the reference
+<TT>${viewID}</TT> to the <EM>viewID</EM> of the problem.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+The <EM>message</EM> is the prefix of the message to be sent to the <I>SM</I> when the end user deletes one or more objects. The <I>FE</I> appends the
+<EM>objectID</EM>s of the objects to be deleted, separated by
+spaces. The object list is closed under dependency.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

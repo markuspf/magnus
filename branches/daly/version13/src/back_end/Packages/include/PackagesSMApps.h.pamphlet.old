@@ -1,0 +1,178 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Packages/include/PackagesSMApps.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Menu.h"
+#include "fastProblems.h"
+#include "SMFPGroup.h"
+#include "PackagesData.h"
+#include "PackagesObject.h"
+
+@
+\section{class PackageBlackBox}
+<<class PackageBlackBox>>=
+class PackageBlackBox {
+public:
+  PackageBlackBox( PObject* po, const Chars&, const ListOf<Chars>& pl ); 
+  ~PackageBlackBox(){}
+  bool start();
+  bool finished();
+  bool getLine( Chars& line );
+
+private:
+  friend class RunPackageARCer;
+  BlackBox package;
+  FPGroup theGroup;
+  Chars initString;
+  Chars theCommand;
+  PObject* theObject;
+  ListOf<Chars> paramList;
+};
+
+@
+\section{class AddPackage}
+<<class AddPackage>>=
+class AddPackage : public Supervisor
+{
+public:
+ AddPackage(const Chars& n = Chars(), const Chars& c = Chars(), 
+	    int cs = 0, Type os = Type(Type::notype()), 
+            const ListOf<ParamRecord>& pl = ListOf<ParamRecord>() );
+
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }           // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+ // SMFPGroup& theGroup;
+  Chars theName;
+  Chars theCommand;
+  int checkinSelect;
+  Type objectSelect;
+  ListOf<ParamRecord> paramList;
+};
+
+@
+\section{class EditPackage}
+<<class EditPackage>>=
+class EditPackage : public Supervisor
+{
+public:
+ EditPackage( Type id = Type( Type::notype() ), int i = 0, 
+              Chars action = Chars() );
+ ~EditPackage() { delete theObject; }
+
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }           // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  PObject* theObject;
+  int theIndex;
+  Chars theAction;
+};
+
+@
+\section{class RunPackageARCer}
+<<class RunPackageARCer>>=
+class RunPackageARCer : public ARCer
+{
+public:
+  RunPackageARCer( ComputationManager& boss, PObject* po, const Chars& com, 
+		   const ListOf<Chars>& pl ) : 
+    ARCer( boss ),
+    package(po,com, pl)
+    {   
+    } 
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  Chars getFileName() const { return file.getFileName();}
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  PackageBlackBox package;
+  File file;
+};
+
+@
+\section{class RunPackage}
+<<class RunPackage>>=
+class RunPackage : public Supervisor
+{
+public:
+  RunPackage( SMFPGroup& G, int id = 0);
+  RunPackage( SMWord& w, int id = 0);
+  RunPackage( SMSubgroup& s, int  id = 0);
+  RunPackage( SMMap& m, int id = 0);
+  RunPackage( SMHomomorphism& m, int id = 0);
+  RunPackage( SMWord& ,SMWord& , int id = 0);
+  RunPackage( SMSubgroup& ,SMSubgroup& , int id = 0);
+  RunPackage( SMSubgroup& ,SMWord& , int id = 0);
+  void initialize();
+  ~RunPackage() { delete arcer; delete packageObject; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );           // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+  void readline(istream& in, char* line, int blength);
+
+private:
+  Chars paramToChars(Chars name, PValue value, 
+                     ParamRecord::PARAM_TYPE t) const ;
+  void trimall( char* s, int max = 1000)const;
+  bool actionParser(char* ) const;
+  void sendOutput();
+  RunPackageARCer* arcer;
+  SMFPGroup& theGroup;
+  int theID;
+  Chars packageName;
+  PackageRecord thePackageRecord;
+  PObject* packageObject;
+  ListOf<ParamRecord> params;
+  bool started;
+  bool useGlobalLink;
+  streampos pos;
+  // char tmpBuffer[1000];
+  //  ifstream* inStream;
+  File file;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Packages/include/PackagesSMApps.h
+#ifndef _SMAppsPackages_h_
+#define _SMAppsPackages_h_
+
+<<license>>
+<<include>>
+<<class PackageBlackBox>>
+<<class AddPackage>>
+<<class EditPackage>>
+<<class RunPackageARCer>>
+<<class RunPackage>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

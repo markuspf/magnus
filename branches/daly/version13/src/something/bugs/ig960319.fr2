@@ -1,0 +1,61 @@
+From ilya@rio Tue Mar 19 14:30 EST 1996
+Date: Tue, 19 Mar 1996 14:29:32 -0500
+From: ilya@rio (Ilya Kapovich)
+To: bormotov@rio
+
+User defined free group:
+F1 = < x, y  >.
+
+
+User defined word in the generators of F1:
+w1 = x y X.
+
+
+Checked in the problem "Part of basis ?".
+
+The problem "Part of basis ?" started
+Tue Mar 19 14:12:11 EST 1996.
+
+w1 is part of the free basis ( x y x^-1, x ).
+
+The problem "Part of basis ?" finished
+Tue Mar 19 14:12:11 EST 1996.
+
+User defined nilpotent quotient of class 2 of F1:
+G1 = < x, y >.
+
+
+Checked in the problem "G1 abelian ?".
+
+The problem "G1 abelian ?" started
+Tue Mar 19 14:13:31 EST 1996.
+
+Computed the nilpotent structure of G1; This allows for solving the word problem, computing the center, and computing centralizers.
+
+The problem "Aut struct" started
+Tue Mar 19 14:14:27 EST 1996.
+
+Started KBmag, reference number 12, with ShortLex ordering (the specific ordering is not yet accessible; we're working on it!)
+
+The KBmag with reference number 12 has succeeded.
+
+Have a ShortLex automatic structure for G1, discovered by KBMAG, Version 1.2.
+
+G1 is infinite: by counting the language of the word acceptor.
+
+Have a fast solution of the word problem for G1: the automatic structure.
+
+The problem "Aut struct" finished
+Tue Mar 19 14:14:34 EST 1996.
+
+%% It seems that here Magnus uses the old group G1 rather than its nilpotent quotient. This has to be changed.
+
+Checked in Problem_1.
+
+Problem_1 started
+Tue Mar 19 14:18:34 EST 1996.
+
+Problem_1 finished
+Tue Mar 19 14:18:34 EST 1996.
+%% The next problem was to compute the nilpotent structure for G1.
+A more detailed answer than the one above is necessary.

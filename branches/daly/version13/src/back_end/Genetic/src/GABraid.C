@@ -1,0 +1,379 @@
+// Copyright (C) 1999 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+// 
+// Contents: Implementation of PMWord class
+//
+// Principal Author: Dmitry Bormotov
+//
+// Status: in progress
+//
+// Revision History:
+//
+//
+
+
+#include "GABraid.h"
+
+
+// ------------------------------ PMB2Com ---------------------------------- //
+
+
+PMB2Com::PMB2Com( const PMB2ComConfig& CFG, int NumOfComms, Triple* T )
+  : cfg( CFG ), numOfComms( NumOfComms ), comms( T )
+{ }
+
+PMB2Com::PMB2Com( const PMB2ComConfig& CFG )
+  : cfg( CFG ), numOfComms( 0 ), comms( 0 )
+{ }
+
+
+
+PMB2Com::PMB2Com( const PMB2Com& pm )
+  : cfg( pm.cfg ), 
+    numOfComms( pm.numOfComms ),
+    comms( new Triple[pm.numOfComms] )
+{ 
+  for( int i = 0; i < numOfComms; ++i )
+    comms[i] = pm.comms[i];
+}
+
+
+PMB2Com& PMB2Com::operator = ( const PMB2Com& pm )
+{ 
+  delete [] comms;
+  numOfComms = pm.numOfComms;
+  comms = new Triple[numOfComms];
+  for( int i = 0; i < numOfComms; ++i )
+    comms[i] = pm.comms[i];
+}
+
+
+PMB2Com::~PMB2Com( ) 
+{
+  delete [] comms;
+}
+
+
+PM* PMB2Com::crossover( const PM* u )
+{
+  Triple* t = 0; 
+  int num;
+  do {
+    delete [] t;
+    UniformRandom& r = cfg.rng();
+    PMB2Com* v = (PMB2Com*) u;
+    int len1 = numOfComms;
+    int len2 = v->numOfComms;
+
+    int num1,num2;
+    do {
+      num1 = min(len1,int(r.rand() * (len1+1)));
+      num2 = min(len2,int(r.rand() * (len2+1)));
+      num = num1 + num2;
+    } while (num == 0);
+
+    t = new Triple[num];
+    for( int i = 0; i < num1; ++i )
+      t[i] = comms[i];
+    for( int i = 0; i < num2; ++i )
+      t[i+num1] = v->comms[len2-num2+i];
+
+  } while( productIsTrivial(num,t) );
+
+  return new PMB2Com(cfg, num, t);
+}
+
+
+PM* PMB2Com::mutate( )
+{
+  Triple* t = 0;
+  int tLen;
+  do {
+    delete [] t;
+    UniformRandom& r = cfg.rng();
+    int num = min( numOfComms - 1, int(r.rand() * numOfComms) );
+    float op = r.rand();
+    
+    if( op <= 0.1 ) { // insert a new triple (10% chance)
+      
+      num = min( numOfComms, int(r.rand() * (numOfComms+1)) );
+      tLen = numOfComms + 1;
+      t = new Triple[tLen];
+      for( int i = 0; i < num; ++i )
+	t[i] = comms[i];
+      for( int i = num; i < numOfComms; ++i )
+	t[i+1] = comms[i];
+      t[num] = randomTriple();
+    }
+    
+    else if( op <= 0.2 ) { // delete one triple (10% chance)
+      
+      tLen = numOfComms - 1;
+      t = new Triple[tLen];
+      for( int i = 0; i < num; ++i ) 
+	t[i] = comms[i];
+      for( int i = num; i < numOfComms - 1; ++i ) 
+	t[i] = comms[i+1];
+    }
+  
+    else { // mutate one triple (80% chance)
+      
+      tLen = numOfComms;
+      t = new Triple[tLen];
+      for( int i = 0; i < numOfComms; ++i ) 
+	t[i] = comms[i];
+      t[num] = randomTriple();
+    }
+  } while( productIsTrivial(tLen,t) );
+
+  return new PMB2Com(cfg, tLen, t);
+}
+ 
+
+PM* PMB2Com::randomPM( )
+{
+  Triple* t = 0;
+  int tLen;
+  do {
+    delete [] t;
+    UniformRandom& r = cfg.rng();
+    tLen = 1 + int(r.rand() * cfg.getMaxNumOfComms());
+    t = new Triple[tLen];
+    for( int i = 0; i < tLen; ++i )
+      t[i] = randomTriple();
+  } while( productIsTrivial(tLen,t) );
+  
+  return new PMB2Com(cfg, tLen, t);
+}
+
+
+void PMB2Com::printOn( ostream& ostr ) const
+{
+  for( int i = 0; i < numOfComms; ++i )
+    ostr << " " << comms[i];
+}
+
+
+bool PMB2Com::operator == ( const PM& p ) const
+{
+  const PMB2Com& pm = (const PMB2Com&) p;
+  if( numOfComms != pm.numOfComms ) 
+    return false;
+  for( int i = 0; i < numOfComms; ++i )
+    if( comms[i] != pm.comms[i] )
+      return false;
+  return true;
+}
+
+
+Triple PMB2Com::randomTriple( )
+{
+  UniformRandom& r = cfg.rng();
+  int numOfVars = cfg.getNumOfVars(),x,y,z,w;
+  int numOfConsts = cfg.getNumOfConsts();
+  x = 1 + min( numOfVars - 1, int( r.rand() * numOfVars ) );
+  do {
+    y = 1 + min( numOfVars - 1, int( r.rand() * numOfVars ) );
+  } while( abs(y) == abs(x) );
+  if( r.rand() <= 0.5 ) x = -x;
+  if( r.rand() <= 0.5 ) y = -y;
+
+  z = min( numOfConsts, int( r.rand() * (numOfConsts+1) ));
+  if( z != 0 ) {
+    z = numOfVars+z;
+    if( r.rand() <= 0.5 ) z = -z;
+  }
+  w = min( numOfConsts, int( r.rand() * (numOfConsts+1) ));
+  if( w != 0 ) {
+    w = numOfVars+w;
+    if( r.rand() <= 0.5 ) w = -w;
+  }
+  
+  return Triple(x,y,z,w);
+}
+
+
+Word PMB2Com::productInOriginalGroup( int tLen, Triple* t ) const
+{
+  Word w;
+  for( int i = 0; i < tLen; ++i ) {
+    Word x = Word(Generator(t[i].x));
+    Word y = Word(Generator(t[i].y));
+    Word z1,z2;
+    if( t[i].z != 0 ) z1 = Word(Generator(t[i].z));
+    if( t[i].w != 0 ) z2 = Word(Generator(t[i].w));
+    w *= z2.inverse() * z1.inverse() * x.inverse() * y.inverse() 
+      * x * y * z1 * z2;
+  }
+  w = w.freelyReduce();
+  return cfg.getM().imageOf(w).freelyReduce();
+}
+
+
+Word PMB2Com::productInOriginalGroup( const PMB2Com& pm ) const
+{
+  return productInOriginalGroup(pm.numOfComms, pm.comms);
+}
+
+
+bool PMB2Com::productIsTrivial( int tLen, Triple* t) const
+{
+  return productInOriginalGroup(tLen, t).length() == 0;
+}
+
+
+// --------------------------- GABurauSolver ------------------------------- //
+  
+
+GABurauSolver::GABurauSolver( const GAConfig& GAC, const FreeGroup& G, 
+			      int NumOfVars, const FreeGroup& Br, 
+			      VectorOf<Word> BGens, const FreeGroup& sc )
+  : GA( GAC ),
+    theGroup( G ), 
+    numOfVars( NumOfVars ), 
+    numOfGens( G.numberOfGenerators() ),
+    numOfConsts( G.numberOfGenerators() - NumOfVars ),
+    B( Br ),
+    bGens( BGens ),
+    out( 0 ),
+    SC( sc ),
+    PMCC(r,5,sc,Br.numberOfGenerators(),bGens),
+    PMAC(r,numOfVars,gac)
+{ 
+  VectorOf<Chars> names = theGroup.namesOfGenerators();
+  VectorOf<Chars> v(numOfGens);
+  for( int i = 0; i < numOfConsts; ++i )
+    v[i] = names[numOfVars+i];
+  for( int i = 0; i < numOfVars; ++i )
+    v[i+numOfConsts] = names[i];
+  theGroup = FreeGroup(v);
+}
+
+
+void GABurauSolver::reworkEquation( )
+{
+  int wLen = w.length();
+  for( int i = 0; i < wLen; ++i ) {
+    int p = power(w[i]);
+    int a = abs(w[i]); 
+    if( a <= numOfVars )
+      w[i] = Generator(p * (a + numOfConsts));
+    else
+      w[i] = Generator(p * (a - numOfVars));
+  }
+}
+
+
+void GABurauSolver::initPopulation( )
+{
+  PMB2Com c(PMCC);
+
+  for( int i = 0; i < popSize; ++i ) {
+    PM** X = new PM*[numOfVars];
+    for( int j = 0; j < numOfVars; ++j )
+      X[j] = c.randomPM();
+    pop[i] = new PMArray(PMAC,X);
+  }
+}
+
+
+Word GABurauSolver::PMtoG( const PM* pm, int k ) 
+{
+  const PMB2Com* c  = (const PMB2Com*)((PMArray*)pm)->value(k);
+  return c->productInOriginalGroup(*c);
+}
+
+
+int GABurauSolver::fitness( const PM* pm )
+{
+  for( int k = 0; k < numOfVars; ++k ) {
+    M.setGeneratingImages(numOfConsts+k, PMtoG(pm,k));
+  }
+  return M.imageOf(w).freelyReduce().length();
+}
+
+
+void GABurauSolver::init( )
+{
+  if( out != 0 ) {
+    (*out) << "The algorithm tries to substitute variables with genetically "
+      "produced words to reduce the length of an equation. "
+      "The fitness value below is the lowest length of the equation produced "
+      "on the current generation. " << endl << endl << ready;
+  }
+
+  reworkEquation( );
+
+  VectorOf<Word> im(numOfGens);
+  for( int i = 0; i < numOfGens; ++i )
+    im[i] = Word(Generator(i+1));
+  M = Map(theGroup,theGroup,im);
+  MB = Map(B,theGroup,bGens);
+}
+
+
+bool GABurauSolver::checkForSolution( Map& res )
+{
+  // print current results
+  if( out && g % 100 == 0) {
+    *out << "Generation: " << g << "   Fitness: " << minFit << endl;
+  }
+  if( minFit == 0 || g % 1000 == 0 ) 
+    cout << "pop[minFitInd] : " << endl << *pop[minFitInd] << endl;
+
+  if( g % 5000 == 0 ) {
+    
+    cout << "Fitness values: " << endl;
+    for( int i = 0; i < popSize; ++i )
+      cout << " " << fit[i];
+    cout << endl << endl;
+    cout << "Population: " << endl;
+    for( int i = 0; i < popSize; ++i )
+      cout << i << ": " << endl << *pop[i] << endl;
+  }
+  // exit if found a solution
+  if( minFit == 0 ) {
+   // prepare and return found solution
+    VectorOf<Chars> names = theGroup.namesOfGenerators();
+    VectorOf<Chars> ret(numOfVars);
+    for( int i = 0; i < numOfVars; ++i )
+      ret[i] = names[i+numOfConsts];
+    FreeGroup F(ret);
+
+    VectorOf<Word> v(numOfVars);
+    for( int i = 0; i < numOfVars; ++i )
+      v[i] =  PMtoG( pop[minFitInd], i );
+    
+    VectorOf<Chars> c(numOfConsts);
+    for( int i = 0; i < numOfConsts; ++i )
+      c[i] = names[i];
+    FreeGroup F2(c);
+    
+    res = Map(F,F2,v);
+    if( out ) {
+      *out << "Solution: " << res << endl << end;
+    }
+    return true;
+  }
+  return false;
+}
+
+
+Map GABurauSolver::getSolution( const Word& u, ostream* o )
+{
+  out = o;
+  w = u;
+  Map res;
+  init();
+  initPopulation();
+  int numOfGenerations = gac.numOfGenerations();
+  for( g = 0; numOfGenerations < 0 || g < numOfGenerations; ++g ) {
+    computeFitness();
+    if( checkForSolution(res) ) return res;
+    adjustFitness();
+    doCrossover();
+    doMutation();
+    doReplacement();
+  }
+}
+

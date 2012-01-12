@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/magnushome.pamphlet}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{MagnusHome.h}
+This class replaces the use of the preprocessor symbol MAGNUS_HOME.
+Main may reset the encapsulated char* when the Magnus root pathname
+is specified on the command line.
+\section{include}
+<<include.h>>=
+#include "config.h"
+#include "Chars.h"
+
+@
+<<include.c>>=
+#include "MagnusHome.h"
+
+@
+\section{struct MagnusHome}
+\subsection{MagnusHome Constructor}
+<<MagnusHome Constructor.h>>=
+  static Chars magnusHome( ) { return Chars( magnus_home ); }
+@
+\subsection{struct MagnusHome}
+<<struct MagnusHome>>=
+struct MagnusHome
+{
+<<MagnusHome Constructor.h>>
+  friend int main(int argc, char* argv[]);
+private:
+  static char* magnus_home;
+};
+
+@
+\section{struct MagnusTmp}
+\subsection{MagnusTmp Constructor}
+<<MagnusTmp Constructor.h>>=
+  static Chars magnusTmp( ) { return Chars( magnus_tmp ); }
+@
+\subsection{struct MagnusTmp}
+<<struct MagnusTmp>>=
+struct MagnusTmp
+{
+<<MagnusTmp Constructor.h>>
+  friend int main(int argc, char* argv[]);
+
+private:
+  static char* magnus_tmp;
+};
+
+@
+\section{license}
+Copyright (C) 1994-2004 The New York Group Theory Cooperative
+See license/NYGTC for the full notice
+@
+\section{MagnusHome.h}
+<<MagnusHome.h>>=
+// src/magnushome.pamphlet
+#ifndef _MAGNUSHOME_H_
+#define _MAGNUSHOME_H_
+
+<<include.h>>
+<<struct MagnusHome>>
+<<struct MagnusTmp>>
+#endif
+@
+\section{magnushome.c}
+<<*>>=
+<<include.c>>
+char* MagnusHome::magnus_home = MAGNUS_HOME;
+char* MagnusTmp::magnus_tmp = MAGNUS_TMP;
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

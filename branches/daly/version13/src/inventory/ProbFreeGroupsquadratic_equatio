@@ -1,0 +1,67 @@
+<HTML>  <HEAD>  <TITLE>Magnus Inventory</TITLE>  </HEAD>
+<H1>Free groups: Quadratic equation </H1>
+<A NAME = 1><CENTER><H3> 1. 
+	Find basic solutions of the equation <B> E</B> = 1 </H3> </CENTER> </A><PRE>
+
+<B>Check-in type:</B>		free group
+
+<B>Objects highlighted:</B>	equation <B> E</B>
+
+<B>Other objects present:</B>	group <B> F</B>
+
+<B>Name in the menu:</B>	Find basic solutions of the equation <B> E</B> = 1
+
+<B>Problem type:</B>		problem object
+
+<B>Help file:</B>		QuickEquationProblem.help
+			</PRE><CENTER><B>Fast checks:</B></CENTER><PRE>
+1. If the basic solutions of the equation have been found then
+	return.
+			</PRE><CENTER><B>Algorithms:</B></CENTER><PRE>
+1. To use for this problem
+   </PRE><B>Links:</B><PRE>
+	Click here to view basic solutions found so far.
+</PRE>
+<A NAME = 2><CENTER><H3> 2. 
+	Find a surface form of <B> E</B> </H3> </CENTER> </A><PRE>
+
+<B>Check-in type:</B>		free group
+
+<B>Objects highlighted:</B>	equation <B> E</B>
+
+<B>Other objects present:</B>	group <B> F</B>
+
+<B>Name in the menu:</B>	Find a surface form of <B> E</B>
+
+<B>Problem type:</B>		fast problem 
+
+<B>Help file:</B>		none
+</PRE>
+<A NAME = 3><CENTER><H3> 3. 
+	Solve the equation <B> E</B> = 1 </H3> </CENTER> </A><PRE>
+
+<B>Check-in type:</B>		free group
+
+<B>Objects highlighted:</B>	equation <B> E</B>
+
+<B>Other objects present:</B>	group <B> F</B>
+
+<B>Name in the menu:</B>	Solve the equation <B> E</B> = 1
+
+<B>Problem type:</B>		problem object
+
+<B>Help file:</B>		EquationProblem.help
+			</PRE><CENTER><B>Fast checks:</B></CENTER><PRE>
+1. If the basic solutions of the equation have been found 
+   then don't compute them again.
+2. If the generators of regular stabilizer of the equation have been found
+   then don't compute them again.
+			</PRE><CENTER><B>Algorithms:</B></CENTER><PRE>
+1. To find basic solutions
+   </PRE><B>Links:</B><PRE>
+	Click here to view basic solutions found so far.
+	Click here to view RegStab generators found so far.
+2. To generate random solutions
+   </PRE><B>Links:</B><PRE>
+	Click here to view random solutions generated so far.
+</PRE>

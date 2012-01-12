@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/DCell.h}
+\author{Sergey Lyutikov, Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{DCell.h}
+DCell is the basic component of externally double linked lists.
+\section{include}
+<<include>>=
+#include <iostream.h>
+#include "IPC.h"
+
+@
+\section{class DCell}
+<<class DCell>>=
+template<class T> class DCell {
+public:
+  T      contents;
+  DCell*  previousCell;
+  DCell*  nextCell;
+  
+  DCell() {nextCell = previousCell = NULL; }  
+  DCell(const DCell& C) : contents(C.contents) { 
+	nextCell = previousCell = NULL;
+  }
+
+  DCell(const T& e, DCell* previous = NULL, DCell* next = NULL) :
+	contents(e) {
+	previousCell = previous;
+	nextCell = next;
+  }
+  
+  ~DCell() { nextCell = previousCell = NULL; } 
+
+  friend ostream& operator < ( ostream& ostr, const DCell& DC )
+  {
+    ostr < DC.contents;
+    return ostr;
+  }
+  
+  friend istream& operator > ( istream& istr, DCell& DC )
+  {
+    istr > DC.contents;
+    return istr;
+  }
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/DCell.h
+#ifndef _DCELL_H_
+#define _DCELL_H_
+
+<<license>>
+<<include>>
+<<class DCell>>
+#endif  // _DCELL_H_
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

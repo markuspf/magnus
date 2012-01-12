@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/GCM.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "FPGroup.h"
+#include "ComputationManager.h"
+#include "Supervisor.h"
+#include "GIC.h"
+// Computation Managers supervised by a GCM:
+#include "NormalClosure.h"
+#include "AbelianInvariants.h"
+#include "KBModule.h"
+#include "AGModule.h"
+#include "ToddCoxeter.h"
+#include "HToddCoxeter.h"
+#include "NilpotentQuotients.h"
+
+@
+\section{class GCM}
+<<class GCM : public Supervisor>>=
+class GCM : public Supervisor
+{
+public:
+  GCM( class SMFPGroup& G );
+  SMFPGroup& getSMFPGroup( ) const { return theSMFPGroup; }
+
+  void viewStructure(ostream& ostr) const;
+
+  Subordinate<GCM,NormalClosure> normalClosure;
+  Subordinate<GCM,AbelianInvariants> abelianInvariants;
+  Subordinate<GCM,AbelianPrimes> abelianPrimes;
+  Subordinate<GCM,AbelianRank> abelianRank;
+  Subordinate<GCM,KBSupervisor> kbSupervisor;
+  Subordinate<GCM,AGSupervisor> agSupervisor;
+  Subordinate<GCM,NilpotentQuotients> nilpotentQuotients;
+  Subordinate<GCM,NGcomputeBasis> computeBasis;
+  Subordinate<GCM,ToddCoxeter> theToddCoxeter;
+  Subordinate<GCM,HToddCoxeter> ghToddCoxeter;
+
+  void takeControl( );        // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  class SMFPGroup& theSMFPGroup;
+
+  bool didFastChecks;
+  // The takeControl method does some sneaky checks of obvious properties
+  // (this should be formalized, since they are not always that fast).
+  // This records the first call, so that they are not done over and over.
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/GCM.h
+#ifndef _GCM_H_
+#define _GCM_H_
+
+<<license>>
+<<include>>
+<<class GCM : public Supervisor>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

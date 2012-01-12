@@ -1,0 +1,117 @@
+/home/users/bormotov/magnus/back_end/Equations/test/bin% ./d* < ../dge.in3
+Enter a free group: 
+Enter a graphic equation: 
+Enter a word in F: 
+The group: < a, b >
+The variables: <s,x,y,z,p,t,U,Q,R>
+Equation: s x y z s^-1 p t x^-1 z^-1 U Q p^-1 R U^-1 y^-1 t^-1 Q^-1 R^-1
+Constant: b^-1 a b a^2 b^-1 a^2 b a^2 b^-1 a^-2 b a^-2 b^-1 a^-2 b a^-1
+0: 
+The equation has no solutions
+1: 
+The equation has no solutions
+2: 
+The equation has no solutions
+3: 
+The equation has no solutions
+4: 
+The equation has no solutions
+5: 
+The equation has no solutions
+6: 
+The equation has no solutions
+7: 
+The equation has no solutions
+8: 
+The equation has no solutions
+9: 
+The equation has no solutions
+10: 
+The equation has no solutions
+11: 
+The equation has no solutions
+12: 
+The equation has no solutions
+13: 
+The equation has no solutions
+14: 
+The equation has no solutions
+15: 
+The equation has no solutions
+16: 
+The equation has no solutions
+17: 
+The equation has no solutions
+18: 
+The solution is: 
+s = a^-2 b a^-1 b^-1
+x = a b
+y = b
+z = b
+p = b^-1
+t = a^-2
+U = b a^-1
+Q = a^-1 b
+R = b^-1 a^-2 b a^-2 b^-1
+
+/home/users/bormotov/magnus/back_end/Equations/test/bin% ls
+debug-DGE*
+/home/users/bormotov/magnus/back_end/Equations/test/bin% 14:10
+14:10: Command not found.
+/home/users/bormotov/magnus/back_end/Equations/test/bin% ./d* < ../dge1
+Enter a free group: 
+Enter a graphic equation: 
+Enter a word in F: 
+The group: < a, b >
+The variables: <t,p,q,R,s,u,x,Y,z>
+Equation: t p q R p^-1 s q^-1 R^-1 s^-1 t^-1 u x Y u^-1 z x^-1 Y^-1 z^-1
+Constant: b^-1 a b a^2 b^-1 a^2 b a^2 b^-1 a^-2 b a^-2 b^-1 a^-2 b a^-1
+0: 
+The equation has no solutions
+1: 
+The equation has no solutions
+2: 
+The equation has no solutions
+3: 
+The equation has no solutions
+4: 
+The equation has no solutions
+5: 
+The equation has no solutions
+6: 
+The equation has no solutions
+7: 
+The equation has no solutions
+8: 
+The equation has no solutions
+9: 
+The equation has no solutions
+10: 
+The equation has no solutions
+11: 
+The equation has no solutions
+12: 
+The equation has no solutions
+13: 
+The equation has no solutions
+14: 
+The equation has no solutions
+15: 
+The equation has no solutions
+16: 
+The equation has no solutions
+17: 
+The equation has no solutions
+18: 
+The solution is: 
+t = a^-2 b a^-1 b^-1
+p = a b
+q = b
+R = b
+s = b^-1 a^-1
+u = a^-2
+x = a b^-1
+Y = a^-1 b
+z = b^-1 a^-2 b a^-2 b^-1
+
+/home/users/bormotov/magnus/back_end/Equations/test/bin% 

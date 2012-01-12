@@ -1,0 +1,13 @@
+Is H2=H1?
+Is H2 contained in H1?
+Is H1 contained in H2?
+Is an automorphic image of H2 contained in H1?
+Is an automorphic image of H1 contained in H2?
+Is H2 a direct factor of H1?
+Is H1 a direct factor of H2?
+
+Compute the minimal number of generators of the join of H1 and H2
+Compute the minimal number of generators of the intersection of H1 and H2
+
+Find a canonical basis for the join of H1 and H2
+Find a canonical basis for the intersection of H1 and H2

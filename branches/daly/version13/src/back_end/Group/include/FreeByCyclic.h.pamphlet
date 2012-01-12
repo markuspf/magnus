@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/FreeByCyclic.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "FreeGroup.h"
+#include "Map.h"
+
+@
+\section{class FreeByCyclic}
+<<class FreeByCyclic>>=
+class FreeByCyclic
+{
+public:
+  FreeByCyclic(const FreeGroup F, const Map aut);
+  // Destructor supplied by compiler
+  FreeByCyclic& operator=( const FreeByCyclic& G );
+  VectorOf<Chars> namesOfGenerators( ) const;
+  SetOf<Word> getRelators( ) const;
+  Word normalForm(const Word& w) const;
+
+  friend ostream& operator<<( ostream& ostr, const FreeByCyclic& G );
+  friend istream& operator>>( istream& istr,       FreeByCyclic& G );
+
+private:
+  const FreeGroup theGroup;
+  const Map theAut;
+  const Map  theAutInv;
+  int newGenerator;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/FreeByCyclic.h
+#ifndef _FREE_BY_CYCLIC_H_
+#define _FREE_BY_CYCLIC_H_
+
+<<license>>
+<<include>>
+<<class FreeByCyclic>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

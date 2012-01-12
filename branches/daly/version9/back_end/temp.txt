@@ -1,0 +1,174 @@
+cd libg++; make all
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/libg++'
+make -f ../global/compile.mk all
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/libg++'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/libg++'
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/libg++'
+cd general; make all
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/general'
+make -f ../global/compile.mk all
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/general'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/general'
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/general'
+cd Statistics; make all
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+make -f ../global/compile.mk all
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+cd SMApps; make catlib
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+rm -f src/SA.C; ../../bin/concat src/fastProblems.C src/DataProblems.C src/menuDefns.C src/OVDSFullDataAnalysisProblem.C src/OVDSGraphicalAnalysisProblem.C src/OVDSGoodnessOfFitProblem.C src/OVDSAnalysisOfMeanProblem.C src/OVDSAnalysisOfVarianceProblem.C src/OVDSFurtherAnalysisProblem.C src/OVDSReportProblem.C src/OVDSComparisionWithMeanProblem.C src/OVDSComputationOfAnIntervalProblem.C src/OVDSComparisionWithVarianceProblem.C src/OVDSDataSummaryProblem.C > src/SA.C
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+cd SessionManager; make catlib
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+rm -f src/SM1.C; ../../bin/concat src/ComputationManager.C src/FEData.C src/DCM.C src/Menu.C src/ObjectSmith.C src/OutMessages.C src/ResourceManager.C src/SessionManager.C src/Supervisor.C src/TheObjects.C src/viewStructure.C src/ARCer.C src/ViewContents.C src/SMObject.C src/ConstructSampleFromDataSet.C > src/SM1.C
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+cd SessionManager; make magnus
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+cd ../libg++; make -f Makefile -f ../global/compile.mk lib
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/libg++'
+make[2]: Nothing to be done for `lib'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/libg++'
+cd ../general; make -f Makefile -f ../global/compile.mk lib
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/general'
+make[2]: Nothing to be done for `lib'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/general'
+cd ../Statistics; make -f Makefile -f ../global/compile.mk lib
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+make[2]: Nothing to be done for `lib'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+cd ../SMApps; make -f Makefile -f ../global/compile.mk lib
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+make[2]: *** Warning: File `src/obj/SA.d' has modification time in the future (2002-05-23 13:11:20 > 2002-05-23 12:59:03)
+if [ ! -d src/obj ]; then mkdir src/obj; fi
+/bin/sh -ec 'g++ -MM -I../global -Iinclude -I../SessionManager/include -I../Statistics/include -I../general/include -I../libg++/include src/SA.C | sed "s:SA.o:src/obj/& src/obj/SA.d:g"' > src/obj/SA.d
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+make[2]: *** Warning: File `src/obj/SA.d' has modification time in the future (2002-05-23 13:12:43 > 2002-05-23 12:59:03)
+g++ -DHAVE_UNISTD_H -DDEBUG -g -DSAFETY=2 -I../global -Iinclude -I../SessionManager/include -I../Statistics/include -I../general/include -I../libg++/include -c src/SA.C -o src/obj/SA.o
+if [ ! -d lib ]; then mkdir lib; fi
+ar cr lib/libSMApps.a src/obj/SA.o
+ranlib lib/libSMApps.a
+make[2]: warning:  Clock skew detected.  Your build may be incomplete.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+make -f ../global/compile.mk magnus
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make[2]: *** Warning: File `src/obj/magnus.d' has modification time in the future (2002-05-23 13:11:25 > 2002-05-23 12:59:07)
+if [ ! -d src/obj ]; then mkdir src/obj; fi
+/bin/sh -ec 'g++ -MM -I../global -Iinclude -I../SMApps/include -I../Statistics/include -I../general/include -I../libg++/include src/SM1.C | sed "s:SM1.o:src/obj/& src/obj/SM1.d:g"' > src/obj/SM1.d
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make[2]: *** Warning: File `src/obj/magnus.d' has modification time in the future (2002-05-23 13:11:25 > 2002-05-23 12:59:07)
+g++ -DHAVE_UNISTD_H -DDEBUG -g -DSAFETY=2 -I../global -Iinclude -I../SMApps/include -I../Statistics/include -I../general/include -I../libg++/include -c src/SM1.C -o src/obj/SM1.o
+g++ -DHAVE_UNISTD_H -DDEBUG -g -DSAFETY=2 -I../global -Iinclude -I../SMApps/include -I../Statistics/include -I../general/include -I../libg++/include -c src/SMCrossDatasetProblems.C -o src/obj/SMCrossDatasetProblems.o
+In file included from src/SMCrossDatasetProblems.C:18:
+include/SMCrossDatasetProblems.h:29: parse error before `{'
+include/SMCrossDatasetProblems.h:40: parse error before `&'
+include/SMCrossDatasetProblems.h:51: non-member function `typeID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h:53: non-member function `iconID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h:54: virtual outside class declaration
+include/SMCrossDatasetProblems.h:54: non-member function `sendResult()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h:56: parse error before `public'
+include/SMCrossDatasetProblems.h:62: parse error before `{'
+include/SMCrossDatasetProblems.h:73: parse error before `&'
+include/SMCrossDatasetProblems.h: In function `const char * type()':
+include/SMCrossDatasetProblems.h:83: redefinition of `const char * type()'
+include/SMCrossDatasetProblems.h:50: `const char * type()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:84: non-member function `typeID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const char * typeID()':
+include/SMCrossDatasetProblems.h:84: redefinition of `const char * typeID()'
+include/SMCrossDatasetProblems.h:51: `const char * typeID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:86: non-member function `iconID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const class IconID iconID()':
+include/SMCrossDatasetProblems.h:86: redefinition of `const class IconID iconID()'
+include/SMCrossDatasetProblems.h:53: `const class IconID iconID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:87: parse error before `}'
+include/SMCrossDatasetProblems.h:91: parse error before `{'
+include/SMCrossDatasetProblems.h:102: parse error before `&'
+include/SMCrossDatasetProblems.h: In function `const char * type()':
+include/SMCrossDatasetProblems.h:112: redefinition of `const char * type()'
+include/SMCrossDatasetProblems.h:83: `const char * type()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:113: non-member function `typeID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const char * typeID()':
+include/SMCrossDatasetProblems.h:113: redefinition of `const char * typeID()'
+include/SMCrossDatasetProblems.h:84: `const char * typeID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:115: non-member function `iconID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const class IconID iconID()':
+include/SMCrossDatasetProblems.h:115: redefinition of `const class IconID iconID()'
+include/SMCrossDatasetProblems.h:86: `const class IconID iconID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:117: parse error before `}'
+include/SMCrossDatasetProblems.h:121: parse error before `{'
+include/SMCrossDatasetProblems.h:132: parse error before `&'
+include/SMCrossDatasetProblems.h: In function `const char * type()':
+include/SMCrossDatasetProblems.h:142: redefinition of `const char * type()'
+include/SMCrossDatasetProblems.h:112: `const char * type()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:143: non-member function `typeID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const char * typeID()':
+include/SMCrossDatasetProblems.h:143: redefinition of `const char * typeID()'
+include/SMCrossDatasetProblems.h:113: `const char * typeID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:145: non-member function `iconID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const class IconID iconID()':
+include/SMCrossDatasetProblems.h:145: redefinition of `const class IconID iconID()'
+include/SMCrossDatasetProblems.h:115: `const class IconID iconID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:147: parse error before `}'
+include/SMCrossDatasetProblems.h:152: parse error before `{'
+include/SMCrossDatasetProblems.h:163: parse error before `&'
+include/SMCrossDatasetProblems.h: In function `const char * type()':
+include/SMCrossDatasetProblems.h:173: redefinition of `const char * type()'
+include/SMCrossDatasetProblems.h:142: `const char * type()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:174: non-member function `typeID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const char * typeID()':
+include/SMCrossDatasetProblems.h:174: redefinition of `const char * typeID()'
+include/SMCrossDatasetProblems.h:143: `const char * typeID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:176: non-member function `iconID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const class IconID iconID()':
+include/SMCrossDatasetProblems.h:176: redefinition of `const class IconID iconID()'
+include/SMCrossDatasetProblems.h:145: `const class IconID iconID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:178: parse error before `}'
+include/SMCrossDatasetProblems.h:182: parse error before `{'
+include/SMCrossDatasetProblems.h:193: parse error before `&'
+include/SMCrossDatasetProblems.h: In function `const char * type()':
+include/SMCrossDatasetProblems.h:203: redefinition of `const char * type()'
+include/SMCrossDatasetProblems.h:173: `const char * type()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:204: non-member function `typeID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const char * typeID()':
+include/SMCrossDatasetProblems.h:204: redefinition of `const char * typeID()'
+include/SMCrossDatasetProblems.h:174: `const char * typeID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:206: non-member function `iconID()' cannot have `const' method qualifier
+include/SMCrossDatasetProblems.h: In function `const class IconID iconID()':
+include/SMCrossDatasetProblems.h:206: redefinition of `const class IconID iconID()'
+include/SMCrossDatasetProblems.h:176: `const class IconID iconID()' previously defined here
+include/SMCrossDatasetProblems.h: At top level:
+include/SMCrossDatasetProblems.h:208: parse error before `}'
+src/SMCrossDatasetProblems.C:22: invalid use of undefined type `class SMCrossDataSetConfidenceOne'
+include/SMCrossDatasetProblems.h:28: forward declaration of `class SMCrossDataSetConfidenceOne'
+src/SMCrossDatasetProblems.C: In method `void SMCrossDataSetConfidenceOne::sendResult() const':
+src/SMCrossDatasetProblems.C:24: implicit declaration of function `int oid(...)'
+include/OID.h:79: `OID::OID(int)' is private
+src/SMCrossDatasetProblems.C:24: within this context
+src/SMCrossDatasetProblems.C:26: `m_Level' undeclared (first use this function)
+src/SMCrossDatasetProblems.C:26: (Each undeclared identifier is reported only once
+src/SMCrossDatasetProblems.C:26: for each function it appears in.)
+make[2]: *** [src/obj/SMCrossDatasetProblems.o] Error 1
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make[1]: *** [magnus] Error 2
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make: *** [all] Error 2

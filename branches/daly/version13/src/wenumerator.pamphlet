@@ -1,0 +1,903 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/wenumerator.pamphlet}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "SMEnumerator.h"
+#include "File.h"
+#include "Word.h"
+#include "SMFPGroup.h"
+#include "OutMessages.h"
+#include "RandomNumbers.h"
+#include "SMList.h"
+
+@
+<<include.c>>=
+#include "WEnumerator.h"
+#include "SMEnumerator.h"
+#include "OutMessages.h"
+#include "SMFPGroup.h"
+#include "viewStructure.h"
+#include "WordEnumerator.h"
+#include "FreeGroup.h"
+#include "SMWord.h"
+
+@
+\section{class WordEnumeratorARCer}
+\subsection{WordEnumeratorARCer Constructor}
+<<WordEnumeratorARCer Constructor.h>>=
+  WordEnumeratorARCer( ComputationManager& boss, SMListData& d,
+                       const FreeGroup& group ) 
+    : EnumeratorARCer( boss, d ), 
+    theGroup(group),
+    numberOfAll(100),
+    enumerateAll( true ),
+    isNormalRandom( false ),
+    numberOfsampleGenerators(1),
+    maxLength(100),
+    counter(0) { } 
+@
+\subsection{WordEnumeratorARCer::enumerate}
+<<WordEnumeratorARCer::enumerate.h>>=
+  void enumerate();
+@
+<<WordEnumeratorARCer::enumerate.c>>=
+void WordEnumeratorARCer::enumerate( )
+{
+  //file <<  "Sample : " << theSample << endl;
+  if (enumerateAll){
+    if ( numberOfsampleGenerators == 1 )
+      enumerateAllWords();
+    else {
+      WordEnumerator we(theGroup,numberOfsampleGenerators);
+      for (we.reset();counter < numberOfAll; we.next()) {
+	if (submitSignalRecieved()){
+	  return;
+	}
+	
+	VectorOf<Word> v = we.getWords();
+	Word w = theSample.replaceGenerators( v );
+	//	Word w = theSample.replaceGenerators( v ).freelyReduce();
+	if ( w.length() > 0 ) {
+	  counter++;
+	  file << counter << ": ";
+	  theGroup.printWord(file,w);
+	  file << endl << endl;
+	}
+      }
+    }
+  }else{
+    while (counter < numberOfAll) {
+      if (submitSignalRecieved()){
+	return;
+      }
+      VectorOf<Word> vw(numberOfsampleGenerators);
+      for (int i1=0;i1<numberOfsampleGenerators;i1++){
+	vw[i1] = getRandomWord();
+      }
+      Word w = theSample.replaceGenerators( vw ).freelyReduce();
+      if ( w.length() > 0 ) {
+	counter++;
+	file << counter << ": ";
+	theGroup.printWord(file,w);
+	file << endl << endl;
+      }      
+    }
+  }
+}
+
+@
+\subsection{WordEnumeratorARCer::enumerateAllWords}
+<<WordEnumeratorARCer::enumerateAllWords.h>>=
+  void enumerateAllWords( );
+@
+<<WordEnumeratorARCer::enumerateAllWords.c>>=
+void WordEnumeratorARCer::enumerateAllWords( ) {
+  for(;counter <numberOfAll; counter++){
+    Word w = theGroup.getN_thElement( counter );
+    if ( w.length() > 0 ) {
+      counter++;
+      file << counter << ": ";
+      theGroup.printWord(file,w);
+      file << endl << endl;
+    }      
+  }  
+}
+
+@
+\subsection{WordEnumeratorARCer::getRandomWord}
+<<WordEnumeratorARCer::getRandomWord.h>>=
+  Word getRandomWord() ;
+@
+<<WordEnumeratorARCer::getRandomWord.c>>=
+Word WordEnumeratorARCer::getRandomWord()  {
+  int numOfGenerators = theGroup.numberOfGenerators()*2;
+  int length = 0;
+  if ( !isNormalRandom ) {
+    length = ur.rand(1,maxLength);
+  } else {
+    while (length <=0 || length > maxLength)
+      length = nr.rand(maxLength/2,maxLength/2);
+  }
+  Word newWord;
+  for (int j=0;j<length;j++){
+    int g=0;
+    if ( !isNormalRandom ) {
+      g = ur.rand(1,numOfGenerators);
+    } else {
+      while (g <=0 || g > numOfGenerators)
+	g = nr.rand(numOfGenerators/2,numOfGenerators/2);
+    }
+    if ( g > numOfGenerators/2 ) {
+      g = g - numOfGenerators/2;
+    } else {
+      g *= -1;
+    }
+    Generator newG(g);
+    newWord *= newG;
+  }
+  return newWord;
+}
+@
+\subsection{WordEnumeratorARCer::setEnumerateAll}
+<<WordEnumeratorARCer::setEnumerateAll.h>>=
+  void setEnumerateAll() { enumerateAll = true; }
+@
+\subsection{WordEnumeratorARCer::setEnumerateRandom}
+<<WordEnumeratorARCer::setEnumerateRandom.h>>=
+  void setEnumerateRandom() { enumerateAll = false; }
+@
+\subsection{WordEnumeratorARCer::setNormalRandom}
+<<WordEnumeratorARCer::setNormalRandom.h>>=
+  void setNormalRandom() { isNormalRandom = true; }
+@
+\subsection{WordEnumeratorARCer::setUniformRandom}
+<<WordEnumeratorARCer::setUniformRandom.h>>=
+  void setUniformRandom() { isNormalRandom = false; }
+@
+\subsection{WordEnumeratorARCer::setTotalNumber}
+<<WordEnumeratorARCer::setTotalNumber.h>>=
+  void setTotalNumber(int n) { numberOfAll = n; }
+@
+\subsection{WordEnumeratorARCer::setMaxLength}
+<<WordEnumeratorARCer::setMaxLength.h>>=
+  void setMaxLength(int n) { maxLength = n; }
+@
+\subsection{WordEnumeratorARCer::setSample}
+<<WordEnumeratorARCer::setSample.h>>=
+  void setSample(Word w) { 
+    theSample = w; 
+    numberOfsampleGenerators = ord(w.maxOccurringGenerator());
+  }
+@
+\subsection{WordEnumeratorARCer::getFileName}
+<<WordEnumeratorARCer::getFileName.h>>=
+  Chars getFileName() const  { return file.getFileName(); }
+@
+\subsection{WordEnumeratorARCer::writeResults}
+<<WordEnumeratorARCer::writeResults.h>>=
+  void writeResults( ostream& ostr ) 
+    {
+      ostr <  counter;
+    }
+@
+\subsection{WordEnumeratorARCer::readResults}
+<<WordEnumeratorARCer::readResults.h>>=
+  void readResults( istream& istr) 
+    {
+      istr > counter;
+    }
+@
+\subsection{class WordEnumeratorARCer}
+<<class WordEnumeratorARCer.h>>=
+class WordEnumeratorARCer : public EnumeratorARCer
+{
+public:
+<<WordEnumeratorARCer Constructor.h>>
+<<WordEnumeratorARCer::setEnumerateAll.h>>
+<<WordEnumeratorARCer::setEnumerateRandom.h>>
+<<WordEnumeratorARCer::setNormalRandom.h>>
+<<WordEnumeratorARCer::setUniformRandom.h>>
+<<WordEnumeratorARCer::setTotalNumber.h>>
+<<WordEnumeratorARCer::setMaxLength.h>>
+<<WordEnumeratorARCer::setSample.h>>
+<<WordEnumeratorARCer::getFileName.h>>
+<<WordEnumeratorARCer::writeResults.h>>
+<<WordEnumeratorARCer::readResults.h>>
+protected:
+<<WordEnumeratorARCer::enumerate.h>>
+private:
+<<WordEnumeratorARCer::enumerateAllWords.h>>
+<<WordEnumeratorARCer::getRandomWord.h>>
+  FreeGroup theGroup;
+  File file;
+  bool enumerateAll;
+  bool isNormalRandom;
+  int numberOfsampleGenerators;
+  int numberOfAll;
+  int maxLength;
+  int counter;
+  Word theSample;
+  UniformRandom ur; 
+  NormalRandom nr; 
+};
+
+@
+\section{class WordEnumeratorProblem}
+\subsection{WordEnumeratorProblem Constructor}
+<<WordEnumeratorProblem Constructor.h>>=
+  WordEnumeratorProblem(SMFPGroup& );
+@
+This constructor is broken. The compiler error message reads:
+\begin{verbatim}
+/home/magnus/int/wenumerator.C: In constructor 
+   `WordEnumeratorProblem::WordEnumeratorProblem(SMFPGroup&)':
+/home/magnus/int/wenumerator.C:99: no matching function for call to `
+   WordEnumeratorARCer::WordEnumeratorARCer(WordEnumeratorProblem&, FreeGroup)'
+/home/magnus/int/WEnumerator.h:15: candidates are: 
+   WordEnumeratorARCer::WordEnumeratorARCer(const WordEnumeratorARCer&)
+\end{verbatim}
+since we can't resolve this we comment it out.
+<<WordEnumeratorProblem Constructor.c>>=
+/*
+WordEnumeratorProblem::WordEnumeratorProblem(SMFPGroup& b)
+  : EnumeratorProblem< Word >( b ),
+    theGroup(b),
+    arcer( *this, theGroup.getFreePreimage() )
+ {}
+*/
+@
+\subsection{WordEnumeratorProblem::takeControl}
+<<WordEnumeratorProblem::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<WordEnumeratorProblem::takeControl.c>>=
+void WordEnumeratorProblem::takeControl( )
+{
+  if (freeARCs() > 0){
+    //    arcer.runComputation();
+    if (arcer.takeControl()){
+      
+      adminSuspend();
+    return;	
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{WordEnumeratorProblem::start}
+<<WordEnumeratorProblem::start.h>>=
+  void start( ) ;                // overrides ComputationManager  
+@
+<<WordEnumeratorProblem::start.c>>=
+void WordEnumeratorProblem::start( ) {              
+  // Set arcer parameters
+  Word sample = getParameters().getValue("Sample");
+   // Set sample word
+  arcer.setSample( sample );
+  // Set total number of words to enumerate
+  int total = getParameters().getValue("P1");
+  arcer.setTotalNumber( total );
+  Chars t = getParameters().getValue("RBG");
+  // Random enumeration
+  if (t == "EnRandom"){
+    arcer.setEnumerateRandom();
+    Chars t1 =  getParameters().getValue("RandomRBG");
+    int maxLength;
+    // Select normal or uniform enumeration is used
+    if ( t1 == "RBNormal"){
+      arcer.setNormalRandom();
+      maxLength = getParameters().getValue("maxLNormal");
+    } else {
+      arcer.setUniformRandom();
+      maxLength = getParameters().getValue("maLUniform");
+    }
+    // Set maximal length of enumerated words
+    arcer.setMaxLength( maxLength );
+  }
+  else 
+    arcer.setEnumerateAll();
+  LogMessage msg1(*this,theGroup);
+  msg1 << Link(Chars( "Click here to see words in the generators of ")+
+	       Text( Name(theGroup) ),
+	       "WEnumerator",
+	       arcer.getFileName(),true );
+  msg1.send();    
+  LogMessage msg(*this,theGroup);
+  msg << sample;
+  msg.send();    
+}
+
+@
+\subsection{WordEnumeratorProblem::resume}
+<<WordEnumeratorProblem::resume.h>>=
+  void resume( );                // overrides ComputationManager
+@
+<<WordEnumeratorProblem::resume.c>>=
+void WordEnumeratorProblem::resume( )
+{              
+   arcer.submitSignal();
+   // Set arcer parameters
+   // Set total number of words to enumerate
+   int total = getParameters().getValue("P1");
+   arcer.setTotalNumber( total );
+   Chars t = getParameters().getValue("RBG");
+   // Random enumeration
+   if (t == "EnRandom"){
+     Chars t1 =  getParameters().getValue("RandomRBG");
+     int maxLength;
+     // Select normal or uniform enumeration is used
+     if ( t1 == "RBNormal"){
+       maxLength = getParameters().getValue("maxLNormal");
+     } else {
+       maxLength = getParameters().getValue("maLUniform");
+     }
+     // Set maximal length of enumerated words
+     arcer.setMaxLength( maxLength );
+   }
+}
+
+@
+\subsection{WordEnumeratorProblem::viewStructure}
+<<WordEnumeratorProblem::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<WordEnumeratorProblem::viewStructure.c>>=
+void WordEnumeratorProblem::viewStructure(ostream& ostr) const
+{
+   EnumertatorProblemView pv(oid(),"Word enumerator",
+			     Text("Enumerate words in the generators of") +
+			     Name(theGroup) ,
+			     helpID("WEnumeratorProblem",theGroup),
+			      Text("word en")
+			     );
+   pv.addParameter(EditInteger("P1","Number of words",1,100,0,1000000));
+   VectorOf<Chars> v(1);
+   v[0] = "x";
+   FreeGroup f(v);
+   Word w(Generator(1));
+   pv.addParameter(
+     EditWord("Sample","The generic word used in the enumeration",0,f,w));
+   RadioButton rRB1("RBNormal","Enumerate using normal disribution");
+   RadioButton rRB2("RBUniform","Enumerate using uniform disribution");
+   rRB1.add(EditInteger("maxLNormal","Max. length of words",1,10,1,30000));
+   rRB2.add(EditInteger("maLUniform","Max. length of words",1,10,1,30000));
+   RadioButtonGroup randomRBG("RandomRBG");
+   randomRBG.add(rRB1);
+   randomRBG.add(rRB2);
+   RadioButton rb1("EnRandom","Enumerate randomly");
+   rb1.add(randomRBG);
+   RadioButtonGroup rbg("RBG");
+   rbg.add(rb1);
+   RadioButton rb2("EnTotal","Enumerate totally");
+   rbg.add(rb2);
+   pv.addParameter(rbg);
+   pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			     "For the use of enumerator",40));
+   submit(ostr, pv);
+}
+
+@
+\subsection{WordEnumeratorProblem::getDataFileName}
+<<WordEnumeratorProblem::getDataFileName.h>>=
+  Chars getDataFileName() const { return arcer.getFileName(); }
+@
+\subsection{WordEnumeratorProblem::terminate}
+<<WordEnumeratorProblem::terminate.h>>=
+  void terminate( ) { }          // overrides ComputationManager
+@
+\subsection{class WordEnumeratorProblem}
+<<class WordEnumeratorProblem.h>>=
+class WordEnumeratorProblem : public EnumeratorProblem< Word >
+{
+public:
+<<WordEnumeratorProblem Constructor.h>>
+<<WordEnumeratorProblem::takeControl.h>>
+<<WordEnumeratorProblem::start.h>>
+<<WordEnumeratorProblem::resume.h>>
+<<WordEnumeratorProblem::viewStructure.h>>
+<<WordEnumeratorProblem::getDataFileName.h>>
+<<WordEnumeratorProblem::terminate.h>>
+private:
+  SMFPGroup& theGroup;
+  WordEnumeratorARCer arcer;
+};
+
+@
+\section{class IsWordInListARCer}
+\subsection{IsWordInListARCer Constructor}
+<<IsWordInListARCer Constructor.h>>=
+  IsWordInListARCer( ComputationManager& boss ) : ARCer( boss ), result(0) { } 
+@
+\subsection{IsWordInListARCer Destructor}
+<<IsWordInListARCer Destructor.h>>=
+  ~IsWordInListARCer( ) { }
+@
+\subsection{IsWordInListARCer::setArguments}
+<<IsWordInListARCer::setArguments.h>>=
+  void setArguments( const Chars&, const Word& ,const FPGroup&);
+@
+<<IsWordInListARCer::setArguments.c>>=
+void IsWordInListARCer::setArguments( const Chars& listFileName, 
+				      const Word& w,
+				      const FPGroup& g)
+{
+  fileName =  listFileName;
+  theWord = w;
+  theGroup = g;
+}
+
+@
+\subsection{IsWordInListARCer::runComputation}
+<<IsWordInListARCer::runComputation.h>>=
+  void runComputation( );
+@
+The code used to read:
+\begin{verbatim}
+  SMListFileIterator<Word> I(fileName,theGroup);
+  for (I.reset();!I.EOL();I.nextCell()){
+    if ( theWord.freelyReduce() == I.getData() ){
+      result = true;
+      return;
+    }
+  }
+\end{verbatim}
+but [[SMListFileIterator]] is not implemented. We change this
+to give an error:
+<<tpd>>=
+  error( "void IsWordInListARCer::runComputation( ) : "
+         "this function is not implemented");
+@
+<<IsWordInListARCer::runComputation.c>>=
+void IsWordInListARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( fileName.length() == 0 )
+    error( "void IsWordInListARCer::runComputation( ) : "
+	   "fileIterator must be initialized first");
+#endif
+<<tpd>>
+  result = false;
+}
+
+@
+\subsection{IsWordInListARCer::writeResults}
+<<IsWordInListARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<IsWordInListARCer::writeResults.c>>=
+void IsWordInListARCer::writeResults( ostream& out ) 
+{
+  out < result;
+}
+
+@
+\subsection{IsWordInListARCer::readResults}
+<<IsWordInListARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<IsWordInListARCer::readResults.c>>=
+void IsWordInListARCer::readResults( istream& in )
+{
+  in > result;
+}
+
+@
+\subsection{IsWordInListARCer::isInList}
+<<IsWordInListARCer::isInList.h>>=
+  bool isInList();
+@
+<<IsWordInListARCer::isInList.c>>=
+bool IsWordInListARCer::isInList() 
+{
+#if SAFETY > 0
+  if( fileName.length()  == 0 )
+    error( "bool IsWordInListARCer::getCyclicDecomposition() : "
+	   "fileIterator must be initialized first");
+#endif
+  return result;
+}
+
+@
+\subsection{class IsWordInListARCer}
+<<class IsWordInListARCer.h>>=
+class IsWordInListARCer : public ARCer
+{
+public:
+<<IsWordInListARCer Constructor.h>>
+<<IsWordInListARCer Destructor.h>>
+<<IsWordInListARCer::setArguments.h>>
+<<IsWordInListARCer::runComputation.h>>
+<<IsWordInListARCer::writeResults.h>>
+<<IsWordInListARCer::readResults.h>>
+<<IsWordInListARCer::isInList.h>>
+private:
+  Chars fileName;
+  Word theWord;
+  FPGroup theGroup;
+  bool result;
+};
+
+@
+\section{class IsWordInList}
+\subsection{IsWordInList Constructor}
+<<IsWordInList Constructor.h>>=
+  IsWordInList( SMList<Word>&, const class SMWord& );
+@
+<<IsWordInList Constructor.c>>=
+IsWordInList::IsWordInList(SMList<Word>& sml,const SMWord& word)
+  : Supervisor( true ),
+    theList( sml ),
+    theWord( word ),
+    arcer(*this)
+{ 
+  arcer.setArguments(
+    sml.getFileName(), word.getWord(), sml.getGroup().getFPGroup());
+}
+
+@
+\subsection{IsWordInList::takeControl}
+<<IsWordInList::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<IsWordInList::takeControl.c>>=
+void IsWordInList::takeControl( )
+{
+  if (freeARCs() > 0){
+    if (arcer.takeControl()){
+      LogMessage msg( *this, theWord );
+      msg << Name( theList );
+      if (arcer.isInList())
+	msg << " contains ";
+      else
+	msg << " does not contain ";
+      msg << Name( theWord ) << ".";
+      
+      msg.send();
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{IsWordInList::viewStructure}
+<<IsWordInList::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<IsWordInList::viewStructure.c>>=
+void IsWordInList::viewStructure(ostream& ostr) const
+{
+  ProblemView pv( ostr, oid(),Text("Containment problem"),
+		  Text("Determine whether") + Name(theWord)
+		  + Text("lies in") + Name(theList),
+		  helpID("IsWordInList", 
+			 theList.getGroup()),
+		  Text(Name(theWord)) + Text("is in") +
+		  Name(theList) + Text("?")
+		  );
+  pv.startItemGroup();
+  pv.add( Text("For the use of this problem"), ThisARCSlotID(), 50 );
+  pv.done();
+}
+
+@
+\subsection{IsWordInList::start}
+<<IsWordInList::start.h>>=
+  void start( ) { }            // overrides ComputationManager
+@
+\subsection{IsWordInList::terminate}
+<<IsWordInList::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class IsWordInList}
+<<class IsWordInList.h>>=
+class IsWordInList  : public Supervisor
+{
+public:
+<<IsWordInList Constructor.h>>
+<<IsWordInList::takeControl.h>>
+<<IsWordInList::viewStructure.h>>
+<<IsWordInList::start.h>>
+<<IsWordInList::terminate.h>>
+private:
+  const class SMWord& theWord;
+  SMList<Word>& theList;
+  IsWordInListARCer arcer;
+};
+
+@
+\section{class WordsOfLengthARCer}
+\subsection{WordsOfLengthARCer Constructor}
+<<WordsOfLengthARCer Constructor.h>>=
+  WordsOfLengthARCer( ComputationManager& boss ) 
+    : ARCer( boss ), 
+    minLength( 1 ),
+    maxLength( 30000 ) { } 
+@
+\subsection{WordsOfLengthARCer Destructor}
+<<WordsOfLengthARCer Destructor.h>>=
+  ~WordsOfLengthARCer( ) { }
+@ 
+\subsection{WordsOfLengthARCer::setArguments}
+<<WordsOfLengthARCer::setArguments.h>>=
+  void setArguments( const Chars&, const FPGroup&);
+@
+<<WordsOfLengthARCer::setArguments.c>>=
+void WordsOfLengthARCer::setArguments( const Chars& listFileName, 
+				       const FPGroup& g)
+{
+  fileName =  listFileName;
+  theGroup = g;
+}
+
+@
+\subsection{WordsOfLengthARCer::runComputation}
+<<WordsOfLengthARCer::runComputation.h>>=
+  void runComputation( );
+@
+The code used to read:
+\begin{verbatim}
+  SMListFileIterator<Word> I(fileName,theGroup);
+  int counter = 1;
+  for (I.reset();!I.EOL();I.nextCell()){
+    Word w = I.getData();
+    if ( w.length() >= minLength && w.length() <= maxLength ){
+      file @<< counter @<< ": ";
+      theGroup.printWord(file, w );
+      file @<< endl @<< endl;
+      counter ++;
+    }
+  }
+\end{verbatim}
+but [[SMListFileIterator]] is not implemented. We change this
+to give an error:
+<<tpd2>>=
+  error( "void WordsOfLengthARCer::runComputation( ) : "
+         "this function is not implemented");
+@
+<<WordsOfLengthARCer::runComputation.c>>=
+void WordsOfLengthARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( fileName.length() == 0 )
+    error( "void WordsOfLengthARCer::runComputation( ) : "
+	   "fileIterator must be initialized first");
+#endif
+<<tpd2>>
+}
+
+@
+\subsection{WordsOfLengthARCer::writeResults}
+<<WordsOfLengthARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<WordsOfLengthARCer::writeResults.c>>=
+void WordsOfLengthARCer::writeResults( ostream& out ) {}
+
+@
+\subsection{WordsOfLengthARCer::readResults}
+<<WordsOfLengthARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<WordsOfLengthARCer::readResults.c>>=
+void WordsOfLengthARCer::readResults( istream& in ){}
+
+@
+\subsection{WordsOfLengthARCer::getFileName}
+<<WordsOfLengthARCer::getFileName.h>>=
+  Chars getFileName() const { return file.getFileName(); }
+@
+\subsection{WordsOfLengthARCer::setMinimalLength}
+<<WordsOfLengthARCer::setMinimalLength.h>>=
+  void setMinimalLength(int  min ) { minLength = min; }
+@
+\subsection{WordsOfLengthARCer::setMaximalLength}
+<<WordsOfLengthARCer::setMaximalLength.h>>=
+  void setMaximalLength(int  max ) { maxLength = max; }
+@
+\subsection{class WordsOfLengthARCer}
+<<class WordsOfLengthARCer.h>>=
+class WordsOfLengthARCer : public ARCer
+{
+public:
+<<WordsOfLengthARCer Constructor.h>>
+<<WordsOfLengthARCer Destructor.h>>
+<<WordsOfLengthARCer::setArguments.h>>
+<<WordsOfLengthARCer::runComputation.h>>
+<<WordsOfLengthARCer::writeResults.h>>
+<<WordsOfLengthARCer::readResults.h>>
+<<WordsOfLengthARCer::getFileName.h>>
+<<WordsOfLengthARCer::setMinimalLength.h>>
+<<WordsOfLengthARCer::setMaximalLength.h>>
+private:
+  Chars fileName;
+  int minLength;
+  int maxLength;
+  FPGroup theGroup;
+  File file;
+};
+
+@
+\section{class WordsOfLength}
+\subsection{WordsOfLength Constructor}
+<<WordsOfLength Constructor.h>>=
+  WordsOfLength( SMList<Word>& );
+@
+<<WordsOfLength Constructor.c>>=
+WordsOfLength::WordsOfLength(SMList<Word>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    arcer(*this),
+    started( false )
+{ 
+  arcer.setArguments(sml.getFileName(), sml.getGroup().getFPGroup());
+}
+
+@
+\subsection{WordsOfLength::takeControl}
+<<WordsOfLength::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<WordsOfLength::takeControl.c>>=
+void WordsOfLength::takeControl( )
+{
+  if (freeARCs() > 0){
+    if ( !started ){
+      started = true;
+      LogMessage msg( *this, theList );
+      int min = getParameters().getValue("minL");
+      int max = getParameters().getValue("maxL");
+      msg << Link(Chars( "Click here to see the words of length from ")+
+                  Chars(min) +Chars(" to ") +
+		  Chars(max) + Chars(" in ")+ Text( Name( theList ) ),
+		  "WEnumerator",
+		  arcer.getFileName(),true );
+      
+      msg.send();   
+   }
+    if (arcer.takeControl()){
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{WordsOfLength::viewStructure}
+<<WordsOfLength::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<WordsOfLength::viewStructure.c>>=
+void WordsOfLength::viewStructure(ostream& ostr) const
+{
+  /*
+  ProblemView pv( ostr, oid(),Text("Extract words of a given length"),
+		  Text("Extract words of length from") + Name(theList),
+		  helpID("WordsOfLength",
+			 theList.getGroup()),
+		  Text("words of len")
+		  );
+  pv.startItemGroup();
+  pv.add( Text("For the use of this problem"), ThisARCSlotID(), 50 );
+  pv.done();
+  */
+  EnumertatorProblemView pv(oid(),
+                            "Extract words of a given length from the list",
+			    Text("Extract words from ") +
+			    Name( theList ) ,
+			    helpID("WordsOfLength",theList.getGroup()),
+			    Text("words annulus")
+			    );
+  pv.addParameter(EditInteger("minL","Minimal length ",0,1,1,30000));
+  pv.addParameter(EditInteger("maxL","Maximal length ",0,30000,1,30000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of enumerator",40));
+  submit(ostr, pv);
+}
+
+@
+\subsection{WordsOfLength::start}
+<<WordsOfLength::start.h>>=
+  void start( ) {
+    // Set minimal length
+    int min = getParameters().getValue("minL");
+    arcer.setMinimalLength( min );
+    // Set maximal length
+    int max = getParameters().getValue("maxL");
+    arcer.setMaximalLength( max );
+  }            // overrides ComputationManager
+
+@
+\subsection{WordsOfLength::terminate}
+<<WordsOfLength::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class WordsOfLength}
+<<class WordsOfLength.h>>=
+class WordsOfLength  : public Supervisor
+{
+public:
+<<WordsOfLength Constructor.h>>
+<<WordsOfLength::takeControl.h>>
+<<WordsOfLength::viewStructure.h>>
+<<WordsOfLength::start.h>>
+<<WordsOfLength::terminate.h>>
+private:
+  SMList<Word>& theList;
+  bool started;
+  WordsOfLengthARCer arcer;
+};
+
+@
+\section{license}
+Copyright (C) 1994 The New York Group Theory Cooperative
+See magnus/doc/COPYRIGHT for the full notice.
+<<WEnumerator.h>>=
+// src/WEnumerator.h
+#ifndef _WEnumerator_H_
+#define _WEnumerator_H_
+
+<<include.h>>
+<<class WordEnumeratorARCer.h>>
+<<class WordEnumeratorProblem.h>>
+<<class IsWordInListARCer.h>>
+<<class IsWordInList.h>>
+<<class WordsOfLengthARCer.h>>
+<<class WordsOfLength.h>>
+#endif
+@
+\section{wenumerator.c}
+<<*>>=
+<<include.c>>
+<<WordEnumeratorARCer::enumerate.c>>
+<<WordEnumeratorARCer::enumerateAllWords.c>>
+<<WordEnumeratorARCer::getRandomWord.c>>
+
+<<WordEnumeratorProblem Constructor.c>>
+<<WordEnumeratorProblem::takeControl.c>>
+<<WordEnumeratorProblem::start.c>>
+<<WordEnumeratorProblem::resume.c>>
+<<WordEnumeratorProblem::viewStructure.c>>
+
+<<IsWordInListARCer::setArguments.c>>
+<<IsWordInListARCer::runComputation.c>>
+<<IsWordInListARCer::writeResults.c>>
+<<IsWordInListARCer::readResults.c>>
+<<IsWordInListARCer::isInList.c>>
+
+<<IsWordInList Constructor.c>>
+<<IsWordInList::takeControl.c>>
+<<IsWordInList::viewStructure.c>>
+
+<<WordsOfLengthARCer::setArguments.c>>
+<<WordsOfLengthARCer::runComputation.c>>
+<<WordsOfLengthARCer::writeResults.c>>
+<<WordsOfLengthARCer::readResults.c>>
+
+<<WordsOfLength Constructor.c>>
+<<WordsOfLength::takeControl.c>>
+<<WordsOfLength::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

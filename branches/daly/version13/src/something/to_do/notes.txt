@@ -1,0 +1,26 @@
+12/13 
+
+1. Work with all Gilbert's notes. ( I've got the printed text. ) 
+
+
+12/14
+
+1. FE: In FreeGroup the item "Is trivial" has to call "freely reduce" 
+   instead of word problem window.
+
+2. We've got 3 improuvement for Whitehead stuff.
+
+   1) I can abelianize a word, and if gcd of powers is non equal 1,
+      this element is not primitive.
+
+   2) If exponential sum for all generators is equal 0, this element
+      is also not primitive.
+
+   3) If exponential sum for some generator is equal 1, we can cancel
+      all other generators.
+
+12/15 
+
+1. Rewriting system for FPGroups which is free - should be discussed
+   with Gilbert - it is Ilja's advice.
+

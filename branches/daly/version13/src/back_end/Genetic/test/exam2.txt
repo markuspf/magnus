@@ -1,0 +1,49 @@
+Message 1/21  From Alexei Myasnikov                  Jul 1, 98 11:02:48 pm -0400
+
+
+Return-Path: <alexei@rio>
+Subject: another example
+To: bormotov@rio (Dmitry Bormotov)
+Date: Wed, 1 Jul 1998 23:02:48 -0400 (EDT)
+
+Forwarded message:
+> From chopper@spruce.libertynet.org Mon Jun 29 23:28:54 1998
+> Date: Mon, 29 Jun 1998 23:20:41 -0400 (EDT)
+> From: Dennis Spellman <chopper@spruce.libertynet.org>
+> Reply-To: Dennis Spellman <chopper@spruce.libertynet.org>
+> To: alexei@rio.sci.ccny.cuny.edu
+> Subject: Leo's Example
+> Message-ID: <Pine.BSI.3.95.980629142542.1240A-100000@spruce.libertynet.org>
+> MIME-Version: 1.0
+> Content-Type: TEXT/PLAIN; charset=US-ASCII
+> Content-Length: 657
+>
+> Hello Alexei,
+>  I surprised myself by not only finding Leo's letter but even finding 
+> a reference in an old paper of mine to the relevant paper of Jonell
+> Comerford
+> and Youn Lee (the actual reprint is hiding somewhere in my house, but that
+> I couldn't find!). The citation is
+>
+> J. Comerford and Y. Lee,"Product of two commutators as a square in a free
+> group," CANAD. MATH. BULL. 32(2) (1990), 190 - 196.
+>
+> Let F = <a,b,A,B; aA = bB = 1> be free of rank 2 with free basis {a,b}.
+> Let x1 = aBA
+>     x2 = abAABAbaaBA
+>     x3 = abABA
+>     x4 = aaabA
+>
+> Then (x1^2)(x2^2)(x3^2)(x4^2) = 1 and
+> x1x2x3x4 is not a commutator.
+>
+> Best wishes,
+> Dennis
+>
+>
+
+Dima, can you check that x1x2x3x4 is a product of two commutators?
+That would be another example, that your algorithm is very good.
+Poka
+Alexei
+

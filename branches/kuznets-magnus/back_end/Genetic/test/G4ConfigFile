@@ -1,0 +1,18 @@
+# Percent of dihedral-symmetric groups
+DihSym : 50
+
+# Percent of breeding
+Breeding : 20
+
+# Percent of surgery
+Surgery : 10
+
+# Percent of cross fertilization
+CrossFert : 10
+
+# Percent of untouched
+Saving : 10
+
+# Have fitness scaling
+FitnessScaling : 1
+

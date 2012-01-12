@@ -1,0 +1,44 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Menu - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "c:\windows\TEMP\RSP5245.TMP" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/Menu.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\xuxw\mymagnus\back_end\Statistics\src\statsFunctions.C"
+]
+Creating command line "cl.exe @c:\windows\TEMP\RSP5245.TMP" 
+<h3>Output Window</h3>
+Compiling...
+statsFunctions.C
+c:\xuxw\mymagnus\back_end\statistics\include\\statsfunctions.h(26) : error C2061: syntax error : identifier 'statsFunctions'
+c:\xuxw\mymagnus\back_end\statistics\include\\statsfunctions.h(26) : error C2059: syntax error : ';'
+c:\xuxw\mymagnus\back_end\statistics\include\\statsfunctions.h(27) : error C2449: found '{' at file scope (missing function header?)
+c:\xuxw\mymagnus\back_end\statistics\include\\statsfunctions.h(45) : error C2059: syntax error : '}'
+c:\xuxw\mymagnus\back_end\general\\include\\adaptsimpson.h(71) : error C2143: syntax error : missing ')' before '&'
+c:\xuxw\mymagnus\back_end\general\\include\\adaptsimpson.h(71) : error C2143: syntax error : missing '{' before '&'
+c:\xuxw\mymagnus\back_end\general\\include\\adaptsimpson.h(71) : error C2059: syntax error : '&'
+c:\xuxw\mymagnus\back_end\general\\include\\adaptsimpson.h(71) : error C2059: syntax error : ')'
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(23) : warning C4013: 'power' undefined; assuming extern returning int
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(23) : error C2065: 'ECONST' : undeclared identifier
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(29) : error C2143: syntax error : missing '{' before ':'
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(29) : error C2059: syntax error : ':'
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(37) : error C2143: syntax error : missing '{' before ':'
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(37) : error C2059: syntax error : ':'
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(41) : error C2143: syntax error : missing '{' before ':'
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(41) : error C2059: syntax error : ':'
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(45) : error C2143: syntax error : missing '{' before ':'
+c:\xuxw\mymagnus\back_end\statistics\src\statsfunctions.c(45) : error C2059: syntax error : ':'
+Error executing cl.exe.
+
+
+
+<h3>Results</h3>
+statsFunctions.obj - 17 error(s), 1 warning(s)
+</pre>
+</body>
+</html>

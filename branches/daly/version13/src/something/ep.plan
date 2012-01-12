@@ -1,0 +1,147 @@
+        Free nilpotent groups
+
+        The Group
+
+DONE    Compute the Hirsch number of F.
+02-10   Write down the multiplication polynomials of F.
+02-10   Write down the polynomials for exponentiation by positive integers.
+02-10   Write down the polynomial for inversion.
+later   Compute the integral homology of F.
+
+
+        Elements
+
+DONE    The word problem.
+DONE    Equality of two words.
+01-20   Conjugacy of two words.
+02-24   Is w a proper power?
+02-24   Find the  root of w.
+DONE    Decompose w into a product of basic commutators.
+DONE    Decide if w is in the commutator subgroup.
+DONE    Determine in which term of the lower central series w lies.
+later   Decide if w is a commutator.
+
+
+        Elements in subgroups
+
+DONE    Determine if w lies in H.
+02-24   Determine if some power of w lies in H.
+02-24   Determine if a conjugate of w lies in H.
+
+
+        Subgroups
+
+DONE    Subgroup containment.
+DONE    Subgroup equality problem.
+DONE    Find the Hirsch length of H.
+later   Presentation of H.
+DONE    Presentation of the join of H and K
+02-24   Presentation for the intersection of H and K.
+02-24   Conjugacy of H and K.
+02-24   Index of H in F.
+01-20   Is H a (varietal) free factor of F?
+DONE    A Malc'ev basis for H.
+01-20   Is H central?
+01-20   Is H normal?
+01-20   The centraliser of H.
+01-20   The normaliser of H.
+later   The isolator of H.
+01-20   The normal closure of H.
+
+
+        Morphisms
+
+
+03-30   Test for an endomorphism being an automorphism.
+03-30   Test for an automorphism being an IA-automorphism.
+03-30   Test for an automorphism being inner.
+03-30   Generators of the automorphism group.
+03-30   Generators of the IA-automorphism group.
+03-30   Product of automorphisms.
+03-30   Order of an automorphism.
+03-30   Inverse of an automorphism.
+03-30   Fixed point set of an automorphism.
+03-30   Subgroup of the automorphism group fixing an element.
+03-30   Extension of F  by a finitely generated subgroup of its
+                automorphism group.
+
+
+        Finitely generated nilpotent groups
+
+
+        The Group
+
+01-27   Is G trivial?
+01-27   Is G finite?
+01-27   Is G abelian?
+01-27   Compute the class of G?
+01-27   Compute the Hirsch number of G.
+01-27   Is G free nilpotent?
+01-27   Is G a non-trivial direct product?
+01-27   Compute a Mal'cev basis for G.
+02-10   Multiplication polynomials.
+02-10   Exponentiation polynomials.
+02-10   Inversion polynomial.
+later   Compute the integral homology of F.
+
+
+        Elements
+
+01-27   The word problem.
+01-27   Equality of two words.
+03-03   Conjugacy of two words.
+03-03   Is w a proper power?
+03-03   Find the  root of w.
+01-27   Decompose w in terms of a Mal'cev basis.
+01-27   Decide if w is in the commutator subgroup.
+01-27   Determine in which term of the lower central series w lies.
+later   Decide if w is a commutator.
+02-24   Compute the centraliser of w.
+later   Compute the order of the torsion subgroup of G.
+
+
+        Elements in subgroups
+
+01-27   Determine if w lies in H.
+02-24   Determine if some power of w lies in H.
+02-24   Determine if a conjugate of w lies in H.
+
+
+        Subgroups
+
+01-27   Subgroup containment.
+01-27   Subgroup equality problem.
+01-27   Compute the Hirsch number of H.
+03-10   Present a subgroup.
+03-10   Present a join.
+03-10   Present an intersection.
+03-10   Conjugacy of H and K.
+03-10   Index of H in G.
+03-10   Is H a (varietal) free factor of F?
+03-10   A Malc'ev basis for H.
+03-10   Is H trivial?
+03-10   Is H finite?
+03-10   Is H abelian?
+03-10   Compute the class of H.
+03-10   Is H central?
+03-10   Is H normal?
+03-10   The centraliser of H.
+03-10   The normaliser of H.
+03-10   The isolator of H.
+03-10   The normal closure of H.
+
+
+        Morphisms
+
+04-13   Test for a map to define an endomorphism.
+04-13   Test for an endomorphism being an automorphism.
+04-13   Test for an automorphism being an IA-automorphism.
+04-13   Test for an automorphism being inner.
+04-13   Generators of the automorphism group.
+04-13   Generators of the IA-automorphism group.
+04-13   Product of automorphisms.
+04-13   Order of an automorphism.
+04-13   Inverse of an automorphism.
+04-13   Fixed point set of an automorphism.
+04-13   Subgroup of the automorphism group fixing an element.
+04-13   Extension of G.

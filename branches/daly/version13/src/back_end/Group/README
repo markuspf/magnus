@@ -1,0 +1,11 @@
+  Beware that much of the code in this directory is `dead'. That is,
+our paradigm has shifted away from the pedestrian `class hierarcy --
+member function -- data member' scheme for computing, storing, and
+sharing information about a group-theoretic entity.
+  Thus almost all of the `intelligence' will be removed from these
+classes at some point. They will become only representations of the
+end user definition of the entity. So, e.g., an FPGroup will have the
+print names of the generators, the relator set, and methods for, e.g.,
+printing a word in the generators.
+  But certain straightforward functions, like Dehn's algorithm, may as
+well stay in this hierarchy.

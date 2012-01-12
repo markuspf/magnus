@@ -1,0 +1,17 @@
+<HTML>  <HEAD>  <TITLE>Magnus Inventory</TITLE>  </HEAD>
+<H1>Free groups: Algorithms involving homomorphisms and words </H1>
+<A NAME = 1><CENTER><H3> 1. 
+	Compute the image of <B>w</B> under <B> h</B> </H3> </CENTER> </A><PRE>
+
+<B>Check-in type:</B>		free group
+
+<B>Objects highlighted:</B>	word <B>w</B>, homomorphism <B> h</B>
+
+<B>Other objects present:</B>	group <B> F</B>1, group <B> F</B>2
+
+<B>Name in the menu:</B>	Compute the image of <B>w</B> under <B> h</B>
+
+<B>Problem type:</B>		fast problem
+
+<B>Help file:</B>		none
+</PRE>

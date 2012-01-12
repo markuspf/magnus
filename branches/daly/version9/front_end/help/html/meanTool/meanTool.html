@@ -1,0 +1,3086 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>meanTool</TITLE>
+<META NAME="description" CONTENT="meanTool">
+<META NAME="keywords" CONTENT="meanTool">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="meanTool.css">
+
+</HEAD>
+
+<BODY >
+
+<P>
+<DIV ALIGN="CENTER">
+<B>THE ANALYSIS OF THE MEAN TOOL</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+The <B>Analysis of the Mean Tool</B> will perform two standard inference procedures for a population
+mean of the population from which the given one variable data set has been drawn.  
+
+<P>
+The first procedure is to construct a <B>confidence interval </B> for the population mean from the
+sample mean and standard deviation of the given one variable data set.  If the sample size is over
+30 a large sample procedure will be used and for a sample size under 30 a small sample procedure
+will be employed.  In the latter case theoretically the parent population must be normal (see below)
+so it is best to check for normality and/or symmetry of the data in the case of a small sample. 
+
+<P>
+The second procedure is to evaluate a hypothesis test testing a user supplied null hypothesis (
+given in the form of a target mean) against a user supplied alternative hypothesis.  The P-value
+of the given data (see below) will be computed and teh output box will indicate whether the
+results are significant relative to a user supplied level of significance.  As with the confidence
+interval procedure if the sample size is over 30 a large sample procedure will be used and for a
+sample size under 30 a small sample procedure will be employed.
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>CONFIDENCE INTERVAL FOR THE MEAN </B></DIV>
+ <BR>
+<DIV ALIGN="CENTER">
+<B>OF A ONE VARIABLE DATA
+SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>(1) GENERAL ESTIMATION THEORY</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+Estimates in statistics are most often expressed in terms of <B>confidence intervals</B>. 
+Roughly these are intervals of numbers with <B>confidence levels</B> attached indicating the
+probability that what is being estimated actually falls within the interval. A formal definiiton
+is presented below.  First we give a discussion of the estimation procedure in general.
+
+<P>
+In most
+standard statistical analyses the parameters that are of most interest are <B>means</B>, <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">, <B>standard deviations</B> or <B>variances</B>, <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> or <IMG
+ WIDTH="21" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \sigma^2$"> and <B>proportions </B> <IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ p$">.  Eachof
+these has a fairly standard statistic  that is used to estimate it.  For means we have <!-- MATH
+ $\overline
+X$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \overline
+X$">, the sample mean; for standard deviations, <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$">, the sample standard deviation; and for
+proportions <IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ p$">, the sample proportion <!-- MATH
+ $\frac{x}{n}$
+ -->
+<IMG
+ WIDTH="16" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ \frac{x}{n}$">, where <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> is the number of items observed
+and <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ x$"> is the number of items observed of the characteristic of interest.  Each of these
+statistics is called an <B>estimator</B> for the corresponding parameter; hence <!-- MATH
+ $\overline{X}$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \overline{X}$"> is an
+estimator for <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">,<IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$"> is an estimator for <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> and  <IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ p$"> is an estimator for <IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ p$">.  In general
+if <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$"> (theta) stands for a parameter, (it is no harm to think of this as either <IMG
+ WIDTH="28" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$ \mu,s$"> or
+<IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ p$">), then <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> will stand for an estimator for <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$">.  Any particular value of an estimator is
+called a <B>point estimate</B> for the corresponding parameter.  
+
+<P>
+In general, in statistics we do not use point estimates.  There is no confidence in a point
+estimate and in most cases the probability that a point estimate is correct is zero.   Rather 
+<B>interval estimates</B> are used.  Interval estimates are ranges of numbers which hopefully contain
+the parameter we are trying to estimate.  For example if we are trying to estimate the mean
+completion time for the surgical procedure of the last section, 151 minutes would be a
+point estimate.  A typical interval estimate might be 143 to 159 minutes.  In most cases we
+use a special type of interval estimate called a <B>confidence interval estimate</B> or <B>confidence interval</B>. We will give a formal definition below but roughly a confidence
+interval estimate for a parameter is an interval estimate with a confidence level
+attached.  The confidence level gives the probability that the parameter being estimated
+actually falls within the interval.
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE
+Suppose that a 95% confidence interval for the mean completion time of
+the surgical procedure is given by 143 minutes to 159 minutes.  This is interpreted in the
+following manner.  The true mean completion time is a number.  There is a 95% probability
+that it falls in the interval 143 to 159.
+
+<P><P>
+<BR>
+
+<P>
+Notice that in using a confidence interval estimate there are two concepts of how good this
+estimate is, <B>confidence</B> and <B>accuracy</B>.  The confidence of the estimate is given by the
+confidence level while the accuracy is given by the width of the interval.  A narrow interval
+indicates greater accuracy than a wider interval.  On an intuitive level it is clear that these two
+ideas are <B>inversely related</B>, that is for fixed sample size raising the confidence lowers the
+accuracy and vice versa.  We will see this computationally in section 5.4.  However we note that if
+we want a given confidence and wish to improve the accuracy we must take a larger sample size.  In
+the real world this translates into cost and often the sample size chosen is a compromise between
+what the theory requires and what the budget of the study dictates.
+
+<P>
+If <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$"> is a parameter for a population <IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ P$"> and <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> is an estimator for it, then as one goes
+from random sample to random sample from <IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ P$"> the values of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> will vary.  Hence <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> has its own
+distribution of values over all possible samples taken from <IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ P$"> (we assume here the same
+sample size in each case).  This is called the <B>sampling distribution</B> of the
+estimator <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$">.  Hence for a given sample size <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> and a given population <IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ P$"> with mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> there
+will be a sampling distribution for <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$">, consisting of all possible sample means of
+samples of size <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> drawn from <IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ P$">.  Similarly there will be a sampling distribution
+for the sample standard deviation <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$"> and a sampling distribution for the sample proportion 
+<IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ p$">.  The sampling distribution of an estimator <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> will have its own mean and own standard
+deviation.  We will denote these by <IMG
+ WIDTH="15" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ \mu_{\th}$"> and <!-- MATH
+ $\sigma_{\th}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ \sigma_{\th}$">.
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\mu_{\th} = \text{ mean of the sampling distribution of } \th \text { and }
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="31" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.gif"
+ ALT="$\displaystyle \mu_{\th} =$">&nbsp; &nbsp; mean of the sampling distribution of <IMG
+ WIDTH="4" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$\displaystyle \th$"><IMG
+ WIDTH="30" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$\displaystyle \text { and }$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+\sigma_{\th} = \text{ standard deviation of the sampling distribution of } \th .
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="31" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.gif"
+ ALT="$\displaystyle \sigma_{\th} =$">&nbsp; &nbsp; standard deviation of the sampling distribution of <IMG
+ WIDTH="8" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.gif"
+ ALT="$\displaystyle \th .$">
+</DIV><P></P>
+
+<P>
+If <!-- MATH
+ $\mu_{\th} = \theta$
+ -->
+<IMG
+ WIDTH="44" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \mu_{\th} = \theta$">, that is the mean of the sampling distribution is equal to the
+parameter it is supposed to estimate, then <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> is called an <B>unbiased estimator</B> for
+<IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$">.  In general <!-- MATH
+ $\sigma_{\th}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ \sigma_{\th}$"> is called the <B>standard error</B> of the estimator.
+
+<P>
+We examine these ideas relative to sample means.
+
+<P>
+For any population with mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> and standard deviation <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> the sample mean <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$"> is an
+unbiased estimator for <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">.  This means that <!-- MATH
+ $\mu_{\th} = \mu$
+ -->
+<IMG
+ WIDTH="45" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="$ \mu_{\th} = \mu$"> where <IMG
+ WIDTH="15" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ \mu_{\th}$"> is
+the mean of the sampling distribution of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$">.   Further the <B>standard error of the mean</B> is
+given by <!-- MATH
+ \begin{displaymath}
+\sigma_{\X} = \frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="66" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.gif"
+ ALT="$\displaystyle \sigma_{\X} = \frac{\sigma}{\sqrt{n}}.$">
+</DIV><P></P>
+It follows that for any population the sample
+means vary much less than the original population (notice that we are dividing by <IMG
+ WIDTH="27" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ \sqrt{n}$"> in
+finding the standard deviation of the sampling distribution for <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$">).
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 
+Suppose the discussed surgical procedure has a mean of <IMG
+ WIDTH="59" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$ \mu = 150$"> and a
+standard deviation of <!-- MATH
+ $\sigma = 12$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.gif"
+ ALT="$ \sigma = 12$">.  What is the mean and standard deviation of the sampling
+distribution of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$"> for samples of size 25.
+
+<P>
+The mean of the sampling distribution is the same as the original mean.  Therefore <!-- MATH
+ $\mu_{\X} =
+\mu = 150$
+ -->
+<IMG
+ WIDTH="90" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ \mu_{\X} =
+\mu = 150$">.  The standard deviation of the sampling distribution or the standard error is the
+original standard deviation divided by the squareroot of the sample size.  Therefore
+<!-- MATH
+ \begin{displaymath}
+\sigma_{\X} = \frac{\sigma}{\squareroot{n}} = \frac{12}{5} = 2.4.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="136" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.gif"
+ ALT="$\displaystyle \sigma_{\X} = \frac{\sigma}{\squareroot{n}} = \frac{12}{5} = 2.4.$">
+</DIV><P></P>
+
+<P><P>
+<BR>
+
+<P>
+The idea of an estimator and its sampling distribution is used to give a formal definition of a
+confidence interval. Suppose <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> is an estimator for <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$"> and <!-- MATH
+ $h(\th),g(\th)$
+ -->
+<IMG
+ WIDTH="53" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="$ h(\th),g(\th)$"> are
+functions of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> with <!-- MATH
+ $h(\th) < g(\th)$
+ -->
+<IMG
+ WIDTH="67" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.gif"
+ ALT="$ h(\th) &lt; g(\th)$"> for all values of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$">.  Then <!-- MATH
+ $[h(\th),g(\th)]$
+ -->
+<IMG
+ WIDTH="62" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ [h(\th),g(\th)]$"> forms
+a <B>random interval</B>, that is an interval of numbers which arises randomly.  If for some
+value <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> we have that <!-- MATH
+ \begin{displaymath}
+Prob\{h(\th) \le \theta \le g(\th)\} = \alpha,
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="183" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.gif"
+ ALT="$\displaystyle Prob\{h(\th) \le \theta \le g(\th)\} = \alpha,$">
+</DIV><P></P>
+then
+<!-- MATH
+ $[h(\th),g(\th)]$
+ -->
+<IMG
+ WIDTH="62" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ [h(\th),g(\th)]$"> is called an <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">%-<B>confidence interval for </B><IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$">.  This means that
+in repeated sampling there is a probability of <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> that the random interval <!-- MATH
+ $[h(\th),g(\th)]$
+ -->
+<IMG
+ WIDTH="62" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ [h(\th),g(\th)]$">
+will contain the parameter <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$">.  For a particular value of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> we get a particular interval
+and this gives a <B>confidence interval estimate</B> for <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$">.
+
+<P>
+Summarizing all this we have that an <!-- MATH
+ $\alpha  \%$
+ -->
+<IMG
+ WIDTH="28" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.gif"
+ ALT="$ \alpha \%$">-<B>confidence interval</B> for a paramter <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$">
+is a random interval <!-- MATH
+ $[h(\th),g(\th)]$
+ -->
+<IMG
+ WIDTH="62" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ [h(\th),g(\th)]$">, where <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> is an estimator of <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$"> and
+<!-- MATH
+ $h(\th),g(\th)$
+ -->
+<IMG
+ WIDTH="53" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="$ h(\th),g(\th)$"> are functions of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> such that
+<!-- MATH
+ \begin{displaymath}
+Prob\{h(\th) \le \theta \le g(\th)\} = \alpha.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="183" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$\displaystyle Prob\{h(\th) \le \theta \le g(\th)\} = \alpha.$">
+</DIV><P></P>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>(2) ESTIMATION OF MEANS : LARGE SAMPLE PROCEDURES </B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+We now look at the particular case where the parameter of interest is the population mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">
+and the estimator is the sample mean <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$">.  The procedures used are separated into small and large
+sample procedures because of the following result, called the <B>Central Limit Theorem</B> which
+says that for <I>large enough </I> sample size the sampling distribution of <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ x$"> from any parent
+population ( the population from which the sample is drawn) is approximately normal.
+
+<P>
+Central Limit Theorem If <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$"> is sample mean for <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> observations from any population <IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ P$">
+with mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> and finite standard deviation <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$">, then for"large" sample sizes <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$">, the
+sampling distribution of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$"> is approximately normal with mean <!-- MATH
+ $\mu_{\X} = \mu$
+ -->
+<IMG
+ WIDTH="45" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.gif"
+ ALT="$ \mu_{\X} = \mu$"> and standard
+deviation <!-- MATH
+ $\sigma_{\X} = \frac{\sigma}{\sqrt{n}}$
+ -->
+<IMG
+ WIDTH="57" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \sigma_{\X} = \frac{\sigma}{\sqrt{n}}$">.
+
+<P>
+The "large" in the theorem says that this is a limiting result.  That is the theorem is true in the
+limit as the sample size goes to infinity.  In practice generally the normal approximation is used
+when the sample size is 30 or greater (although if the parent population is very symmetrical itself
+the approximation works well at lower sample sizes).  Therefore the cutoff between samll and
+large sample procedures is usually set at <IMG
+ WIDTH="51" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.gif"
+ ALT="$ n = 30$">.
+
+<P>
+We now turn to the problem of actually estimating a population mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">.  Recall that what we are
+looking for is a <B>confidence interval estimate</B>. This means finding a random interval with a
+given probability of containing the population mean.  In terms of a general formula we are looking
+for a random interval which contains the population mean a given proportion of the time.  The sample
+mean <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$"> is an estimator for <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> and we use the ideas concerning the sampling distribution of
+<IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$"> together with the central limit theorem to construct <B>large sample confidence intervals for
+</B><IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">.
+
+<P>
+We suppose that <IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ P$"> is a population with mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> and standard deviation <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> and that we can
+choose a sample size  <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> large enough (at least 30) so that the central limit theorem applies. 
+The sampling distribution of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$"> is then approximately normal with 
+<!-- MATH
+ \begin{displaymath}
+\mu_{\X} = \mu \text { and } \sigma_{\X} = \frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="45" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.gif"
+ ALT="$\displaystyle \mu_{\X} = \mu$"><IMG
+ WIDTH="93" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.gif"
+ ALT="$\displaystyle \text { and } \sigma_{\X} = \frac{\sigma}{\sqrt{n}}.$">
+</DIV><P></P>
+Equivalently the z-value
+<!-- MATH
+ \begin{displaymath}
+z = \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="59" HEIGHT="47" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$\displaystyle z = \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}}$">
+</DIV><P></P>
+follows a standard normal distribution.
+For a given <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> find the standard normal z-value <!-- MATH
+ $z_{\alpha/2}$
+ -->
+<IMG
+ WIDTH="33" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.gif"
+ ALT="$ z_{\alpha/2}$"> so that <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">% is centered
+between <!-- MATH
+ $-z_{\alpha/2}$
+ -->
+<IMG
+ WIDTH="46" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.gif"
+ ALT="$ -z_{\alpha/2}$"> and <!-- MATH
+ $z_{\alpha/2}$
+ -->
+<IMG
+ WIDTH="33" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.gif"
+ ALT="$ z_{\alpha/2}$">. (The <IMG
+ WIDTH="30" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.gif"
+ ALT="$ \alpha/2$"> indicates that half is on each side of
+the mean.  Therefore in locating this z-value in the normal table we locate the z-value that goes
+with half of <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">.  In MAGNUSSTAT this is done automatically within the program.  
+
+<P>
+From the normal distribution we have the following inequality on z-values which occurs <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">% of
+the time
+<!-- MATH
+ \begin{displaymath}
+-z_{\alpha/2} \le z \le z_{\alpha/2} .
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="130" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.gif"
+ ALT="$\displaystyle -z_{\alpha/2} \le z \le z_{\alpha/2} .$">
+</DIV><P></P>
+Since the sampling distribution of <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \X$"> is approximately normal we can apply this to the z-value
+<!-- MATH
+ \begin{displaymath}
+z= \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="59" HEIGHT="47" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$\displaystyle z = \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}}$">
+</DIV><P></P>
+to get the following inequality which also must occur <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">% of the time
+<!-- MATH
+ \begin{displaymath}
+-z_{\alpha/2} \le \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}} \le z_{\alpha/2}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="144" HEIGHT="47" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.gif"
+ ALT="$\displaystyle -z_{\alpha/2} \le \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}} \le z_{\alpha/2} $">
+</DIV><P></P>
+Solving this inequality for <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">, the value which we are trying to estimate, we obtain the following
+inequality which must occur <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">% of the time:
+<!-- MATH
+ \begin{displaymath}
+\X - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \le \mu \le \X + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="197" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.gif"
+ ALT="$\displaystyle \X - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \le \mu \le \X + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+$">
+</DIV><P></P>
+
+<P>
+The inequality above defines a random interval containing <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> which must occur <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">% of the
+time and thus defines an <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">-percent confidence interval for <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">.  Particular values for the
+variables will give a confidence interval estimate.
+
+<P>
+The formula given above depends upon the population standard deviation <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$">.  The following
+question arises. If we don't know <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> why would <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> be known?  In practice this is averted by
+using <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$"> in place of <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$">.  Usually for large samples, the sample standard deviation, <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$">, is
+close enough to the population standard deviation <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$">, so that the estimate still has the
+required confidence.  Using the ANALYSIS OF THE VARIANCE TOOL we can build confidence intervals for
+standard deviations.
+
+<P>
+Large Sample Confidence Intervals for <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> If <IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ P$"> is any population with mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">
+then a large sample <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">% confidence interval for <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> is given by
+<!-- MATH
+ \begin{displaymath}
+\X - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \le \mu \le \X + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="193" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.gif"
+ ALT="$\displaystyle \X - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \le \mu \le \X + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}
+$">
+</DIV><P></P>
+where 
+<!-- MATH
+ \begin{displaymath}
+\X = \text { sample mean}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img52.gif"
+ ALT="$\displaystyle \X =$"><IMG
+ WIDTH="94" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.gif"
+ ALT="$\displaystyle \text { sample mean}$">
+</DIV><P></P><!-- MATH
+ \begin{displaymath}
+\sigma = \text {standard deviation}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="30" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.gif"
+ ALT="$\displaystyle \sigma =$"><IMG
+ WIDTH="134" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.gif"
+ ALT="$\displaystyle \text {standard deviation}$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+z_{\alpha/2} = \alpha\% \text { confidence coefficient and }
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="78" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img56.gif"
+ ALT="$\displaystyle z_{\alpha/2} = \alpha\%$"><IMG
+ WIDTH="191" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img57.gif"
+ ALT="$\displaystyle \text { confidence coefficient and }$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+n = \text { sample size which is assumed at least 30 }.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="30" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img58.gif"
+ ALT="$\displaystyle n =$"><IMG
+ WIDTH="269" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.gif"
+ ALT="$\displaystyle \text { sample size which is assumed at least 30 }. $">
+</DIV><P></P>
+
+<P><P>
+<BR>
+
+<P>
+Notice that the confidence interval has the format
+<!-- MATH
+ \begin{displaymath}
+\X - E \le \mu \le \X + E
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="106" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img60.gif"
+ ALT="$\displaystyle \X - E \le \mu \le \X + E$">
+</DIV><P></P>
+where 
+<!-- MATH
+ \begin{displaymath}
+E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="98" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.gif"
+ ALT="$\displaystyle E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.$">
+</DIV><P></P>
+<!-- MATH
+ $E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$
+ -->
+<IMG
+ WIDTH="90" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.gif"
+ ALT="$ E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$"> is called the <IMG
+ WIDTH="28" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.gif"
+ ALT="$ \alpha \%$"><B>-error term</B>. 
+
+<P>
+The construction of these confidence interval estimates depends upon determining the confidence
+coefficients so we first show how this is done. 
+
+<P><P>
+<BR>
+EXAMPLE  
+
+Determine the large sample 95% and 99% confidence coefficients.
+
+<P><P>
+<BR>
+
+<P>
+The desired percentage 95% is centered on the mean so that 47.5% is on either side.  Looking in the
+standard normal table for the entry .4750 we find that it corresponds to z = 1.96.  Therefore z =
+1.96 is the 95% large sample confidence coefficient.  Again in MAGNUSSTAT this is done
+automatically and presented in the output box.  
+
+<P>
+To find the 99% confidence coefficient we follow the same procedure.  Draw a normal curve and
+place 99% centered on the mean.  This gives 49.5% on either side and this is the value we look
+for in the normal table.  We see that the required z-value is between z = 2.57 and z = 2.58.  We
+will take the 99% confidence coefficient as z = 2.58. 
+
+<P>
+Determining confidence interval estimates is then reduced to computing the required information
+and substituting in the given formula.
+
+<P>
+EXAMPLE 
+
+A study was done to determine the mean completion time of a certain operation.  A random sample
+of 64 such operations had a sample mean of 151 minutes with a sample standard deviation of 18
+minutes.  Determine 95% and 99% confidence interval estimates for the true mean completion
+time.
+
+<P>
+Here <IMG
+ WIDTH="51" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img63.gif"
+ ALT="$ n = 64$"> so large sample procedures can be used.  For 95% the confidence coefficient is z
+= 1.96.  The computed information is
+<!-- MATH
+ \begin{displaymath}
+\X = 151 \text { and } s = 18.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="45" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.gif"
+ ALT="$\displaystyle \X = 151$"><IMG
+ WIDTH="79" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img65.gif"
+ ALT="$\displaystyle \text { and } s = 18.$">
+</DIV><P></P>
+Therefore the confidence interval estimate is
+<!-- MATH
+ \begin{displaymath}
+151 - 1.96\frac{18}{8} \le \mu \le 151 + 1.96\frac{18}{8}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="239" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img66.gif"
+ ALT="$\displaystyle 151 - 1.96\frac{18}{8} \le \mu \le 151 + 1.96\frac{18}{8}$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+151 - 4.41 \le \mu \le 151 + 4.41
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="199" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img67.gif"
+ ALT="$\displaystyle 151 - 4.41 \le \mu \le 151 + 4.41$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+146.59 \le \mu \le 155.41.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="149" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img68.gif"
+ ALT="$\displaystyle 146.59 \le \mu \le 155.41.$">
+</DIV><P></P>
+
+<P>
+There are two ways in which the results can be reported.  First:
+
+<P><P>
+<BR>
+
+<P>
+A 95% confidence interval for the mean completion time is 146.59 minutes to 155.41 minutes.
+
+<P><P>
+<BR>
+
+<P>
+The second:
+
+<P><P>
+<BR>
+
+<P>
+The mean completion time is 151 minutes with a 95% <B>margin of sampling error</B> of <IMG
+ WIDTH="45" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img69.gif"
+ ALT="$ \pm 4.41$">
+minutes. 
+
+<P><P>
+<BR>
+
+<P>
+To convert this into a 99% confidence interval, all that must be changed is the confidence
+coefficient.  The coefficient for 99% was 2.58 so the computations must be redone with z =
+2.58 rather than z = 1.96. 
+Therefore here the confidence interval estimate is
+<!-- MATH
+ \begin{displaymath}
+151 - 2.58\frac{18}{8} \le \mu \le 151 + 2.58\frac{18}{8}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="239" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img70.gif"
+ ALT="$\displaystyle 151 - 2.58\frac{18}{8} \le \mu \le 151 + 2.58\frac{18}{8}$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+151 - 5.81 \le \mu \le 151 + 5.81
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="199" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$\displaystyle 151 - 5.81 \le \mu \le 151 + 5.81$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+145.19 \le \mu \le 156.81.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="149" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.gif"
+ ALT="$\displaystyle 145.19 \le \mu \le 156.81.$">
+</DIV><P></P>
+
+<P>
+Again the two ways in which the results can be reported are:
+
+<P><P>
+<BR>
+
+<P>
+A 99% confidence interval for the mean completion time is 145.19 minutes to 156.81 minutes.
+
+<P><P>
+<BR>
+
+<P>
+or
+
+<P><P>
+<BR>
+
+<P>
+The mean completion time is 151 minutes with a 99% margin of sampling error of <IMG
+ WIDTH="45" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img73.gif"
+ ALT="$ \pm 5.81$">
+minutes. 
+
+<P><P>
+<BR>
+
+<P>
+As expected the 99% interval is wider ( the error is larger) and hence less accurate.  
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>(3) ESTIMATION OF MEANS : DETERMINATION OF SAMPLE SIZE </B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+Suppose that in the previous example the error in the 95% estimate of <IMG
+ WIDTH="45" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img69.gif"
+ ALT="$ \pm 4.41$"> minutes is
+too large and it is desired to improve the accuracy to an error of <IMG
+ WIDTH="37" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img74.gif"
+ ALT="$ \pm 2.0$"> minutes.  If the
+95% confidence level is maintained the only way this could be done is to increase the sample
+size.  The question is how large large a sample is needed.
+
+<P>
+From before we have that the error is given by
+<!-- MATH
+ \begin{displaymath}
+E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="98" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.gif"
+ ALT="$\displaystyle E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.$">
+</DIV><P></P>
+In the example we knew <!-- MATH
+ $z_{\alpha/2},s$
+ -->
+<IMG
+ WIDTH="48" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img75.gif"
+ ALT="$ z_{\alpha/2},s$"> and <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> and determined <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ E$">.  Now we are given <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ E$"> and
+wish to determine <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$">.  We will use the value of <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$"> as an estimate of <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$">.
+Here <IMG
+ WIDTH="58" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img77.gif"
+ ALT="$ E = 2.0$"> so
+<!-- MATH
+ \begin{displaymath}
+2.0 = 1.96\frac{18}{\sqrt{n}} \Doublerightarrow \sqrt{n} = 1.96\frac{18}{2.0} = 17.64.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="259" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img78.gif"
+ ALT="$\displaystyle 2.0 = 1.96\frac{18}{\sqrt{n}} \Doublerightarrow \sqrt{n} = 1.96\frac{18}{2.0} = 17.64.$">
+</DIV><P></P>
+It follows that
+<!-- MATH
+ \begin{displaymath}
+n = (17.64)^2  = 311.2.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="153" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img79.gif"
+ ALT="$\displaystyle n = (17.64)^2 = 311.2.$">
+</DIV><P></P>
+Therefore to get the desired accuracy we would have to sample 312 items.  Notice that we round up
+not round off. 
+
+<P>
+Now we do the same computations in terms of symbols to get a general formula.  We have that
+<!-- MATH
+ \begin{displaymath}
+E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="98" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.gif"
+ ALT="$\displaystyle E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.$">
+</DIV><P></P>
+Solving for <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> gives
+<!-- MATH
+ \begin{displaymath}
+n = (\frac{z_{\alpha/2}\sigma}{E})^2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="97" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img80.gif"
+ ALT="$\displaystyle n = (\frac{z_{\alpha/2}\sigma}{E})^2$">
+</DIV><P></P>
+where in the formula <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> is usually approximated by <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$">.  
+
+<P>
+Determination of Appropriate Sample Size To get a desired error of <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ E$"> in the
+determination of the sample mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> for a confidence level of <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> the appropriate sample
+size is given by
+<!-- MATH
+ \begin{displaymath}
+n = (\frac{z_{\alpha/2}\sigma}{E})^2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="97" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img80.gif"
+ ALT="$\displaystyle n = (\frac{z_{\alpha/2}\sigma}{E})^2$">
+</DIV><P></P>
+where in the formula <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> is usually approximated by <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$">.
+
+<P>
+What is sometimes done in practice is that a pilot study is conducted to get a value of <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ s$"> and
+this is then used in the above formula.
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>(4) ESTIMATION OF MEANS : SMALL SAMPLE PROCEDURES </B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+The techniques that we have examined so far depend upon being able to draw a large enough sample so
+that the central limit theorem can be used.  In many situations though, it is impractical or
+impossible to draw a large sample.  Two very common testing situations where it is difficult, if not
+impossible, to draw  large samples are in <B>destructive testing</B> and more importantly for nurses
+and other health care professionals, <B>medical testing</B>.  Destructive testing refers to
+statistical testing where the sample is destroyed or made unusable by the test.  For example in
+testing the breaking strength of a steel rod the rod must be broken.  Similarly a disposable
+syringe cannot be reused.  Because of the costs involved we are most times restricted to relatively
+small samples.  In medical testing we are also in many cases restricted to smaller samples. 
+Ultimately testing must be done on human subjects and this cannot always be done with enough
+subjects to apply large sample techniques.  Because of this, bias questions often arise in medical
+testing.  Human subjects are frequently obtained by paying people.  However the population of
+people who would subject themselves to some sort of medical test for payment is not the same as the
+general population.  We must be aware of this in evaluating many medical findings.  
+
+<P>
+To handle estimation and other inference procedures concerning means when large samples cannot be
+drawn, we must deal with parent populations that are themselves normal or at least not too skewed. 
+If this is not a viable assumption then very little can be done.  Hence we will assume that our
+parent population is normal with mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">.  The estimation of <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> proceeds by using another
+continuous distribution which is very similar to a standard normal distribution. 
+
+<P>
+If <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> is a positive integer a <B>t-distribution with n degrees of freedom</B> is a continuous
+distribution whose density curve has the equation
+<!-- MATH
+ \begin{displaymath}
+f(x) = K(n) (1 + \frac{x^2}{n})^{-\frac{n+1}{2} f(x) = K(n) (1 + \frac{x^2}{n})^}-\frac{n+1}{2}$$
+where $K(n)$ is a constant depending on $n$.  There is thus a t-distribution for each positive
+integer $n$. The integer $n$ that it depends upon is called its {\bf degrees of freedom}
+abbreviated d.f..  Each of these curves looks very similar to a standard normal distribution and is
+symmetric about and centered on 0 - however there is slightly more in the tail than in the standard
+normal.  As $n$ gets larger the t-distributions become closer and closer to the standard normal and
+for $n \ge 30$ they almost indistinguishable from the standard normal.
+\par Tables are given for the t-distribution which put given percentages in the tails for
+given degrees of freedom. Thus a tail entry given by $t_{\alpha,n}$ is the value which puts
+$\alpha\%$ in the right hand tail for a t-distribution with $n$ degrees of freedom.  For example
+the value for $t_{.025,8} = 2.306$. In MAGNUSSTAT this is computed automatically.  This indicates
+that for a t-distribution with 8 d.f. the value 2.306 has 2.5\% to the right of it.  If $n > 30$
+normal distribution values are used.
+\par The t-distribution plays a role in the estimation of means through the following fundamental
+result.
+\par\proclaim{Sampling Distribution of $\X$ - Small Samples} If $\X$ is the sample mean based on $n$
+observations from a normal population with mean $\mu$ then 
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="496" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img81.gif"
+ ALT="$\displaystyle f(x) = K(n) (1 + \frac{x^2}{n})^{-\frac{n+1}{2} f(x) = K(n) (1 + ...
+... mean based on $n$
+observations from a normal population with mean $\mu$ then
+$">
+</DIV><P></P>
+t = - &mu#mu;sn<!-- MATH
+ \begin{displaymath}
+has a t-distribution with $n-1$ degrees of freedom.
+\endproclaim
+\par Using this result we can derive a {\bf small sample confidence interval} for $\mu$ when
+sampling is done from a normal population. The derivation is done in much the same manner that was
+used in deriving the large sample result.
+\par For a given $\alpha$, find the t-value $t_{\alpha/2}$ so that for a t-distribution with the given
+degrees of freedom $\alpha$\% is in the right hand tail.  The value
+$t_{\alpha/2}$ is called the small sample $1-\alpha$\% {\bf confidence coefficient}.  Of course it
+depends both on $\alpha$ and on the degrees of freedom. 
+\par From the t-distribution and the way we choose $t_{\alpha/2}$ we have the following inequality 
+on t-values occurring $\alpha$\% of the time
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="48" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img82.gif"
+ ALT="$\displaystyle has a t-distribution with $n-1$ degrees of freedom.
+\endproclaim...
+...we have the following inequality
+on t-values occurring $\alpha$\% of the time
+$">
+</DIV><P></P> -t_&alpha#alpha;/2 &le#le;t &le#le;t_&alpha#alpha;/2 .<!-- MATH
+ \begin{displaymath}
+We can apply the small sample sampling distribution result to the t-value
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="16" HEIGHT="12" ALIGN="MIDDLE" BORDER="0"
+ SRC="img83.gif"
+ ALT="$\displaystyle We can apply the small sample sampling distribution result to the t-value
+$">
+</DIV><P></P>
+z= - &mu#mu;sn<!-- MATH
+ \begin{displaymath}
+to get the following inequality which must occur $\alpha$\% of the time
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="94" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img84.gif"
+ ALT="$\displaystyle to get the following inequality which must occur $\alpha$\% of the time
+$">
+</DIV><P></P> -t_&alpha#alpha;/2 &le#le;- &mu#mu;sn &le#le;t_&alpha#alpha;/2 <!-- MATH
+ \begin{displaymath}
+Solving this inequality for $\mu$ the value which we are trying to estimate, we get the following
+inequality which must occur $\alpha$\% of the time.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="185" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img85.gif"
+ ALT="$\displaystyle Solving this inequality for $\mu$ the value which we are trying t...
+...mate, we get the following
+inequality which must occur $\alpha$\% of the time.
+$">
+</DIV><P></P> - t_&alpha#alpha;/2sn &le#le;&mu#mu;&le#le;+ t_&alpha#alpha;/2sn
+<!-- MATH
+ \begin{displaymath}
+\par This inequality  defines a random interval containing $\mu$ which must occur $\alpha$\% of
+the time and thus defines an $\alpha$-percent confidence interval for $\mu$.  Particular values for
+the variables will give a confidence interval estimate. Notice in practice the only difference
+between this and the large sample interval is that a t-coefficient is used instead of a
+z-coefficient.  However we are making the additional assumption that the parent population is
+normal.  However this last assumption is rather mild since the sampling distribution result is
+fairly {\bf robust}.  By this it is meant that the result is still true under mild departures from
+the normality assumption - in practice if the parent population is not too skewed.
+\par\proclaim{Small Sample Confidence Intervals for $\mu$} If $P$ is a normal population with mean $\mu$
+then an$\alpha$\% confidence interval for $\mu$ is given by
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="76" HEIGHT="31" ALIGN="BOTTOM" BORDER="0"
+ SRC="img86.gif"
+ ALT="$\displaystyle \par This inequality defines a random interval containing $\mu$ w...
+...on with mean $\mu$
+then an$\alpha$\% confidence interval for $\mu$ is given by
+$">
+</DIV><P></P> - t_&alpha#alpha;/2sn &le#le;&mu#mu;&le#le;+ t_&alpha#alpha;/2sn
+$<IMG
+ WIDTH="283" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img87.gif"
+ ALT="$ where
+$"><!-- MATH
+ $\X = \text { sample mean}$
+ -->
+<IMG
+ WIDTH="87" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img88.gif"
+ ALT="$ \X =$"><IMG
+ WIDTH="51" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img89.gif"
+ ALT="$ \text { sample mean}$"><!-- MATH
+ \begin{displaymath}
+$s = \text {sample standard deviation}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="112" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img90.gif"
+ ALT="$\displaystyle $s =$"><IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img91.gif"
+ ALT="$\displaystyle \text {sample standard deviation}$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+t_{\alpha/2} = \alpha\% \text { confidence coefficient based on n-1 d.f. }
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="84" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img92.gif"
+ ALT="$\displaystyle t_{\alpha/2} = \alpha\%$"><IMG
+ WIDTH="256" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img93.gif"
+ ALT="$\displaystyle \text { confidence coefficient based on n-1 d.f. }$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+n = \text { sample size }.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="30" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img58.gif"
+ ALT="$\displaystyle n =$"><IMG
+ WIDTH="176" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img94.gif"
+ ALT="$\displaystyle \text { sample size }. $">
+</DIV><P></P>
+
+<P>
+
+<P></P>
+
+<P>
+EXAMPLE 
+
+A study was done to determine the mean time to toleration of solid food after a stomach surgery.  A
+random sample of 16 patients had a sample mean of 6.2 days with a sample standard
+deviation of 1.2 days.  Determine a 95%  confidence interval estimate for the true mean
+ time.
+
+<P>
+Here <IMG
+ WIDTH="117" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img95.gif"
+ ALT="$ n = 16$"> so large sample procedures cannot be used.  Assuming that the mean time follows a
+normal distribution we can apply the small sample procedure.  First we must find the 95% 
+t confidence coefficient. Since a 95% interval will leave a total of 5% in the tails there is
+2.5% in each tail.  There are 16 observations so 15 d.f.  Therefore the appropriate t-confidence
+coefficient is
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+t_{.025,15} = 2.131.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="25" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img96.gif"
+ ALT="$\displaystyle t_{.025,15} = 2.131.$">
+</DIV><P></P>
+
+<P>
+The remaining computed information is <!-- MATH
+ \begin{displaymath}
+\X = 6.2 \text { and } s =
+1.2.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="81" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img97.gif"
+ ALT="$\displaystyle \X = 6.2$"><IMG
+ WIDTH="19" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img98.gif"
+ ALT="$\displaystyle \text { and } s =
+1.2.$">
+</DIV><P></P>
+Therefore the confidence interval estimate is <!-- MATH
+ \begin{displaymath}
+6.2 - 2.131\frac{1.2}{4} \le \mu \le 6.2 +
+2.131\frac{1.2}{4}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="97" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img99.gif"
+ ALT="$\displaystyle 6.2 - 2.131\frac{1.2}{4} \le \mu \le 6.2 +
+2.131\frac{1.2}{4}$">
+</DIV><P></P> <!-- MATH
+ \begin{displaymath}
+6.2 - .64 \le \mu \le 6.2-.64
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="24" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img100.gif"
+ ALT="$\displaystyle 6.2 - .64 \le \mu \le 6.2-.64$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+5.56 \le \mu \le 6.84.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="25" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img101.gif"
+ ALT="$\displaystyle 5.56 \le \mu \le 6.84.$">
+</DIV><P></P>
+
+<P>
+Then:
+
+<P>
+A 95% confidence interval for the mean  time to tolerate solid food is 5.56 days to 6.84 days
+
+<P><P>
+<BR>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>HYPOTHESIS TESTING FOR THE MEAN </B></DIV>
+ <BR>
+<DIV ALIGN="CENTER">
+<B>OF A ONE VARIABLE DATA
+SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>(1) GENERAL THEORY OF HYPOTHESIS TESTING</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+In that <B>estimation theory</B> we considered sampling from
+a population and then estimating parameter values from the computed sample information.  We now
+discuss <B>statistical testing</B> or <B>hypothesis testing</B>.  Much of the theoretical framework is
+the same as in estimation theory but the viewpoint is different.  In hypothesis testing we begin with
+a claim or <B>hypothesis</B> about a population parameter and then test this claim by looking at sample
+information.
+
+<P>
+Suppose that standard guidelines say that the average time to complete a certain surgical
+procedure is 2 hours or 120 minutes. We take the claim of an average of 120 minutes as a <B>hypothesis</B> about the true population mean and we wish to test whether this is correct or
+not. Suppose further that a random sample of 25 of these surgical procedures had an average (sample
+average) completion time of 151 minutes.  Then the observed evidence is that it actually takes longer
+than 120 minutes on average.  Of course the difference between the theoretical avergae of 120
+minutes and the observed value of 151 minutes may be soley due to random variation.  If  we use
+the computed sample mean of 151 minutes as evidence that either the claim that the population mean
+is 120 is correct or that the claim is too low this is an example of a <B>hypothesis testing
+procedure</B>.  Essentially here we are looking at whether the observed value, 151 minutes, is far
+enough away from the hypothesized mean of 120 minutes to be evidence that 120 is too low.  The
+criteria used to determine in a scientific manner whether it is far enough away will be discussed
+below.
+
+<P>
+What is crucial in statistical hypothesis testing is that the general procedure is not to prove
+the hypothesis but rather <B>to attempt to disprove the hypothesis</B>.  For this reason the
+hypotheses that we test in statistics are called <B>null hypotheses</B> because we are trying to
+null them or negate them.  If we cannot null them or negate them we accept them.  Null hypotheses
+are denoted by <IMG
+ WIDTH="64" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.gif"
+ ALT="$ H_0$"> and generally have the form
+<!-- MATH
+ \begin{displaymath}
+H_0: \theta = \theta_0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="127" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img103.gif"
+ ALT="$\displaystyle H_0: \theta = \theta_0$">
+</DIV><P></P>
+where <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$"> is a parameter and <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img104.gif"
+ ALT="$ \theta_0$"> is a particular value.  
+
+<P>
+In the example involving the surgical procedure time the parameter being tested is the population
+mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> and the claim is that this mean is 120 minutes.  Therefore for this test the null
+hypothesis is
+<!-- MATH
+ \begin{displaymath}
+H_0: \mu = 120.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="28" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img105.gif"
+ ALT="$\displaystyle H_0: \mu = 120.$">
+</DIV><P></P>
+
+<P>
+EXAMPLE 6
+
+Suppose we consider two different hospitals A and B and we wish to determine if the average per
+patient cost for a given procedure is the same in both hospitals.  If we let <IMG
+ WIDTH="81" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img106.gif"
+ ALT="$ \mu_A$"> be the average
+per patient cost in hospital A and <IMG
+ WIDTH="25" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img107.gif"
+ ALT="$ \mu_B$"> be the average
+per patient cost in hospital B then the parameter being testing is <!-- MATH
+ $\mu_A - \mu_B$
+ -->
+<IMG
+ WIDTH="81" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img108.gif"
+ ALT="$ \mu_A - \mu_B$"> the difference
+of the two means.  The appropriate null hypothesis is then
+<!-- MATH
+ \begin{displaymath}
+H_0:\mu_A - \mu_B = 0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="81" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img109.gif"
+ ALT="$\displaystyle H_0:\mu_A - \mu_B = 0$">
+</DIV><P></P>
+a difference of 0 indicating no difference between the two hospitals. 
+
+<P><P>
+<BR>
+
+<P>
+To actually test a given null hypothesis we roughly proceed as follows: for an estimator
+statistic <IMG
+ WIDTH="12" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \th$"> for <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$"> we have a cutoff value <IMG
+ WIDTH="86" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img110.gif"
+ ALT="$ c$">.  If <IMG
+ WIDTH="97" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img111.gif"
+ ALT="$ \th &gt;c$"> we reject the null hypothesis
+while otherwise we accept it.  Which estimator statistic to use, how the value of <IMG
+ WIDTH="86" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img110.gif"
+ ALT="$ c$"> is determined
+and how to actually carry out the analysis we will now discuss.  
+
+<P>
+In testing a null hypothesis <!-- MATH
+ $H_0: \theta = \theta_0$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img112.gif"
+ ALT="$ H_0: \theta = \theta_0$"> the idea is to attempt to disprove it or
+reject it.  We must therefore have an <B>alternative hypothesis</B>, which we denote by <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img113.gif"
+ ALT="$ H_1$"> to
+accept if we do reject <IMG
+ WIDTH="64" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.gif"
+ ALT="$ H_0$">.  The alternative hypothesis can have one of three possible forms:
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta \ne \theta_0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="41" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img114.gif"
+ ALT="$\displaystyle H_1: \theta \ne \theta_0$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta > \theta_0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img115.gif"
+ ALT="$\displaystyle H_1: \theta &gt; \theta_0$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta < \theta_0.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="37" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img116.gif"
+ ALT="$\displaystyle H_1: \theta &lt; \theta_0.$">
+</DIV><P></P>
+The first form is called a <B>two-sided alternative</B> while the second two forms are called <B>one-sided alternatives</B>.  Usually the alternative hypothesis is what is really believed to be true in
+the test.  The null hypothesis is set up in such a manner so that if it is rejected we arrive at the
+appropriate alternative.
+
+<P>
+EXAMPLE 
+
+<P>
+In the test of surgical time we had the null hypothesis
+<!-- MATH
+ \begin{displaymath}
+H_0:\mu = 120.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="28" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img105.gif"
+ ALT="$\displaystyle H_0: \mu = 120.$">
+</DIV><P></P>
+The computed evidence is that this figure is too low or equivalently that the true mean is higher. 
+Therefore in this case the appropriate alternative is
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu > 120.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="33" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img117.gif"
+ ALT="$\displaystyle H_1: \mu &gt; 120.$">
+</DIV><P></P>
+This is a one-sided alternative.
+
+<P><P>
+<BR>
+
+<P>
+Once a null hypothesis and alternative hypothesis are chosen we have the following schematic
+situation (figure 1) which contains all the relevant information about statistical testing.
+
+<P>
+
+<DIV ALIGN="CENTER">
+<IMG WIDTH="366" HEIGHT="232" ALIGN="MIDDLE" BORDER="0"
+ SRC="MeanAnal1.gif">
+</DIV>
+
+<DIV ALIGN="CENTER">
+Figure 1 Hypothesis Testing</DIV>
+
+<P><P>
+<BR>
+
+<P>
+A <B>type 1 error</B> is the error of rejecting a null hypothesis when it is really true.  Here we
+randomly get a sample which refutes the null hypothesis even though the null hypothesis is true.  The
+probability or risk of committing a type 1 error is called the <B>level of significance</B> or
+<!-- MATH
+ $\bold{\alpha}$
+ -->
+<IMG
+ WIDTH="8" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img118.gif"
+ ALT="$ \bold{\alpha}$">-<B>error</B> (alpha error). 
+A <B>type 2 error</B> is the error of accepting a null hypothesis when it is really false.  Here we
+randomly obtain a sample which backs up the null hypothesis even though the null hypothesis is
+false.  The probability or risk of committing a type 1 error is called the  <!-- MATH
+ $\bold{\beta}$
+ -->
+<IMG
+ WIDTH="48" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img119.gif"
+ ALT="$ \bold{\beta}$">-<B>error</B> (beta error). It is also called the
+<B>operating characteristic value</B>.  The probability of not committing a type 2 error {the lower
+right hand box} is <IMG
+ WIDTH="22" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img120.gif"
+ ALT="$ 1- \beta$"> and is called the <B>power of the test</B>.  If there are two possible
+tests for a hypothesis the more powerful test is the one with the higher power.  The values of
+<IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> and <IMG
+ WIDTH="19" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img121.gif"
+ ALT="$ \beta$"> are inversely related for a fixed sample size.  That is if there is a small
+<IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">, that is a small chance of making a type 1 error, there may be a larger <IMG
+ WIDTH="19" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img121.gif"
+ ALT="$ \beta$">, or a
+larger chance of making a type 2 error.  If we wish to maintain a small <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> and have a smaller
+<IMG
+ WIDTH="19" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img121.gif"
+ ALT="$ \beta$"> we must take a larger sample size.  The relationship between <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> and <IMG
+ WIDTH="19" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img121.gif"
+ ALT="$ \beta$"> is
+analogous to the relationship between confidence and accuracy in an estimation procedure.
+
+<P>
+In setting up a criterion for accepting or rejecting a null hypothesis <IMG
+ WIDTH="64" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.gif"
+ ALT="$ H_0$"> we attempt to set the
+level of significance at a predetermined small value.  In most practical testing this value is
+either 1% or 5% although any value can be used. For example if a test is conducted at a 5% level of
+significance this means that there is only a 5% chance of rejecting the null hypothesis if it is
+really true.
+
+<P>
+There is a nice analogy between the hypothesis testing framework and the framework of the
+criminal justice system in the United States.  When a defendant goes into court the presumption is
+innocent until proven guilty.  The burden of proof is all on the prosecution.  Hence the
+defendants innocence is a null hypothesis while the alternative is the defendant's guilt.
+Therefore we have
+<!-- MATH
+ \begin{displaymath}
+H_O: \text{ Defendant is Inncoent}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="50" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img122.gif"
+ ALT="$\displaystyle H_O:$">&nbsp; &nbsp; Defendant is Inncoent
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \text{ Defendant is Guilty}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="49" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img123.gif"
+ ALT="$\displaystyle H_1:$">&nbsp; &nbsp; Defendant is Guilty<IMG
+ WIDTH="53" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img124.gif"
+ ALT="$\displaystyle .$">
+</DIV><P></P>
+Then there is
+the following schematic. 
+
+<P>
+
+<DIV ALIGN="CENTER">
+<IMG WIDTH="348" HEIGHT="189" ALIGN="MIDDLE" BORDER="0"
+ SRC="MeanAnal2.gif">
+</DIV>
+
+<DIV ALIGN="CENTER">
+Figure 2 Legal Analogy</DIV>
+
+<P><P>
+<BR>
+
+<P>
+Hence in this legal analogy the <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">-error is convicting an inncoent defendant while the
+<IMG
+ WIDTH="19" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img121.gif"
+ ALT="$ \beta$">-error is letting a guilty defendant go free.  Historically the American legal system has
+been geared to making <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> as small as possible.  What must be realized is that this follows
+the above theoretical model so that <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$"> and <IMG
+ WIDTH="19" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img121.gif"
+ ALT="$ \beta$"> are inversely related.  In practical terms
+this means that anything that is done to make it harder to convict an innocent person will
+increase the probability of letting a guilty person go free.  Conversely anything done to make it
+harder for a guilty person to go free will increase the probability of convicting an innocent
+person.   
+
+<P>
+<DIV ALIGN="CENTER">
+<B>(2) GENERAL STATISTICAL TESTING PROCEDURE </B></DIV>
+
+<P>
+For any statistical hypothesis test there is a five step procedure that is always followed.  What
+will differ in this procedure in going from test to test is the type of test statistic used and the
+determination of critical regions.  We will go over this procedure, do some examples and then in the
+rest of the chapter go over the particular types of tests most relevant to nursing and medical
+practice.
+
+<P><P>
+<BR>
+
+<P>
+The <B>first step</B> in the testing procedure is to <B>formulate the null hypothesis</B> <IMG
+ WIDTH="64" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.gif"
+ ALT="$ H_0$">.  As
+explained in section 6.1 this will usually have the form <!-- MATH
+ $\theta = \theta_0$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img125.gif"
+ ALT="$ \theta = \theta_0$"> where <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$"> is a
+parameter and <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img104.gif"
+ ALT="$ \theta_0$"> is a particular value.  Recall that we are not trying to prove this null
+hypothesis but rather to disprove it or reject it.  If we cannot reject it it will be accepted.
+
+<P><P>
+<BR>
+
+<P>
+The <B>second step</B> in the testing procedure is to <B>formulate the alternative hypothesis</B>
+<IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img113.gif"
+ ALT="$ H_1$"> which will be accepted if the null hypothesis is rejected.  As explained in the last section
+the alternative hypothesis can have one of three possible forms:
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta \ne \theta_0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="41" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img114.gif"
+ ALT="$\displaystyle H_1: \theta \ne \theta_0$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta > \theta_0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img115.gif"
+ ALT="$\displaystyle H_1: \theta &gt; \theta_0$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta < \theta_0.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="37" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img116.gif"
+ ALT="$\displaystyle H_1: \theta &lt; \theta_0.$">
+</DIV><P></P>
+The first form is called a <B>two-sided alternative</B> while the second two forms are called <B>one-sided alternatives</B>.  The alternative hypothesis i usually what is really believed in the
+test.  The null hypothesis is set up in such a manner so that if it is rejected we arrive at the
+appropriate alternative.
+
+<P><P>
+<BR>
+
+<P>
+The <B>third step</B> in the testing procedure is to choose three things: a <B>level of
+significance</B>, a <B>sample size</B> and an <B>appropriate test statistic</B>. 
+
+<P>
+The level of
+significance is the probability of making a type 1 error, that is the probability of rejecting the
+null hypothesis when it is true.  It is chosen to be a small number, usually 1% or 5%, although any
+value can be used.  If we reject at 1% value then we are 99% confident that we made the right
+decision.
+
+<P>
+The appropriate test statistic is a statistic whose sampling distribution depends upon the
+parameter being tested.  We wish to find the cutoff value so that the probability of the observed
+value of the test statistic is low (less than the level of significance) if the null hypothesis is
+false.  How we arrive at appropriate test statistics will be discussed in subsequent sections.
+
+<P><P>
+<BR>
+
+<P>
+The <B>fourth step</B> in the testing procedure is to determine a <B>rejection region</B> or <B>critical region</B>.  This region will serve as the cutoff for accepting or rejecting the null
+hypothesis.  If the observed value of the test statistic falls in the rejection region the null
+hypothesis will be rejectedd.  If the observed value of the test statistic doesn't fall in the
+rejection region then the null hypothesis will be accepted.  The determination of the critical region
+will be based on the level of significance and the sampling distribution of the test statistic and
+will be determined so that the probability of a value of the test statistic falling the critical
+region is less than the level of significance.  Again we will see how this is done for specific test
+statistics in subsequent sections. 
+<P><P>
+<BR>
+
+<P>
+The <B>fifth step</B> and final step in the testing procedure is to obtain sample results and a value
+for the test statistic. If the test results are in the rejection region the results are
+said to be <B>statistically significant</B> and the null hypothesis <IMG
+ WIDTH="64" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.gif"
+ ALT="$ H_0$"> is rejected in favor of the
+alternative <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img113.gif"
+ ALT="$ H_1$">. If the test results are not in the rejection region then we say the results are
+<B>not statistically significant</B> and the null hypothesis <IMG
+ WIDTH="64" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.gif"
+ ALT="$ H_0$"> is accepted. 
+Thus significant results lead to rejection of the null hypothesis while not significant results lead
+to acceptance of the null hypothesis.  
+
+<P>
+Another concept is important relative to this fifth step.  The <B>P-value</B> of the test results is
+the probability of obtaining a value of the test statistic more unusual that what was obtained,
+assuming the null hypothesis is true.  If there is a level of significance <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">, then being in the
+rejection region is equivalent to having a P-value less than <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">.  Hence the null hypothesis is
+rejected whenever the P-value is less than the given level of significance.  Therefore we have the
+following two equivalent rejection criteria:
+
+<P>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img126.gif"
+ ALT="$ \hphantom{xx}$"> (1) The value of the test statistic falls in the rejection region
+
+<P>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img126.gif"
+ ALT="$ \hphantom{xx}$"> (2) The P-value of the test results are lower than the level of significance
+<IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">.
+
+<P>
+The second criteria is important to note since many computer programs print the P-values.  In using
+these programs the rejection regions don't have to be determined - just the computed P-values
+compared with the given <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">.  
+.
+
+<P>
+We now summarize the five step procedure and then do several examples.
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>FIVE STEP HYPOTHESIS TESTING PROCEDURE</B></DIV>
+
+<P><P>
+<BR>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img126.gif"
+ ALT="$ \hphantom{xx}$"> <B>STEP ONE</B>: Formulate the null hypothesis: 
+<!-- MATH
+ \begin{displaymath}
+H_0: \theta = \theta_0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="127" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img103.gif"
+ ALT="$\displaystyle H_0: \theta = \theta_0$">
+</DIV><P></P>
+where <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \theta$"> is a parameter and <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img104.gif"
+ ALT="$ \theta_0$"> a particular value.
+
+<P>
+
+<P><P>
+<BR>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img126.gif"
+ ALT="$ \hphantom{xx}$"> <B>STEP TWO</B>: Formulate the alternative hypothesis:
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta \ne \theta_0 \text { or}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="41" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img114.gif"
+ ALT="$\displaystyle H_1: \theta \ne \theta_0$"><IMG
+ WIDTH="85" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img127.gif"
+ ALT="$\displaystyle \text { or}$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta > \theta_0 \text { or}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img115.gif"
+ ALT="$\displaystyle H_1: \theta &gt; \theta_0$"><IMG
+ WIDTH="85" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img127.gif"
+ ALT="$\displaystyle \text { or}$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta < \theta_0.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="37" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img116.gif"
+ ALT="$\displaystyle H_1: \theta &lt; \theta_0.$">
+</DIV><P></P>
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img126.gif"
+ ALT="$ \hphantom{xx}$"> <B>STEP THREE</B>: Choose a <B>level of significance</B> <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \alpha$">, a <B>sample size</B>
+<IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ n$"> and <B>an appropriate test statistic</B>.
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img126.gif"
+ ALT="$ \hphantom{xx}$"> <B>STEP FOUR</B>: Based on the sampling distribution of the test statistic and the
+chosen level of significance determine a <B>rejection region</B> or <B>critical region</B>.  The
+values not in the rejection region are called the <B>acceptance region</B>.
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img126.gif"
+ ALT="$ \hphantom{xx}$"> <B>STEP FIVE</B>: Obtain test results and a value for the test statistic.
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxx}$
+ -->
+<IMG
+ WIDTH="85" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img128.gif"
+ ALT="$ \hphantom{xxxxx}$"> (a) If the test results are in the rejection region the results are
+said to be <B>statistically significant</B> and the null hypothesis <IMG
+ WIDTH="64" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.gif"
+ ALT="$ H_0$"> is rejected in favor of the
+alternative <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img113.gif"
+ ALT="$ H_1$">.  This is equivalent to the P-value of the test results being lower than the level
+of significance.
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxx}$
+ -->
+<IMG
+ WIDTH="85" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img128.gif"
+ ALT="$ \hphantom{xxxxx}$"> (b)If the test results are not in the rejection region then we say the results are
+<B>not statistically significant</B> and the null hypothesis <IMG
+ WIDTH="64" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.gif"
+ ALT="$ H_0$"> is accepted.  This is equivalent
+to the P-value of the results being higher than the level of significance.
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 
+ It is claimed that the average production time for a certain
+produced item is 26 minutes.  There is some evidence that it actually takes longer.  To test the
+claim, 64 items were sampled. A sample average production time of <IMG
+ WIDTH="56" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img129.gif"
+ ALT="$ \X = 27.5$"> minutes with a
+standard deviation of <IMG
+ WIDTH="64" HEIGHT="47" ALIGN="BOTTOM" BORDER="0"
+ SRC="img130.gif"
+ ALT="$ s = 4.5$"> minutes was computed.  Is this enough evidence at a 5% level of
+significance to reject the claim.
+
+<P>
+Here the null hypothesis is <IMG
+ WIDTH="41" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img131.gif"
+ ALT="$ \mu = 26$"> matching the claim.  We are interested in the fact that it
+actually takes longer so the alternative is <IMG
+ WIDTH="62" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img132.gif"
+ ALT="$ \mu &gt; 26$">.  This is a one-sided alternative.  Hence we
+have
+<!-- MATH
+ \begin{displaymath}
+H_0: \mu = 26
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img133.gif"
+ ALT="$\displaystyle H_0: \mu = 26$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu > 26
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="67" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img134.gif"
+ ALT="$\displaystyle H_1: \mu &gt; 26$">
+</DIV><P></P>
+This takes care of steps one and two.
+
+<P>
+The sample size is <IMG
+ WIDTH="51" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img63.gif"
+ ALT="$ n = 64$"> while the chosen level of significance is <!-- MATH
+ $\alpha = .05$
+ -->
+<IMG
+ WIDTH="105" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img135.gif"
+ ALT="$ \alpha = .05$">.  An
+appropriate test statistic for testing hypotheses concerning means (see section 6.5) is 
+<!-- MATH
+ \begin{displaymath}
+z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img136.gif"
+ ALT="$\displaystyle z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}.$">
+</DIV><P></P>
+Recall from the last chapter that for large sample sizes the above statistic has an approximate normal
+distribution.  This means that in step four we will use the normal distribution to determine the
+rejection region.  
+
+<P>
+In figure 3 we see a normal distribution with a supposed mean of <IMG
+ WIDTH="41" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img131.gif"
+ ALT="$ \mu = 26$">.  This corresponds
+to a z-value of <IMG
+ WIDTH="155" HEIGHT="49" ALIGN="BOTTOM" BORDER="0"
+ SRC="img137.gif"
+ ALT="$ z = 0$">.  Given the alternative <IMG
+ WIDTH="62" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img132.gif"
+ ALT="$ \mu &gt; 26$"> it is clear that high values of the mean
+will lead to rejection.  The 5% level tells us how high - only the highest 5% will lead to
+rejection.  From the standard normal table we find (as in chapter four) that a z-value of <IMG
+ WIDTH="93" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img138.gif"
+ ALT="$ z = 1.65$">
+cuts off the highest 5%.  This is called the <B>critical z-value</B>, which we denote by <IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img139.gif"
+ ALT="$ z_c$">. Here
+then i <!-- MATH
+ $z_c = 1.65$
+ -->
+<IMG
+ WIDTH="67" HEIGHT="47" ALIGN="MIDDLE" BORDER="0"
+ SRC="img140.gif"
+ ALT="$ z_c = 1.65$">.  This is the cutoff above which there will be rejection.  Notice that since the
+alternative is one-sided only one tail of the normal curve leads to rejection.  Tests like this are
+then called <B>one-tailed tests</B>.  If both tails led to rejection it would be called a <B>two-tailed test</B>.
+
+<P>
+
+<DIV ALIGN="CENTER">
+<IMG WIDTH="250" HEIGHT="148" ALIGN="MIDDLE" BORDER="0"
+ SRC="MeanAnal3.gif">
+</DIV>
+
+<DIV ALIGN="CENTER">
+figure 3  Rejection Region</DIV>
+
+<P>
+
+<P></P>
+
+<P>
+The sample results are:
+<!-- MATH
+ \begin{displaymath}
+\X = 27.5, s = 4.5 \text{ and } n = 64
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="65" HEIGHT="47" ALIGN="MIDDLE" BORDER="0"
+ SRC="img141.gif"
+ ALT="$\displaystyle \X = 27.5, s = 4.5$">&nbsp; &nbsp; and <IMG
+ WIDTH="85" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img142.gif"
+ ALT="$\displaystyle n = 64$">
+</DIV><P></P>
+therefore the value of the test statistic is
+<!-- MATH
+ \begin{displaymath}
+z = \frac{27.5 - 26}{\frac{4.5}{8}} = 2.67.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="89" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img143.gif"
+ ALT="$\displaystyle z = \frac{27.5 - 26}{\frac{4.5}{8}} = 2.67.$">
+</DIV><P></P>
+This value falls in the rejection region and therefore the results are significant.  It follows
+that the null hypothesis of <IMG
+ WIDTH="41" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img131.gif"
+ ALT="$ \mu = 26$"> is rejected in favor of the alternative <IMG
+ WIDTH="62" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img132.gif"
+ ALT="$ \mu &gt; 26$">.
+
+<P>
+The results would be reported in the following manner.
+
+<P><P>
+<BR>
+At a 5% level the result were significant.  Therefore the null hypothesis that the mean was 26 is
+rejected in favor of the alternative that the mean is greater than 26.
+
+<P><P>
+<BR>
+
+<P>
+From A normal table we see that there is a probability of only .0037 of obtaining a z-value of
+over 2.67.  Hence the P-value of the above test results is .0037.  This is below <!-- MATH
+ $\alpha = .05$
+ -->
+<IMG
+ WIDTH="105" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img135.gif"
+ ALT="$ \alpha = .05$">. 
+Again using the P-value criterion the null hypothesis would be rejected since the P-value is lower
+than the chosen level.
+
+<P><P>
+<BR>
+
+<P>
+It should be clear from this example that the testing procedure is rather straightforward once an
+appropriate test statistic and its sampling distribution is known.  Therefore what must be done
+now is to describe the important testing situations  together with the
+appropriate corresponding test statistics. 
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>(3) OVERVIEW OF PARAMETRIC TESTING</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+In most practical testing situations there are three population parameters that may be of interest:
+<B>means</B>, <B>standard deviations</B> and <B>proportions</B>.  Hypotheses on these parameters can be
+tested in several different ways.
+
+<P>
+In a <B>one-sample test</B>, the value of the parameter is tested against some predetermined standard
+or target value.  The sample results in a single sample are used to either accept of reject that
+standard.  Both examples in the previous section were one sample tests.
+
+<P>
+In a <B>two-sample test</B>, independent samples from two different populations are used to determine
+comparisons between the parameters of the two populations.  For example in comparing whether the
+completion time of two surgical procedures differs between hospital A and hospital B independent
+samples would be drawn from each and then compared.  
+
+<P>
+In <B>multiple sample tests</B> parameters from many different populations are tested in one test.  
+
+<P>
+Therefore there are nine basic situations which the statistical analyst must be acquainted with:
+one sample, two sample and multiple sample for means; 
+one sample, two sample and multiple sample for standard deviations; and 
+one sample, two sample and multiple sample for proportions.  Within each of these nine basic
+situations testing may differ depending on whether large or small samples are drawn.  The analyst
+must be acquainted with this also.  The chart in figure 4  gives an overview picture of this
+parametric testing. 
+
+<P>
+<DIV ALIGN="CENTER">
+<IMG WIDTH="282" HEIGHT="158" ALIGN="MIDDLE" BORDER="0"
+ SRC="MeanAnal4.gif">
+</DIV>
+
+<DIV ALIGN="CENTER">
+figure 4  Parametric Testing Overview</DIV>
+
+<P></P>
+
+<P><P>
+<BR>
+
+<P>
+Tests of means are generally called <B>t-tests</B> because they use the t-distribution.  Multiple
+sample tests of means fall into what are called <B>analysis of variance</B> or <B>ANOVA</B>
+procedures.   One sample tests of standard deviations use the
+chi-square distribution while two sample and multiple sample tests for standard deviations use the
+F-distribution and are called <B>F-tests</B>.    One and two sample tests of proportions are called
+<B>p-tests </B> and are usually based on the normal distribution.  Multiple sample tests use the
+chi-square distribution and will be discussed in the next chapter.  Multiple sample procedures can
+also be used for two sample testing.    
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>(3) HYPTHESIS TESTS FOR A SINGLE MEAN</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+The mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> of a population is the most common parameter tested.  We now consider one
+sample tests of means.  Two sample tests of means are handled under two variable data sets while 
+multiple sample tests of means will be hndled under mutliple variable data sets.  
+
+<P>
+In a <B>one sample test of means</B> we are testing null hypotheses of the form
+<!-- MATH
+ \begin{displaymath}
+H_0: \mu = \mu_0 \tag 1
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="51" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img144.gif"
+ ALT="$\displaystyle H_0: \mu = \mu_0 \tag 1$">
+</DIV><P></P>
+against some alternative. <IMG
+ WIDTH="59" HEIGHT="47" ALIGN="MIDDLE" BORDER="0"
+ SRC="img145.gif"
+ ALT="$ \mu_0$"> is a given value and can be thought of as some standard or target
+value.  As for estimation, testing means is handled somewhat differently for small samples than for
+large samples.  In the latter case the central limit theorem allows us to always use the normal
+distribution and not be concerned with the actual distribution of the parent population.  In the
+small sample case we must assume that the parent population is itself normal and the t-distribution
+is used.  For this reason tests of means are referred to as <B>t-tests</B>.
+
+<P>
+If a large sample can be drawn, that is a sample of over 30, then the appropriate test statistic
+for testing a null hypothesis of the form 1 is
+<!-- MATH
+ \begin{displaymath}
+z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}} \tag 2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="80" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img146.gif"
+ ALT="$\displaystyle z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}} \tag 2$">
+</DIV><P></P>
+Recall from the last chapter that for large sample sizes this test statistic has an approximate normal
+distribution.  This means that to determine the
+rejection region we will use the normal distribution.
+
+<P>
+If a large sample is not drawn, that is the sample size is under 30, then the appropriate test
+statistic for testing a null hypothesis of the form (1) is
+<!-- MATH
+ \begin{displaymath}
+t = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}\tag 3
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="101" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img147.gif"
+ ALT="$\displaystyle t = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}\tag 3$">
+</DIV><P></P>
+Recall from the notes on confidence intervals that if the parent population is normal this test
+statistic has a t-distribution with n-1 degreees of freedom. This means that to determine the
+rejection region win this case a t-distribution will be used.  Hence in the small sample case we
+must make the assumption that the parent population is itself normal.  There are no general
+procedures to handle small sample tests of means for non-normal parent popualtions.  However the
+t-test is <B>fairly robust</B>.  Recall that this means that the t-test works reasonably well as long
+as the parent population is not too far from being normal - that is not too skewed. We illustrate
+these tests with some examples.
+
+<P>
+EXAMPLE 
+
+<P>
+An insurance company uses as a standard 90 days between paid treatments for a certain chronic
+condition.  An advocacy group felt that this was too long between treatments.  81 patients with this
+ailment were sampled and monitored by a physician group to determine the time required between
+treatments.  A sample mean of 86 days was computed with a standard deviation of 10.3 days.  Is this
+evidence at a 5% level that the insurance company's target is too high?
+
+<P>
+Here the null hypothesis is the insurance company standard while the alternative is that the true
+mean is actually less than this.  
+<!-- MATH
+ \begin{displaymath}
+H_0: \mu = 90
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="55" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img148.gif"
+ ALT="$\displaystyle H_0: \mu = 90$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu < 90.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="155" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img149.gif"
+ ALT="$\displaystyle H_1: \mu &lt; 90.$">
+</DIV><P></P>
+Since <IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img150.gif"
+ ALT="$ n = 81$"> this is a <B>large sample procedure</B> and the appropriate test statistic is (2)
+<!-- MATH
+ \begin{displaymath}
+z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="51" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img151.gif"
+ ALT="$\displaystyle z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}$">
+</DIV><P></P>
+which has a normal distribution.  Since this is a large sample we don't have to worry about the
+underlying parent population distribution.
+
+<P>
+The rejection region based on the normal distribution is pictured in figure 5
+
+<P>
+<DIV ALIGN="CENTER">
+<IMG WIDTH="327" HEIGHT="185" ALIGN="MIDDLE" BORDER="0"
+ SRC="MeanAnal5.gif">
+</DIV>
+
+<DIV ALIGN="CENTER">
+figure 5 Rejection Region</DIV>
+
+<P><P>
+<BR>
+
+<P>
+The critical z-value is <!-- MATH
+ $z_c = -1.65$
+ -->
+<IMG
+ WIDTH="76" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img152.gif"
+ ALT="$ z_c = -1.65$">.  The value is negative because this is a one-tailed test with
+the rejection region being below the mean.  
+
+<P>
+The sample results are:
+<!-- MATH
+ \begin{displaymath}
+\X = 86, s = 10.3 \text{ and } n = 81.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="81" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img153.gif"
+ ALT="$\displaystyle \X = 86, s = 10.3$">&nbsp; &nbsp; and <IMG
+ WIDTH="43" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img154.gif"
+ ALT="$\displaystyle n = 81.$">
+</DIV><P></P>
+Therefore the value of the test statistic is
+<!-- MATH
+ \begin{displaymath}
+z = \frac{86-90}{\frac{10.3}{9}} = -3.50.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="57" HEIGHT="47" ALIGN="MIDDLE" BORDER="0"
+ SRC="img155.gif"
+ ALT="$\displaystyle z = \frac{86-90}{\frac{10.3}{9}} = -3.50.$">
+</DIV><P></P>
+This value falls in the rejection region and therefore the results are significant.  It follows
+that the null hypothesis of <IMG
+ WIDTH="128" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img156.gif"
+ ALT="$ \mu = 90$"> is rejected in favor of the alternative <IMG
+ WIDTH="97" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img157.gif"
+ ALT="$ \mu &lt; 90$">.
+
+<P>
+The results would be reported in the following manner.
+
+<P><P>
+<BR>
+At a 5% level the result were significant.  Therefore the null hypothesis that the mean was 90 is
+rejected in favor of the alternative that the mean is less than 90.
+
+<P>
+From this we can conclude that the evidence is that the insurance companies accepted time is too
+long. 
+<P><P>
+<BR>
+
+<P>
+From the normal table we see that there is a probability of under .001 of obtaining a z-value of
+over -3.50.  Hence the P-value of the above test results is less than .001.  This is below <!-- MATH
+ $\alpha =
+.05$
+ -->
+<IMG
+ WIDTH="105" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img135.gif"
+ ALT="$ \alpha = .05$">.  Again using the P-value criterion the null hypothesis would be rejected since the P-value is
+lower than the chosen level.
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE  
+
+<P>
+An cereal company wants to advertise that its cereal has 2 grams of fat per serving.  The FTC is
+going to test this to determine whether to allow the advertising.  9 servings of this cereal were
+sampled and analyzed for fat content.  A
+sample mean of 2.3 grams was computed with a standard deviation of 1.2 grams.  Is this evidence at a
+5% level that the fat content on average is higher than the company's claim?  Should they be
+allowed to advertise the 2 gram figure.
+
+<P>
+Here the null hypothesis is the company claim while the alternative is that the true
+mean is actually more than this.  
+<!-- MATH
+ \begin{displaymath}
+H_0: \mu = 2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="43" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img158.gif"
+ ALT="$\displaystyle H_0: \mu = 2$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu > 2.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="139" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img159.gif"
+ ALT="$\displaystyle H_1: \mu &gt; 2.$">
+</DIV><P></P>
+Since <IMG
+ WIDTH="43" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img160.gif"
+ ALT="$ n = 9$"> this is a <B>small sample procedure</B> and the appropriate test statistic is 6.5.3
+<!-- MATH
+ \begin{displaymath}
+t = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+
+</DIV><P></P>
+which has a t-distribution with 8 degrees of freedom.  Since this is a small sample we must make the
+assumption that the underlying parent population distribution is normal.  If there is evidence that
+this is not true then this procedure cannot be used.  The rejection region would then be determined
+from the t-distribution.
+
+<P>
+The rejection region based on the t-distribution is pictured in figure 6
+
+<P>
+
+<DIV ALIGN="CENTER">
+<IMG WIDTH="397" HEIGHT="265" ALIGN="MIDDLE" BORDER="0"
+ SRC="MeanAnal6.gif">
+</DIV>
+
+<DIV ALIGN="CENTER">
+figure 6  Rejection Region</DIV>
+
+<P></P>
+
+<P>
+The critical t-value is <!-- MATH
+ $t_c = t_{.05,8} = 1.860$
+ -->
+.  
+
+<P>
+The sample results are:
+<!-- MATH
+ \begin{displaymath}
+\X = 2.3, s = 1.2 \text{ and } n = 9
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+&nbsp; &nbsp; and 
+</DIV><P></P>
+and therefore the value of the test statistic is
+<!-- MATH
+ \begin{displaymath}
+z = \frac{2.3-2}{\frac{1.2}{3}} = 0.75.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+
+</DIV><P></P>
+This value falls in the acceptance region and therefore the results are not significant.  It follows
+that the null hypothesis of  is accepted
+
+<P>
+The results would be reported in the following manner.
+
+<P><P>
+<BR>
+At a 5% level the result were not significant.  Therefore the null hypothesis that the mean was 2 is
+accepted.
+
+<P>
+From this we can conclude that the evidence is such that the company should be able to advertise its
+claim.
+ 
+<P><P>
+<BR>
+
+<P>
+Note that in conducting these tests using MAGNUSSTAT the P-values will be computed automatically
+and the appropriate decision ( accept or reject) based on the user defined level of significance
+will be presented in the output box. 
+
+<BR><HR>
+
+</BODY>
+</HTML>

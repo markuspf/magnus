@@ -1,0 +1,9 @@
+@@Description of Residual Analysis
+
+Description of Residual Analysis
+
+The Residual Analysis Tool will construct a grpah of the sample residuals and test the residual fit againast a normal model. The residuals are the values Ei=Yi-(a+b*Xi) where  a and b are the fitted regression parameters. The basioc assumptions for a regression analysis are that the residuals are normally distributed with mean zero and a common variance and independent of each other. To use the regression analysis tools the data must be paired data (Xi,Yi). If the samples are not the same size an error message will be outputted. 
+
+
+
+           @For further information click here@html/residualAnalysis/index.html::Description of Residual Analysis@   

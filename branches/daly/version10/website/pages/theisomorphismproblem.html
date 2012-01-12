@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+ <head>
+  <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+  <title>
+   Magnus Isomorphism Problem
+  </title>
+ </head>
+ <body lang="en-US" text="#000000" bgcolor="#ffffcc">
+  <div align="center">
+  <p style="margin-bottom: 0cm">
+   <font size=7 style="font-size: 66pt">
+    <b>
+     Magnus
+    </b>
+   </font>
+  </p>
+  <font size=4> 
+  A System for Exploring Infinite Groups
+  </font>
+  </div>
+<hr>
+<center>
+<H3> The Isomorphism Problem</h3>
+</center>
+<font size=4>
+Is there an algorithm which determines whether or not any pair of groups
+(in some well-defined class of groups) given by finite presentations are
+isomorphic?
+<br>
+<br>
+There is no general algorithm to solve this problem for all finite
+presentations. Magnus has several algorithms which can be applied
+to a finite presentation to attempt to decide this question for a
+particular finite presentation.
+<br>
+<br>
+
+We have already noted that if <em>G</em> is the group defined by the
+finite presentation &lt; <em>X</em> ; <em>R</em> &gt;, then there is
+no algorithm which decides whether or not any finite presentation
+&lt; <em>Y</em> ; <em>R</em> &gt; also defines <em>G</em>. In
+practice, one is often confronted not by an algorithmic problem, but a
+simple question: given two finite presentations
+&lt; <em>X</em> ; <em>R</em> &gt; and
+&lt; <em>Y</em> ; <em>R</em> &gt;, do they define isomorphic groups?
+If we denote the group presented by 
+&lt; <em>X</em> ; <em>R</em> &gt; by <em>G</em> and that presented by
+&lt; <em>Y</em> ; <em>R</em> &gt; by <em>H</em>, then we are asking
+whether <em>G</em> is isomorphic to <em>H</em>. Now it follows from a
+theorem of Tietze that we can enumerate all of the finite
+presentations of <em>G</em> and all of those of <em>H</em>.
+Consequently, if <em>G</em> and <em>H</em> are isomorphic, given
+enough time and space, we will eventually find this out (granted that
+we have coded a procedure to carry out such enumerations). Of course,
+if <em>G</em> and <em>H</em> are note isomorphic, this procedure will
+not tell us anything. There are, however, other things that we can
+try. For instance, we can, in many cases only to a limited extent,
+check whether <em>G</em> and <em>H</em> have
+<ul>
+<li>the same abelianisations,
+<li>the same nilpotent quotients,
+<li>the same metabelian quotients,
+<li>the same finite images,
+<li>the same number of subgroups of a given finite index,
+<li>the same integral homology groups,
+<li>finite rewriting systems,
+<li>automatic structures
+<li>affine algebraic sets of representations into <em>SL_2(C)</em> with the
+same dimensions,
+<li>the same elements of finite order
+</ul>
+<br>
+<br>
+If we are able successfully to obtain some conflicting information
+then we will know that <em>G</em> and <em>H</em> are not
+isomorphic. The way, as well as the order, in which we carry out these
+tasks can be viewed as the design and implementation of the kind of
+experiment about <em>G</em> and <em>H</em> that we have been alluding
+to above. There are many variations on such a design. For example, we
+might try to compute the set <em>Hom(G,T)</em> of all homomorphisms of
+<em>G</em> into some nice target group <em>T</em> for 10 seconds and
+then try to compute the corresponding set <em>Hom(H,T)</em>, also for
+10 seconds. If the cardinality of these two sets is vastly different,
+this would <em>suggest</em> that <em>G</em> and <em>H</em> are not
+isomorphic. We would also put similar time constraints on some of the
+procedures above or any new ones we can devise, which might give us
+some indication as to whether &lt; <em>Y</em> ; <em>R</em> &gt; are
+isomorphic. At present Magnus does not provide access to all these
+procedures. However we hope that, in due course, it will provide
+access to all of them.
+
+</font>
+<center>
+<font face="Helvetica, Arial, sans-serif">
+[<a href="../index.html">home</a>]
+</font>
+</center>
+ </body>
+</html>

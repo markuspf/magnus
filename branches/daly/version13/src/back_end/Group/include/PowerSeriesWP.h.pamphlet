@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/PowerSeriesWP.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "FreeGroup.h"
+#include "Word.h"
+
+@
+\section{class PowerSeriesWP}
+Alternative way to solve the word problem for a free nilpotent group
+<<class PowerSeriesWP>>=
+class PowerSeriesWP {
+public:
+  PowerSeriesWP( const FreeGroup& group, int nClass );
+  // copy constructor, destructor and operators =, == supplied by compiler.
+  bool isTrivial(const Word& w);
+
+private:
+<<struct State>>
+<<struct Stack>>
+  FreeGroup F;
+  int c;
+};
+
+@
+\subsection{struct State}
+<<struct State>>=
+  struct State { 
+    
+    State( int Coef = 1, int WPos = 0, int VPos = 0, int Power = 1) { 
+      coef = Coef; wPos = WPos; vPos = VPos, power = Power; }
+    
+    int coef; int wPos; int vPos; int power; 
+  };
+
+@
+\subsection{struct Stack}
+<<struct Stack>>=
+  struct Stack{ 
+    
+    Stack( int c ) : stackLen(0) { states = new State[c]; }
+    
+    ~Stack( ) { delete [] states; }
+    
+    void put( State s ) { states[stackLen++] = s; }
+    
+    void get( State& s) 
+      { 
+	if( stackLen > 0 )
+	  s = states[--stackLen];
+      }
+    
+    int length( ) { return stackLen; }
+    
+    State& state() { return states[stackLen - 1]; }
+    
+    private:
+    
+    State* states;
+    int stackLen;
+  };
+  
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/PowerSeriesWP.h
+#ifndef _PowerSeriesWP_H_
+#define _PowerSeriesWP_H_
+
+<<license>>
+<<include>>
+<<class PowerSeriesWP>>
+
+@
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

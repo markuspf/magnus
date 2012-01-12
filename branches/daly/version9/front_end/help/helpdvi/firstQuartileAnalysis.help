@@ -1,0 +1,9 @@
+@@ 
+
+About fractile
+
+The mean and the median are measures of central tendency. That is they located, in one way or another, the center of the data. Often it is desired to locate other positions as
+well. A class of measures which accomplishes this are the fractiles or quantiles. These are measures which divide the total data into fractional sections. The simplest
+quantile is the median which divides the data in half. That is the median is the measurement which is located so that 50% of the data is less than or equal to it. 
+
+       @For more information click here@html/fractileAnalysis/index.html::Fractile Analysis Help@

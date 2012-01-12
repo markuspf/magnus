@@ -1,0 +1,61 @@
+%% some measurements to suit american and european paper:
+%\parindent0pt
+\textwidth17cm
+\oddsidemargin-.7cm
+\topmargin-1cm
+\textheight22cm
+
+
+\newcommand{\update}[1]{\marginpar{\footnotesize #1}}
+
+\newcommand{\magnus}{{\sc magnus}}
+\newcommand{\lskip}{\vspace{10pt}}
+
+
+\newcommand{\subsubsubsection}[1]{\vspace{3pt}{\noindent\bf #1}\vspace{3pt}}
+
+
+\newcommand{\wish}[3]{
+\item{\em #1}\\
+{\sc input}: #2\\
+{\sc output}: #3
+}
+
+\newcommand{\wishtwo}[4]{
+\item{\em #1}\\
+{\sc input}: #2\\
+{\sc primary output}: #3\\
+{\sc secondary output}: #4
+}
+
+\newcommand{\wishthree}[5]{
+\item{\em #1}\\
+{\sc input}: #2\\
+{\sc primary output}: #3\\
+{\sc secondary output}: #4\\
+{\sc tertiary output}: #5
+}
+
+
+\newcommand{\tick}{\makebox[1pt][r]{\raisebox{4pt}{$\surd$}}}
+\newcommand{\notick}{\makebox[1pt]{}}
+\newcommand{\square}{$\Box$}
+\newcommand{\who}[1]{\makebox[2.0cm][l]{#1}}
+\newcommand{\when}[1]{\makebox[1.7cm]{#1}}
+\newcommand{\ckitem}[4]{\item\square#1\who{\kern1ex#2}\when{#3}\parbox[t]{12cm}{#4}}
+%\newcommand{\subckitem}[4]{\item\square#1\who{\kern1ex#2}\when{#3}\parbox[t]{9.5cm}{#4}}
+\newcommand{\subckitem}[4]{\item\square#1\who{\kern1ex#2}\parbox[t]{9.5cm}{#4}}
+
+
+\newcommand{\done}{$\Box$\makebox[1pt][r]{\raisebox{4pt}{$\surd$}}}
+\newcommand{\nearly}{$\Box$}
+\newcommand{\planned}{$\heartsuit$}
+\newcommand{\capa}[2]{\item#2\kern2ex#1}
+
+
+\newcommand{\FE}{{\sf FE}}
+\newcommand{\SM}{{\sf SM}}
+\newcommand{\CM}{{\sf CM}}
+\newcommand{\CMs}{{\sf CMs}}
+\newcommand{\GCM}{{\sf GCM}}
+\newcommand{\GIC}{{\sf GIC}}

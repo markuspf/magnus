@@ -1,0 +1,112 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Subgroup/include/TurnerProperSubgroupEnumerator.h}
+\author{Alexander Ushakov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "FreeGroup.h"
+#include "File.h"
+#include "SGofFreeGroup.h"
+
+@
+\section{class ProperSubgroupEnumerator}
+<<class ProperSubgroupEnumerator>>=
+class ProperSubgroupEnumerator
+{
+public:
+  ProperSubgroupEnumerator(const FreeGroup& F, const VectorOf<Word>& words);
+  ProperSubgroupEnumerator(const FreeGroup& F, const Word& word);
+ ~ProperSubgroupEnumerator();
+
+  ProperSubgroupEnumerator(const ProperSubgroupEnumerator& PSE);
+  int operator == (const ProperSubgroupEnumerator& PSE);
+  // hidden
+
+  bool getNextProperSubgroup(SGofFreeGroup& sg);
+
+  Chars getFileName() { 
+        return file.getFileName(); 
+  }
+
+private:
+  const VectorOf<Word> theWords;
+  const FreeGroup theGroup;
+
+  VectorOf<Word> genOfGroup;
+  // generators of free group
+
+  const int rank;
+  // rank of the FreeGroup
+
+  bool stepTo();
+  void stepBack();
+  bool setRefs();
+  void buildSG( );
+  Word getWord(int x, int y);
+
+  File file;
+  // debug file
+
+  SGofFreeGroup *subgroup;
+  // current subgroup
+  VectorOf<Word> genOfSG;
+  // generators of current subgroup
+  int qWord;
+  // generator quantity
+
+
+  int nVert;
+  // num of current vertice
+  int nSet;
+  // num of current set
+
+  int *partition;
+  int **_partition;
+  // partition 
+
+  int qSet;
+  // set quantity 
+  int qVert;
+  // vertice quantity
+
+  int *setToVert;
+  int *vertToWord;
+  int *vertToPos;
+
+  struct LC {
+    int qSet;
+  }* lCells;
+
+  enum { UNKNOWN=-1 };
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1998 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+
+@
+<<*>>=
+// src/backend/Subgroup/include/TurnerProperSubgroupEnumerator.h
+#ifndef _TURNER_PROPER_SUBGROUP_ENUMERATOR_H_
+#define _TURNER_PROPER_SUBGROUP_ENUMERATOR_H_
+
+<<license>>
+<<include>>
+<<class ProperSubgroupEnumerator>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

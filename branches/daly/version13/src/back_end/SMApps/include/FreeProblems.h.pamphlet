@@ -1,0 +1,245 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/FreeProblems.h}
+\author{Roger Needham, Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "ComputationManager.h"
+#include "Supervisor.h"
+#include "RandomAutoInFree.h"
+#include "SGofFreeGroup.h"
+#include "File.h"
+
+@
+\section{class AutoInFreeIsFinitARCer}
+<<class AutoInFreeIsFinitARCer>>=
+class AutoInFreeIsFinitARCer : public ARCer
+{
+public:
+  AutoInFreeIsFinitARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theMap( 0 ),retValue(dontknow) { } 
+  
+  ~AutoInFreeIsFinitARCer( ) { delete theMap; }
+
+ void setArguments( const Map& map,const FreeGroup& group );
+
+ Trichotomy getRetValue() const { return retValue;}
+ int getOrder() const { return theOrder;}
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  FreeGroup theGroup;
+  Map* theMap;
+  Trichotomy retValue;
+  int theOrder;
+};
+
+@
+\section{class AutoInFreeIsFinite}
+<<class AutoInFreeIsFinite>>=
+class AutoInFreeIsFinite : public Supervisor
+{
+public:
+  AutoInFreeIsFinite(const class SMMap& hom);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  const class SMMap& theHom;
+  AutoInFreeIsFinitARCer arcer;
+};
+
+@
+\section{class SGOfFreeContainsConjugateARCer}
+<<class SGOfFreeContainsConjugateARCer>>=
+class SGOfFreeContainsConjugateARCer : public ARCer
+{
+public:
+  SGOfFreeContainsConjugateARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSubgroup( 0 ) { } 
+  
+  ~SGOfFreeContainsConjugateARCer( ) { delete theSubgroup; }
+
+ void setArguments(const SGofFreeGroup& subgroup, const VectorOf<Word>& gens);
+
+  bool getRetValue(Word& c) const{ 
+    if (retValue)
+      c = conjugator;
+    return retValue; 
+  }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGofFreeGroup* theSubgroup;
+  bool retValue;
+  Word conjugator;
+  SetOf<Word> generators;
+};
+
+@
+\section{class SGOfFreeContainsConjugate}
+<<class SGOfFreeContainsConjugate>>=
+class SGOfFreeContainsConjugate : public Supervisor
+{
+public:
+  SGOfFreeContainsConjugate(const class SMSubgroup& S1, 
+                            const class SMSubgroup& S2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup1;
+  const class SMSubgroup& subgroup2;
+  SGOfFreeContainsConjugateARCer arcer;
+};
+
+@
+\section{class SGOfFreeConjugateToARCer}
+<<class SGOfFreeConjugateToARCer>>=
+class SGOfFreeConjugateToARCer : public ARCer
+{
+public:
+  SGOfFreeConjugateToARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSubgroup( 0 ) { } 
+  
+  ~SGOfFreeConjugateToARCer( ) { delete theSubgroup; }
+
+ void setArguments(const SGofFreeGroup& subgroup, const VectorOf<Word>& gens);
+
+  bool getRetValue( ) const{ 
+    return retValue; 
+  }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGofFreeGroup* theSubgroup;
+  bool retValue;
+  SetOf<Word> generators;
+};
+
+@
+\section{class SGOfFreeConjugateTo}
+<<class SGOfFreeConjugateTo>>=
+class SGOfFreeConjugateTo : public Supervisor
+{
+public:
+  SGOfFreeConjugateTo(const class SMSubgroup& S1, const class SMSubgroup& S2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup1;
+  const class SMSubgroup& subgroup2;
+  SGOfFreeConjugateToARCer arcer;
+};
+
+@
+\section{class AutEnumeratorARCer}
+<<class AutEnumeratorARCer>>=
+class AutEnumeratorARCer : public ARCer
+{
+public:
+  AutEnumeratorARCer( ComputationManager& boss ) 
+    : ARCer( boss ), randAuto( 0 ), isFinite(0) { } 
+
+  ~AutEnumeratorARCer( ) { delete randAuto; file << end;} 
+
+  void setArguments( const FreeGroup& group,int avgNumbers, bool isfinite);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  Chars getFileName();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  RandomAutoInFree* randAuto;
+  bool isFinite;
+  File file;
+};
+
+@
+\section{class AutEnumerator}
+<<class AutEnumerator>>=
+class AutEnumerator : public ComputationManager
+{
+public:
+  AutEnumerator(class SMFPGroup& F, int avgNumGens = 1, 
+                bool is_finite = false);
+
+  ~AutEnumerator( );
+  const IconID iconID( ) const;             // overrides ComputationManager
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  AutEnumeratorARCer arcer;
+  int avgNumGens;
+  bool isFinite;
+  bool isStarted;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/FreeProblems.h
+#ifndef _FREE_PROBLEMS_H_
+#define _FREE_PROBLEMS_H_
+
+<<license>>
+<<include>>
+<<class AutoInFreeIsFinitARCer>>
+<<class AutoInFreeIsFinite>>
+<<class SGOfFreeContainsConjugateARCer>>
+<<class SGOfFreeContainsConjugate>>
+<<class SGOfFreeConjugateToARCer>>
+<<class SGOfFreeConjugateTo>>
+<<class AutEnumeratorARCer>>
+<<class AutEnumerator>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

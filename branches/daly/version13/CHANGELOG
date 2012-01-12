@@ -1,0 +1,4 @@
+20040602 tpd src/backend/libg++/Rational.C applied xu's changes
+20040602 tpd src/backend/libg++/String.C applied xu's changes
+20040602 tpd src/backend/libg++/* moved to pamphlet form
+20040602 tpd src/backend/libg++/Makefile created

@@ -1,0 +1,401 @@
+\documentclass{article}
+\usepackage{../../../../mnt/linux/bin/axiom}
+\begin{document}
+\title{src/backend/AProducts/include/Makefile}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Environment}
+<<environment>>=
+IN=${SRC}/backend/AProducts/include
+OUT=${INT}/include
+DOC=${MNT}/${SYS}/doc/src/backend/AProducts/include
+
+@
+\section{Code}
+\section{AmalgamatedProductParser}
+<<AmalgamatedProductParser.h (OUT from IN)>>=
+${OUT}/AmalgamatedProductParser.h: ${IN}/AmalgamatedProductParser.h.pamphlet
+	@echo 1 making ${OUT}/AmalgamatedProductParser.h from ${IN}/AmalgamatedProductParser.h.pamphlet
+	@${DOCUMENT} src AmalgamatedProductParser.h ${OUT}
+
+@
+<<AmalgamatedProductParser.h.dvi (DOC from IN)>>=
+${DOC}/AmalgamatedProductParser.h.dvi: ${IN}/AmalgamatedProductParser.h.pamphlet ${DOC}/axiom.sty
+	@echo 2 making ${DOC}/AmalgamatedProductParser.h.dvi from ${IN}/AmalgamatedProductParser.h.pamphlet 
+	@${DOCUMENT} dvi AmalgamatedProductParser.h ${DOC} AmalgamatedProductParser.h ${NOISE}
+
+@
+\section{AP-fixups}
+<<AP-fixups.h (OUT from IN)>>=
+${OUT}/AP-fixups.h: ${IN}/AP-fixups.h.pamphlet
+	@echo 3 making ${OUT}/AP-fixups.h from ${IN}/AP-fixups.h.pamphlet
+	@${DOCUMENT} src AP-fixups.h ${OUT}
+
+@
+<<AP-fixups.h.dvi (DOC from IN)>>=
+${DOC}/AP-fixups.h.dvi: ${IN}/AP-fixups.h.pamphlet ${DOC}/axiom.sty
+	@echo 42 making ${DOC}/AP-fixups.h.dvi from ${IN}/AP-fixups.h.pamphlet 
+	@${DOCUMENT} dvi AP-fixups.h ${DOC} AP-fixups.h ${NOISE}
+
+@
+\section{APofFreeGroups}
+<<APofFreeGroups.h (OUT from IN)>>=
+${OUT}/APofFreeGroups.h: ${IN}/APofFreeGroups.h.pamphlet
+	@echo 5 making ${OUT}/APofFreeGroups.h from ${IN}/APofFreeGroups.h.pamphlet
+	@${DOCUMENT} src APofFreeGroups.h ${OUT}
+
+@
+<<APofFreeGroups.h.dvi (DOC from IN)>>=
+${DOC}/APofFreeGroups.h.dvi: ${IN}/APofFreeGroups.h.pamphlet ${DOC}/axiom.sty
+	@echo 6 making ${DOC}/APofFreeGroups.h.dvi from ${IN}/APofFreeGroups.h.pamphlet 
+	@${DOCUMENT} dvi APofFreeGroups.h ${DOC} APofFreeGroups.h ${NOISE}
+
+@
+\section{APofFreeGroupsRep}
+<<APofFreeGroupsRep.h (OUT from IN)>>=
+${OUT}/APofFreeGroupsRep.h: ${IN}/APofFreeGroupsRep.h.pamphlet
+	@echo 7 making ${OUT}/APofFreeGroupsRep.h from ${IN}/APofFreeGroupsRep.h.pamphlet
+	@${DOCUMENT} src APofFreeGroupsRep.h ${OUT}
+
+@
+<<APofFreeGroupsRep.h.dvi (DOC from IN)>>=
+${DOC}/APofFreeGroupsRep.h.dvi: ${IN}/APofFreeGroupsRep.h.pamphlet ${DOC}/axiom.sty
+	@echo 8 making ${DOC}/APofFreeGroupsRep.h.dvi from ${IN}/APofFreeGroupsRep.h.pamphlet 
+	@${DOCUMENT} dvi APofFreeGroupsRep.h ${DOC} APofFreeGroupsRep.h ${NOISE}
+
+@
+\section{APwithOneRelator}
+<<APwithOneRelator.h (OUT from IN)>>=
+${OUT}/APwithOneRelator.h: ${IN}/APwithOneRelator.h.pamphlet
+	@echo 9 making ${OUT}/APwithOneRelator.h from ${IN}/APwithOneRelator.h.pamphlet
+	@${DOCUMENT} src APwithOneRelator.h ${OUT}
+
+@
+<<APwithOneRelator.h.dvi (DOC from IN)>>=
+${DOC}/APwithOneRelator.h.dvi: ${IN}/APwithOneRelator.h.pamphlet ${DOC}/axiom.sty
+	@echo 10 making ${DOC}/APwithOneRelator.h.dvi from ${IN}/APwithOneRelator.h.pamphlet 
+	@${DOCUMENT} dvi APwithOneRelator.h ${DOC} APwithOneRelator.h ${NOISE}
+
+@
+\section{APwithOneRelatorRep}
+<<APwithOneRelatorRep.h (OUT from IN)>>=
+${OUT}/APwithOneRelatorRep.h: ${IN}/APwithOneRelatorRep.h.pamphlet
+	@echo 11 making ${OUT}/APwithOneRelatorRep.h from ${IN}/APwithOneRelatorRep.h.pamphlet
+	@${DOCUMENT} src APwithOneRelatorRep.h ${OUT}
+
+@
+<<APwithOneRelatorRep.h.dvi (DOC from IN)>>=
+${DOC}/APwithOneRelatorRep.h.dvi: ${IN}/APwithOneRelatorRep.h.pamphlet ${DOC}/axiom.sty
+	@echo 12 making ${DOC}/APwithOneRelatorRep.h.dvi from ${IN}/APwithOneRelatorRep.h.pamphlet 
+	@${DOCUMENT} dvi APwithOneRelatorRep.h ${DOC} APwithOneRelatorRep.h ${NOISE}
+
+@
+\section{CONDITION}
+<<CONDITION.h (OUT from IN)>>=
+${OUT}/CONDITION.h: ${IN}/CONDITION.h.pamphlet
+	@echo 13 making ${OUT}/CONDITION.h from ${IN}/CONDITION.h.pamphlet
+	@${DOCUMENT} src CONDITION.h ${OUT}
+
+@
+<<CONDITION.h.dvi (DOC from IN)>>=
+${DOC}/CONDITION.h.dvi: ${IN}/CONDITION.h.pamphlet ${DOC}/axiom.sty
+	@echo 14 making ${DOC}/CONDITION.h.dvi from ${IN}/CONDITION.h.pamphlet 
+	@${DOCUMENT} dvi CONDITION.h ${DOC} CONDITION.h ${NOISE}
+
+@
+\section{HNNExtension}
+<<HNNExtension.h (OUT from IN)>>=
+${OUT}/HNNExtension.h: ${IN}/HNNExtension.h.pamphlet
+	@echo 15 making ${OUT}/HNNExtension.h from ${IN}/HNNExtension.h.pamphlet
+	@${DOCUMENT} src HNNExtension.h ${OUT}
+
+@
+<<HNNExtension.h.dvi (DOC from IN)>>=
+${DOC}/HNNExtension.h.dvi: ${IN}/HNNExtension.h.pamphlet ${DOC}/axiom.sty
+	@echo 16 making ${DOC}/HNNExtension.h.dvi from ${IN}/HNNExtension.h.pamphlet 
+	@${DOCUMENT} dvi HNNExtension.h ${DOC} HNNExtension.h ${NOISE}
+
+@
+\section{HNNExtOfFreeGroup}
+<<HNNExtOfFreeGroup.h (OUT from IN)>>=
+${OUT}/HNNExtOfFreeGroup.h: ${IN}/HNNExtOfFreeGroup.h.pamphlet
+	@echo 17 making ${OUT}/HNNExtOfFreeGroup.h from ${IN}/HNNExtOfFreeGroup.h.pamphlet
+	@${DOCUMENT} src HNNExtOfFreeGroup.h ${OUT}
+
+@
+<<HNNExtOfFreeGroup.h.dvi (DOC from IN)>>=
+${DOC}/HNNExtOfFreeGroup.h.dvi: ${IN}/HNNExtOfFreeGroup.h.pamphlet ${DOC}/axiom.sty
+	@echo 18 making ${DOC}/HNNExtOfFreeGroup.h.dvi from ${IN}/HNNExtOfFreeGroup.h.pamphlet 
+	@${DOCUMENT} dvi HNNExtOfFreeGroup.h ${DOC} HNNExtOfFreeGroup.h ${NOISE}
+
+@
+\section{HNNExtOfORGroup}
+<<HNNExtOfORGroup.h (OUT from IN)>>=
+${OUT}/HNNExtOfORGroup.h: ${IN}/HNNExtOfORGroup.h.pamphlet
+	@echo 19 making ${OUT}/HNNExtOfORGroup.h from ${IN}/HNNExtOfORGroup.h.pamphlet
+	@${DOCUMENT} src HNNExtOfORGroup.h ${OUT}
+
+@
+<<HNNExtOfORGroup.h.dvi (DOC from IN)>>=
+${DOC}/HNNExtOfORGroup.h.dvi: ${IN}/HNNExtOfORGroup.h.pamphlet ${DOC}/axiom.sty
+	@echo 20 making ${DOC}/HNNExtOfORGroup.h.dvi from ${IN}/HNNExtOfORGroup.h.pamphlet 
+	@${DOCUMENT} dvi HNNExtOfORGroup.h ${DOC} HNNExtOfORGroup.h ${NOISE}
+
+@
+\section{HNNParser}
+<<HNNParser.h (OUT from IN)>>=
+${OUT}/HNNParser.h: ${IN}/HNNParser.h.pamphlet
+	@echo 21 making ${OUT}/HNNParser.h from ${IN}/HNNParser.h.pamphlet
+	@${DOCUMENT} src HNNParser.h ${OUT}
+
+@
+<<HNNParser.h.dvi (DOC from IN)>>=
+${DOC}/HNNParser.h.dvi: ${IN}/HNNParser.h.pamphlet ${DOC}/axiom.sty
+	@echo 22 making ${DOC}/HNNParser.h.dvi from ${IN}/HNNParser.h.pamphlet 
+	@${DOCUMENT} dvi HNNParser.h ${DOC} HNNParser.h ${NOISE}
+
+@
+\section{MagnusBreakdown}
+<<MagnusBreakdown.h (OUT from IN)>>=
+${OUT}/MagnusBreakdown.h: ${IN}/MagnusBreakdown.h.pamphlet
+	@echo 23 making ${OUT}/MagnusBreakdown.h from ${IN}/MagnusBreakdown.h.pamphlet
+	@${DOCUMENT} src MagnusBreakdown.h ${OUT}
+
+@
+<<MagnusBreakdown.h.dvi (DOC from IN)>>=
+${DOC}/MagnusBreakdown.h.dvi: ${IN}/MagnusBreakdown.h.pamphlet ${DOC}/axiom.sty
+	@echo 24 making ${DOC}/MagnusBreakdown.h.dvi from ${IN}/MagnusBreakdown.h.pamphlet 
+	@${DOCUMENT} dvi MagnusBreakdown.h ${DOC} MagnusBreakdown.h ${NOISE}
+
+@
+\section{Margin}
+<<Margin.h (OUT from IN)>>=
+${OUT}/Margin.h: ${IN}/Margin.h.pamphlet
+	@echo 25 making ${OUT}/Margin.h from ${IN}/Margin.h.pamphlet
+	@${DOCUMENT} src Margin.h ${OUT}
+
+@
+<<Margin.h.dvi (DOC from IN)>>=
+${DOC}/Margin.h.dvi: ${IN}/Margin.h.pamphlet ${DOC}/axiom.sty
+	@echo 26 making ${DOC}/Margin.h.dvi from ${IN}/Margin.h.pamphlet 
+	@${DOCUMENT} dvi Margin.h ${DOC} Margin.h ${NOISE}
+
+@
+\section{OneRelatorGroup}
+<<OneRelatorGroup.h (OUT from IN)>>=
+${OUT}/OneRelatorGroup.h: ${IN}/OneRelatorGroup.h.pamphlet
+	@echo 27 making ${OUT}/OneRelatorGroup.h from ${IN}/OneRelatorGroup.h.pamphlet
+	@${DOCUMENT} src OneRelatorGroup.h ${OUT}
+
+@
+<<OneRelatorGroup.h.dvi (DOC from IN)>>=
+${DOC}/OneRelatorGroup.h.dvi: ${IN}/OneRelatorGroup.h.pamphlet ${DOC}/axiom.sty
+	@echo 28 making ${DOC}/OneRelatorGroup.h.dvi from ${IN}/OneRelatorGroup.h.pamphlet 
+	@${DOCUMENT} dvi OneRelatorGroup.h ${DOC} OneRelatorGroup.h ${NOISE}
+
+@
+\section{OneRelatorGroupWithTorsion}
+<<OneRelatorGroupWithTorsion.h (OUT from IN)>>=
+${OUT}/OneRelatorGroupWithTorsion.h: ${IN}/OneRelatorGroupWithTorsion.h.pamphlet
+	@echo 29 making ${OUT}/OneRelatorGroupWithTorsion.h from ${IN}/OneRelatorGroupWithTorsion.h.pamphlet
+	@${DOCUMENT} src OneRelatorGroupWithTorsion.h ${OUT}
+
+@
+<<OneRelatorGroupWithTorsion.h.dvi (DOC from IN)>>=
+${DOC}/OneRelatorGroupWithTorsion.h.dvi: ${IN}/OneRelatorGroupWithTorsion.h.pamphlet ${DOC}/axiom.sty
+	@echo 30 making ${DOC}/OneRelatorGroupWithTorsion.h.dvi from ${IN}/OneRelatorGroupWithTorsion.h.pamphlet 
+	@${DOCUMENT} dvi OneRelatorGroupWithTorsion.h ${DOC} OneRelatorGroupWithTorsion.h ${NOISE}
+
+@
+\section{ORProblems}
+<<ORProblems.h (OUT from IN)>>=
+${OUT}/ORProblems.h: ${IN}/ORProblems.h.pamphlet
+	@echo 31 making ${OUT}/ORProblems.h from ${IN}/ORProblems.h.pamphlet
+	@${DOCUMENT} src ORProblems.h ${OUT}
+
+@
+<<ORProblems.h.dvi (DOC from IN)>>=
+${DOC}/ORProblems.h.dvi: ${IN}/ORProblems.h.pamphlet ${DOC}/axiom.sty
+	@echo 32 making ${DOC}/ORProblems.h.dvi from ${IN}/ORProblems.h.pamphlet 
+	@${DOCUMENT} dvi ORProblems.h ${DOC} ORProblems.h ${NOISE}
+
+@
+\section{Range}
+<<Range.h (OUT from IN)>>=
+${OUT}/Range.h: ${IN}/Range.h.pamphlet
+	@echo 33 making ${OUT}/Range.h from ${IN}/Range.h.pamphlet
+	@${DOCUMENT} src Range.h ${OUT}
+
+@
+<<Range.h.dvi (DOC from IN)>>=
+${DOC}/Range.h.dvi: ${IN}/Range.h.pamphlet ${DOC}/axiom.sty
+	@echo 34 making ${DOC}/Range.h.dvi from ${IN}/Range.h.pamphlet 
+	@${DOCUMENT} dvi Range.h ${DOC} Range.h ${NOISE}
+
+@
+\section{ShortenByRelators2}
+<<ShortenByRelators2.h (OUT from IN)>>=
+${OUT}/ShortenByRelators2.h: ${IN}/ShortenByRelators2.h.pamphlet
+	@echo 35 making ${OUT}/ShortenByRelators2.h from ${IN}/ShortenByRelators2.h.pamphlet
+	@${DOCUMENT} src ShortenByRelators2.h ${OUT}
+
+@
+<<ShortenByRelators2.h.dvi (DOC from IN)>>=
+${DOC}/ShortenByRelators2.h.dvi: ${IN}/ShortenByRelators2.h.pamphlet ${DOC}/axiom.sty
+	@echo 36 making ${DOC}/ShortenByRelators2.h.dvi from ${IN}/ShortenByRelators2.h.pamphlet 
+	@${DOCUMENT} dvi ShortenByRelators2.h ${DOC} ShortenByRelators2.h ${NOISE}
+
+@
+\section{SubgroupOfOneRelatorGroup}
+<<SubgroupOfOneRelatorGroup.h (OUT from IN)>>=
+${OUT}/SubgroupOfOneRelatorGroup.h: ${IN}/SubgroupOfOneRelatorGroup.h.pamphlet
+	@echo 37 making ${OUT}/SubgroupOfOneRelatorGroup.h from ${IN}/SubgroupOfOneRelatorGroup.h.pamphlet
+	@${DOCUMENT} src SubgroupOfOneRelatorGroup.h ${OUT}
+
+@
+<<SubgroupOfOneRelatorGroup.h.dvi (DOC from IN)>>=
+${DOC}/SubgroupOfOneRelatorGroup.h.dvi: ${IN}/SubgroupOfOneRelatorGroup.h.pamphlet ${DOC}/axiom.sty
+	@echo 38 making ${DOC}/SubgroupOfOneRelatorGroup.h.dvi from ${IN}/SubgroupOfOneRelatorGroup.h.pamphlet 
+	@${DOCUMENT} dvi SubgroupOfOneRelatorGroup.h ${DOC} SubgroupOfOneRelatorGroup.h ${NOISE}
+
+@
+\section{SuperGen}
+<<SuperGen.h (OUT from IN)>>=
+${OUT}/SuperGen.h: ${IN}/SuperGen.h.pamphlet
+	@echo 39 making ${OUT}/SuperGen.h from ${IN}/SuperGen.h.pamphlet
+	@${DOCUMENT} src SuperGen.h ${OUT}
+
+@
+<<SuperGen.h.dvi (DOC from IN)>>=
+${DOC}/SuperGen.h.dvi: ${IN}/SuperGen.h.pamphlet ${DOC}/axiom.sty
+	@echo 40 making ${DOC}/SuperGen.h.dvi from ${IN}/SuperGen.h.pamphlet 
+	@${DOCUMENT} dvi SuperGen.h ${DOC} SuperGen.h ${NOISE}
+
+@
+\section{Whitehead}
+<<Whitehead.h (OUT from IN)>>=
+${OUT}/Whitehead.h: ${IN}/Whitehead.h.pamphlet
+	@echo 41 making ${OUT}/Whitehead.h from ${IN}/Whitehead.h.pamphlet
+	@${DOCUMENT} src Whitehead.h ${OUT}
+
+@
+<<Whitehead.h.dvi (DOC from IN)>>=
+${DOC}/Whitehead.h.dvi: ${IN}/Whitehead.h.pamphlet ${DOC}/axiom.sty
+	@echo 42 making ${DOC}/Whitehead.h.dvi from ${IN}/Whitehead.h.pamphlet 
+	@${DOCUMENT} dvi Whitehead.h ${DOC} Whitehead.h ${NOISE}
+
+@
+\section{axiom.sty}
+<<axiom.sty (DOC from IN)>>=
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 43 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@${DOCUMENT} chunk "axiom.sty" ${SRC}/doc/axiom.sty ${DOC} axiom.sty
+ 
+@
+<<*>>=
+<<environment>>
+
+FILES= ${OUT}/AmalgamatedProductParser.h ${OUT}/AP-fixups.h \
+       ${OUT}/APofFreeGroups.h ${OUT}/APofFreeGroupsRep.h \
+       ${OUT}/APwithOneRelator.h ${OUT}/APwithOneRelatorRep.h \
+       ${OUT}/CONDITION.h \
+       ${OUT}/HNNExtension.h ${OUT}/HNNExtOfFreeGroup.h \
+       ${OUT}/HNNExtOfORGroup.h ${OUT}/HNNParser.h \
+       ${OUT}/MagnusBreakdown.h ${OUT}/Margin.h \
+       ${OUT}/OneRelatorGroup.h \
+       ${OUT}/OneRelatorGroupWithTorsion.h ${OUT}/ORProblems.h \
+       ${OUT}/Range.h ${OUT}/ShortenByRelators2.h \
+       ${OUT}/SubgroupOfOneRelatorGroup.h ${OUT}/SuperGen.h \
+       ${OUT}/Whitehead.h
+
+DOCFILES= ${DOC}/AmalgamatedProductParser.h.dvi ${DOC}/AP-fixups.h.dvi \
+          ${DOC}/APofFreeGroups.h.dvi ${DOC}/APofFreeGroupsRep.h.dvi \
+          ${DOC}/APwithOneRelator.h.dvi ${DOC}/APwithOneRelatorRep.h.dvi \
+          ${DOC}/CONDITION.h.dvi \
+          ${DOC}/HNNExtension.h.dvi ${DOC}/HNNExtOfFreeGroup.h.dvi \
+          ${DOC}/HNNExtOfORGroup.h.dvi ${DOC}/HNNParser.h.dvi \
+          ${DOC}/MagnusBreakdown.h.dvi ${DOC}/Margin.h.dvi \
+          ${DOC}/OneRelatorGroup.h.dvi \
+          ${DOC}/OneRelatorGroupWithTorsion.h.dvi ${DOC}/ORProblems.h.dvi \
+          ${DOC}/Range.h.dvi ${DOC}/ShortenByRelators2.h.dvi \
+          ${DOC}/SubgroupOfOneRelatorGroup.h.dvi ${DOC}/SuperGen.h.dvi \
+          ${DOC}/Whitehead.h.dvi
+
+all: ${FILES} ${DOCFILES}
+	@echo 44 finished ${IN}
+
+<<AmalgamatedProductParser.h (OUT from IN)>>
+<<AmalgamatedProductParser.h.dvi (DOC from IN)>>
+
+<<AP-fixups.h (OUT from IN)>>
+<<AP-fixups.h.dvi (DOC from IN)>>
+
+<<APofFreeGroups.h (OUT from IN)>>
+<<APofFreeGroups.h.dvi (DOC from IN)>>
+
+<<APofFreeGroupsRep.h (OUT from IN)>>
+<<APofFreeGroupsRep.h.dvi (DOC from IN)>>
+
+<<APwithOneRelator.h (OUT from IN)>>
+<<APwithOneRelator.h.dvi (DOC from IN)>>
+
+<<APwithOneRelatorRep.h (OUT from IN)>>
+<<APwithOneRelatorRep.h.dvi (DOC from IN)>>
+
+<<CONDITION.h (OUT from IN)>>
+<<CONDITION.h.dvi (DOC from IN)>>
+
+<<HNNExtension.h (OUT from IN)>>
+<<HNNExtension.h.dvi (DOC from IN)>>
+
+<<HNNExtOfFreeGroup.h (OUT from IN)>>
+<<HNNExtOfFreeGroup.h.dvi (DOC from IN)>>
+
+<<HNNExtOfORGroup.h (OUT from IN)>>
+<<HNNExtOfORGroup.h.dvi (DOC from IN)>>
+
+<<HNNParser.h (OUT from IN)>>
+<<HNNParser.h.dvi (DOC from IN)>>
+
+<<MagnusBreakdown.h (OUT from IN)>>
+<<MagnusBreakdown.h.dvi (DOC from IN)>>
+
+<<Margin.h (OUT from IN)>>
+<<Margin.h.dvi (DOC from IN)>>
+
+<<OneRelatorGroup.h (OUT from IN)>>
+<<OneRelatorGroup.h.dvi (DOC from IN)>>
+
+<<OneRelatorGroupWithTorsion.h (OUT from IN)>>
+<<OneRelatorGroupWithTorsion.h.dvi (DOC from IN)>>
+
+<<ORProblems.h (OUT from IN)>>
+<<ORProblems.h.dvi (DOC from IN)>>
+
+<<Range.h (OUT from IN)>>
+<<Range.h.dvi (DOC from IN)>>
+
+<<ShortenByRelators2.h (OUT from IN)>>
+<<ShortenByRelators2.h.dvi (DOC from IN)>>
+
+<<SubgroupOfOneRelatorGroup.h (OUT from IN)>>
+<<SubgroupOfOneRelatorGroup.h.dvi (DOC from IN)>>
+
+<<SuperGen.h (OUT from IN)>>
+<<SuperGen.h.dvi (DOC from IN)>>
+
+<<Whitehead.h (OUT from IN)>>
+<<Whitehead.h.dvi (DOC from IN)>>
+
+<<axiom.sty (DOC from IN)>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

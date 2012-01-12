@@ -1,0 +1,55 @@
+\documentclass[12pt]{article}
+\title{\bf{The subgroup of fixed points of an automorphism}}
+\date{}
+\pagestyle{empty}
+\begin{document}
+\maketitle
+
+
+\noindent
+$\phi : A \rightarrow A$ - automorphism of an abelian group $A$
+
+\noindent
+$Fix(\phi) = \{a \in A | \phi(a) = a\}$
+- the subgroup of fixed points of $\phi$
+
+\vspace{3mm}
+\noindent
+{\bf Input:} $A$ and $\phi$; 
+
+\noindent
+$A = <a_1, ..., a_k | r_1 = 1, ... >$ - abelian  
+
+\noindent
+$\phi : a_i \rightarrow w_i(a_1,...,a_k)$
+
+\vspace{3mm}
+\noindent
+{\bf Output:} generators for $Fix(\phi)$
+
+\vspace{3mm}
+\noindent
+{\bf Algorithm: }
+
+\noindent
+$a = a_1^{x_1} ... a_k^{x_k}, x_i \in Z$
+
+\noindent
+$\phi(a) = a \Leftrightarrow \phi(a_1)^{x_1} ... \phi(a_k)^{x_k} = 
+a_1^{x_1} ... a_k^{x_k}$
+
+\noindent
+$\Leftrightarrow w_1(\overline{a})^{x_1} ... w_n(\overline{a})^{x_n} 
+= a_1^{x_1} ... a_k^{x_k}$
+
+\vspace{3mm}
+\noindent
+Rewrite this as a system of equations (coordinatewise). Solve this
+system: the solution set gives you all fixed points.  To get a
+generating set one needs the fundamental system of solutions of the
+system.
+
+
+\end{document}
+
+

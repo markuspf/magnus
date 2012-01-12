@@ -1,0 +1,23 @@
+AP of Free Groups:
+
+1. Funkcija Trichotomy AmalgProductOfFreeGroupsRep::isFree( ) const
+nepravil'naja, v predydushhij versii ved' byl zhe pravil'nyj variant,
+a sejchas vy snova pochemu-to reshili ego pomenjat'.
+
+2. conjugacyProblem() ne realizovana, a vygljadit vse tak, kak budto
+by vse ok.
+   
+3. The comment to computeInvariants() "Instead, the FrontEnd developer
+should do it himself." is political incorrect. You have to write
+"himself or herself", else we are in big big trouble here in NY City
+with such comments. :''') - smeh skvoz' slezy.
+
+4. The declaration of isSubgroupAbelian() in AmalgProductOfFreeGroupsRep
+contains the comment "// @ep not implemented yet." which doesn't exist
+in AmalgProductOfFreeGroups, and it looks like this function is
+implemented.
+
+5. IsProperPowerOfSecond vozvrashhaet true dazhe kogda stepen' ravna
+1. Porjadok elementov pereputan.
+
+	

@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/EquationParser.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{EquationParser.h}
+The grammar for an equation (see the Word grammar):
+\begin{verbatim}
+ <equation> ::= '(' <generator list>('|' | ';' | ':')<word>('='<word>)? ')'
+\end{verbatim}
+
+It seems expedient to require the end user to enter equations in a way
+similar to presentations, so that the existing parsers can be used.
+\section{include}
+<<include>>=
+#include "PresentationParser.h"
+
+@
+\section{class EquationParser}
+<<class EquationParser>>=
+class EquationParser : protected PresentationParser
+{
+public:
+
+  EquationParser(istream &istr) : PresentationParser(istr) { }
+  // Initialize the parser with the istream from which to read.
+
+  // Destructor supplied by compiler.
+
+  // The following two methods should be redefined
+
+  virtual Word parseRelator( const VectorOf<Chars>&, Chars& );
+  virtual void getToken( );
+
+  Word parseEquation( const VectorOf<Chars>& names,
+                      VectorOf<Chars>& new_names,
+                      Chars& errMesg);
+  // Reads an equation and returns it as a word. The new vector of print
+  // names (generators first, then variables) is returned in new_names.
+  // As usual, if there is a parse error, the description is returned in
+  // errMesg.
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/EquationParser.h
+#ifndef _EQUATIONPARSER_H_
+#define _EQUATIONPARSER_H_
+
+<<license>>
+<<include>>
+<<class EquationParser>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

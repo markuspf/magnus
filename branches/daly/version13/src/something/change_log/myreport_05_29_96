@@ -1,0 +1,92 @@
+
+The last week was mostly spent for discussions, conversations and mail
+reading/writing, but also I succeeded to do something very useful,
+what brought me a lot of fun.
+
+The current situation is following:
+
+1. The Omsk Group.
+
+  a) They are still working with my notes about Amalgamated Products.
+
+  b) They answered to the questions which Roger requested, I've sent
+     them the new version of Magnus, which they've recently compiled
+     on LINUX and we'll have it soon. Magnus doesn't compile on LINUX
+     cleanly, it wants to be slightly modified. I'm going to discuss
+     this with Dima & Zhenia to change source code so that it could be
+     compiled without modification.
+
+  c) I've sent them our wish list for nilpotent and free nilpotent
+     groups. Moreover Vladimir and I discussed and sent theirs tasks
+     for June. Firstly they have to look at all existed code (that
+     includes Werner Nickel's code), understand everything and
+     programm some algorithms for nilpotency class 2 and 3. I really
+     like this idea, because in this case algorithms will work very
+     quickly and we can use them in almost all finitely presented
+     groups problems as fast checks (I meen mapping into nilpotent
+     quotients of class 2 and 3, as well as into abelianization). To
+     implement the algorithms in general case, it seems to me, they
+     should use Werner's programs rather than Sergei's programs,
+     because on the one hand Sergei didn't do too much work, on the
+     second hand I'm afraid his programms look too badly to be used:
+     we've got version with ARCs which is completely inconceivable and
+     contains lots of bugs; version without ARCs, which Sergei was
+     trying to make during last year, probably doesn't exist (at least
+     he told so to Aleksei couple of days ago). Sergei's free
+     nilpotent classes are almost empty. Moreover Werner's programs
+     are much faster and he promised to provide any help, what we
+     cannot wait from Sergei.
+
+  d) Aleksej, Vladimir and I discussed the tasks for one relator
+     groups, which also would be sent to Omsk.
+
+
+2. Sarah Rees.
+
+  Sarah really want's to have her and new Derek Holt's stuff inside
+  Magnus, because it hasn't been done for ages and makes some
+  difficulties for theirs work. I've had all the files in NY already,
+  and we'll discuss how to incorporate them into Magnus as soon as she
+  will be back in Warwick, probably it'll take place on Friday.
+
+
+3. Roger.
+
+  Roger's making porting to Windows 95 as well as porting to gcc 2.7.2
+  right now. We continue to discuss all problems which appears over
+  there.
+
+
+Gilbert, if you remember, last winter we thought about incorporating
+new version of automatic group package into Magnus. That time I've
+told you about the difficulties like that Sarah uses Roger Needham's
+blackbox to call Derek Holt's package, and this blackbox calls the
+UNIX function "system", which looses process ID, and so we can
+completely control Sarah's function, but we cannot manage such Derek's
+program. Also there are some resemble bugs in interaction between
+Session Manager objects. I thought about this for a while, because as
+I understood, we was going to incorporate plenty amount of stuff very
+soon, and it looks like I found how to avoid all this problems, I
+checked my idea, and moreover it has been implemented in Magnus
+already ! Now it doesn't matter what will Sarah (for example) call,
+Roger's blackbox or usual exec, how will she call, we can control
+everything, we can suspend all the processes which are involved, or
+resume them as well, an so on. It'll not only fix our problems, it
+will simplify my work, Sarah's work as well, and increase our ability
+to incorporate something - now we can incorporate almost any package,
+at least 99% of all exeisted packages (not 100%, because there's
+always an exeption).  So it's incorporated, and didn't take too much
+time to do it.
+
+
+Now, using this new technology, I can fix the termination process of
+Session Manager objects hierarchy. It is different from
+suspension/resumption process, and I have to change the main classes
+of Session Manager like ComputationManager, Supervisor, Subordinate,
+MirrorSubordinate, GCM and so on. I cannot adjourn this, because each
+new object will be menaged inproperly, and in some time it can prevent
+me to fix this problem at all, so I cannot add new stuff, before I
+finish this. It takes me a couple of days only, after this I'll make
+new version and try to finish abelian groups before incorporating new
+Sarah's stuff.
+

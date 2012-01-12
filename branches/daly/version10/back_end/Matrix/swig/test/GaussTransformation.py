@@ -1,0 +1,27 @@
+###this is a test file by xuxw(xuxw76@yahoo.com)
+import Magnus
+m=Magnus.MatrixInteger(3)
+m1=Magnus.MatrixRational(3)
+m2=Magnus.Matrixdouble(3)
+####
+a=Magnus.GaussTransformationInteger(m)
+b=Magnus.GaussTransformationRational(m1)
+c=Magnus.GaussTransformationdouble(m2)
+a.startComputation( ) 
+a.run() 
+a.runRow(2) 
+a.runUntilDiagHasZero() 
+a.runWhileDiagHasSingles() 
+x=a.getCurrentRow()  
+x=a.getCurrentCol()  
+x=a.canChange( )  
+x=a.done( )  
+x=a.isSingular( )
+x=a.isInvertible( )   
+x=a.getMatrix()  
+x=a.getTrMatrix() 
+x=a.getInvTrMatrix() 
+x=a.refMatrix() 
+x=a.isTransformed()  
+
+

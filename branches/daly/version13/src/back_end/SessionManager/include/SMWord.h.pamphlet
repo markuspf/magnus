@@ -1,0 +1,232 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/SMWord.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "AlgebraicObject.h"
+#include "SMFPGroup.h"
+#include "Word.h"
+#include "InformationCenter.h"
+#include "BaseProperties.h"
+
+@
+\section{New properties of Word's Information Center (WIC)}
+\subsection{class IsTrivialProperty}
+<<class IsTrivialProperty>>=
+class IsTrivialProperty : public NoDataProperty {
+public:
+  IsTrivialProperty(const Chars& descr) : NoDataProperty(descr) {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "IsTrivial"; }
+protected:
+  GenericProperty* clone() const { return new IsTrivialProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class WordOrderProperty}
+<<class WordOrderProperty>>=
+class WordOrderProperty : public IntegerProperty {
+public:
+  WordOrderProperty(const Integer& data) : IntegerProperty(data) {}
+  PropertyType actualType  () const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "WordOrder";   }
+protected:
+  GenericProperty* clone() const { return new WordOrderProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class MaximalRootProperty}
+<<class MaximalRootProperty>>=
+class MaximalRootProperty : public WordProperty {
+public:
+  MaximalRootProperty(const Word& data) : WordProperty(data) {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "MaximalRoot"; }
+protected:
+  GenericProperty* clone() const { return new MaximalRootProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class MaximalPowerProperty}
+<<class MaximalPowerProperty>>=
+class MaximalPowerProperty : public IntegerProperty {
+public:
+  MaximalPowerProperty(const Integer& data) : IntegerProperty(data) {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "MaximalPower"; }
+protected:
+  GenericProperty* clone() const { return new MaximalPowerProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class CollectedFormProperty}
+<<class CollectedFormProperty>>=
+class CollectedFormProperty : public PolyWordProperty {
+public:
+  CollectedFormProperty(const PolyWord& data) : PolyWordProperty(data) {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "CollectedForm"; }
+protected:
+  GenericProperty* clone() const { return new CollectedFormProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class WIC}
+<<class WIC>>=
+class WIC : public InformationCenter, protected FEData 
+{  
+public:
+  WIC( OID word_oid );
+  ~WIC( );
+
+  // Adapter for the IsTrivial property:
+  Trichotomy isTrivial() const;
+  Trichotomy isTrivial(Chars& expl);
+  // Yes if word is trivial, no if it is not.
+
+  void putIsTrivial(bool istrivial, const Chars& expl);
+  // Yes if word is trivial, no if it is not.
+
+  // Adapter for the CollectedForm property:
+  bool haveCollectedForm() const;
+  // True if have cannonical decomposition in nilpotent
+
+  void putHaveCollectedForm( const PolyWord& p );
+  const PolyWord& getCollectedForm() const;
+
+  // Adapter for the WordOrder property:
+  bool haveOrder( ) const;
+  void putHaveOrder (const Integer& o);
+  Integer getOrder( ) const;
+
+  // Adapter for the MaximalRoot property:
+  bool haveMaximalRoot() const;
+  // True if word has the maximal root
+
+  void putHaveMaximalRoot(const Word& ,const Integer&);
+  // Puts the solution of maximal root problem
+
+  void getMaximalRoot(Word& , Integer& ) const;
+
+  Trichotomy isPower() const;
+  // True if maximal root problem, was solved
+
+  Integer getMaximalExponent() const;
+
+  OID wordOID;
+  // Need this for composing messages about what has been found.
+};
+
+@
+\subsection{class WCM}
+<<class WCM>>=
+class WCM : public Supervisor
+{
+public:
+  WCM( class SMWord& W );
+  SMWord& getWord( )  { return theWord; }
+
+  void viewStructure(ostream& ostr) const { }
+
+  Subordinate<WCM,NGdecomposeWord> ngDecomposeWord;
+
+  void takeControl( );        // overrides ComputationManager
+  void start( ) { }           // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+
+  bool didFastChecks;
+  // The takeControl method does some sneaky checks of obvious properties
+  // (this should be formalized, since they are not always that fast).
+  // This records the first call, so that they are not done over and over.
+
+};
+
+@
+\subsection{class SMWord}
+<<class SMWord>>=
+class SMWord : public AlgebraicObject
+{
+public:
+  SMWord(SMFPGroup& G, const Word w, const Chars heritage);
+
+  SMWord(SMFPGroup& G) : AlgebraicObject(""), theGroup(G), 
+    wic( oid() ),theWCM ( 0 )
+    { }
+
+  Word getWord( ) const { return theWord; }
+  SMFPGroup& getParent( ) const { return theGroup; }
+  WCM& wcm() const { return *theWCM; }
+        InformationCenter* infoCenter()       { return &wic; }
+  const InformationCenter* infoCenter() const { return &wic; }
+
+  static const char* type( ) { return "SMWord"; }
+  const char* typeID( ) const { return type(); }        // overrides SMObject
+  const IconID iconID( ) const { return IconID::elt; }  // overrides SMObject
+  void viewStructure(ostream& ostr) const;              // overrides SMObject
+  void printProperties(ostream& ostr) const;            // overrides SMObject
+  void printDefinition(ostream& ostr) const;            // overrides SMObject
+  WIC wic;
+
+protected:
+  void readMessage(istream&) { }                        // overrides SMObject
+
+private:
+  SMFPGroup& theGroup;
+  const Word theWord;
+  WCM* theWCM;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/SMWord.h
+#ifndef _SMWORD_H_
+#define _SMWORD_H_
+
+<<license>>
+<<include>>
+<<class IsTrivialProperty>>
+<<class WordOrderProperty>>
+<<class MaximalRootProperty>>
+<<class MaximalPowerProperty>>
+<<class CollectedFormProperty>>
+<<class WIC>>
+<<class WCM>>
+<<class SMWord>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

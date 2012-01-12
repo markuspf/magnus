@@ -1,0 +1,4 @@
+TkTable 2.7
+Install this directory next to lib/tcl8.x and lib/tk8.x
+You can then use TkTable with a simple:
+	package require Tktable

@@ -1,0 +1,1613 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/freelistproblems.pamphlet}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "SMList.h"
+#include "File.h"
+#include "FPGroup.h"
+#include "OutMessages.h"
+#include "SMListIterator.h"
+#include "ListProblems.h"
+
+@
+<<include.c>>=
+#include "FreeListProblems.h"
+#include "OutMessages.h"
+#include "SMFPGroup.h"
+#include "viewStructure.h"
+#include "FreeGroup.h"
+#include "SMWord.h"
+#include "SMList.h"
+#include "SMListIterator.h"
+
+@
+\section{class SMListProperPowerInFreeARCer}
+\subsection{SMListProperPowerInFreeARCer Constructor}
+<<SMListProperPowerInFreeARCer Constructor.h>>=
+  SMListProperPowerInFreeARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+      theIterator( NULL ) { } 
+@
+\subsection{SMListProperPowerInFreeARCer::setArguments}
+<<SMListProperPowerInFreeARCer::setArguments.h>>=
+  void setArguments( const SMList<Word>& );
+@
+<<SMListProperPowerInFreeARCer::setArguments.c>>=
+void SMListProperPowerInFreeARCer::setArguments( const SMList<Word>& l )
+{
+  theIterator  =  new SMListIterator<Word>( l );
+  theGroup = l.getGroup().getFPGroup();
+}
+ 
+@
+\subsection{SMListProperPowerInFreeARCer::getData}
+<<SMListProperPowerInFreeARCer::getData.h>>=
+  const SMListData& getData() const { return theData; }
+@
+\subsection{SMListProperPowerInFreeARCer::runComputation}
+<<SMListProperPowerInFreeARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListProperPowerInFreeARCer::runComputation.c>>=
+void SMListProperPowerInFreeARCer::runComputation( )
+{
+  int counter = 1;
+  theData.setWriteMode();
+  for ( theIterator->reset();!theIterator->EOL();theIterator->nextCell() ){
+    Word w = theIterator->getData().cyclicallyReduce();
+    if ( w.isProperPower() ) {
+      theData << EnumWriteWord( w,theGroup) << Chars("\n\n");
+      counter++;
+    }
+  }
+  theData.closeCurrentMode();  
+}
+
+@
+\subsection{SMListProperPowerInFreeARCer::writeResults}
+<<SMListProperPowerInFreeARCer::writeResults.h>>=
+  void writeResults( ostream& o ) { o < theData; };
+@
+\subsection{SMListProperPowerInFreeARCer::readResults}
+<<SMListProperPowerInFreeARCer::readResults.h>>=
+  void readResults( istream& i) { i > theData; };
+@
+\subsection{class SMListProperPowerInFreeARCer}
+<<class SMListProperPowerInFreeARCer>>=
+class SMListProperPowerInFreeARCer : public ARCer
+{
+public:
+<<SMListProperPowerInFreeARCer Constructor.h>>
+<<SMListProperPowerInFreeARCer::setArguments.h>>
+<<SMListProperPowerInFreeARCer::getData.h>>
+<<SMListProperPowerInFreeARCer::runComputation.h>>
+<<SMListProperPowerInFreeARCer::writeResults.h>>
+<<SMListProperPowerInFreeARCer::readResults.h>>
+private:
+  SMListIterator<Word>* theIterator;
+  FPGroup theGroup;
+  SMListData theData;
+};
+
+@
+\section{class SMListExtractProperPowerInFree}
+\subsection{SMListExtractProperPowerInFree Constructor}
+<<SMListExtractProperPowerInFree Constructor.h>>=
+  SMListExtractProperPowerInFree( SMList<Word>& );
+@
+<<SMListExtractProperPowerInFree Constructor.c>>=
+SMListExtractProperPowerInFree::
+SMListExtractProperPowerInFree(SMList<Word>& sml)
+  : SMListSupervisor( sml ),
+    theList( sml ),
+    arcer( *this )
+{ 
+  arcer.setArguments( sml );
+}
+
+@
+\subsection{SMListExtractProperPowerInFree Destructor}
+<<SMListExtractProperPowerInFree Destructor.h>>=
+  ~SMListExtractProperPowerInFree() {  }
+@
+\subsection{SMListExtractProperPowerInFree::viewStructure}
+<<SMListExtractProperPowerInFree::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SMListExtractProperPowerInFree::viewStructure.c>>=
+void SMListExtractProperPowerInFree::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract proper powers from a list",
+  			    Text("Extract proper powers from ") +
+  			    Name( theList ) ,
+  			    helpID("SMListExtractProperPowerInFree",
+  				   theList.getGroup()),
+  			    Text("proper powers")
+  			    );
+  
+  // RadioButton rRB1("ToFile","Extract to a file");
+  //  RadioButton rRB2("ToList","Extract to another list");
+  
+  //  RadioButtonGroup extractRBG("ExtractTo");
+  
+  //  extractRBG.add(rRB1);
+  //  extractRBG.add(rRB2);
+  
+  //  pv.addParameter(extractRBG);
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+  			    "For the use of enumerator",40));
+  
+  submit(ostr, pv);
+}
+
+@
+\subsection{SMListExtractProperPowerInFree::takeControl}
+<<SMListExtractProperPowerInFree::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListExtractProperPowerInFree::takeControl.c>>=
+void SMListExtractProperPowerInFree::takeControl( )
+{
+  if ( freeARCs() > 0 ) {
+    if ( arcer.takeControl() ){
+      SMList<Word>* smo = 
+	new  SMList<Word>(theList.getGroup(),
+			  arcer.getData(),
+			  Text("Proper powers from") + Name(theList) 
+			  ); 
+      
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "WEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    } else 
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListExtractProperPowerInFree::start}
+<<SMListExtractProperPowerInFree::start.h>>=
+  void start( ); 
+@
+<<SMListExtractProperPowerInFree::start.c>>=
+void SMListExtractProperPowerInFree::start( )
+{
+  LogMessage msg( *this, theList );
+  msg << Link( Chars("Click here to see proper powers from ") + 
+	       Text( Name( theList ) ),
+	       "WEnumerator",
+	       arcer.getData().getDataFileName() ,
+	       true
+	       );
+  msg << ".";
+  msg.send();	
+}
+
+@
+\subsection{SMListExtractProperPowerInFree::terminate}
+<<SMListExtractProperPowerInFree::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListExtractProperPowerInFree}
+<<class SMListExtractProperPowerInFree>>=
+class SMListExtractProperPowerInFree  : public SMListSupervisor
+{
+public:
+<<SMListExtractProperPowerInFree Constructor.h>>
+<<SMListExtractProperPowerInFree Destructor.h>>
+<<SMListExtractProperPowerInFree::viewStructure.h>>
+<<SMListExtractProperPowerInFree::takeControl.h>>
+<<SMListExtractProperPowerInFree::start.h>>
+<<SMListExtractProperPowerInFree::terminate.h>>
+private:
+  SMList<Word>& theList;				    
+  SMListProperPowerInFreeARCer arcer;
+};
+
+@
+\section{class SMListCommutatorsInFreeARCer}
+\subsection{SMListCommutatorsInFreeARCer Constructor}
+<<SMListCommutatorsInFreeARCer Constructor.h>>=
+  SMListCommutatorsInFreeARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+      theIterator( NULL ) { } 
+@
+\subsection{SMListCommutatorsInFreeARCer::setArguments}
+<<SMListCommutatorsInFreeARCer::setArguments.h>>=
+  void setArguments( const SMList<Word>& );
+@
+<<SMListCommutatorsInFreeARCer::setArguments.c>>=
+void SMListCommutatorsInFreeARCer::setArguments( const SMList<Word>& l )
+{
+  theIterator  =  new SMListIterator<Word>( l );
+  theGroup = l.getGroup().getFreePreimage();
+}
+ 
+@
+\subsection{SMListCommutatorsInFreeARCer::getData}
+<<SMListCommutatorsInFreeARCer::getData.h>>=
+  const SMListData& getData() const { return theData; }
+@
+\subsection{SMListCommutatorsInFreeARCer::runComputation}
+<<SMListCommutatorsInFreeARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListCommutatorsInFreeARCer::runComputation.c>>=
+void SMListCommutatorsInFreeARCer::runComputation( )
+{
+  int counter = 1;
+  theData.setWriteMode();
+  for ( theIterator->reset();!theIterator->EOL();theIterator->nextCell() ){
+    Word w = theIterator->getData().cyclicallyReduce();
+    Word u,v;
+    if (  theGroup.isCommutator( w, u, v ) ) {
+      theData << EnumWriteWord( w,theGroup) << Chars("\n\n");
+      counter++;
+    }
+  }
+  theData.closeCurrentMode();
+}
+
+@
+\subsection{SMListCommutatorsInFreeARCer::writeResults}
+<<SMListCommutatorsInFreeARCer::writeResults.h>>=
+  void writeResults( ostream& o ) { o < theData; };
+@
+\subsection{SMListCommutatorsInFreeARCer::readResults}
+<<SMListCommutatorsInFreeARCer::readResults.h>>=
+  void readResults( istream& i) { i > theData;};
+@
+\subsection{class SMListCommutatorsInFreeARCer}
+<<class SMListCommutatorsInFreeARCer>>=
+class SMListCommutatorsInFreeARCer : public ARCer
+{
+public:
+<<SMListCommutatorsInFreeARCer Constructor.h>>
+<<SMListCommutatorsInFreeARCer::setArguments.h>>
+<<SMListCommutatorsInFreeARCer::getData.h>>
+<<SMListCommutatorsInFreeARCer::runComputation.h>>
+<<SMListCommutatorsInFreeARCer::writeResults.h>>
+<<SMListCommutatorsInFreeARCer::readResults.h>>
+private:
+  SMListIterator<Word>* theIterator;
+  FreeGroup theGroup;
+  SMListData theData;
+};
+
+@
+\section{class SMListExtractCommutatorsInFree}
+\subsection{SMListExtractCommutatorsInFree Constructor}
+<<SMListExtractCommutatorsInFree Constructor.h>>=
+  SMListExtractCommutatorsInFree( SMList<Word>& );
+@
+<<SMListExtractCommutatorsInFree Constructor.c>>=
+SMListExtractCommutatorsInFree::
+SMListExtractCommutatorsInFree(SMList<Word>& sml)
+  : SMListSupervisor( sml ),
+    theList( sml ),
+    arcer( *this )
+{ 
+  arcer.setArguments( sml );
+}
+
+@
+\subsection{SMListExtractCommutatorsInFree Destructor}
+<<SMListExtractCommutatorsInFree Destructor.h>>=
+  ~SMListExtractCommutatorsInFree() { }
+@
+\subsection{SMListExtractCommutatorsInFree::viewStructure}
+<<SMListExtractCommutatorsInFree::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SMListExtractCommutatorsInFree::viewStructure.c>>=
+void SMListExtractCommutatorsInFree::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract commutators from a list",
+			    Text("Extract commutators from ") +
+			    Name( theList ) ,
+			    helpID("SMListExtractCommutatorsInFree",
+				   theList.getGroup()),
+			    Text("commut")
+			    );
+  //  RadioButton rRB1("ToFile","Extract to a file");
+  //  RadioButton rRB2("ToList","Extract to another list");
+  //  RadioButtonGroup extractRBG("ExtractTo");
+  //  extractRBG.add(rRB1);
+  //  extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of enumerator",40));
+  submit(ostr, pv);
+}
+
+@
+\subsection{SMListExtractCommutatorsInFree::takeControl}
+<<SMListExtractCommutatorsInFree::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListExtractCommutatorsInFree::takeControl.c>>=
+void SMListExtractCommutatorsInFree::takeControl( )
+{
+  if ( freeARCs() > 0 ) {
+    if ( arcer.takeControl() ){
+      SMList<Word>* smo = 
+	new  SMList<Word>(theList.getGroup(),
+			  arcer.getData(),
+			  Text("Commutators from") + Name(theList) 
+			  ); 
+      
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "WEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    } else 
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListExtractCommutatorsInFree::start}
+<<SMListExtractCommutatorsInFree::start.h>>=
+  void start( ); 
+@
+<<SMListExtractCommutatorsInFree::start.c>>=
+void SMListExtractCommutatorsInFree::start( )
+{
+  LogMessage msg( *this, theList );
+  msg << Link( Chars("Click here to see commutators from ") + 
+	       Text( Name( theList ) ),
+	       "WEnumerator",
+	       arcer.getData().getDataFileName() ,
+	       true
+	       );
+  msg << ".";
+  msg.send();	
+}
+
+@
+\subsection{SMListExtractCommutatorsInFree::terminate}
+<<SMListExtractCommutatorsInFree::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListExtractCommutatorsInFree}
+<<class SMListExtractCommutatorsInFree>>=
+class SMListExtractCommutatorsInFree  : public SMListSupervisor
+{
+public:
+<<SMListExtractCommutatorsInFree Constructor.h>>
+<<SMListExtractCommutatorsInFree Destructor.h>>
+<<SMListExtractCommutatorsInFree::viewStructure.h>>
+<<SMListExtractCommutatorsInFree::takeControl.h>>
+<<SMListExtractCommutatorsInFree::start.h>>
+<<SMListExtractCommutatorsInFree::terminate.h>>
+private:
+  SMList<Word>& theList;				    
+  SMListCommutatorsInFreeARCer arcer;
+};
+
+@
+\section{class SGListExtractOfRankARCer}
+\subsection{SGListExtractOfRankARCer Constructor}
+<<SGListExtractOfRankARCer Constructor.h>>=
+  SGListExtractOfRankARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+    minRank( 1 ), 
+    maxRank( 0 ) { }
+@
+\subsection{SGListExtractOfRankARCer Destructor}
+<<SGListExtractOfRankARCer Destructor.h>>=
+  ~SGListExtractOfRankARCer( ) { 
+    if (theIterator)
+      delete theIterator;
+  }
+@
+\subsection{SGListExtractOfRankARCer::setArguments}
+<<SGListExtractOfRankARCer::setArguments.h>>=
+  void setArguments( const SMList<Subgroup>&);
+@
+<<SGListExtractOfRankARCer::setArguments.c>>=
+void SGListExtractOfRankARCer::setArguments( const SMList<Subgroup>& l)
+{
+  theIterator  =  new SMListIterator<Subgroup>(l);
+  theGroup = &(l.getGroup());
+}
+
+@
+\subsection{SGListExtractOfRankARCer::getData}
+<<SGListExtractOfRankARCer::getData.h>>=
+  const SMListData& getData() const { return theData; }
+@
+\subsection{SGListExtractOfRankARCer::setMinimalRank}
+<<SGListExtractOfRankARCer::setMinimalRank.h>>=
+  void setMinimalRank(int  min ) { minRank = min; }
+@
+\subsection{SGListExtractOfRankARCer::setMaximalRank}
+<<SGListExtractOfRankARCer::setMaximalRank.h>>=
+  void setMaximalRank(int  max ) { maxRank = max; }
+@
+\subsection{SGListExtractOfRankARCer::indexInFreeGroup}
+<<SGListExtractOfRankARCer::indexInFreeGroup.h>>=
+  int indexInFreeGroup( const VectorOf<Word>& s )const;
+@
+<<SGListExtractOfRankARCer::indexInFreeGroup.c>>=
+int SGListExtractOfRankARCer::indexInFreeGroup( const VectorOf<Word>& g )const
+{
+  SGofFreeGroup s( theGroup->getFreePreimage(), g );
+  return s.rank();
+}
+
+@
+\subsection{SGListExtractOfRankARCer::runComputation}
+<<SGListExtractOfRankARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SGListExtractOfRankARCer::runComputation.c>>=
+void SGListExtractOfRankARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( ! theIterator )
+    error( "void SGListExtractOfRankARCer::runComputation( ) : "
+	   "fileIterator must be initialized first.");
+#endif
+  int counter = 1;
+  theData.setWriteMode();
+  for (theIterator->reset();!theIterator->EOL();theIterator->nextCell()){
+    int rank;
+    VectorOf<Word> v =  theIterator->getData().generators();
+    if (theGroup->getCheckinType() == SMFPGroup::FREE )
+      rank = indexInFreeGroup( v );
+    else
+      error("void SGListExtractOfRankARCer::runComputation( ) : "
+	    "defined only for free groups.");
+    if ( rank >= minRank && rank <= maxRank ){
+      theData << EnumWriteVectorOfWords( v, theGroup->getFPGroup() ) 
+	      << Chars("\nRank :") << Chars(rank)
+	      << Chars("\n\n");
+      counter ++;
+    }
+  }
+  theData.closeCurrentMode(); 
+}
+
+@
+\subsection{SGListExtractOfRankARCer::writeResults}
+<<SGListExtractOfRankARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<SGListExtractOfRankARCer::writeResults.c>>=
+void SGListExtractOfRankARCer::writeResults( ostream& out ) 
+{
+  out < theData;
+}
+
+@
+\subsection{SGListExtractOfRankARCer::readResults}
+<<SGListExtractOfRankARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<SGListExtractOfRankARCer::readResults.c>>=
+void SGListExtractOfRankARCer::readResults( istream& in )
+{
+  in > theData;
+}
+
+@
+\subsection{class SGListExtractOfRankARCer}
+<<class SGListExtractOfRankARCer>>=
+class SGListExtractOfRankARCer : public ARCer
+{
+public:
+<<SGListExtractOfRankARCer Constructor.h>>
+<<SGListExtractOfRankARCer Destructor.h>>
+<<SGListExtractOfRankARCer::setArguments.h>>
+<<SGListExtractOfRankARCer::getData.h>>
+<<SGListExtractOfRankARCer::setMinimalRank.h>>
+<<SGListExtractOfRankARCer::setMaximalRank.h>>
+<<SGListExtractOfRankARCer::indexInFreeGroup.h>>
+<<SGListExtractOfRankARCer::runComputation.h>>
+<<SGListExtractOfRankARCer::writeResults.h>>
+<<SGListExtractOfRankARCer::readResults.h>>
+private:
+  SMListIterator<Subgroup>* theIterator;
+  SMListData theData;
+  const SMFPGroup* theGroup;
+  int minRank; 
+  int maxRank;
+};
+
+@
+\section{class SGListExtractOfRank}
+\subsection{SGListExtractOfRank Constructor}
+<<SGListExtractOfRank Constructor.h>>=
+  SGListExtractOfRank( SMList<Subgroup>& );
+@
+<<SGListExtractOfRank Constructor.c>>=
+SGListExtractOfRank::SGListExtractOfRank(SMList<Subgroup>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    arcer(*this),
+    started( false )
+{ 
+  arcer.setArguments(sml);
+}
+
+@
+\subsection{SGListExtractOfRank::viewStructure}
+<<SGListExtractOfRank::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SGListExtractOfRank::viewStructure.c>>=
+void SGListExtractOfRank::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract subgroups of a given rank from a list",
+			    Text("Extract subgroups of a given rank from ") +
+			    Name( theList ) ,
+			    helpID("SGListExtractOfRank",
+				   theList.getGroup()),
+			    Text("rank sgs")
+			    );
+  pv.addParameter(EditInteger("minRank","Minimal rank ",0,0,0,30000));
+  pv.addParameter(EditInteger("maxRank","Maximal rank ",0,100,0 ,30000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of the problem",40));
+  // RadioButton rRB1("ToFile","Extract to a file");
+  // RadioButton rRB2("ToList","Extract to another list");
+  // RadioButtonGroup extractRBG("ExtractTo");
+  //    extractRBG.add(rRB1);
+  //  extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  submit(ostr, pv);
+}
+
+@
+\subsection{SGListExtractOfRank::takeControl}
+<<SGListExtractOfRank::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SGListExtractOfRank::takeControl.c>>=
+void SGListExtractOfRank::takeControl( )
+{
+  if (freeARCs() > 0){
+    int min = getParameters().getValue("minRank");
+    int max = getParameters().getValue("maxRank");
+    if (arcer.takeControl()){
+      SMList<Subgroup>* smo = 
+	new  SMList<Subgroup>(theList.getGroup(),
+			      arcer.getData(),
+			      Text("Subgroups of rank from ") +
+			      Text(Chars(min)+Chars(" to ")+Chars(max)+
+				   Chars(" in ")) + 
+			      Name(theList)
+			      ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "SGEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();	
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SGListExtractOfRank::start}
+<<SGListExtractOfRank::start.h>>=
+  void start( );            // overrides ComputationManager
+@
+<<SGListExtractOfRank::start.c>>=
+void SGListExtractOfRank::start( ) {              
+  int min = getParameters().getValue("minRank");
+  int max = getParameters().getValue("maxRank");
+  arcer.setMinimalRank(min);
+  arcer.setMaximalRank(max);
+  LogMessage msg( *this, theList );
+  msg << Link(Chars( "Click here to see subgroups of rank from ") +
+	      Chars(min) +Chars(" to ") +
+	      Chars(max) + Chars(" in ") +
+	      Text( Name( theList ) ),
+	      "SGEnumerator",
+	      arcer.getData().getDataFileName(),true );
+  msg.send();        
+}
+
+@
+\subsection{SGListExtractOfRank::terminate}
+<<SGListExtractOfRank::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SGListExtractOfRank}
+<<class SGListExtractOfRank>>=
+class SGListExtractOfRank  : public Supervisor
+{
+public:
+<<SGListExtractOfRank Constructor.h>>
+<<SGListExtractOfRank::viewStructure.h>>
+<<SGListExtractOfRank::takeControl.h>>
+<<SGListExtractOfRank::start.h>>
+<<SGListExtractOfRank::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  bool started;
+  SGListExtractOfRankARCer arcer;
+};
+
+@
+\section{class SGListExtractNormalARCer}
+\subsection{SGListExtractNormalARCer Constructor}
+<<SGListExtractNormalARCer Constructor.h>>=
+  SGListExtractNormalARCer( ComputationManager& boss ) 
+    : ARCer( boss ) { } 
+@
+\subsection{SGListExtractNormalARCer Destructor}
+<<SGListExtractNormalARCer Destructor.h>>=
+  ~SGListExtractNormalARCer( ) { 
+    if (theIterator)
+      delete theIterator;
+  }
+@
+\subsection{SGListExtractNormalARCer::setArguments}
+<<SGListExtractNormalARCer::setArguments.h>>=
+  void setArguments( const SMList<Subgroup>&);
+@
+<<SGListExtractNormalARCer::setArguments.c>>=
+void SGListExtractNormalARCer::setArguments( const SMList<Subgroup>& l)
+{
+  theIterator  =  new SMListIterator<Subgroup>(l);
+  
+  theGroup = l.getGroup().getFreePreimage();
+}
+
+@
+\subsection{SGListExtractNormalARCer::getData}
+<<SGListExtractNormalARCer::getData.h>>=
+  const SMListData& getData() const { return theData; }
+@
+\subsection{SGListExtractNormalARCer::runComputation}
+<<SGListExtractNormalARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SGListExtractNormalARCer::runComputation.c>>=
+void SGListExtractNormalARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( ! theIterator )
+    error( "void SGListExtractNormalARCer::runComputation( ) : "
+	   "fileIterator must be initialized first");
+#endif
+
+  int counter = 1;
+  theData.setWriteMode();
+  for (theIterator->reset();!theIterator->EOL();theIterator->nextCell()){
+    SGofFreeGroup s( theGroup, theIterator->getData().generators() );
+    if (  s.isNormal( ) ){
+      VectorOf<Word> v = s.generators();
+      theData  << EnumWriteVectorOfWords( v, theGroup ) << Chars("\n\n");
+      counter ++;
+    }
+  }
+  theData.closeCurrentMode();  
+}
+
+@
+\subsection{SGListExtractNormalARCer::writeResults}
+<<SGListExtractNormalARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<SGListExtractNormalARCer::writeResults.c>>=
+void SGListExtractNormalARCer::writeResults( ostream& out ) 
+{
+  out < theData;
+}
+
+@
+\subsection{SGListExtractNormalARCer::readResults}
+<<SGListExtractNormalARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<SGListExtractNormalARCer::readResults.c>>=
+void SGListExtractNormalARCer::readResults( istream& in )
+{
+  in > theData;
+}
+
+@
+\subsection{class SGListExtractNormalARCer}
+<<class SGListExtractNormalARCer>>=
+class SGListExtractNormalARCer : public ARCer
+{
+public:
+<<SGListExtractNormalARCer Constructor.h>>
+<<SGListExtractNormalARCer Destructor.h>>
+<<SGListExtractNormalARCer::setArguments.h>>
+<<SGListExtractNormalARCer::getData.h>>
+<<SGListExtractNormalARCer::runComputation.h>>
+<<SGListExtractNormalARCer::writeResults.h>>
+<<SGListExtractNormalARCer::readResults.h>>
+private:
+  SMListIterator<Subgroup>* theIterator;
+  SMListData theData;
+  FreeGroup theGroup;
+};
+
+@
+\section{class SGListExtractNormal}
+\subsection{SGListExtractNormal Constructor}
+<<SGListExtractNormal Constructor.h>>=
+  SGListExtractNormal( SMList<Subgroup>& );
+@
+<<SGListExtractNormal Constructor.c>>=
+SGListExtractNormal::SGListExtractNormal(SMList<Subgroup>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    arcer(*this),
+    started( false )
+{ 
+  arcer.setArguments(sml);
+}
+
+@
+\subsection{SGListExtractNormal::viewStructure}
+<<SGListExtractNormal::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SGListExtractNormal::viewStructure.c>>=
+void SGListExtractNormal::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract normal subgroups from a list",
+			    Text("Extract normal subgroups from ") +
+			    Name( theList ) ,
+			    helpID("SGListExtractNormal",
+				   theList.getGroup()),
+			    Text("norm sgs")
+			    );
+  //  pv.addParameter(EditInteger("minL","Minimal length ",0,1,1,30000));
+  // pv.addParameter(EditInteger("maxL","Maximal length ",0,30000,1,30000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of the problem",40));
+  //  RadioButton rRB1("ToFile","Extract to a file");
+  // RadioButton rRB2("ToList","Extract to another list");
+  //
+  //  RadioButtonGroup extractRBG("ExtractTo");
+  //  extractRBG.add(rRB1);
+  //  extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  submit(ostr, pv);
+}
+
+@
+\subsection{SGListExtractNormal::takeControl}
+<<SGListExtractNormal::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SGListExtractNormal::takeControl.c>>=
+void SGListExtractNormal::takeControl( )
+{
+  if (freeARCs() > 0){
+    if (arcer.takeControl()){
+      SMList<Subgroup>* smo = 
+	new  SMList<Subgroup>(theList.getGroup(),
+			      arcer.getData(),
+			      Text("Normal subgroups in ") + Name(theList)
+			      ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "SGEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();	
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SGListExtractNormal::start}
+<<SGListExtractNormal::start.h>>=
+  void start( );            // overrides ComputationManager
+@
+<<SGListExtractNormal::start.c>>=
+void SGListExtractNormal::start( ) {              
+  LogMessage msg( *this, theList );
+  msg << Link(Chars( "Click here to see normal subgroups in ") +
+	      Text( Name( theList ) ),
+	      "SGEnumerator",
+	      arcer.getData().getDataFileName(),true );
+  msg.send();   
+}
+
+@
+\subsection{SGListExtractNormal::terminate}
+<<SGListExtractNormal::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SGListExtractNormal}
+<<class SGListExtractNormal>>=
+class SGListExtractNormal  : public Supervisor
+{
+public:
+<<SGListExtractNormal Constructor.h>>
+<<SGListExtractNormal::viewStructure.h>>
+<<SGListExtractNormal::takeControl.h>>
+<<SGListExtractNormal::start.h>>
+<<SGListExtractNormal::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  bool started;
+  SGListExtractNormalARCer arcer;
+};
+
+@
+\section{class SGListExtractMalnormalARCer}
+\subsection{SGListExtractMalnormalARCer Constructor}
+<<SGListExtractMalnormalARCer Constructor.h>>=
+  SGListExtractMalnormalARCer( ComputationManager& boss ) 
+    : ARCer( boss ) { } 
+@
+\subsection{SGListExtractMalnormalARCer Destructor}
+<<SGListExtractMalnormalARCer Destructor.h>>=
+  ~SGListExtractMalnormalARCer( ) { 
+    if (theIterator)
+      delete theIterator;
+  }
+@
+\subsection{SGListExtractMalnormalARCer::setArguments}
+<<SGListExtractMalnormalARCer::setArguments.h>>=
+  void setArguments( const SMList<Subgroup>&);
+@
+<<SGListExtractMalnormalARCer::setArguments.c>>=
+void SGListExtractMalnormalARCer::setArguments( const SMList<Subgroup>& l)
+{
+  theIterator  =  new SMListIterator<Subgroup>(l);
+  theGroup = l.getGroup().getFreePreimage();
+}
+
+@
+\subsection{SGListExtractMalnormalARCer::getData}
+<<SGListExtractMalnormalARCer::getData.h>>=
+  const SMListData& getData() const { return theData; }
+@
+\subsection{SGListExtractMalnormalARCer::runComputation}
+<<SGListExtractMalnormalARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SGListExtractMalnormalARCer::runComputation.c>>=
+void SGListExtractMalnormalARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( ! theIterator )
+    error( "void SGListExtractMalnormalARCer::runComputation( ) : "
+	   "fileIterator must be initialized first");
+#endif
+  int counter = 1;
+  theData.setWriteMode();
+  for (theIterator->reset();!theIterator->EOL();theIterator->nextCell()){
+    SGofFreeGroup s( theGroup, theIterator->getData().generators() );
+    Word conjugator;
+    if (  s.isMalnormal( conjugator ) ){
+      VectorOf<Word> v = s.generators();
+      theData <<EnumWriteVectorOfWords( v, theGroup) << Chars("\n\n");
+      counter ++;
+    }
+  }
+  theData.closeCurrentMode(); 
+}
+
+@
+\subsection{SGListExtractMalnormalARCer::writeResults}
+<<SGListExtractMalnormalARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<SGListExtractMalnormalARCer::writeResults.c>>=
+void SGListExtractMalnormalARCer::writeResults( ostream& out ) 
+{
+  out < theData;
+}
+
+@
+\subsection{SGListExtractMalnormalARCer::readResults}
+<<SGListExtractMalnormalARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<SGListExtractMalnormalARCer::readResults.c>>=
+void SGListExtractMalnormalARCer::readResults( istream& in )
+{
+  in > theData;
+}
+
+@
+\subsection{class SGListExtractMalnormalARCer}
+<<class SGListExtractMalnormalARCer>>=
+class SGListExtractMalnormalARCer : public ARCer
+{
+public:
+<<SGListExtractMalnormalARCer Constructor.h>>
+<<SGListExtractMalnormalARCer Destructor.h>>
+<<SGListExtractMalnormalARCer::setArguments.h>>
+<<SGListExtractMalnormalARCer::getData.h>>
+<<SGListExtractMalnormalARCer::runComputation.h>>
+<<SGListExtractMalnormalARCer::writeResults.h>>
+<<SGListExtractMalnormalARCer::readResults.h>>
+private:
+  SMListIterator<Subgroup>* theIterator;
+  SMListData theData;
+  FreeGroup theGroup;
+};
+
+@
+\section{class SGListExtractMalnormal}
+\subsection{SGListExtractMalnormal Constructor}
+<<SGListExtractMalnormal Constructor.h>>=
+  SGListExtractMalnormal( SMList<Subgroup>& );
+@
+<<SGListExtractMalnormal Constructor.c>>=
+SGListExtractMalnormal::SGListExtractMalnormal(SMList<Subgroup>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    arcer(*this),
+    started( false )
+{ 
+  arcer.setArguments(sml);
+}
+
+@
+\subsection{SGListExtractMalnormal::viewStructure}
+<<SGListExtractMalnormal::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SGListExtractMalnormal::viewStructure.c>>=
+void SGListExtractMalnormal::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract malnormal subgroups from a list",
+			    Text("Extract malnormal subgroups from ") +
+			    Name( theList ) ,
+			    helpID("SGListExtractMalnormal",
+				   theList.getGroup()),
+			    Text("maln sgs")
+			    );
+  //  pv.addParameter(EditInteger("minL","Minimal length ",0,1,1,30000));
+  // pv.addParameter(EditInteger("maxL","Maximal length ",0,30000,1,30000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of the problem",40));
+  //  RadioButton rRB1("ToFile","Extract to a file");
+  //  RadioButton rRB2("ToList","Extract to another list");
+  //  RadioButtonGroup extractRBG("ExtractTo");
+  //  extractRBG.add(rRB1);
+  //    extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  submit(ostr, pv);
+}
+
+@
+\subsection{SGListExtractMalnormal::takeControl}
+<<SGListExtractMalnormal::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SGListExtractMalnormal::takeControl.c>>=
+void SGListExtractMalnormal::takeControl( )
+{
+  if (freeARCs() > 0){
+    if (arcer.takeControl()){
+      SMList<Subgroup>* smo = 
+	new  SMList<Subgroup>(theList.getGroup(),
+			  arcer.getData(),
+			  Text("Malnormal subgroups from") + Name(theList) 
+			  ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "SGEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SGListExtractMalnormal::start}
+<<SGListExtractMalnormal::start.h>>=
+  void start( );            // overrides ComputationManager
+@
+<<SGListExtractMalnormal::start.c>>=
+void SGListExtractMalnormal::start( ) {              
+  LogMessage msg( *this, theList );
+  msg << Link(Chars( "Click here to see malnormal subgroups in ") +
+	      Text( Name( theList ) ),
+	      "SGEnumerator",
+	      arcer.getData().getDataFileName(),true );
+  msg.send();   
+}
+
+@
+\subsection{SGListExtractMalnormal::terminate}
+<<SGListExtractMalnormal::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SGListExtractMalnormal}
+<<class SGListExtractMalnormal>>=
+class SGListExtractMalnormal  : public Supervisor
+{
+public:
+<<SGListExtractMalnormal Constructor.h>>
+<<SGListExtractMalnormal::viewStructure.h>>
+<<SGListExtractMalnormal::takeControl.h>>
+<<SGListExtractMalnormal::start.h>>
+<<SGListExtractMalnormal::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  bool started;
+  SGListExtractMalnormalARCer arcer;
+};
+
+@
+\section{class MapListExtractIAautoARCer}
+\subsection{MapListExtractIAautoARCer Constructor}
+<<MapListExtractIAautoARCer Constructor.h>>=
+  MapListExtractIAautoARCer( ComputationManager& boss ) 
+    : ARCer( boss ) { } 
+@
+\subsection{MapListExtractIAautoARCer Destructor}
+<<MapListExtractIAautoARCer Destructor.h>>=
+  ~MapListExtractIAautoARCer( ) { 
+    if (theIterator)
+      delete theIterator;
+  }
+@
+\subsection{MapListExtractIAautoARCer::setArguments}
+<<MapListExtractIAautoARCer::setArguments.h>>=
+  void setArguments( const SMList<Map>&);
+@
+<<MapListExtractIAautoARCer::setArguments.c>>=
+void MapListExtractIAautoARCer::setArguments( const SMList<Map>& l)
+{
+  theIterator  =  new SMListIterator<Map>(l);
+  theGroup = l.getGroup().getFreePreimage();
+}
+
+@
+\subsection{MapListExtractIAautoARCer::getData}
+<<MapListExtractIAautoARCer::getData.h>>=
+  const SMListData& getData() const { return theData; }
+@
+\subsection{MapListExtractIAautoARCer::runComputation}
+<<MapListExtractIAautoARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<MapListExtractIAautoARCer::runComputation.c>>=
+void MapListExtractIAautoARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( ! theIterator )
+    error( "void MapListExtractIAautoARCer::runComputation( ) : "
+	   "fileIterator must be initialized first");
+#endif
+  int counter = 1;
+  theData.setWriteMode();
+  for (theIterator->reset();!theIterator->EOL();theIterator->nextCell()){
+    
+    if (theGroup.isIAAutomorphism(theIterator->getData().generatingImages())){
+      theData <<EnumWriteMap( theIterator->getData() ) << Chars("\n\n");
+      counter ++;
+    }
+  }
+  theData.closeCurrentMode();  
+}
+
+@
+\subsection{MapListExtractIAautoARCer::writeResults}
+<<MapListExtractIAautoARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<MapListExtractIAautoARCer::writeResults.c>>=
+void MapListExtractIAautoARCer::writeResults( ostream& out ) 
+{
+  out < theData;
+}
+
+@
+\subsection{MapListExtractIAautoARCer::readResults}
+<<MapListExtractIAautoARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<MapListExtractIAautoARCer::readResults.c>>=
+void MapListExtractIAautoARCer::readResults( istream& in )
+{
+  in > theData;
+}
+
+@
+\subsection{class MapListExtractIAautoARCer}
+<<class MapListExtractIAautoARCer>>=
+class MapListExtractIAautoARCer : public ARCer
+{
+public:
+<<MapListExtractIAautoARCer Constructor.h>>
+<<MapListExtractIAautoARCer Destructor.h>>
+<<MapListExtractIAautoARCer::setArguments.h>>
+<<MapListExtractIAautoARCer::getData.h>>
+<<MapListExtractIAautoARCer::runComputation.h>>
+<<MapListExtractIAautoARCer::writeResults.h>>
+<<MapListExtractIAautoARCer::readResults.h>>
+private:
+  SMListIterator<Map>* theIterator;
+  SMListData theData;
+  FreeGroup theGroup;
+};
+
+@
+\section{class MapListExtractIAauto}
+\subsection{MapListExtractIAauto Constructor}
+<<MapListExtractIAauto Constructor.h>>=
+  MapListExtractIAauto( SMList<Map>& );
+@
+<<MapListExtractIAauto Constructor.c>>=
+MapListExtractIAauto::MapListExtractIAauto(SMList<Map>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    arcer(*this),
+    started( false )
+{ 
+  arcer.setArguments(sml);
+}
+
+@
+\subsection{MapListExtractIAauto::viewStructure}
+<<MapListExtractIAauto::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<MapListExtractIAauto::viewStructure.c>>=
+void MapListExtractIAauto::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract IA-automorphisms from a list",
+			    Text("Extract IA-automorphisms from") +
+			    Name( theList ) ,
+			    helpID("MapListExtractIAauto",
+				   theList.getGroup()),
+			    Text("IA-auto")
+			    );
+  //  pv.addParameter(EditInteger("minL","Minimal length ",0,1,1,30000));
+  // pv.addParameter(EditInteger("maxL","Maximal length ",0,30000,1,30000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of the problem",40));
+  // RadioButton rRB1("ToFile","Extract to a file");
+  // RadioButton rRB2("ToList","Extract to another list");
+  //RadioButtonGroup extractRBG("ExtractTo");
+  //   extractRBG.add(rRB1);
+  //    extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  submit(ostr, pv);
+}
+
+@
+\subsection{MapListExtractIAauto::takeControl}
+<<MapListExtractIAauto::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<MapListExtractIAauto::takeControl.c>>=
+void MapListExtractIAauto::takeControl( )
+{
+  if (freeARCs() > 0){
+    if (arcer.takeControl()){
+      SMList<Map>* smo = 
+	new  SMList<Map>(theList.getGroup(),
+			      arcer.getData(),
+			      Text("IA-automorphisms from ") + Name(theList)
+			      ); 
+      
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "RandomAutomorphisms",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();	
+      
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{MapListExtractIAauto::start}
+<<MapListExtractIAauto::start.h>>=
+  void start( );            // overrides ComputationManager
+@
+<<MapListExtractIAauto::start.c>>=
+void MapListExtractIAauto::start( ) {              
+  LogMessage msg( *this, theList );
+  msg << Link(Chars( "Click here to see IA-automorphisms in ") +
+	      Text( Name( theList ) ),
+	      "RandomAutomorphisms",
+	      arcer.getData().getDataFileName(),true );
+  msg.send();   
+}
+
+@
+\subsection{MapListExtractIAauto::terminate}
+<<MapListExtractIAauto::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class MapListExtractIAauto}
+<<class MapListExtractIAauto>>=
+class MapListExtractIAauto  : public Supervisor
+{
+public:
+<<MapListExtractIAauto Constructor.h>>
+<<MapListExtractIAauto::viewStructure.h>>
+<<MapListExtractIAauto::takeControl.h>>
+<<MapListExtractIAauto::start.h>>
+<<MapListExtractIAauto::terminate.h>>
+private:
+  SMList<Map>& theList;
+  bool started;
+  MapListExtractIAautoARCer arcer;
+};
+
+@
+\section{class MapListExtractInnerARCer}
+\subsection{MapListExtractInnerARCer Constructor}
+<<MapListExtractInnerARCer Constructor.h>>=
+  MapListExtractInnerARCer( ComputationManager& boss ) 
+    : ARCer( boss ) { } 
+@
+\subsection{MapListExtractInnerARCer Destructor}
+<<MapListExtractInnerARCer Destructor.h>>=
+  ~MapListExtractInnerARCer( ) { 
+    if (theIterator)
+      delete theIterator;
+  }
+@
+\subsection{MapListExtractInnerARCer::setArguments}
+<<MapListExtractInnerARCer::setArguments.h>>=
+  void setArguments( const SMList<Map>&);
+@
+<<MapListExtractInnerARCer::setArguments.c>>=
+void MapListExtractInnerARCer::setArguments( const SMList<Map>& l)
+{
+  theIterator  =  new SMListIterator<Map>(l);
+  theGroup = l.getGroup().getFreePreimage();
+}
+
+@
+\subsection{MapListExtractInnerARCer::getData}
+<<MapListExtractInnerARCer::getData.h>>=
+  const SMListData& getData() const { return theData; }
+@
+\subsection{MapListExtractInnerARCer::runComputation}
+<<MapListExtractInnerARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<MapListExtractInnerARCer::runComputation.c>>=
+void MapListExtractInnerARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( ! theIterator )
+    error( "void MapListExtractIAautoARCer::runComputation( ) : "
+	   "fileIterator must be initialized first");
+#endif
+
+  int counter = 1;
+  theData.setWriteMode();
+  
+  for (theIterator->reset();!theIterator->EOL();theIterator->nextCell()){
+    
+    if (theGroup.isInnerAutomorphism(
+            theIterator->getData().generatingImages())){
+      theData <<EnumWriteMap( theIterator->getData() ) << Chars("\n\n");
+      counter ++;
+    }
+  }
+  theData.closeCurrentMode(); 
+}
+
+@
+\subsection{MapListExtractInnerARCer::writeResults}
+<<MapListExtractInnerARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<MapListExtractInnerARCer::writeResults.c>>=
+void MapListExtractInnerARCer::writeResults( ostream& out ) 
+{
+  out < theData;
+}
+
+@
+\subsection{MapListExtractInnerARCer::readResults}
+<<MapListExtractInnerARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<MapListExtractInnerARCer::readResults.c>>=
+void MapListExtractInnerARCer::readResults( istream& in )
+{
+  in > theData;
+}
+
+@
+\subsection{class MapListExtractInnerARCer}
+<<class MapListExtractInnerARCer>>=
+class MapListExtractInnerARCer : public ARCer
+{
+public:
+<<MapListExtractInnerARCer Constructor.h>>
+<<MapListExtractInnerARCer Destructor.h>>
+<<MapListExtractInnerARCer::setArguments.h>>
+<<MapListExtractInnerARCer::getData.h>>
+<<MapListExtractInnerARCer::runComputation.h>>
+<<MapListExtractInnerARCer::writeResults.h>>
+<<MapListExtractInnerARCer::readResults.h>>
+private:
+  SMListIterator<Map>* theIterator;
+  SMListData theData;
+  FreeGroup theGroup;
+};
+
+@
+\section{class MapListExtractInner}
+\subsection{MapListExtractInner Constructor}
+<<MapListExtractInner Constructor.h>>=
+  MapListExtractInner( SMList<Map>& );
+@
+<<MapListExtractInner Constructor.c>>=
+MapListExtractInner::MapListExtractInner(SMList<Map>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    arcer(*this),
+    started( false )
+{ 
+  arcer.setArguments(sml);
+}
+
+@
+\subsection{MapListExtractInner::viewStructure}
+<<MapListExtractInner::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<MapListExtractInner::viewStructure.c>>=
+void MapListExtractInner::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract inner automorphisms from a list",
+			    Text("Extract inner automorphisms from") +
+			    Name( theList ) ,
+			    helpID("MapListExtractInner",
+				   theList.getGroup()),
+			    Text("inner auto")
+			    );
+  //  pv.addParameter(EditInteger("minL","Minimal length ",0,1,1,30000));
+  // pv.addParameter(EditInteger("maxL","Maximal length ",0,30000,1,30000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of the problem",40));
+  //RadioButton rRB1("ToFile","Extract to a file");
+  //RadioButton rRB2("ToList","Extract to another list");
+  // RadioButtonGroup extractRBG("ExtractTo");
+  //  extractRBG.add(rRB1);
+  //  extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  submit(ostr, pv);
+}
+
+@
+\subsection{MapListExtractInner::takeControl}
+<<MapListExtractInner::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<MapListExtractInner::takeControl.c>>=
+void MapListExtractInner::takeControl( )
+{
+  if (freeARCs() > 0){
+    if (arcer.takeControl()){
+      SMList<Map>* smo = 
+	new  SMList<Map>(theList.getGroup(),
+			      arcer.getData(),
+			      Text("Inner automorphisms from ") + Name(theList)
+			      ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "RandomAutomorphisms",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();	
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{MapListExtractInner::start}
+<<MapListExtractInner::start.h>>=
+  void start( );            // overrides ComputationManager
+@
+<<MapListExtractInner::start.c>>=
+void MapListExtractInner::start( ) {              
+  LogMessage msg( *this, theList );
+  msg << Link(Chars( "Click here to see inner automorphisms in ") +
+	      Text( Name( theList ) ),
+	      "RandomAutomorphisms",
+	      arcer.getData().getDataFileName(),true );
+  msg.send();   
+}
+
+@
+\subsection{MapListExtractInner::terminate}
+<<MapListExtractInner::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class MapListExtractInner}
+<<class MapListExtractInner>>=
+class MapListExtractInner  : public Supervisor
+{
+public:
+<<MapListExtractInner Constructor.h>>
+<<MapListExtractInner::viewStructure.h>>
+<<MapListExtractInner::takeControl.h>>
+<<MapListExtractInner::start.h>>
+<<MapListExtractInner::terminate.h>>
+private:
+  SMList<Map>& theList;
+  bool started;
+  MapListExtractInnerARCer arcer;
+};
+
+@
+\section{FreeListProblems.h}
+<<FreeListProblems.h>>=
+#ifndef _FREE_LIST_PROBLEMS_H_
+#define _FREE_LIST_PROBLEMS_H_
+
+<<include.h>>
+<<class SMListProperPowerInFreeARCer>>
+<<class SMListExtractProperPowerInFree>>
+<<class SMListCommutatorsInFreeARCer>>
+<<class SMListExtractCommutatorsInFree>>
+<<class SGListExtractOfRankARCer>>
+<<class SGListExtractOfRank>>
+<<class SGListExtractNormalARCer>>
+<<class SGListExtractNormal>>
+<<class SGListExtractMalnormalARCer>>
+<<class SGListExtractMalnormal>>
+<<class MapListExtractIAautoARCer>>
+<<class MapListExtractIAauto>>
+<<class MapListExtractInnerARCer>>
+<<class MapListExtractInner>>
+#endif
+@
+\section{freelistproblems.c}
+<<*>>=
+
+<<include.c>>
+<<SMListProperPowerInFreeARCer::setArguments.c>>
+<<SMListProperPowerInFreeARCer::runComputation.c>>
+
+<<SMListExtractProperPowerInFree Constructor.c>>
+<<SMListExtractProperPowerInFree::start.c>>
+<<SMListExtractProperPowerInFree::takeControl.c>>
+<<SMListExtractProperPowerInFree::viewStructure.c>>
+
+<<SMListCommutatorsInFreeARCer::setArguments.c>>
+<<SMListCommutatorsInFreeARCer::runComputation.c>>
+
+<<SMListExtractCommutatorsInFree Constructor.c>>
+<<SMListExtractCommutatorsInFree::start.c>>
+<<SMListExtractCommutatorsInFree::takeControl.c>>
+<<SMListExtractCommutatorsInFree::viewStructure.c>>
+
+<<SGListExtractNormalARCer::setArguments.c>>
+<<SGListExtractNormalARCer::runComputation.c>>
+<<SGListExtractNormalARCer::writeResults.c>>
+<<SGListExtractNormalARCer::readResults.c>>
+
+<<SGListExtractNormal Constructor.c>>
+<<SGListExtractNormal::start.c>>
+<<SGListExtractNormal::takeControl.c>>
+<<SGListExtractNormal::viewStructure.c>>
+
+<<SGListExtractMalnormalARCer::setArguments.c>>
+<<SGListExtractMalnormalARCer::runComputation.c>>
+<<SGListExtractMalnormalARCer::writeResults.c>>
+<<SGListExtractMalnormalARCer::readResults.c>>
+
+<<SGListExtractMalnormal Constructor.c>>
+<<SGListExtractMalnormal::start.c>>
+<<SGListExtractMalnormal::takeControl.c>>
+<<SGListExtractMalnormal::viewStructure.c>>
+
+<<SGListExtractOfRankARCer::setArguments.c>>
+<<SGListExtractOfRankARCer::runComputation.c>>
+<<SGListExtractOfRankARCer::indexInFreeGroup.c>>
+<<SGListExtractOfRankARCer::writeResults.c>>
+<<SGListExtractOfRankARCer::readResults.c>>
+
+<<SGListExtractOfRank Constructor.c>>
+<<SGListExtractOfRank::start.c>>
+<<SGListExtractOfRank::takeControl.c>>
+<<SGListExtractOfRank::viewStructure.c>>
+
+<<MapListExtractIAautoARCer::setArguments.c>>
+<<MapListExtractIAautoARCer::runComputation.c>>
+<<MapListExtractIAautoARCer::writeResults.c>>
+<<MapListExtractIAautoARCer::readResults.c>>
+
+<<MapListExtractIAauto Constructor.c>>
+<<MapListExtractIAauto::start.c>>
+<<MapListExtractIAauto::takeControl.c>>
+<<MapListExtractIAauto::viewStructure.c>>
+
+<<MapListExtractInnerARCer::setArguments.c>>
+<<MapListExtractInnerARCer::runComputation.c>>
+<<MapListExtractInnerARCer::writeResults.c>>
+<<MapListExtractInnerARCer::readResults.c>>
+
+<<MapListExtractInner Constructor.c>>
+<<MapListExtractInner::start.c>>
+<<MapListExtractInner::takeControl.c>>
+<<MapListExtractInner::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

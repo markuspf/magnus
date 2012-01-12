@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Problem View</TITLE>
+<META NAME="description" CONTENT="The Problem View">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00333100000000000000">
+The Problem View</A>
+</H3>
+
+<P>
+The <I>FE</I> provides a procedure named <TT>problemView</TT> for use as a
+<EM>viewBuilder</EM> in a <EM>viewStructure</EM> argument to the <TT>create_</TT> command (&#167;<A HREF="node36.html#checking_in">3.3.1.1</A>). The <EM>viewParameters</EM> it
+expects has the form:
+
+<P>
+<TT>{</TT><EM>viewID</EM> <EM>viewTitle</EM> <EM>viewBanner</EM> <EM>totalARCs</EM>
+<EM>subproblems</EM><TT>}</TT>
+
+<P>
+The <EM>viewID</EM> is a positive integer which is the definitive
+reference shared by the <I>FE</I> and <I>SM</I> to the problem view, but parts
+of the view are independently addressable via other id numbers.
+
+<P>
+The <EM>viewTitle</EM> is <I>Hot</I> text, delimited by <TT>{}</TT>, which
+titles the problem.
+
+<P>
+The <EM>viewBanner</EM> is <I>Hot</I> text, delimited by <TT>{}</TT>, which
+describes the problem. The view sizes its banner to display all of
+<EM>viewBanner</EM> by counting newlines.
+
+<P>
+The <EM>totalARCs</EM> has the form <TT>{</TT><EM>ARCSlotID</EM>
+<EM>value</EM><TT>}</TT>, where <EM>ARCSlotID</EM> is a positive integer
+which uniquely references a slot for the total number of ARCs consumed
+by the problem, and <EM>value</EM> is its initial value. At present, the
+<EM>ARCSlotID</EM> may as well be the <EM>objectID</EM> of the problem; as
+there are no facilities in the <I>SM</I> (that I can see) for sending ARC
+updates to this <EM>ARCSlotID</EM>, the <I>FE</I> computes the new value when
+it gets other ARC updates.
+
+<P>
+The <EM>subproblems</EM> has the form <TT>{{</TT><EM>probViewID</EM>
+<EM>name</EM> <EM>state</EM> <EM>ARCSlotID</EM> <EM>value</EM><TT>}+}</TT>,
+where <EM>probViewID</EM> is a positive integer which uniquely
+references the subproblem, <EM>name</EM> is <I>Hot</I> text which
+describes the subproblem, <EM>state</EM> is <TT>1</TT> or <TT>0</TT> to
+indicate enabled or disabled, <EM>ARCSlotID</EM> is a positive integer
+which uniquely references the slot for the ARCs allocated to the
+subproblem, and <EM>value</EM> is the initial ARC value.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

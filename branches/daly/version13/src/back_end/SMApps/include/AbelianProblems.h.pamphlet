@@ -1,0 +1,1372 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/AbelianProblems.h}
+\author{Alexei Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "AbelianInvariants.h"
+#include "AbelianSGPresentation.h"
+
+@
+\section{class AbelianWordProblem}
+<<class AbelianWordProblem>>=
+class AbelianWordProblem : public Supervisor
+{
+public:
+  AbelianWordProblem(class SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianIsomProblem}
+<<class AbelianIsomProblem>>=
+class AbelianIsomProblem : public Supervisor
+{
+public:
+  AbelianIsomProblem(class SMFPGroup& g1, class SMFPGroup& g2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& G1;
+  SMFPGroup& G2;
+  MirrorSubordinate abelianInvariants1;
+  MirrorSubordinate abelianInvariants2;
+};
+
+@
+\section{class AbelianTorsionFreeRankProblem}
+<<class AbelianTorsionFreeRankProblem>>=
+class AbelianTorsionFreeRankProblem : public Supervisor
+{
+public:
+  AbelianTorsionFreeRankProblem(class SMFPGroup& G);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianOrderOfTheTorsionSubgroupProblem}
+<<class AbelianOrderOfTheTorsionSubgroupProblem>>=
+class AbelianOrderOfTheTorsionSubgroupProblem : public Supervisor
+{
+public:
+  AbelianOrderOfTheTorsionSubgroupProblem(class SMFPGroup& G);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianOrderProblem}
+<<class AbelianOrderProblem>>=
+class AbelianOrderProblem : public Supervisor
+{
+public:
+  AbelianOrderProblem(class SMFPGroup& G);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianOrderOfEltProblem}
+<<class AbelianOrderOfEltProblem>>=
+class AbelianOrderOfEltProblem : public Supervisor
+{
+public:
+  AbelianOrderOfEltProblem(class SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianEqualityProblem}
+<<class AbelianEqualityProblem>>=
+class AbelianEqualityProblem : public Supervisor
+{
+public:
+  AbelianEqualityProblem(class SMWord& w1, class SMWord& w2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& word1;
+  SMWord& word2;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class WordInSGOfAbelian}
+<<class WordInSGOfAbelian>>=
+class WordInSGOfAbelian : public Supervisor
+{
+public:
+  WordInSGOfAbelian(class SMSubgroup& S, class SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  SMWord& theWord;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianIsSGEqualToTheGroup}
+<<class AbelianIsSGEqualToTheGroup>>=
+class AbelianIsSGEqualToTheGroup : public Supervisor
+{
+public:
+  AbelianIsSGEqualToTheGroup(class SMSubgroup& S);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianSGIndexProblem}
+<<class AbelianSGIndexProblem>>=
+class AbelianSGIndexProblem : public Supervisor
+{
+public:
+  AbelianSGIndexProblem(class SMSubgroup& S);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianIsSGIsolatedProblem}
+<<class AbelianIsSGIsolatedProblem>>=
+class AbelianIsSGIsolatedProblem : public Supervisor
+{
+public:
+  AbelianIsSGIsolatedProblem(class SMSubgroup& S);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianSGContainmentProblem}
+<<class AbelianSGContainmentProblem>>=
+class AbelianSGContainmentProblem : public Supervisor
+{
+public:
+  AbelianSGContainmentProblem(class SMSubgroup& S1, class SMSubgroup& S2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& subgroup1;
+  SMSubgroup& subgroup2;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class FindCanonicalSmithPresentation}
+<<class FindCanonicalSmithPresentation>>=
+class FindCanonicalSmithPresentation : public Supervisor
+{
+public:
+  FindCanonicalSmithPresentation(class SMFPGroup& G);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate abelianInvariants;
+  void makePresentation();
+};
+
+@
+\section{class AbelianPHeightOfEltProblem}
+<<class AbelianPHeightOfEltProblem>>=
+class AbelianPHeightOfEltProblem : public Supervisor
+{
+public:
+  AbelianPHeightOfEltProblem(class SMWord& w, int p = 1);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  bool notPrime;
+  bool abDone;    // This flag used to know was abelianization done before
+  Integer P;      // The p, entered by user
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate abelianPrimes;
+};
+
+@
+\section{class AbelianComputeTorsionSubgroup}
+<<class AbelianComputeTorsionSubgroup>>=
+class AbelianComputeTorsionSubgroup : public Supervisor
+{
+public:
+  AbelianComputeTorsionSubgroup(class SMFPGroup& G);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianEltPowerSubgrARCer}
+<<class AbelianEltPowerSubgrARCer>>=
+class AbelianEltPowerSubgrARCer : public ARCer
+{
+public:
+  AbelianEltPowerSubgrARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( 0 ), result(0) { } 
+
+  ~AbelianEltPowerSubgrARCer( ) { delete AG; } 
+
+  void setArguments( const AbelianGroup& group, const Word& w, const VectorOf<Word>& sG);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  Integer getPowerOfEltSubgrup();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  AbelianGroup* AG;
+  Word theWord;
+  VectorOf<Word> theSubgroup;
+  Integer result;
+};
+
+@
+\section{class AbelianEltPowerSubgrComp}
+<<class AbelianEltPowerSubgrComp>>=
+class AbelianEltPowerSubgrComp : public ComputationManager
+{
+public:
+  AbelianEltPowerSubgrComp(class AbelianEltPowerSubgr& gcm);
+  void takeControl( );         // overrides ComputationManager
+  bool isDone() const { return finished;}
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class AbelianEltPowerSubgr& theSupervisor;
+  AbelianEltPowerSubgrARCer A;
+  bool finished;
+};
+
+@
+\section{class AbelianEltPowerSubgr}
+<<class AbelianEltPowerSubgr>>=
+class AbelianEltPowerSubgr : public Supervisor
+{
+public:
+  AbelianEltPowerSubgr(const class SMSubgroup& smg,const class SMWord& smw);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+  const SMWord& getWord() const {return theWord;}
+  const SMSubgroup& getSubgroup() const {return theSubgroup;}
+
+private:
+  const SMWord& theWord;
+  const SMSubgroup& theSubgroup;
+  Subordinate<AbelianEltPowerSubgr,AbelianEltPowerSubgrComp> 
+    abelianEltPowerSubgr;
+};
+
+@
+\section{class AbelianPowerProblem}
+<<class AbelianPowerProblem>>=
+class AbelianPowerProblem : public Supervisor
+{
+public:
+  AbelianPowerProblem(class SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  bool abDone;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate abelianPrimes;
+};
+
+@
+\section{class AbelianInvariantsOfSGARCer}
+<<class AbelianInvariantsOfSGARCer>>=
+class AbelianInvariantsOfSGARCer : public ARCer
+{
+public:
+  AbelianInvariantsOfSGARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( NULL ), ASG( NULL ), presentationFound( false ) { } 
+
+  ~AbelianInvariantsOfSGARCer( ) { delete AG; delete ASG; } 
+
+  void setArguments( const AbelianGroup&, const VectorOf<Word>&);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  AbelianSGPresentation getSGCyclicDecomposition();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  VectorOf<Word> theSGGens;
+  bool presentationFound;  
+  AbelianGroup* AG;
+  AbelianSGPresentation* ASG;
+};
+
+@
+\section{class AbelianSGInvariants}
+<<class AbelianSGInvariants>>=
+class AbelianSGInvariants : public ComputationManager
+{
+public:
+  AbelianSGInvariants(class SCM& scm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class SCM& theSCM;
+  bool presentationStarted;
+  AbelianInvariantsOfSGARCer arcer;
+};
+
+@
+\section{class AbelianSGCyclicDecomposition}
+<<class AbelianSGCyclicDecomposition>>=
+class AbelianSGCyclicDecomposition : public Supervisor
+{
+public:
+  AbelianSGCyclicDecomposition(class SMSubgroup& smg);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  MirrorSubordinate abelianSGInvariants;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+};
+
+@
+\section{class AbelianPrimesOfSGARCer}
+<<class AbelianPrimesOfSGARCer>>=
+class AbelianPrimesOfSGARCer : public ARCer
+{
+public:
+  AbelianPrimesOfSGARCer( ComputationManager& boss ) 
+    : ARCer( boss ), ASG( NULL ) { } 
+
+  ~AbelianPrimesOfSGARCer( ) { delete ASG; } 
+
+  void setArguments( const AbelianSGPresentation&);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  AbelianSGPresentation getSGPrimaryDecomposition();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  AbelianSGPresentation* ASG;
+};
+
+@
+\section{class AbelianSGPrimes}
+<<class AbelianSGPrimes>>=
+class AbelianSGPrimes : public ComputationManager
+{
+public:
+  AbelianSGPrimes(class AbelianSGPrimesDecomposition& sup);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class AbelianSGPrimesDecomposition& theSupervisor;
+  bool primesStarted;
+  AbelianPrimesOfSGARCer arcer;
+};
+
+@
+\section{class AbelianSGPrimesDecomposition}
+<<class AbelianSGPrimesDecomposition>>=
+class AbelianSGPrimesDecomposition : public Supervisor
+{
+public:
+  AbelianSGPrimesDecomposition(class SMSubgroup& smg);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  SMSubgroup& getSubgroup() const { return theSubgroup;}
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  MirrorSubordinate abelianSGInvariants;
+  MirrorSubordinate abelianInvariants;
+  Subordinate<AbelianSGPrimesDecomposition,AbelianSGPrimes> abelianSGPrimes;
+  bool abDone;
+  bool abSGDone;
+
+};
+
+@
+\section{class AbelianSGOrder}
+<<class AbelianSGOrder>>=
+class AbelianSGOrder : public Supervisor
+{
+public:
+  AbelianSGOrder(class SMSubgroup& smg);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  MirrorSubordinate abelianSGInvariants;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+};
+
+@
+\section{class AbelianMaximalRootARCer}
+<<class AbelianMaximalRootARCer>>=
+class AbelianMaximalRootARCer : public ARCer
+{
+public:
+  AbelianMaximalRootARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( 0 ), thePower(0) { } 
+
+  ~AbelianMaximalRootARCer( ) { delete AG; } 
+
+  void setArguments( const AbelianGroup& group, const Word& w);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  Integer getPower() const;
+  Word getRoot() const;
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  AbelianGroup* AG;
+  Integer thePower;
+  Word theRoot;
+  Word theWord;
+};
+
+@
+\section{class AbelianMaximalRootComp}
+<<class AbelianMaximalRootComp>>=
+class AbelianMaximalRootComp : public ComputationManager
+{
+public:
+  AbelianMaximalRootComp(class AbelianMaximalRoot& sup);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+   class AbelianMaximalRoot& theSupervisor;
+   AbelianMaximalRootARCer A;
+   bool rootStarted;
+};
+
+@
+\section{class AbelianMaximalRoot}
+<<class AbelianMaximalRoot>>=
+class AbelianMaximalRoot : public Supervisor
+{
+public:
+  AbelianMaximalRoot(class SMWord& smw);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+  SMWord& getWord() const {return theWord;}
+
+private:
+  SMWord& theWord;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate abelianPrimes;
+  bool abDone;
+  bool abPDone;
+  Subordinate<AbelianMaximalRoot,AbelianMaximalRootComp> abelianMaximalRoot;
+};
+
+@
+\section{class AbelianIsIsomorphicSG}
+<<class AbelianIsIsomorphicSG>>=
+class AbelianIsIsomorphicSG : public Supervisor
+{
+public:
+  AbelianIsIsomorphicSG(class SMSubgroup& smg1, class SMSubgroup& smg2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup1;
+  SMSubgroup& theSubgroup2;
+  MirrorSubordinate abelianSG1Invariants;
+  MirrorSubordinate abelianSG2Invariants;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+  bool sg1abDone;
+  bool sg2abDone;
+};
+
+@
+\section{class AbelianTorsionFreeRankOfSG}
+<<class AbelianTorsionFreeRankOfSG>>=
+class AbelianTorsionFreeRankOfSG : public Supervisor
+{
+public:
+  AbelianTorsionFreeRankOfSG(class SMSubgroup& SG);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  bool abDone;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate abelianSGInvariants;
+};
+
+@
+\section{class AbelianOrderOfTheTorsionSubgroupOfSG}
+<<class AbelianOrderOfTheTorsionSubgroupOfSG>>=
+class AbelianOrderOfTheTorsionSubgroupOfSG : public Supervisor
+{
+public:
+  AbelianOrderOfTheTorsionSubgroupOfSG(class SMSubgroup& SG);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  bool abDone;  
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate abelianSGInvariants;
+};
+
+@
+\section{class EltPrimeForm}
+<<class EltPrimeForm>>=
+class EltPrimeForm : public Supervisor
+{
+public:
+  EltPrimeForm(class SMWord& smw);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  MirrorSubordinate abelianPrimes;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+};
+
+@
+\section{class virtualFreeCompARCer}
+<<class virtualFreeCompARCer>>=
+class virtualFreeCompARCer : public ARCer
+{
+public:
+  virtualFreeCompARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( 0 ) { } 
+
+  ~virtualFreeCompARCer( ) { 
+    if ( AG )
+      delete AG; 
+  } 
+
+  void setArguments( const AbelianGroup& group, const VectorOf<Word>& sG);
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  
+  VectorOf<Word> getVFComplement()const { return result;}
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  AbelianGroup* AG;
+  VectorOf<Word> theSubgroup;
+  VectorOf<Word> result;
+};
+
+@
+\section{class virtualFreeComp}
+<<class virtualFreeComp>>=
+class virtualFreeComp  : public Supervisor
+{
+public:
+  virtualFreeComp(class SMSubgroup& sms);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  virtualFreeCompARCer arcer;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+  bool started;
+
+};
+
+@
+\section{class SubgroupIsolatorARCer}
+<<class SubgroupIsolatorARCer>>=
+class SubgroupIsolatorARCer : public ARCer
+{
+public:
+  SubgroupIsolatorARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( 0 ) { } 
+
+  ~SubgroupIsolatorARCer( ) { 
+    if ( AG )
+      delete AG; 
+  } 
+
+  void setArguments( const AbelianGroup& group, const VectorOf<Word>& sG);
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  
+  VectorOf<Word> getIsolator()const { return result;}
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  AbelianGroup* AG;
+  VectorOf<Word> theSubgroup;
+  VectorOf<Word> result;
+};
+
+@
+\section{class SubgroupIsolator}
+<<class SubgroupIsolator>>=
+class SubgroupIsolator  : public Supervisor
+{
+public:
+  SubgroupIsolator(class SMSubgroup& sms);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  SubgroupIsolatorARCer arcer;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+  bool started;
+};
+
+@
+\section{class AbelianSGPurityARCer}
+<<class AbelianSGPurityARCer>>=
+class AbelianSGPurityARCer : public ARCer
+{
+public:
+  AbelianSGPurityARCer( ComputationManager& boss, class SMSubgroup& subgroup) 
+    : ARCer( boss ), isPure( false ), theSubgroup( subgroup ) { } 
+
+//  void setArguments( const AbelianGroup& group, const Word& w);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+ 
+  bool isPureSubgroup() const;
+  bool computePurity() const;
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  bool isPure; 
+  const SMSubgroup& theSubgroup;
+};
+
+@
+\section{class AbelianSGPurityProblem}
+<<class AbelianSGPurityProblem>>=
+class AbelianSGPurityProblem  : public Supervisor
+{
+public:
+  AbelianSGPurityProblem(class SMSubgroup& sms);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  MirrorSubordinate abelianPrimes;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate abelianSGInvariants;
+  bool abDone;
+  bool PDDone;
+  bool sgAbDone;
+  AbelianSGPurityARCer arcer;
+};
+
+@
+\section{class AbelianSGGenedByWordPurityProblem}
+<<class AbelianSGGenedByWordPurityProblem>>=
+class AbelianSGGenedByWordPurityProblem  : public Supervisor
+{
+public:
+  AbelianSGGenedByWordPurityProblem(class SMWord& smw);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  MirrorSubordinate abelianPrimes;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+};
+
+@
+\section{class AbelianDoesGensSummand}
+<<class AbelianDoesGensSummand>>=
+class AbelianDoesGensSummand  : public Supervisor
+{
+public:
+  AbelianDoesGensSummand(class SMWord& smw);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  MirrorSubordinate abelianPrimes;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+};
+
+@
+\section{class AbelianSGEqualityProblem}
+<<class AbelianSGEqualityProblem>>=
+class AbelianSGEqualityProblem : public Supervisor
+{
+public:
+  AbelianSGEqualityProblem(class SMSubgroup& S1, class SMSubgroup& S2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& subgroup1;
+  SMSubgroup& subgroup2;
+  bool s1AbDone;
+  bool s2AbDone;
+  MirrorSubordinate s1AbelianInvariantsOfFactor;
+  MirrorSubordinate s2AbelianInvariantsOfFactor;
+};
+
+@
+\section{class IsAbelianWordPowerOfSecondArcer}
+<<class IsAbelianWordPowerOfSecondArcer>>=
+class IsAbelianWordPowerOfSecondArcer : public ARCer
+{
+public:
+  IsAbelianWordPowerOfSecondArcer( ComputationManager& boss) 
+    : ARCer( boss ), power( 0 ), AG(NULL) { } 
+
+   ~IsAbelianWordPowerOfSecondArcer( ) { delete AG; } 
+
+  void IsAbelianWordPowerOfSecondArcer::setArguments(
+     const AbelianGroup& abGroup,
+     const SMWord& w1,const SMWord& w2);
+  // Inherited from ARCer:
+  // bool takeControl( );
+ 
+  int getPower() const;
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  int power; 
+  AbelianGroup* AG;
+  Word theWord1;
+  Word theWord2;
+};
+
+@
+\section{class IsAbelianWordPowerOfSecond}
+<<class IsAbelianWordPowerOfSecond>>=
+class IsAbelianWordPowerOfSecond  : public Supervisor
+{
+public:
+  IsAbelianWordPowerOfSecond(class SMWord& w1,class SMWord& w2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMWord& theWord1;
+  SMWord& theWord2;
+  bool arcerSet;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+  IsAbelianWordPowerOfSecondArcer arcer;
+};
+
+@
+\section{class AbelianHomIsEpiComp}
+<<class AbelianHomIsEpiComp>>=
+class AbelianHomIsEpiComp : public ComputationManager
+{
+public:
+   AbelianHomIsEpiComp(class MCM& mcm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+   class MCM& theMCM;
+   AbelianInvariantsARCer arcer;
+};
+
+@
+\section{class AbelianHomIsEpi}
+<<class AbelianHomIsEpi>>=
+class AbelianHomIsEpi  : public Supervisor
+{
+public:
+  AbelianHomIsEpi(class SMMap& map);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMMap& theMap;
+  MirrorSubordinate abelianHomIsEpi;
+};
+
+@
+\section{class AbelianHomIsMonoComp}
+<<class AbelianHomIsMonoComp>>=
+class AbelianHomIsMonoComp : public ComputationManager
+{
+public:
+   AbelianHomIsMonoComp(class MCM& mcm);
+   ~AbelianHomIsMonoComp(){delete abSG;}
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+   class MCM& theMCM;
+   AbelianInvariantsOfSGARCer arcer;
+   AbelianSGPresentation* abSG;
+   bool sgInvStarted;
+   bool sgInvFinished;
+};
+
+@
+\section{class AbelianHomIsMono}
+<<class AbelianHomIsMono>>=
+class AbelianHomIsMono  : public Supervisor
+{
+public:
+  AbelianHomIsMono(class SMMap& map);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMMap& theMap;
+  MirrorSubordinate abelianInvariants1;
+  MirrorSubordinate abelianInvariants2;
+  MirrorSubordinate abelianHomIsMono;
+  MirrorSubordinate abelianHomIsEpi;
+  bool  abRangeDone; 
+  bool  abDomainDone; 
+};
+
+@
+\section{class AbelianHomIsAuto}
+<<class AbelianHomIsAuto>>=
+class AbelianHomIsAuto  : public Supervisor
+{
+public:
+  AbelianHomIsAuto(class SMHomomorphism& homo);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMHomomorphism& theHomo;
+  MirrorSubordinate abelianHomIsEpi;
+};
+
+@
+\section{class AbelianHomIsIso}
+<<class AbelianHomIsIso>>=
+class AbelianHomIsIso  : public Supervisor
+{
+public:
+  AbelianHomIsIso(class SMHomomorphism2& homo);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMHomomorphism2& theHomo;
+  bool abRangeDone;
+  bool abDomainDone;
+  MirrorSubordinate abelianHomIsMono;
+  MirrorSubordinate abelianHomIsEpi;
+  MirrorSubordinate abelianInvariants1;
+  MirrorSubordinate abelianInvariants2;
+};
+
+@
+\section{class AbelianOrderOfAutoARCer}
+<<class AbelianOrderOfAutoARCer>>=
+class AbelianOrderOfAutoARCer : public ARCer
+{
+public:
+  AbelianOrderOfAutoARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( 0 ), result(0) { } 
+
+  ~AbelianOrderOfAutoARCer( ) { delete AG; } 
+
+  void setArguments( const AbelianGroup& group, const VectorOf<Word>& image);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  int getOrder() const {return result;}
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  AbelianGroup* AG;
+  VectorOf<Word> theImages;
+  int result;
+};
+
+@
+\section{class AbelianOrderOfAuto}
+<<class AbelianOrderOfAuto>>=
+class AbelianOrderOfAuto  : public Supervisor
+{
+public:
+  AbelianOrderOfAuto(const class SMHomomorphism& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const class SMHomomorphism& theAuto;
+  MirrorSubordinate abelianInvariants;
+  AbelianOrderOfAutoARCer arcer;
+  bool started;
+};
+
+@
+\section{class AbelianInverseAutoARCer}
+<<class AbelianInverseAutoARCer>>=
+class AbelianInverseAutoARCer : public ARCer
+{
+public:
+  AbelianInverseAutoARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( 0 ), result(0) { } 
+
+  ~AbelianInverseAutoARCer( ) { delete AG; } 
+
+  void setArguments( const AbelianGroup& group, const VectorOf<Word>& image);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  const VectorOf<Word> getInverse() const {return result;}
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  AbelianGroup* AG;
+  VectorOf<Word> theImages;
+  VectorOf<Word> result;
+};
+
+@
+\section{class AbelianInverseAuto}
+<<class AbelianInverseAuto>>=
+class AbelianInverseAuto  : public Supervisor
+{
+public:
+  AbelianInverseAuto(const class SMHomomorphism& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const class SMHomomorphism& theAuto;
+  AbelianInverseAutoARCer arcer;
+};
+
+@
+\section{class AbelianFixedPointsOfAutoARCer}
+<<class AbelianFixedPointsOfAutoARCer>>=
+class AbelianFixedPointsOfAutoARCer : public ARCer
+{
+public:
+  AbelianFixedPointsOfAutoARCer( ComputationManager& boss ) 
+    : ARCer( boss ), 
+      A( FPGroup() ),
+      result( ) 
+    { } 
+
+  void setArguments( const AbelianGroup& , const VectorOf<Word>& );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  const VectorOf<Word> getResult( ) const 
+    { return result; }
+  
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  AbelianGroup A;
+  VectorOf<Word> theImages;
+  VectorOf<Word> result;
+};
+
+@
+\section{class AbelianFixedPointsOfAutoProblem}
+<<class AbelianFixedPointsOfAutoProblem>>=
+class AbelianFixedPointsOfAutoProblem  : public Supervisor
+{
+public:
+  AbelianFixedPointsOfAutoProblem(const class SMHomomorphism& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const class SMHomomorphism& theAuto;
+  AbelianFixedPointsOfAutoARCer arcer;
+};
+
+@
+\section{class AbelianSGIntersectionARCer}
+<<class AbelianSGIntersectionARCer>>=
+class AbelianSGIntersectionARCer : public ARCer
+{
+public:
+  AbelianSGIntersectionARCer( ComputationManager& boss ) 
+    : ARCer( boss ), 
+      A( FPGroup() ),
+      s1( ),
+      s2( ),
+      result( ),
+      file( )
+    { } 
+
+  void setArguments( const AbelianGroup& g, 
+		     const VectorOf<Word>& v1,
+		     const VectorOf<Word>& v2);
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  
+  VectorOf<Word> getResult() const 
+    { 
+      return result; 
+    }
+  
+  Chars getFileName() const
+    { 
+      return file.getFileName(); 
+    }
+  
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  AbelianGroup A;
+  VectorOf<Word> s1;
+  VectorOf<Word> s2;
+  VectorOf<Word> result;
+  File file;
+};
+
+@
+\section{class AbelianSGIntersectionProblem}
+<<class AbelianSGIntersectionProblem>>=
+class AbelianSGIntersectionProblem : public Supervisor
+{
+public:
+  AbelianSGIntersectionProblem(class SMSubgroup& S1, class SMSubgroup& S2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMSubgroup& subgroup1;
+  SMSubgroup& subgroup2;
+  bool init;
+  MirrorSubordinate abelianInvariants;
+  AbelianSGIntersectionARCer arcer;
+};
+
+@
+\section{class AbelianIntegralHomologyARCer}
+<<class AbelianIntegralHomologyARCer>>=
+class AbelianIntegralHomologyARCer : public ARCer
+{
+public:
+  AbelianIntegralHomologyARCer( ComputationManager& boss ) 
+    : ARCer( boss ), 
+      A( FPGroup() ),
+      d( 0 ),
+      result( FPGroup() )
+    { } 
+  
+  void setArguments( const AbelianGroup& g, int n );
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  
+  AbelianGroup getResult() const 
+    { 
+      return result; 
+    }
+  
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  AbelianGroup A;
+  int d;
+  AbelianGroup result;
+};
+
+@
+\section{class AbelianIntegralHomologyProblem}
+<<class AbelianIntegralHomologyProblem>>=
+class AbelianIntegralHomologyProblem : public Supervisor
+{
+public:
+  AbelianIntegralHomologyProblem( class SMFPGroup& G, int n = 2 );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  bool init;
+  int d;
+  MirrorSubordinate abelianInvariants;
+  AbelianIntegralHomologyARCer arcer;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/AbelianProblems.h
+#ifndef _AbelianProblems_h_
+#define _AbelianProblems_h_
+
+<<license>>
+<<include>>
+<<class AbelianWordProblem>>
+<<class AbelianIsomProblem>>
+<<class AbelianTorsionFreeRankProblem>>
+<<class AbelianOrderOfTheTorsionSubgroupProblem>>
+<<class AbelianOrderProblem>>
+<<class AbelianOrderOfEltProblem>>
+<<class AbelianEqualityProblem>>
+<<class WordInSGOfAbelian>>
+<<class AbelianIsSGEqualToTheGroup>>
+<<class AbelianSGIndexProblem>>
+<<class AbelianIsSGIsolatedProblem>>
+<<class AbelianSGContainmentProblem>>
+<<class FindCanonicalSmithPresentation>>
+<<class AbelianPHeightOfEltProblem>>
+<<class AbelianComputeTorsionSubgroup>>
+<<class AbelianEltPowerSubgrARCer>>
+<<class AbelianEltPowerSubgrComp>>
+<<class AbelianEltPowerSubgr>>
+<<class AbelianPowerProblem>>
+<<class AbelianInvariantsOfSGARCer>>
+<<class AbelianSGInvariants>>
+<<class AbelianSGCyclicDecomposition>>
+<<class AbelianPrimesOfSGARCer>>
+<<class AbelianSGPrimes>>
+<<class AbelianSGPrimesDecomposition>>
+<<class AbelianSGOrder>>
+<<class AbelianMaximalRootARCer>>
+<<class AbelianMaximalRootComp>>
+<<class AbelianMaximalRoot>>
+<<class AbelianIsIsomorphicSG>>
+<<class AbelianTorsionFreeRankOfSG>>
+<<class AbelianOrderOfTheTorsionSubgroupOfSG>>
+<<class EltPrimeForm>>
+<<class virtualFreeCompARCer>>
+<<class virtualFreeComp>>
+<<class SubgroupIsolatorARCer>>
+<<class SubgroupIsolator>>
+<<class AbelianSGPurityARCer>>
+<<class AbelianSGPurityProblem>>
+<<class AbelianSGGenedByWordPurityProblem>>
+<<class AbelianDoesGensSummand>>
+<<class AbelianSGEqualityProblem>>
+<<class IsAbelianWordPowerOfSecondArcer>>
+<<class IsAbelianWordPowerOfSecond>>
+<<class AbelianHomIsEpiComp>>
+<<class AbelianHomIsEpi>>
+<<class AbelianHomIsMonoComp>>
+<<class AbelianHomIsMono>>
+<<class AbelianHomIsAuto>>
+<<class AbelianHomIsIso>>
+<<class AbelianOrderOfAutoARCer>>
+<<class AbelianOrderOfAuto>>
+<<class AbelianInverseAutoARCer>>
+<<class AbelianInverseAuto>>
+<<class AbelianFixedPointsOfAutoARCer>>
+<<class AbelianFixedPointsOfAutoProblem>>
+<<class AbelianSGIntersectionARCer>>
+<<class AbelianSGIntersectionProblem>>
+<<class AbelianIntegralHomologyARCer>>
+<<class AbelianIntegralHomologyProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

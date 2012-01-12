@@ -1,0 +1,24 @@
+
+set prefix /usr/local
+set exec_prefix ${prefix}
+
+set tkdvi(tcllib) [expr {[info exists env(TKDVI_TCLLIB)] \
+	? $env(TKDVI_TCLLIB) : [file join ${prefix}/share tkdvi0.4]}]
+set tkdvi(binlib) [expr {[info exists env(TKDVI_BINLIB)] \
+	? $env(TKDVI_BINLIB) : [file join ${exec_prefix}/lib tkdvi0.4]}]
+
+#lappend auto_path [file join $env(HOME) .tk tkdvi]
+lappend auto_path $tkdvi(tcllib) $tkdvi(binlib)
+
+set tkdvi_version {0.4 (Alpha test)}
+
+wm group . .
+wm command . "$argv0 $argv"
+wm withdraw .
+
+
+
+package require tkdvi
+set f [dvi::code create -file "test.dvi"]
+tkdvi::browser::browser .dvi -file $f
+

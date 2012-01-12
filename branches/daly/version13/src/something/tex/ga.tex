@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+\title{Genetic algorithms and Hanna Neumann conjecture}
+\author{Dmitry Bormotov}
+\date{}
+\begin{document}
+\maketitle
+
+\section{Motivation}
+
+\textbf{}
+
+Computer programs tend to be static: they begin at point A and go to
+point B, mindlessly following a specific path. As the basis of most
+software, deterministic algorithms have proven their efficacy. Yet
+something fundamental is missing from software: adaptability. Simply
+put, the vast majority of applications are fixed entities that cannot
+adjust to situations unforeseen by their programmers. Furthermore,
+many problems cannot be solved by deterministic programs.
+
+If you are looking for a paradigm of adaptability, look no further
+than biology. Living things, based on a set of simple underlying
+chemical principles, have shown remarkable flexibility and
+adaptability throughout billions of years of changing environments.
+Implementing biological concepts creates software that evolves
+solutions. In some cases, a biological algorithm might find solutions
+that its programmer never envisioned - and that concept allows
+software to go beyond its human creator's vision.
+
+
+\section{Definitions}
+
+\vspace{5mm}
+\noindent
+\textbf{Genetic algorithm:}
+
+	In the broadest sense, a GA creates a set of solutions that
+reproduce based on their fitness in a given environment. The process
+follows this pattern:
+
+1. An initial population of random solutions is created.
+
+2. Each member of the population is assigned a fitness value based on
+its evaluation against the current problem.
+
+3. Solutions with a higher fitness value are most likely to parent new
+solutions during reproduction.
+
+4. The new solution set replaces the old, a generation is complete,
+and the process continues at step 2.
+
+\vspace{5mm}
+\noindent
+\textbf{Chromosome:}
+
+	A member of the population named after its biological
+counterpart.
+
+\vspace{5mm}
+\noindent
+\textbf{Roulette Wheel Selection:}
+
+	A roulette wheel selects the chromosomes used in
+reproduction. The wheel is the fitness array, and a marble is a random
+number less than the sum of all fitnesses in the population. To find
+the chromosome associated with the marble's landing place, the
+algorithm iterates through the fitness array; if the marble value is
+less than the current fitness element, the corresponding chromosome
+becomes a parent. Otherwise, the algorithm subtracts the current
+fitness value from the marble and then repeats the process with the
+next element in the fitness array. Thus the largest fitness values tend
+to be most likely resting places for the marble, since they use a
+larger area of the abstract wheel.
+
+\vspace{5mm}
+\noindent
+\textbf{Crossover:}
+
+	Crossover is a central feature of genetic algorithms that
+creates a new chromosome from two parents. Corresponding to biological
+crossover, the software version combines a pair of parents by randomly
+selecting a point at which pieces of the parents' bit strings are
+swapped.
+
+\vspace{5mm}
+\noindent
+\textbf{Mutation:}
+
+	A random change in each chromosome of the new population.
+
+\vspace{5mm}
+\noindent
+\textbf{Elitist selection:}
+
+	The technique that always copies the most-fit chromosome into
+the next generation.
+
+\vspace{5mm}
+\noindent
+\textbf{Fitness scaling:}
+
+	The technique that adjust the fitness values to the advantage
+of the most fit chromosomes.
+
+\vspace{5mm}
+\noindent
+\textbf{Windowing:}
+
+	This is the simplest form of fitness scaling. To implement
+windowing, subtract the minimum value from all fitness values, thus
+adjusting the fitness array to a zero-base.
+
+
+
+\section{ Genetic algorithm that looks for a counter-example 
+	to the Hanna Neumann conjecture. }
+
+
+\vspace{5mm}
+\noindent
+\textbf{Hanna Neumann conjecture:} 
+
+	If A and B are finitely generated non-trivial subgroups of a
+free group of finite rank, and I is the intersection of A and B, then
+
+	$rk(I)-1 <= (rk(A)-1)(rk(B)-1)$.
+
+\vspace{5mm}
+
+	Since nobody proved or found a counter-example to the Hanna
+Neumann conjecture and it seems like there's no clear way to do that,
+there was an idea to implement a program that computes the
+intersection of randomly chosen subgroups and checks the
+conjecture. One can hope that after few millions (billions, ...)
+experiments the program may produce the desired counter-example. We
+implemented such a program in Magnus and were running it on our
+machines for months. Many millions of pairs of subgroups for various
+parameters were tested but the conjecture held. Since GAs introduce a
+good way to search large hypotheses spaces we decided to try them.
+Here is the algorithm we used:
+
+
+\vspace{5mm}
+\noindent
+\textbf{The algorithm: }
+\vspace{5mm}
+
+
+1. An initial population of random solutions is created.
+
+2. Each member of the population is assigned a fitness value based on
+its evaluation against the current problem.
+
+   The fitness function:  $rk(I)-1 - (rk(A) - 1) (rk(B) - 1)$.
+
+3. Solutions with a higher fitness value are most likely to parent new
+solutions during reproduction. 
+
+3.1. To adjust the fitness values, the algorithm subtracts the
+minimum fitness value (windowing), add one, and then squares the
+result. Adding one gives every chromosome a chance of reproduction,
+and squaring the windowed fitness value strengthens the reproductive
+chances of the most-fit chromosomes.
+
+3.2. Roulette wheel selection is used to select parents. 
+
+3.3. For each pair of parents crossover can be used to produce an
+offspring. The algorithm uses the simple version of crossover, which
+gives the child some generators of both parents(subgroups). This item
+can be omitted, so that the algorithm will depend on mutations only,
+in which case it is called an evolutionary algorithm.
+
+3.4. Mutation is performed. Mutation can add a randomly chosen
+generator to a subgroup, delete one of the generators, or change several
+letters in any generator of the subgroup.
+
+4. The new solution set replaces the old, a generation is complete,
+and the process continues at step 2.
+
+\vspace{5mm}
+
+The great deal of adaptability of the GA was shown right away. The
+algorithm managed to produce an empty subgroup which being used in
+place of A or B makes the conjecture invalid. The programmer did not
+envision a situation like this and had to explain to the GA that this
+case should not be considered. After the correction the program tried
+to exploit other possibilities to produce a ``simple'' solution. If
+there is no counter-example the best fitness value could be reached
+when the left and the right parts of the inequality in the conjecture
+are equal or the difference between them is small. The program tried
+to exploit that by, consequently, producing subgroups of rank 1
+therefore turning the right part of the inequality to 0, choosing the
+same subgroups for A and B, so that the intersection had the same rank
+as the subgroups, and when this was prohibited, it used cyclical
+permutations of the generators of one subgroup to generate the other,
+so that the subgroups would still be equal. Only after each such case
+was identified and prohibited to use the program ran out of shortcuts
+and started to explore the worst case scenario. 
+
+Experiments showed that the methods used in the algorithm were capable
+of improving the fitness value very quickly. The first set of
+experiments used relatively small subgroups. They had ten generators
+each of length ten expressed in terms of the ambient free group on ten
+generators. In a matter of seconds the GA could find a pair of
+subgroups with fitness zero (the best possible fitness that does not
+contradict the conjecture), making parts of the inequality equal, or
+with a fitness close to zero. To compare, the random algorithm needed
+hours to improve the fitness value just a little bit, and virtually
+had no chance to produce an example with fitness close to
+zero. Intuitively it is not surprising since there is only small
+number of pairs of subgroups with good fitness values while the class
+of all subgroups generated is enormous even for small parameters.
+
+The was a hypotheses that the counter-example might be found when
+subgroups are large. We tried to generate subgroups with five hundred
+generators and see what the GA would do in this case. The algorithm
+tried many different transformations and it looked like the only way to
+seriously improve the fitness value was to somehow reduce the rank of
+A or B. Steadily decreasing the ranks of the subgroups the GA could
+always end up with fitness zero. A counter-example was never found
+which is one more confirmation to the fact that the conjecture is
+likely to hold.
+
+
+\section{Other applications of genetic algorithms in Magnus and future plans}
+
+The GAs were successfully applied for solving equations in a free
+group. The genetic technique was found to be quite natural for a task
+like this. Also we tried to implement a few algorithms for solving the
+word problem for a finitely presented group. The best algorithm found
+so far is the one that uses tries to reduce the length of a given word
+by conjugating the word and inserting relations. Though it is very
+simple it sometimes outperforms everything else we have in Magnus for
+the word problem. The same algorithm was applied for solving the
+triviality problem and checking whether a given group is
+abelian. Currently we are working on the algorithm that uses parts of
+the normal closure of the relators of a given group as members of the
+population. Also, since it is always difficult to find a good fitness
+function for problem like these, it might be a good idea to apply
+machine learning techniques to make the algorithm learn the fitness
+function while solving the problem. Neural nets seem to be reach
+enough to represent a function like that and might be a good addition
+to the genetic algorithms.
+
+
+\end{document}
+
+

@@ -1,0 +1,19 @@
+#2
+The solution is p -> 1, q -> 1, r -> b^-1, u -> a^-1 b^-1, x -> 1, y -> a^-2 b a^-2 b^-1 a^-1, t -> a, s -> 1, z -> 1
+Time elapsed: 32.5003
+
+#3
+The solution is p -> 1, q -> a, r -> b^-1, u -> 1, x -> a^2, y -> b a^-2 b^-1 a^-2 b, t -> 1, z -> 1, s -> 1
+Time elapsed: 88.0291
+
+#6
+The solution is s -> a b^-1 a^2 b a^2 b^-1, x -> 1, y -> a^-1, z -> a^-1, p -> b^-1, t -> 1, u -> 1, q -> 1, r -> 1
+Time elapsed: 129.897
+
+#8
+The solution is s -> 1, x -> a^-1, y -> a^-1 b, z -> 1, r -> 1, u -> a^-2 b^-1 a^-2 b a^-1, t -> 1, q -> b, p -> 1
+Time elapsed: 160.607
+
+#9
+The solution is p -> 1, q -> 1, r -> 1, x -> b, u -> a^-1, z -> b^-1 a^-2 b a^-2 b^-1, y -> a^2, s -> 1, t -> 1
+Time elapsed: 79.6172

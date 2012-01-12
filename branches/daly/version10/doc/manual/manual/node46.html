@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Object View</TITLE>
+<META NAME="description" CONTENT="The Object View">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00333200000000000000">
+The Object View</A>
+</H3>
+
+<P>
+The <I>FE</I> provides a procedure named <TT>objectView</TT> for use as a
+<EM>viewBuilder</EM> in a <EM>viewStructure</EM> argument to the <TT>create_</TT> command (&#167;<A HREF="node36.html#checking_in">3.3.1.1</A>). The <EM>viewParameters</EM> it
+expects has the form:
+
+<P>
+<TT>{</TT><EM>viewID</EM> <EM>heritage</EM><TT>}</TT>
+
+<P>
+The <EM>viewID</EM> is a positive integer which is the definitive
+reference shared by the <I>FE</I> and <I>SM</I> to the object view.
+
+<P>
+The <EM>heritage</EM> is <I>Hot</I> text which describes what the object
+is, and where it came from. Evaluation of <EM>heritage</EM> is delayed
+until the view is (re)displayed, to allow for possible name changes.
+Thus the <EM>heritage</EM> of a new word could be
+
+<P>
+<TT>{A word in the generators of [_name_ 29]}</TT>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

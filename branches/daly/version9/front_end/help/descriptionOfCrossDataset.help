@@ -1,0 +1,12 @@
+@@Description of Attribute Dataset
+
+   ATTRIBUTE DATA SETS
+    An attribute data set consists of data that is in the form of counts or frequencies.  Questions of interest for attribute data sets generally revolve around proportions, that is the theoretical proportion
+of some characteristic or attribute.  The entries in an attribute data set will consist of observed frequencies of characteristics or attributes. 
+For example suppose an election is being analyzed. A poll was conducted for Candidate A and the results were that out of 200 voters polled 80 would vote for Candidate A.  The attribute data would
+be 80 for Candidate A out of a total of 200.  Attribute data could also be cross-classified data in the form of a contingency table.  
+    Attribute data sets can be used for simple proportion testing either with one sample or two or for contingency table analysis. 
+
+         @For more information click here@html/DescriptionOfCrossDataSet.html::Description of Attribute DataSet@
+                      
+

@@ -1,0 +1,852 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+           "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<meta name="GENERATOR" content="TtH 3.06">
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
+
+  
+<title>`</title>
+
+<p>
+`=11  
+`=
+
+<p>
+       `=11
+
+
+`=
+
+<p>
+
+
+
+<p>
+                    .3in
+
+
+
+
+
+
+
+
+
+<p>
+
+
+<p>
+
+<table align="center" border="0"><tr><td>
+<b>CONFIDENCE INTERVAL FOR THE MEAN </b></td></tr></table><!--hboxt--> <br /> 
+<table align="center" border="0"><tr><td>
+<b>OF A ONE VARIABLE DATA
+SET</b></td></tr></table><!--hboxt-->
+
+<p>
+<br /><br />
+<table align="center" border="0"><tr><td>
+<b>(1) GENERAL ESTIMATION THEORY</b></td></tr></table><!--hboxt-->
+
+<p>
+<br /><br />Estimates in statistics are most often expressed in terms of <b>confidence intervals</b>. 
+Roughly these are intervals of numbers with <b>confidence levels</b> attached indicating the
+probability that what is being estimated actually falls within the interval. A formal definiiton
+is presented below.  First we give a discussion of the estimation procedure in general.
+
+<p>
+In most
+standard statistical analyses the parameters that are of most interest are <b>means</b>, <font face="symbol">m</font
+>, <b>
+standard deviations</b> or <b>variances</b>, <font face="symbol">s</font
+> or <font face="symbol">s</font
+><sup>2</sup> and <b>proportions </b> p.  Eachof
+these has a fairly standard statistic  that is used to estimate it.  For means we have [<font face="symbol">`</font
+>X], the sample mean; for standard deviations, s, the sample standard deviation; and for
+proportions \p, the sample proportion [&nbsp;x/n], where n is the number of items observed
+and x is the number of items observed of the characteristic of interest.  Each of these
+statistics is called an <b>estimator</b> for the corresponding parameter; hence [<font face="symbol">`</font
+>X] is an
+estimator for <font face="symbol">m</font
+>,s is an estimator for <font face="symbol">s</font
+> and  \p is an estimator for p.  In general
+if <font face="symbol">q</font
+> (theta) stands for a parameter, (it is no harm to think of this as either <font face="symbol">m</font
+>,s or
+p), then \th will stand for an estimator for <font face="symbol">q</font
+>.  Any particular value of an estimator is
+called a <b>point estimate</b> for the corresponding parameter.  
+
+<p>
+In general, in statistics we do not use point estimates.  There is no confidence in a point
+estimate and in most cases the probability that a point estimate is correct is zero.   Rather 
+<b>interval estimates</b> are used.  Interval estimates are ranges of numbers which hopefully contain
+the parameter we are trying to estimate.  For example if we are trying to estimate the mean
+completion time for the surgical procedure of the last section, 151 minutes would be a
+point estimate.  A typical interval estimate might be 143 to 159 minutes.  In most cases we
+use a special type of interval estimate called a <b>confidence interval estimate</b> or <b>
+confidence interval</b>. We will give a formal definition below but roughly a confidence
+interval estimate for a parameter is an interval estimate with a confidence level
+attached.  The confidence level gives the probability that the parameter being estimated
+actually falls within the interval.
+
+<p>
+<br /><br />  
+<p>
+<br /><b>EXAMPLE  Suppose that a 95% confidence interval for the mean completion time of the surgical procedure is given by 143 minutes to 159 minutes.&nbsp;</b><i>This is interpreted in the following manner. The true mean completion time is a number. There is a 95% probability that it falls in the interval 143 to 159. 
+<p>
+<br /><br /> 
+</i>Notice that in using a confidence interval estimate there are two concepts of how good this
+estimate is, <b>confidence</b> and <b>accuracy</b>.  The confidence of the estimate is given by the
+confidence level while the accuracy is given by the width of the interval.  A narrow interval
+indicates greater accuracy than a wider interval.  On an intuitive level it is clear that these two
+ideas are <b>inversely related</b>, that is for fixed sample size raising the confidence lowers the
+accuracy and vice versa.  We will see this computationally in section 5.4.  However we note that if
+we want a given confidence and wish to improve the accuracy we must take a larger sample size.  In
+the real world this translates into cost and often the sample size chosen is a compromise between
+what the theory requires and what the budget of the study dictates.
+
+<p>
+If <font face="symbol">q</font
+> is a parameter for a population P and \th is an estimator for it, then as one goes
+from random sample to random sample from P the values of \th will vary.  Hence \th has its own
+distribution of values over all possible samples taken from P (we assume here the same
+sample size in each case).  This is called the <b>sampling distribution</b> of the
+estimator \th.  Hence for a given sample size n and a given population P with mean <font face="symbol">m</font
+> there
+will be a sampling distribution for \X, consisting of all possible sample means of
+samples of size n drawn from P.  Similarly there will be a sampling distribution
+for the sample standard deviation s and a sampling distribution for the sample proportion 
+\p.  The sampling distribution of an estimator \th will have its own mean and own standard
+deviation.  We will denote these by <font face="symbol">m</font
+><sub>\th</sub> and <font face="symbol">s</font
+><sub>\th</sub>.
+
+<p>
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ <font face="symbol">m</font
+><sub>\th</sub> =  <span class="roman">mean</span> <span class="roman">of</span> <span class="roman">the</span> <span class="roman">sampling</span> <span class="roman">distribution</span> <span class="roman">of</span>  \th  <span class="roman">and</span> </td></tr></table>
+</td></tr></table>
+
+
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ <font face="symbol">s</font
+><sub>\th</sub> =  <span class="roman">standard</span> <span class="roman">deviation</span> <span class="roman">of</span> <span class="roman">the</span> <span class="roman">sampling</span> <span class="roman">distribution</span> <span class="roman">of</span>  \th .</td></tr></table>
+</td></tr></table>
+
+
+
+<p>
+If <font face="symbol">m</font
+><sub>\th</sub> = <font face="symbol">q</font
+>, that is the mean of the sampling distribution is equal to the
+parameter it is supposed to estimate, then \th is called an <b>unbiased estimator</b> for
+<font face="symbol">q</font
+>.  In general <font face="symbol">s</font
+><sub>\th</sub> is called the <b>standard error</b> of the estimator.
+
+<p>
+We examine these ideas relative to sample means.
+
+<p>
+For any population with mean <font face="symbol">m</font
+> and standard deviation <font face="symbol">s</font
+> the sample mean \X is an
+unbiased estimator for <font face="symbol">m</font
+>.  This means that <font face="symbol">m</font
+><sub>\th</sub> = <font face="symbol">m</font
+> where <font face="symbol">m</font
+><sub>\th</sub> is
+the mean of the sampling distribution of \X.   Further the <b>standard error of the mean</b> is
+given by 
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ <font face="symbol">s</font
+><sub>\X</sub> = </td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+.</td></tr></table>
+</td></tr></table>
+
+ It follows that for any population the sample
+means vary much less than the original population (notice that we are dividing by <font face="symbol">Ö</font
+>n in
+finding the standard deviation of the sampling distribution for \X).
+
+<p>
+<br /><br />  
+<p>
+<br /><b>EXAMPLE   Suppose the discussed surgical procedure has a mean of <font face="symbol">m</font
+> =  150 and a standard deviation of <font face="symbol">s</font
+> =  12.&nbsp;</b><i>What is the mean and standard deviation of the sampling distribution of \Xfor samples of size 25. 
+<p>
+</i>The mean of the sampling distribution is the same as the original mean.  Therefore <font face="symbol">m</font
+><sub>\X</sub> = <font face="symbol">m</font
+> =  150.  The standard deviation of the sampling distribution or the standard error is the
+original standard deviation divided by the squareroot of the sample size.  Therefore
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ <font face="symbol">s</font
+><sub>\X</sub> = </td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>\squarerootn<br /></td><td nowrap="nowrap" align="center">
+ = </td><td nowrap="nowrap" align="center">
+&nbsp;12
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>5<br /></td><td nowrap="nowrap" align="center">
+ = 2.4.</td></tr></table>
+</td></tr></table>
+
+
+
+<p>
+<br /><br /> The idea of an estimator and its sampling distribution is used to give a formal definition of a
+confidence interval. Suppose \th is an estimator for <font face="symbol">q</font
+> and h(\th),g(\th) are
+functions of \th with h(\th)  &lt;  g(\th) for all values of \th.  Then [h(\th),g(\th)] forms
+a <b>random interval</b>, that is an interval of numbers which arises randomly.  If for some
+value <font face="symbol">a</font
+> we have that 
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+Prob{h(\th)  <font face="symbol">£</font
+> <font face="symbol">q</font
+> <font face="symbol">£</font
+> g(\th)} = <font face="symbol">a</font
+>,</td></tr></table>
+</td></tr></table>
+
+ then
+[h(\th),g(\th)] is called an <font face="symbol">a</font
+>%-<b>confidence interval for </b><font face="symbol">q</font
+>.  This means that
+in repeated sampling there is a probability of <font face="symbol">a</font
+> that the random interval [h(\th),g(\th)]
+will contain the parameter <font face="symbol">q</font
+>.  For a particular value of \th we get a particular interval
+and this gives a <b>confidence interval estimate</b> for <font face="symbol">q</font
+>.
+
+<p>
+Summarizing all this we have that an <font face="symbol">a</font
+>%-<b>confidence interval</b> for a paramter <font face="symbol">q</font
+>
+is a random interval [h(\th),g(\th)], where \th is an estimator of <font face="symbol">q</font
+> and
+h(\th),g(\th) are functions of \th such that
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+Prob{h(\th)  <font face="symbol">£</font
+> <font face="symbol">q</font
+> <font face="symbol">£</font
+> g(\th)} = <font face="symbol">a</font
+>.</td></tr></table>
+</td></tr></table>
+
+
+
+<p>
+<br /><br />
+<table align="center" border="0"><tr><td>
+<b>(2) ESTIMATION OF MEANS : LARGE SAMPLE PROCEDURES </b></td></tr></table><!--hboxt-->
+
+<p>
+<br /><br /> We now look at the particular case where the parameter of interest is the population mean <font face="symbol">m</font
+>
+and the estimator is the sample mean \X.  The procedures used are separated into small and large
+sample procedures because of the following result, called the <b>Central Limit Theorem</b> which
+says that for <i>large enough </i> sample size the sampling distribution of \x from any parent
+population ( the population from which the sample is drawn) is approximately normal.
+
+<p>
+
+<p>
+<br /><b>Central Limit Theorem If \Xis sample mean for n observations from any population P with mean <font face="symbol">m</font
+>and finite standard deviation <font face="symbol">s</font
+>, then for"large" sample sizes n, the sampling distribution of \Xis approximately normal with mean <font face="symbol">m</font
+><sub>\X</sub> = <font face="symbol">m</font
+>and standard deviation <font face="symbol">s</font
+><sub>\X</sub> = [(<font face="symbol">s</font
+>)/(<font face="symbol">Ö</font
+>n)].&nbsp;</b><i> 
+<p>
+</i>The "large" in the theorem says that this is a limiting result.  That is the theorem is true in the
+limit as the sample size goes to infinity.  In practice generally the normal approximation is used
+when the sample size is 30 or greater (although if the parent population is very symmetrical itself
+the approximation works well at lower sample sizes).  Therefore the cutoff between samll and
+large sample procedures is usually set at n = 30.
+
+<p>
+We now turn to the problem of actually estimating a population mean <font face="symbol">m</font
+>.  Recall that what we are
+looking for is a <b>confidence interval estimate</b>. This means finding a random interval with a
+given probability of containing the population mean.  In terms of a general formula we are looking
+for a random interval which contains the population mean a given proportion of the time.  The sample
+mean \X is an estimator for <font face="symbol">m</font
+> and we use the ideas concerning the sampling distribution of
+\X together with the central limit theorem to construct <b>large sample confidence intervals for
+</b><font face="symbol">m</font
+>.
+
+<p>
+We suppose that P is a population with mean <font face="symbol">m</font
+> and standard deviation <font face="symbol">s</font
+> and that we can
+choose a sample size  n large enough (at least 30) so that the central limit theorem applies. 
+The sampling distribution of \X is then approximately normal with 
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+<font face="symbol">m</font
+><sub>\X</sub> = <font face="symbol">m</font
+> <span class="roman">and</span>  <font face="symbol">s</font
+><sub>\X</sub> = </td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+.</td></tr></table>
+</td></tr></table>
+
+
+Equivalently the z-value
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ z = </td><td nowrap="nowrap" align="center">
+&nbsp;\X <font face="symbol">-</font
+> <font face="symbol">m</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><table border="0"><tr><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td></tr></table></td><td nowrap="nowrap" align="center">
+</td></tr></table>
+</td></tr></table>
+
+
+follows a standard normal distribution.
+For a given <font face="symbol">a</font
+> find the standard normal z-value z<sub><font face="symbol">a</font
+>/2</sub> so that <font face="symbol">a</font
+>% is centered
+between <font face="symbol">-</font
+>z<sub><font face="symbol">a</font
+>/2</sub> and z<sub><font face="symbol">a</font
+>/2</sub>. (The <font face="symbol">a</font
+>/2 indicates that half is on each side of
+the mean.  Therefore in locating this z-value in the normal table we locate the z-value that goes
+with half of <font face="symbol">a</font
+>.  In MAGNUSSTAT this is done automatically within the program.  
+
+<p>
+From the normal distribution we have the following inequality on z-values which occurs <font face="symbol">a</font
+>% of
+the time
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ <font face="symbol">-</font
+>z<sub><font face="symbol">a</font
+>/2</sub>  <font face="symbol">£</font
+> z  <font face="symbol">£</font
+> z<sub><font face="symbol">a</font
+>/2</sub> .</td></tr></table>
+</td></tr></table>
+
+
+Since the sampling distribution of \X is approximately normal we can apply this to the z-value
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+z = </td><td nowrap="nowrap" align="center">
+&nbsp;\X <font face="symbol">-</font
+> <font face="symbol">m</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><table border="0"><tr><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td></tr></table></td><td nowrap="nowrap" align="center">
+</td></tr></table>
+</td></tr></table>
+
+
+to get the following inequality which also must occur <font face="symbol">a</font
+>% of the time
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ <font face="symbol">-</font
+>z<sub><font face="symbol">a</font
+>/2</sub>  <font face="symbol">£</font
+> </td><td nowrap="nowrap" align="center">
+&nbsp;\X <font face="symbol">-</font
+> <font face="symbol">m</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><table border="0"><tr><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td></tr></table></td><td nowrap="nowrap" align="center">
+ <font face="symbol">£</font
+> z<sub><font face="symbol">a</font
+>/2</sub> </td></tr></table>
+</td></tr></table>
+
+
+Solving this inequality for <font face="symbol">m</font
+>, the value which we are trying to estimate, we obtain the following
+inequality which must occur <font face="symbol">a</font
+>% of the time:
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ \X <font face="symbol">-</font
+> z<sub><font face="symbol">a</font
+>/2</sub></td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+ <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> \X + z<sub><font face="symbol">a</font
+>/2</sub></td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+.</td></tr></table>
+</td></tr></table>
+
+
+
+<p>
+The inequality above defines a random interval containing <font face="symbol">m</font
+> which must occur <font face="symbol">a</font
+>% of the
+time and thus defines an <font face="symbol">a</font
+>-percent confidence interval for <font face="symbol">m</font
+>.  Particular values for the
+variables will give a confidence interval estimate.
+
+<p>
+The formula given above depends upon the population standard deviation <font face="symbol">s</font
+>.  The following
+question arises. If we don't know <font face="symbol">m</font
+> why would <font face="symbol">s</font
+> be known?  In practice this is averted by
+using s in place of <font face="symbol">s</font
+>.  Usually for large samples, the sample standard deviation, s, is
+close enough to the population standard deviation <font face="symbol">s</font
+>, so that the estimate still has the
+required confidence.  Using the ANALYSIS OF THE VARIANCE TOOL we can build confidence intervals for
+standard deviations.
+
+<p>
+
+<p>
+<br /><b>Large Sample Confidence Intervals for <font face="symbol">m</font
+> If P is any population with mean <font face="symbol">m</font
+>then a large sample <font face="symbol">a</font
+>% confidence interval for <font face="symbol">m</font
+>is given by 
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ \X <font face="symbol">-</font
+> z<sub><font face="symbol">a</font
+>/2</sub></td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+ <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> \X + z<sub><font face="symbol">a</font
+>/2</sub></td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+</td></tr></table>
+</td></tr></table>
+
+ where 
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ \X =   <span class="roman">sample</span> <span class="roman">mean</span></td></tr></table>
+</td></tr></table>
+
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ <font face="symbol">s</font
+> =  <span class="roman">standard</span> <span class="roman">deviation</span></td></tr></table>
+</td></tr></table>
+
+ 
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ z<sub><font face="symbol">a</font
+>/2</sub> = <font face="symbol">a</font
+>% <span class="roman">confidence</span> <span class="roman">coefficient</span> <span class="roman">and</span> </td></tr></table>
+</td></tr></table>
+
+ 
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ n =  <span class="roman">sample</span> <span class="roman">size</span> <span class="roman">which</span> <span class="roman">is</span> <span class="roman">assumed</span> <span class="roman">at</span> <span class="roman">least</span> <span class="roman">30</span> .&nbsp;</td></tr></table>
+</td></tr></table>
+
+  
+<p>
+<br /><br /> 
+</b>Notice that the confidence interval has the format
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ \X <font face="symbol">-</font
+> E  <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> \X + E</td></tr></table>
+</td></tr></table>
+
+ where 
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ E = z<sub><font face="symbol">a</font
+>/2</sub></td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+.</td></tr></table>
+</td></tr></table>
+
+
+E = z<sub><font face="symbol">a</font
+>/2</sub>[(<font face="symbol">s</font
+>)/(<font face="symbol">Ö</font
+>n)] is called the <font face="symbol">a</font
+>%<b>-error term</b>. 
+
+<p>
+The construction of these confidence interval estimates depends upon determining the confidence
+coefficients so we first show how this is done. 
+
+<p>
+<br /><br />
+<p>
+<br /><b>EXAMPLE   Determine the large sample 95% and 99% confidence coefficients.&nbsp;</b><i>
+<p>
+<br /><br /> 
+</i>The desired percentage 95% is centered on the mean so that 47.5% is on either side.  Looking in the
+standard normal table for the entry .4750 we find that it corresponds to z = 1.96.  Therefore z =
+1.96 is the 95% large sample confidence coefficient.  Again in MAGNUSSTAT this is done
+automatically and presented in the output box.  
+
+<p>
+To find the 99% confidence coefficient we follow the same procedure.  Draw a normal curve and
+place 99% centered on the mean.  This gives 49.5% on either side and this is the value we look
+for in the normal table.  We see that the required z-value is between z = 2.57 and z = 2.58.  We
+will take the 99% confidence coefficient as z = 2.58. 
+
+<p>
+Determining confidence interval estimates is then reduced to computing the required information
+and substituting in the given formula.
+
+<p>
+
+<p>
+<br /><b>EXAMPLE   A study was done to determine the mean completion time of a certain operation.&nbsp;</b><i>A random sample of 64 such operations had a sample mean of 151 minutes with a sample standard deviation of 18 minutes. Determine 95% and 99% confidence interval estimates for the true mean completion time. 
+<p>
+</i>Here n = 64 so large sample procedures can be used.  For 95% the confidence coefficient is z
+= 1.96.  The computed information is
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ \X =  151  <span class="roman">and</span>  s = 18.</td></tr></table>
+</td></tr></table>
+
+
+Therefore the confidence interval estimate is
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ 151 <font face="symbol">-</font
+> 1.96</td><td nowrap="nowrap" align="center">
+&nbsp;18
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>8<br /></td><td nowrap="nowrap" align="center">
+ <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> 151 + 1.96</td><td nowrap="nowrap" align="center">
+&nbsp;18
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>8<br /></td><td nowrap="nowrap" align="center">
+</td></tr></table>
+</td></tr></table>
+
+
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ 151 <font face="symbol">-</font
+> 4.41  <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> 151 + 4.41</td></tr></table>
+</td></tr></table>
+
+
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ 146.59  <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> 155.41.</td></tr></table>
+</td></tr></table>
+
+
+
+<p>
+There are two ways in which the results can be reported.  First:
+
+<p>
+<br /><br />A 95% confidence interval for the mean completion time is 146.59 minutes to 155.41 minutes.
+
+<p>
+<br /><br />The second:
+
+<p>
+<br /><br />The mean completion time is 151 minutes with a 95% <b>margin of sampling error</b> of <font face="symbol">±</font
+>4.41
+minutes. 
+
+<p>
+<br /><br />To convert this into a 99% confidence interval, all that must be changed is the confidence
+coefficient.  The coefficient for 99% was 2.58 so the computations must be redone with z =
+2.58 rather than z = 1.96. 
+Therefore here the confidence interval estimate is
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ 151 <font face="symbol">-</font
+> 2.58</td><td nowrap="nowrap" align="center">
+&nbsp;18
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>8<br /></td><td nowrap="nowrap" align="center">
+ <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> 151 + 2.58</td><td nowrap="nowrap" align="center">
+&nbsp;18
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>8<br /></td><td nowrap="nowrap" align="center">
+</td></tr></table>
+</td></tr></table>
+
+
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ 151 <font face="symbol">-</font
+> 5.81  <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> 151 + 5.81</td></tr></table>
+</td></tr></table>
+
+
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ 145.19  <font face="symbol">£</font
+> <font face="symbol">m</font
+> <font face="symbol">£</font
+> 156.81.</td></tr></table>
+</td></tr></table>
+
+
+
+<p>
+Again the two ways in which the results can be reported are:
+
+<p>
+<br /><br />A 99% confidence interval for the mean completion time is 145.19 minutes to 156.81 minutes.
+
+<p>
+<br /><br />or
+
+<p>
+<br /><br />The mean completion time is 151 minutes with a 99% margin of sampling error of <font face="symbol">±</font
+>5.81
+minutes. 
+
+<p>
+<br /><br />As expected the 99% interval is wider ( the error is larger) and hence less accurate.  
+
+<p>
+<br /><br />
+<table align="center" border="0"><tr><td>
+<b>(3) ESTIMATION OF MEANS : DETERMINATION OF SAMPLE SIZE </b></td></tr></table><!--hboxt-->
+
+<p>
+<br /><br /> Suppose that in the previous example the error in the 95% estimate of <font face="symbol">±</font
+>4.41 minutes is
+too large and it is desired to improve the accuracy to an error of <font face="symbol">±</font
+>2.0 minutes.  If the
+95% confidence level is maintained the only way this could be done is to increase the sample
+size.  The question is how large large a sample is needed.
+
+<p>
+From before we have that the error is given by
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ E = z<sub><font face="symbol">a</font
+>/2</sub></td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+.</td></tr></table>
+</td></tr></table>
+
+
+In the example we knew z<sub><font face="symbol">a</font
+>/2</sub>,s and n and determined E.  Now we are given E and
+wish to determine n.  We will use the value of s as an estimate of <font face="symbol">s</font
+>.
+Here E = 2.0 so
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ 2.0 = 1.96</td><td nowrap="nowrap" align="center">
+&nbsp;18
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+\Doublerightarrow <font face="symbol">Ö</font
+>n = 1.96</td><td nowrap="nowrap" align="center">
+&nbsp;18
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>2.0<br /></td><td nowrap="nowrap" align="center">
+ = 17.64.</td></tr></table>
+</td></tr></table>
+
+
+It follows that
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ n = (17.64)<sup>2</sup> = 311.2.</td></tr></table>
+</td></tr></table>
+
+
+Therefore to get the desired accuracy we would have to sample 312 items.  Notice that we round up
+not round off. 
+
+<p>
+Now we do the same computations in terms of symbols to get a general formula.  We have that
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ E = z<sub><font face="symbol">a</font
+>/2</sub></td><td nowrap="nowrap" align="center">
+&nbsp;<font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div><font face="symbol">Ö</font
+>n<br /></td><td nowrap="nowrap" align="center">
+.</td></tr></table>
+</td></tr></table>
+
+
+Solving for n gives
+
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ n = (</td><td nowrap="nowrap" align="center">
+&nbsp;z<sub><font face="symbol">a</font
+>/2</sub><font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>E<br /></td><td nowrap="nowrap" align="center">
+)<sup>2</sup></td></tr></table>
+</td></tr></table>
+
+
+where in the formula <font face="symbol">s</font
+> is usually approximated by s.  
+
+<p>
+
+<p>
+<br /><b>Determination of Appropriate Sample Size To get a desired error of E in the determination of the sample mean <font face="symbol">m</font
+>for a confidence level of <font face="symbol">a</font
+>the appropriate sample size is given by 
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center"><tr><td nowrap="nowrap" align="center">
+ n = (</td><td nowrap="nowrap" align="center">
+&nbsp;z<sub><font face="symbol">a</font
+>/2</sub><font face="symbol">s</font
+>
+<div class="hrcomp"><hr noshade="noshade" size="1"/></div>E<br /></td><td nowrap="nowrap" align="center">
+)<sup>2</sup></td></tr></table>
+</td></tr></table>
+
+ where in the formula <font face="symbol">s</font
+>is usually approximated by s.&nbsp;</b><i> 
+<p>
+</i>What is sometimes done in practice is that a pilot study is conducted to get a value of s and
+this is then used in the above formula.
+
+<p>
+<br /><br />
+<table align="center" border="0"><tr><td>
+<b>(4) ESTIMATION OF MEANS : SMALL SAMPLE PROCEDURES </b></td></tr></table><!--hboxt-->
+
+<p>
+<br /><br />  The techniques that we have examined so far depend upon being able to draw a large enough sample so
+that the central limit theorem can be used.  In many situations though, it is impractical or
+impossible to draw a large sample.  Two very common testing situations where it is difficult, if not
+impossible, to draw  large samples are in <b>destructive testing</b> and more importantly for nurses
+and other health care professionals, <b>medical testing</b>.  Destructive testing refers to
+statistical testing where the sample is destroyed or made unusable by the test.  For example in
+testing the breaking strength of a steel rod the rod must be broken.  Similarly a disposable
+syringe cannot be reused.  Because of the costs involved we are most times restricted to relatively
+small samples.  In medical testing we are also in many cases restricted to smaller samples. 
+Ultimately testing must be done on human subjects and this cannot always be done with enough
+subjects to apply large sample techniques.  Because of this, bias questions often arise in medical
+testing.  Human subjects are frequently obtained by paying people.  However the population of
+people who would subject themselves to some sort of medical test for payment is not the same as the
+general population.  We must be aware of this in evaluating many medical findings.  
+
+<p>
+To handle estimation and other inference procedures concerning means when large samples cannot be
+drawn, we must deal with parent populations that are themselves normal or at least not too skewed. 
+If this is not a viable assumption then very little can be done.  Hence we will assume that our
+parent population is normal with mean <font face="symbol">m</font
+>.  The estimation of <font face="symbol">m</font
+> proceeds by using another
+continuous distribution which is very similar to a standard normal distribution. 
+
+<p>
+If n is a positive integer a <b>t-distribution with n degrees of freedom</b> is a continuous
+distribution whose density curve has the equation

@@ -1,0 +1,2 @@
+Possibly revisit the implementation of version2/back_end/Group/include/RandomPrimitiveElement.h vs version8/back_end/Group/include/RandomPrimitiveElement.h
+(most of it commented out in later version; decided to keep it that way for the time being because it isn't referenced anywhere)

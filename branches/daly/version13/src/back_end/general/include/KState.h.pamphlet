@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/KState.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{KState.h}
+\section{include}
+<<include>>=
+#include "Stack.h"
+
+@
+\section{class KState}
+<<class KState>>=
+class KState {
+public:
+  KState( ) { }
+  KState( int NumOfValues, int Values[] );
+  KState( const KState& );
+  ~KState( );
+
+  friend ostream& operator << ( ostream& ostr, const KState& s )
+  {
+    s.printOn(ostr);
+    return ostr;
+  }
+
+  bool operator == ( const KState& ) const;
+  KState& operator = ( const KState& s );
+  int operator [ ] ( int ind ) const;
+
+  ListOf<int>& getAgentList( int agent ) const;
+  // returns the reference to the list of knowledge of 'agent' 
+
+  int getNumOfValues( ) const { return numOfValues; }
+
+  friend ostream& operator < ( ostream& ostr, const KState& )
+  {
+    return ostr;
+  }
+  
+  friend istream& operator > ( istream& istr, KState& )
+  {
+    return istr;
+  }
+
+private:
+  void printOn( ostream& ostr) const;
+  int numOfValues;
+  int* values;
+  ListOf<int> **knowledge; 
+  // knowlegde[i] is a list of known functions for agent i  
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/KState.h
+#ifndef _KState_h_
+#define _KState_h_
+
+<<license>>
+<<include>>
+<<class KState>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

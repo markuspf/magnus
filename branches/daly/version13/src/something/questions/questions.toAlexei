@@ -1,0 +1,21 @@
+1. Triviality problem for MSC Groups is incorrect.
+
+2. Is OR Group abelian ? In case of 2 generators probably requires
+   word problem.
+
+3. Is WP for OR fast or exponential ?
+
+4. Discuss Gilbert's menus.
+
+5. What about "order" and "is finite", which algoritms should I
+   include there. For example, what about Abelian Rank.
+
+6. FP, prel.checkings, is numOfRels < numOfGens. Should I unsymmetrize
+   the set of relators ?
+
+7. What is free by cyclic ?
+
+8. FP, Is trivial, can we optimize the normal closure checking ?
+
+9. Abelianization is trivial iff all its generators are trivial ?
+

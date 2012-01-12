@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>External Interface Tests</TITLE>
+<META NAME="description" CONTENT="External Interface Tests">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00241000000000000000">
+External Interface Tests</A>
+</H2>
+
+<P>
+The external interface tests are mandatory.
+For at least one class <TT>MyClass</TT> in a given hierarchy there should be
+an executable <TT>test-MyClass</TT>.
+It should send output to <TT>cout</TT>, which is read by a report script.
+The only <EM>required</EM> output is a line
+<PRE>
+  n tests failed.
+</PRE>
+when <IMG
+ WIDTH="47" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$n &gt; 0$"> tests fail.
+
+<P>
+In general, for every public method in the hierarchy,
+<TT>test-MyClass</TT> should output a line of the form
+
+<P>
+<TT>[+-] &lt;function prototype&gt;</TT>
+
+<P>
+where <TT>+</TT> or <TT>-</TT> indicates whether the tests for this
+method were successful. Additional tests which do not focus on a
+particular method may be appropriate; see, e.g., 
+<BR><TT>magnus/back_end/general/test/test-List.C</TT>.
+
+<P>
+Note that for container classes such as <TT>ListOf</TT> and
+<TT>SetOf</TT>, it is straightforward to test each method in isolation,
+but in the case of non-trivial group theoretic code this may not be
+feasible. Here are some alternative techniques we have employed:
+
+<P>
+
+<UL>
+<LI>For Knuth-Bendix, we have a fixed suite of test inputs along with the
+expected output; the latter can be mechanically compared to the actual
+output.
+
+<P>
+</LI>
+<LI>For the one relator word problem, we have a program which generates
+relators and trivial words at random. Since the expected output is
+known regardless of the input, the actual output is easy to test
+mechanically for correctness. The parameters of the random generation
+are fixed at compile time, so we can repeat the test.
+</LI>
+</UL>
+
+<P>
+Other conventions:
+
+<P>
+
+<UL>
+<LI>The tests must be defined exclusively in terms of the
+public interfaces of the classes in the hierarchy.
+
+<P>
+</LI>
+<LI>If the test requires input data from a file, this data must
+be in a file
+<TT>test-MyClass.data</TT>
+
+<P>
+</LI>
+<LI>If the test requires another program to generate data, the
+external program must of course also be provided, and called from
+<TT>test-MyClass</TT> with a system call. If some data is
+generated randomly, the random generator must be seeded the same way for
+each invocation of <TT>test-MyClass</TT>.
+
+<P>
+</LI>
+<LI>If the test produces output on <TT>cout</TT> which should be compared with
+a file of correct output, the latter should be called
+<TT>test-MyClass.mastertestout</TT>.
+If the output needs to be evaluated by an external program, then
+of course this program should also be provided, and called from
+<TT>test-MyClass</TT> with a system call.
+
+<P>
+</LI>
+</UL>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

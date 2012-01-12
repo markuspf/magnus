@@ -1,0 +1,109 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/RSWord.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Vector.h"
+#include "Word.h"
+#include "FreeGroup.h"
+
+@
+\section{struct RSGenerator}
+<<struct RSGenerator>>=
+struct RSGenerator {
+
+  RSGenerator( Generator g = 1, int ind = 0, int p = 1 ) 
+    : gen( g ), index(ind), power( p ) { }
+
+  bool operator == (const RSGenerator& g ) {
+    return gen == g.gen && index == g.index && power == g.power;
+  }
+
+  // Data members
+  Generator gen;
+  int index;
+  int power;
+};
+
+@
+\section{class RSWord}
+RS stands for Redemeister-Schreier. Here we try to
+implement the RS rewriting of words.
+<<class RSWord>>=
+class RSWord 
+{
+public:
+  RSWord( const FreeGroup& F = FreeGroup(), const Word& w = Word() );
+  // The first generator ( [1] ) is assumed to be letter t, i.e. it's
+  // exponent sum in the word should be 0. Also, w is assumed to be
+  // freely reduced.
+
+  RSWord( const FreeGroup& F, const RSWord& w );
+  // The first generator ( [1] ) is assumed to be letter t, i.e. it's
+  // exponent sum in the word should be 0. Also, w is assumed to be
+  // freely reduced.
+
+  RSWord& operator = ( const RSWord& );
+  bool operator == ( const RSWord& ) const;
+  RSGenerator operator [] ( int i ) const { return theWord[i]; }
+  RSGenerator& operator [] ( int i ) { return theWord[i]; }
+  int length( ) const { return theWord.length(); }
+  int hash( ) const { return length(); }
+
+  friend ostream& operator << ( ostream& ostr, const RSWord& w )
+  {
+    w.printOn(ostr);
+    return ostr;
+  }
+  
+  // operator >> is not provided
+
+  // dummy, temporary, to shut up the linker
+  friend ostream& operator < ( ostream& ostr, const RSWord& w )
+  {
+    return ostr;
+  }
+
+  // dummy, temporary, to shut up the linker
+  friend istream& operator > ( istream& istr, RSWord& w )
+  {
+    return istr;
+  }
+
+private:
+  void printOn( ostream& ostr ) const;
+  FreeGroup theGroup;
+  VectorOf<RSGenerator> theWord;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/RSWord.h
+#ifndef _RSWord_h_
+#define _RSWord_h_
+
+<<license>>
+<<include>>
+<<struct RSGenerator>>
+<<class RSWord>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

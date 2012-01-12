@@ -1,0 +1,17 @@
+@@About CAISS-STAT
+
+
+\ni CAISS-STAT has been designed to carry out statistical analyses and computations, 
+easily handle and perform statistical experiments and provide detailed explanations
+of statistical concepts and procedures.  CAISS-STAT has been geared both for students 
+and for professional statistical analysts.  For students, CAISS-STAT can serve as
+an interactive learning tool and interactive textbook.  For sophisticated statistical
+analysts, CAISS-STAT can provide an easily used full-service statistical package. 
+
+
+The basic object in statistical analysis is the data set and CAISS-STAT has been designed
+to deal with many different types of data sets, including one-variable data
+sets, two-variable data sets, attribute data sets, multi-variable data sets, 
+probability distributions, quality control data sets, and time series data sets.   A detailed
+description of the underlying philosophy and computations that CAISS-STAT can effect is contained 
+in the @on-line manual@root::The CAISS-STAT Manual@.

@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/developernotes.pamphlet}
+\author{Timothy Daly}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Control Flow}
+The main routine lives in [[magnus.pamphlet]].
+
+The main routine calls [[SessionManager::start()]] which lives in
+[[sessionmanager.pamphlet]].
+
+The [[SessionManager::start]] routine calls 
+[[SessionManager::initializeFrontEnd]].
+This routine sends a series of messages to standard output. 
+These messages are intended for a TCL/TK front end. 
+Then it enters an infinite loop calling
+\begin{verbatim}
+	 readMessages();
+	 TheObjects::passControl();
+	 takeControl();
+\end{verbatim}
+
+The [[SessionManager::readMessages]] routine
+
+The [[TheObjects::passControl]] routine
+
+The [[SessionManager::takeControl]] routine
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

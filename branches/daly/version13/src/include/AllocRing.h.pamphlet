@@ -1,0 +1,254 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/include/AllocRing.h}
+\author{Doug Lea}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{AllocRing - A string storage ring}
+An AllocRing holds the last n malloc'ed strings, reallocating/reusing 
+one only when the queue wraps around. It thus guarantees that the
+last n allocations are intact. It is useful for things like I/O
+formatting where reasonable restrictions may be made about the
+number of allowable live allocations before auto-deletion.
+
+\section{AllocRing.h}
+<<AllocRing.h>>=
+#ifndef _AllocRing_h
+#ifdef __GNUG__
+#pragma interface
+#endif
+#define _AllocRing_h 1
+
+template<class S>
+class AllocRing
+{
+
+  struct AllocQNode
+  {
+    S*  ptr;
+    int    sz;
+  };
+
+  AllocQNode* nodes;
+  int         n;
+  int         current;
+
+  int         find(S* p);
+
+public:
+
+              AllocRing(int max);
+             ~AllocRing();
+
+  S*          alloc(int size);
+  int         contains(S* ptr);
+  void        clear();
+  void        free(S* p);
+};
+
+
+#endif
+
+@
+\section{AllocRing.c}
+\subsection{include}
+<<include>>=
+#ifdef __GNUG__
+#pragma implementation
+#endif
+#include <std.h>
+#include <new>
+
+@
+\subsection{Constructor}
+AllocRing will allocate a ring of [[AllocQNode]] in memory.
+[[n]] is initialized to the argument value [[max]].
+[[current]] is the index into the ring and is initialized to 0.
+[[nodes]] is an array of [[AllocQnode]] objects. This array is
+treated as a ring structure since whenever [[current]] reaches
+the value [[max]] it is reset to 0, thus pointing again at the
+initial index.
+<<AllocRing<S>::AllocRing(int max)>>=
+template<class S>
+AllocRing<S>::AllocRing(int max)
+  :n(max), current(0), nodes(new AllocQNode[max])
+{
+  for (int i = 0; i < n; ++i)
+  {
+    nodes[i].ptr = 0;
+    nodes[i].sz = 0;
+  }
+}
+
+@
+\subsection{Destructor}
+<<AllocRing<S>::~AllocRing()>>=
+template<class S>
+AllocRing<S>::~AllocRing()
+{
+  clear();
+}
+
+@
+\subsection{alloc}
+<<S* AllocRing<S>::alloc(int s)>>=
+template<class S>
+S* AllocRing<S>::alloc(int s)
+{
+  unsigned int size = good_size(s);
+
+  S* p;
+  if (nodes[current].ptr != 0 && 
+      nodes[current].sz >= int(size) && 
+      nodes[current].sz < int(4 * size))
+    p = nodes[current].ptr;
+  else
+  {
+    if (nodes[current].ptr != 0) operator delete (nodes[current].ptr);
+    p = (S*) operator new (size);
+    nodes[current].ptr = p;
+    nodes[current].sz = size;
+  }
+  ++current;
+  if (current >= n) current = 0;
+  return p;
+}
+
+@
+\subsubsection{good\_size}
+The [[good_size]] routine ensures that the ring of pointers is large
+enough to hold all of the pointers. The '4' is there to leave
+enough room for the end of the pointer list to contain a pointer
+back to the beginning, thus making a ring structure.
+
+The [[good_size]] routine is only used within the [[alloc]] routine.
+<<static inline unsigned int good_size(unsigned int s)>>=
+static inline unsigned int good_size(unsigned int s)
+{
+  unsigned int req = s + 4;
+  unsigned int good = 8;
+  while (good < req) good <<= 1;
+  return good - 4;
+}
+
+@
+\subsection{free}
+<<void AllocRing<S>::free(S* p)>>=
+template<class S>
+void AllocRing<S>::free(S* p)
+{
+  int idx = find(p);
+  if (idx >= 0)
+  {
+    delete nodes[idx].ptr;
+    nodes[idx].ptr = 0;
+  }
+}
+
+@
+\subsection{find}
+<<int AllocRing<S>::find(S* p)>>=
+template<class S>
+int AllocRing<S>::find(S* p)
+{
+  if (p == 0) return -1;
+
+  for (int i = 0; i < n; ++i)
+    if (nodes[i].ptr == p)
+      return i;
+
+  return -1;
+}
+
+@
+\subsection{clear}
+<<void AllocRing<S>::clear()>>=
+template<class S>
+void AllocRing<S>::clear()
+{
+  for (int i = 0; i < n; ++i)
+  {
+    if (nodes[i].ptr != 0)
+    {
+      delete(nodes[i].ptr);
+      nodes[i].ptr = 0;
+    }
+    nodes[i].sz = 0;
+  }
+  current = 0;
+}
+
+@
+\subsection{contains}
+<<int AllocRing<S>::contains(S* p)>>=
+template<class S>
+int AllocRing<S>::contains(S* p)
+{
+  return find(p) >= 0;
+}
+
+@
+\section{testcase}
+<<testcase>>=
+#include <iostream>
+#include <string>
+#include "AllocRing.h"
+
+int main()
+{ typedef AllocRing<std::string> StorageRing;
+  std::string s = "test case 1\n";
+  StorageRing R(8);
+  R.clear();
+  std::cout << s;
+  std::cout << "TESTCASE(AllocRing.C): AllocRing succeeded\n";
+  return(0);
+}
+
+@
+\subsection{license}
+<<license>>=
+/* 
+Copyright (C) 1989 Free Software Foundation
+    written by Doug Lea (dl@rocky.oswego.edu)
+
+This file is part of the GNU C++ Library.  This library is free
+software; you can redistribute it and/or modify it under the terms of
+the GNU Library General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your
+option) any later version.  This library is distributed in the hope
+that it will be useful, but WITHOUT ANY WARRANTY; without even the
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU Library General Public License for more details.
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the Free Software
+Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+*/
+
+@
+<<*>>=
+// src/include/AllocRing.h
+#ifndef _ALLOCRING_H_
+#define _ALLOCRING_H_
+<<license>>
+<<include>>
+<<AllocRing.h>>
+<<AllocRing<S>::AllocRing(int max)>>
+<<int AllocRing<S>::find(S* p)>>
+<<void AllocRing<S>::clear()>>
+<<void AllocRing<S>::free(S* p)>>
+<<AllocRing<S>::~AllocRing()>>
+<<int AllocRing<S>::contains(S* p)>>
+<<static inline unsigned int good_size(unsigned int s)>>
+<<S* AllocRing<S>::alloc(int s)>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,99 @@
+    The brief scheme of interruption of long time working algoritms.
+
+
+        Dividing an algoritm onto ARCs is not trivial task at all,
+sometimes it takes even more time than make the implementation. And
+than more compicated one you do, than longer you have to work.
+Moreover such code is completely unclear, unreadable and nobody can
+understand it already, even author itself. Debugging, fixing, or
+making changes is so heavily that do this almost impossible. Sure, any
+backend's algoritm shouldn't worry about how much time it will work in
+the system before returning control.It is Session Manager's work, just
+it must manage - it is MANAGER, isn't it ? The more so, as in Unix
+we've got very convenient, very flexible tools to do this as parallel
+processes.
+
+        Certanly, we cannot rewrite the whole Magnus, using new
+technology, because simply we don't have enough time now. But we can
+deceive Session Manager, we can implement a special reper which will
+be able to divide any algoritm onto ARCs using process control
+functions. The general idea is to run a long time working algoritm as
+a separate process, which will be a child of Magnus. To construct a
+new process we can use fork(), after which in child's code we can call
+our goal algoritm or, using one of exec functions, load and execute a
+separate programm which will call our one. Probably the second way is
+better, because keeping a couple of copies of Magnus in memory is too
+wastefull, moreover in that case we may use vfork() instead of fork,
+because the fisrt one doesn't make a copy of adress space of the
+parent, when it's constructing a child. When the child process is run
+Magnus can wait for one ARC (1 second for example), using checking of
+timer, system function sleep() (to save CPU time), or any another
+method. After one ARC of time Magnus will suspend the child (sending
+signal SIGSTOP using function kill()) and return control to the
+Session Manager. When this problem object (from which we constructed
+ our child) get control back, it can resume it's child (sending signal
+SIGCONT). It will do this until the child will be finished, we can
+check it sending zero signal. This idea was implemented already and
+works successfully.
+
+        Now we can control our processes without ARCs, but we don't
+solve one problem yet. How to send the results of computation from
+child to the proper problem object ? We need an interprocess
+communication (IPC). Let me remind that we need only transfer data in
+one direction and only between two concrete objects (newer will be
+more). It means that PIPEs are the best choice for this goal. Pipes
+have two limitations:
+
+1. They are half-duplex. Data flows only in one direction.
+
+2. They can be used only between processes that have a common
+   ancestor. Normally a pipe is created by a process, that calls fork,
+   and the pipe is used between the parent and child.
+
+Stream pipes get around the first limitations, and FIFOs and named
+stream pipes get around the second limitations. Despite these
+limitations, half-duplex pipes are still the most commonly used form
+of IPC. But we don't need even get around, we exactly need a couple of
+standart pipes between our algoritms and proper Session Manager's
+problem objects. Roger told me recently that pipes are slowly, but I
+trust in this less and less. If he was right I will have to use more
+complicated technology: shared memory segments with semaphores, but
+realy we cannot use all advantages of shared memory for our project
+(to much to redo), it means that anyway we have to transfer data and
+in that case I should construct faster pipe (pipe again !) on a base
+of shared memory. But I hope now, that pipe are fast enough.
+
+        By the way, pipes are provided by all Unix systems. Look at
+the table, please.
+
+IPC type           POSIX.1  XPG3  V7  SVR2  SVR3.2  SVR4  4.3BSD  4.3+BSD
+
+pipes(half duplex)    +       +    +    +      +      +      +       +
+FIFOs(named pipes)    +       +         +      +      +              +
+
+stream pipes                                   +      +      +       +
+  (full duplex)
+named stream pipes                             +      +      +       +
+
+message queues                +         +      +      +
+semaphores                    +         +      +      +
+shared memory                 +         +      +      +
+
+sockets                                               +      +       +
+streams                                        +      +
+
+
+
+Small print:
+
+        Of course we need have tools to wtite our data to the pipe (or
+something ). We can save them into stream, for example, provide
+methods read() and write() (virtual for each class and global for non
+user types), using usual technology like in Turvo Vision, but much
+simpler, because we need save only data without VMT. This deal takes a
+couple of seconds for each class, but it will very usefull not only
+for this goal.
+
+
+That's all.
+

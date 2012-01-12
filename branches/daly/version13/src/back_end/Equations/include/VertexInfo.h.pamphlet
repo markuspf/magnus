@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Equations/include/VertexInfo.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Word.h"
+#include "NielsenTransformations.h"
+
+@
+\section{struct VertexInfo}
+We can represent elimination process as a directed acyclic graph.
+There is an edge from word A to  word B marked with elementary
+singular endo R if B = R(A).
+
+In fact, the graph is represented as list of VertexInfo structures.
+<<struct VertexInfo>>=
+struct VertexInfo {
+  VertexInfo(const Word& w, int i, const SingularEndo& se) :
+    word(w), lastVar(i), eliminator(se) {}
+
+  // copy constructor, operator=, and destructor provided by compiler
+
+  friend inline bool operator==(const VertexInfo& x, const VertexInfo& y) {
+    return (x.word == y.word && 
+            x.lastVar == y.lastVar && 
+            x.eliminator == y.eliminator);
+  }
+
+  friend inline ostream& operator<<(ostream& o, const VertexInfo& x) {
+    error("called operator<<( ostream&, const VertexInfo& ) "
+	  "which is prohibited");
+    return o;
+  }
+
+  Word word;
+  // a word with some variables eliminated
+
+  int lastVar;
+  // last variable eliminated; the word was derived from its parent
+  // by eliminating lastVar
+  // this prevents from considering the same vertex twice
+
+  SingularEndo eliminator;
+  // eliminating endo -- maps the root to the word
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Equations/include/VertexInfo.h
+#ifndef _VertexInfo_H_
+#define _VertexInfo_H_
+
+<<license>>
+<<include>>
+<<struct VertexInfo>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

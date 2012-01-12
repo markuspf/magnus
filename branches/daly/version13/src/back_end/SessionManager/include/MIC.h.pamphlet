@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/MIC.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Trichotomy.h"
+#include "Chars.h"
+#include "FEData.h"
+#include "InformationCenter.h"
+
+@
+\section{MIC}
+Usage:
+
+For a given piece of info, there are up to four kinds of names needed:
+\begin{list}{} 
+\item 1) The data member
+\item 2) The member function through which it is reported
+\item 3) The member function via which its existence is queried
+\item 4) The member function via which it is accessed
+\end{list} 
+In an attempt at coherence, we try to use these conventions for a
+Trichotomy (resp. bool) <I>
+e.g., I == abelian, (resp. I == solvedWordProblem):
+\begin{list}{} 
+\item 1) <I>
+\item 2) putIs<I>  resp. putHave<I>
+\item 3) is<I>     resp. have<I>
+\end{list}
+and in other cases (e.g., I == confluentKBMachine):
+\begin{list}{} 
+\item 1) <I>
+\item 2) putHave<I>
+\item 3) have<I>
+\item 4) get<I>
+\end{list}
+\subsection{class HomIsMonoProperty}
+<<class HomIsMonoProperty>>=
+class HomIsMonoProperty : public NoDataProperty {
+public:
+  HomIsMonoProperty( ) : NoDataProperty() {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "HomIsMono"; }
+protected:
+  GenericProperty* clone() const { return new HomIsMonoProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class HomIsEpiProperty}
+<<class HomIsEpiProperty>>=
+class HomIsEpiProperty : public NoDataProperty {
+public:
+  HomIsEpiProperty( ) : NoDataProperty() {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "HomIsEpi"; }
+protected:
+  GenericProperty* clone() const { return new HomIsEpiProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class ExtendToHomProperty}
+<<class ExtendToHomProperty>>=
+class ExtendToHomProperty : public NoDataProperty {
+public:
+  ExtendToHomProperty( const Chars& descr ) : NoDataProperty(descr) {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "ExtendToHom"; }
+protected:
+  GenericProperty* clone() const { return new ExtendToHomProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class MIC}
+<<class MIC>>=
+class MIC : public InformationCenter, protected FEData
+{  
+public:
+  MIC( OID map_oid );
+  ~MIC( );
+
+  void putDoesExtendToHom( bool doesExtend = true, Chars explanation = "" );
+  Trichotomy doesExtendToHom( ) const;
+  Chars getExtendToHomExplanation( ) const;
+  Chars getExtendToHomMessage( ) const;
+  void putIsMono(bool ismono);
+  void putIsEpi(bool isepi);
+  Trichotomy isMono() const;
+  Trichotomy isEpi() const;
+  OID mapOID;
+  // Need this for composing messages about what has been found.
+  
+  //Trichotomy extendToHom;
+  //Chars extendToHomExplanation;
+  //Chars extendToHomMessage;
+private:
+  //Trichotomy homIsMono;
+  //Trichotomy homIsEpi;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/MIC.h
+#ifndef _MIC_H_
+#define _MIC_H_
+
+<<license>>
+<<include>>
+<<class HomIsMonoProperty>>
+<<class HomIsEpiProperty>>
+<<class ExtendToHomProperty>>
+<<class MIC>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

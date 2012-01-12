@@ -1,0 +1,203 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/AbelianInvariants.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "AbelianGroup.h"
+#include "ARCer.h"
+
+@
+\section{class AbelianInvariantsARCer}
+<<class AbelianInvariantsARCer>>=
+class AbelianInvariantsARCer : public ARCer
+{
+public:
+  AbelianInvariantsARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( 0 ) { } 
+
+  ~AbelianInvariantsARCer( ) { delete AG; } 
+
+  void setArguments( const FPGroup&, bool );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  AbelianGroup getCyclicDecomposition();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  FPGroup G;
+  bool bMakeFile;
+  AbelianGroup* AG;
+};
+
+@
+\section{class AbelianInvariants}
+<<class AbelianInvariants>>=
+class AbelianInvariants : public ComputationManager
+{
+public:
+  AbelianInvariants(class GCM& gcm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class GCM& theGCM;
+  AbelianInvariantsARCer arcer;
+};
+
+@
+\section{class AbelianInvariantsOfFactor}
+<<class AbelianInvariantsOfFactor>>=
+class AbelianInvariantsOfFactor : public ComputationManager
+{
+public:
+  AbelianInvariantsOfFactor(class SCM& scm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class SCM& theSCM;
+  AbelianInvariantsARCer arcer;
+};
+
+@
+\section{class AbelInvariantsProb}
+<<class AbelInvariantsProb>>=
+class AbelInvariantsProb : public Supervisor
+{
+public:
+  AbelInvariantsProb(class SMFPGroup& G);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class AbelianRank}
+<<class AbelianRank>>=
+class AbelianRank : public ComputationManager
+{
+public:
+  AbelianRank(class GCM& gcm);
+  ~AbelianRank( );
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  class AbelianInfinitenessProblem* theProb;
+};
+
+@
+\section{class AbelianPrimesARCer}
+<<class AbelianPrimesARCer>>=
+class AbelianPrimesARCer : public ARCer
+{
+public:
+  AbelianPrimesARCer( ComputationManager& boss ) 
+    : ARCer( boss ), AG( 0 ) { } 
+
+  ~AbelianPrimesARCer( ) { delete AG; } 
+
+  void setArguments( const AbelianGroup& );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  AbelianGroup getPrimaryDecomposition();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  FPGroup G;
+  bool bMakeFile;
+  AbelianGroup* AG;
+};
+
+@
+\section{class AbelianPrimes}
+<<class AbelianPrimes>>=
+class AbelianPrimes : public ComputationManager
+{
+public:
+   AbelianPrimes(class GCM& gcm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+   class GCM& theGCM;
+   AbelianPrimesARCer A;
+   bool primesStarted;
+};
+
+@
+\section{class AbelianPrimeDecomp}
+<<class AbelianPrimeDecomp>>=
+class AbelianPrimeDecomp : public Supervisor
+{
+public:
+  AbelianPrimeDecomp(class SMFPGroup& smg);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate abelianPrimes;
+  MirrorSubordinate abelianInvariants;
+  bool abDone;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/AbelianInvariants.h
+#ifndef _ABELIANINVARIANTS_H_
+#define _ABELIANINVARIANTS_H_
+
+<<license>>
+<<include>>
+<<class AbelianInvariantsARCer>>
+<<class AbelianInvariants>>
+<<class AbelianInvariantsOfFactor>>
+<<class AbelInvariantsProb>>
+<<class AbelianRank>>
+<<class AbelianPrimesARCer>>
+<<class AbelianPrimes>>
+<<class AbelianPrimeDecomp>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

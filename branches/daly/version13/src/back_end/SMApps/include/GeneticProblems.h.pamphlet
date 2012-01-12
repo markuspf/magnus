@@ -1,0 +1,109 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/GeneticProblems.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SMWord.h"
+#include "ARCer.h"
+
+@
+\section{struct GeneticWPBase}
+<<struct GeneticWPBase>>=
+struct GeneticWPBase {
+
+  enum DetailType { NO_DETAILS, WORD, SET_OF_WORDS, COMMUTATORS }; 
+
+  // Customizes details output for various supervisors.
+  // You can certainly include types like WORD_PROBLEM, IS_ABELIAN, etc.
+
+};
+
+@
+\section{class GeneticWPArcer}
+<<class GeneticWPArcer>>=
+class GeneticWPArcer : public ARCer, public GeneticWPBase {
+public:
+  GeneticWPArcer( ComputationManager& );
+  ~GeneticWPArcer( ) { delete file; }
+
+  void setArguments( const FPGroup&, const SetOf<Word>&, 
+		     DetailType dt = NO_DETAILS );
+
+  Trichotomy getRetValue() { return retValue; }
+  Chars getFileName();
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  FPGroup theGroup;
+  SetOf<Word> theWords;
+  Trichotomy retValue;
+  DetailType dtype;
+  File *file;
+};
+
+@
+\section{class GeneticWPCM}
+<<class GeneticWPCM>>=
+class GeneticWPCM : public ComputationManager, public GeneticWPBase {
+public:
+  GeneticWPCM( class Supervisor& boss );
+
+  void init( const FPGroup& group, const SetOf<Word> words, 
+	     DetailType dt = NO_DETAILS ); 
+  // you must call this function before any other accessor
+
+  Trichotomy areTrivial( ) { return tAreTrivial; }
+  Chars getFileName() { return arcer.getFileName(); }
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  FPGroup theGroup;
+  SetOf<Word> theWords;
+  const Supervisor& theBoss;
+  Trichotomy tAreTrivial;
+  bool bStarted;
+  bool bInited;
+  DetailType dtype;
+  GeneticWPArcer arcer;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/GeneticProblems.h
+#ifndef _GeneticProblems_h_
+#define _GeneticProblems_h_
+
+<<license>>
+<<include>>
+<<struct GeneticWPBase>>
+<<class GeneticWPArcer>>
+<<class GeneticWPCM>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

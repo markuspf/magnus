@@ -1,0 +1,445 @@
+From alexei@rio Wed Dec 18 20:33 EST 1996
+Date: Wed, 18 Dec 1996 20:28:18 -0500
+From: alexei@rio (Alexei Myasnikov)
+To: bormotov@rio
+
+           Magnus Version 1.9.3 beta,
+         Release date: December 9, 1996
+Magnus session started on
+Wed Dec 18 19:57:06 EST 1996
+by alexei at giraffe.
+SunOS giraffe 5.5 Generic sun4m sparc SUNW,SPARCstation-20 sparc sun4
+<(1) magic_cookie_ 14561
+<(2) init_quit_msg_ {-1 0}
+<(3) init_delete_msg_ {-1 1}
+<(4) init_view_req_msg_ {${viewID} 0 ${ARCSlotID}}
+<(5) init_arc_msg_ {${viewID} 1 ${ARCSlotID} ${value}}
+<(6) init_start_msg_ {${viewID} 2}
+<(7) init_suspend_msg_ {${viewID} 3}
+<(8) init_resume_msg_ {${viewID} 4}
+<(9) init_terminate_msg_ {${viewID} 5}
+<(10) type_name_ {finitely presented group} G SMFPGroup
+<(11) type_name_ {word} w SMWord
+<(12) type_name_ {subgroup} H SMSubgroup
+<(13) type_name_ {map} m SMMap
+<(14) type_name_ {equation} E SMEquation
+<(15) menu_defn_ menu checkin signature {} itemGroups {{1 {{{Abelian Group} {_defineAbelGroup_ {Define an abelian group}} {-2 0}} {{Automatic Group} {} {}} {{Finitely Presented Group} {_defineFPGroup_ {Define a finitely presented group}} {-2 1}} {{Free Group} {_defineFreeGroup_ {Define a free group}} {-2 2}} {{Hyperbolic Group} {} {}} {{Matrix Group} {} {}} {{Metabelian Group} {} {}} {{Nilpotent Group} {_defineNilpotentGroup_ {Define a nilpotent group}} {-2 3}} {{One Relator Group} {_defineFPGroup_ {Define an one-relator group}} {-2 4}} {{Permutation Group} {} {}} {{Polycyclic Group} {} {}} {{Small Cancellation Group} {_defineFPGroup_ {Define a small cancellation group}} {-2 5}}  s {{Direct Product} {} {}} {{Semidirect Product} {} {}} {{Free Product} {} {}} {{Amalgamated Product} {} {-2 6}} {{Tree Product} {} {}} {{Graph Product} {} {}} }}}
+<(16) menu_defn_ menu checkin signature {SMFPGroup} itemGroups {{1 {{{Word in the generators of $A($x1,name)} {_defineWord_ {Define a word in the generators of $A($x1,name)}} {-2 7}} {{Subgroup of $A($x1,name)} {_defineSubgroup_ {Define a subgroup of $A($x1,name)}} {-2 8}} {{Map from the generators of $A($x1,name) to $A($x1,name)} {_defineMap_ {Define a map from $A($x1,name) to $A($x1,name)}} {-2 9}} }} {{($A($x1,checkin_type)==1)} {{{Quadratic equation in $A($x1,name)} {_defineEquation_ {Define an equation in $A($x1,name)}} {-2 10}} {{Set of words in $A($x1,name)} {_defineSetOfWords_ {Define a set of words in $A($x1,name)}} {-2 11}} {{Tuple of words in $A($x1,name)} {_defineVectorOfWords_ {Define a tuple of words in $A($x1,name)}} {-2 12}} }}}
+<(17) menu_defn_ menu checkin signature {SMFPGroup SMFPGroup} itemGroups {{1 {{{Map from the generators of $A($x1,name) to $A($x2,name)} {_defineMap_ {Define a map from $A($x1,name) to $A($x2,name)}} {-2 13}} {{Map from the generators of $A($x2,name) to $A($x1,name)} {_defineMap_ {Define a map from $A($x2,name) to $A($x1,name)}} {-2 14}} }}}
+<(18) menu_defn_ menu tools signature {SMFPGroup} itemGroups {{{($A($x1,checkin_type)==5)} {{{Is $A($x1,name) trivial ?} {} {-2 15}} {{Is $A($x1,name) finite ?} {} {-2 16}} {{Is $A($x1,name) abelian ?} {} {-2 17}} }} {{($A($x1,checkin_type)==4)} {{{Is $A($x1,name) trivial ?} {} {-2 18}} {{Is $A($x1,name) finite ?} {} {-2 19}} {{Is $A($x1,name) abelian ?} {} {-2 20}} }} {{(($A($x1,checkin_type)==6)||($A($x1,checkin_type)==7))} {{{Is $A($x1,name) trivial ?} {} {-2 21}} {{Is $A($x1,name) finite ?} {} {-2 22}} {{Is $A($x1,name) abelian ?} {} {-2 23}} }} {{((($A($x1,checkin_type)==2)||($A($x1,checkin_type)==3))||($A($x1,checkin_type)==0))} {{{Is $A($x1,name) trivial ?} {} {-2 24}} }} {{((($A($x1,checkin_type)==2)||($A($x1,checkin_type)==0))||($A($x1,checkin_type)==3))} {{{Is $A($x1,name) finite ?} {} {-2 25}} }} {{($A($x1,checkin_type)==3)} {{{Is $A($x1,name) abelian ?} {} {-2 26}} }} {{($A($x1,checkin_type)==0)} {{{Is $A($x1,name) abelian ?} {} {-2 27}} {{Is $A($x1,name) nilpotent ?} {_defineInt_ {Enter the nilpotency class: } 1 {}} {-2 28}} }} {{(((($A($x1,checkin_type)==4)||($A($x1,checkin_type)==5))||($A($x1,checkin_type)==6))||($A($x1,checkin_type)==7))} {{{Is $A($x1,name) nilpotent ?} {} {}} }} {{((($A($x1,checkin_type)!=1)&&($A($x1,checkin_type)!=3))&&($A($x1,checkin_type)!=2))} {{{Is $A($x1,name) polycyclic ?} {} {}} {{Is $A($x1,name) metabelian ?} {} {}} }} {{(((($A($x1,checkin_type)==0)||($A($x1,checkin_type)==6))||($A($x1,checkin_type)==7))||($A($x1,checkin_type)==5))} {{{Is $A($x1,name) metric small cancellation ?} {} {-2 29}} }} {{($A($x1,checkin_type)==3)} {{{Is $A($x1,name) metric small cancellation ?} {} {}} }} {{((($A($x1,checkin_type)!=1)&&($A($x1,checkin_type)!=4))&&($A($x1,checkin_type)!=2))} {{{Is $A($x1,name) hyperbolic ?} {} {}} }} {{((($A($x1,checkin_type)!=1)&&($A($x1,checkin_type)!=5))&&($A($x1,checkin_type)!=2))} {{{Is $A($x1,name) a one-relator group ?} {} {}} }} {{($A($x1,checkin_type)==5)} {{{Is $A($x1,name) free ?} {} {-2 30}} }} {{(((($A($x1,checkin_type)==4)||($A($x1,checkin_type)==0)
+
+
+
+)||($A($x1,checkin_type)==6))||($A($x1,checkin_type)==7))} {{{Is $A($x1,name) free ?} {} {}} }} {{($A($x1,checkin_type)==2)} {{{Is $A($x1,name) free abelian ?} {} {-2 31}} }} {{($A($x1,checkin_type)==3)} {{{Is $A($x1,name) free nilpotent ?} {} {-2 32}} }} {{($A($x1,checkin_type)!=1)} { s }} {{($A($x1,checkin_type)==2)} {{{Compute the order of $A($x1,name)} {} {-2 33}} }} {{($A($x1,checkin_type)==4)} {{{Compute the order of $A($x1,name)} {} {-2 34}} }} {{($A($x1,checkin_type)==5)} {{{Compute the order of $A($x1,name)} {} {-2 35}} {{Find HNN-presentation of $A($x1,name)} {} {-2 36}} }} {{(($A($x1,checkin_type)==6)||($A($x1,checkin_type)==7))} {{{Compute the order of $A($x1,name)} {} {-2 37}} }} {{($A($x1,checkin_type)==0)} {{{Compute the order of $A($x1,name)} {} {-2 38}} }} {{($A($x1,checkin_type)==3)} {{{Compute the order of $A($x1,name)} {} {-2 39}} }} {{(($A($x1,checkin_type)!=2)&&($A($x1,checkin_type)!=1))} {{{Compute the cyclic decomposition of $A($x1,name) abelianized} {} {-2 40}} }} {{($A($x1,checkin_type)==5)} {{{Compute the integral homology of $A($x1,name)} {} {-2 41}} }} {{(((($A($x1,checkin_type)==0)||($A($x1,checkin_type)==6))||($A($x1,checkin_type)==7))||($A($x1,checkin_type)==4))} {{{Compute an integral homology group of $A($x1,name)} {_defineInt_ {What dimension?} 2 {}} {-2 42}} }} {{($A($x1,checkin_type)==3)} {{{Compute the integral homology of $A($x1,name)} {} {}} }} {{($A($x1,checkin_type)==3)} {{{Compute the center of $A($x1,name)} {} {-2 43}} }} {{((($A($x1,checkin_type)!=1)&&($A($x1,checkin_type)!=2))&&($A($x1,checkin_type)!=3))} {{{Compute the center of $A($x1,name)} {} {}} }} {{((($A($x1,checkin_type)!=1)&&($A($x1,checkin_type)!=2))&&($A($x1,checkin_type)!=3))} {{{Find a finite rewriting system for $A($x1,name)} {} {-2 44}} }} {{(($A($x1,checkin_type)!=2)&&($A($x1,checkin_type)!=3))} {{{Find a ShortLex automatic structure for $A($x1,name)} {} {-2 45}} }} {{((($A($x1,checkin_type)==2)||($A($x1,checkin_type)==1))||($A($x1,checkin_type)==3))} { s }} {{($A($x1,checkin_type)==2)} {{{Compute the
+
+
+
+ torsion-free rank of $A($x1,name)} {} {-2 46}} {{Compute the torsion subgroup of $A($x1,name)} {} {-2 47}} {{Compute the order of the torsion subgroup of $A($x1,name)} {} {-2 48}} {{Compute the cyclic decomposition of $A($x1,name)} {} {-2 49}} {{Compute the primary decomposition of $A($x1,name)} {} {-2 50}} }} {{($A($x1,checkin_type)==1)} {{{Find the n-th element of $A($x1,name)} {_defineInt_ {Ente<r the number n: } 0 {}} {-2 51}} {{Randomly enumerate automorphisms of $A($x1,name)} {_defineInt_ {Average number of Nielsen generators?} 1 {}} {-2 52}} {{Randomly enumerate automorphisms of $A($x1,name) of finite order} {_defineInt_ {Average number of Nielsen generators?} 1 {}} {-2 53}} }} {{($A($x1,checkin_type)==3)} {{{Compute the nilpotent structure of $A($x1,name)} {} {-2 54}} {{Compute a Malcev basis for the the relation subgroup of $A($x1,name)} {} {}} }}}
+<(19) menu_defn_ menu tools signature {SMWord} itemGroups {{{(($A($A($x1,parent),checkin_type)!=3)&&($A($A($x1,parent),checkin_type)!=2))} {{{Freely reduce $A($x1,name)} {} {-2 55}} {{Cyclically reduce $A($x1,name)} {} {-2 56}} {{Compute the formal inverse of $A($x1,name)} {} {-2 57}} {{Find the i-th initial segment of $A($x1,name)} {_defineInt_ {Enter length of the initial segment: } 1 {}} {-2 58}} {{Find the i-th terminal segment of $A($x1,name)} {_defineInt_ {Enter length of the terminal segment: } 1 {}} {-2 59}} {{Find a subword of $A($x1,name)} {_defineInt_ {Enter the initial position: } 1 {}} {-2 60}} {{Find the n-th element of $A($A($x1,parent),name) (after the word $A($x1,name) in the lex order)} {_defineInt_ {Enter the number n: } 0 {}} {-2 61}}  s }} {{($A($A($x1,parent),checkin_type)==2)} {{{Reduce $A($x1,name) to its abelian form} {} {-2 62}} {{Find the inverse of $A($x1,name) , in abelian form} {} {-2 63}}  s }} {{($A($A($x1,parent),checkin_type)==1)} {{{Is $A($x1,name) trivial in $A($A($x1,parent),name) ?} {} {-2 64}} }} {{($A($A($x1,parent),checkin_type)==3)} {{{Is $A($x1,name) trivial in $A($A($x1,parent),name) ?} {} {-2 65}} }} {{(($A($A($x1,parent),checkin_type)==6)||($A($A($x1,parent),checkin_type)==7))} {{{Is $A($x1,name) trivial in $A($A($x1,parent),name) ?} {} {-2 66}} }} {{(((($A($A($x1,parent),checkin_type)!=1)&&($A($A($x1,parent),checkin_type)!=3))&&($A($A($x1,parent),checkin_type)!=6))&&($A($A($x1,parent),checkin_type)!=7))} {{{Is $A($x1,name) trivial in $A($A($x1,parent),name) ?} {} {-2 67}} }} {{($A($A($x1,parent),checkin_type)==2)} {{{Compute the order of  $A($x1,name)} {} {-2 68}} {{Compute the p-height of  $A($x1,name)} {_defineInt_ {Enter the p  } 1 {}} {-2 69}} {{Compute the maximal root of  $A($x1,name)} {} {-2 70}} {{Is  $A($x1,name)  a proper power ?} {} {-2 71}} {{Is the subgroup generated by $A($x1,name) pure ?} {} {-2 72}} }} {{($A($A($x1,parent),checkin_type)==3)} {{{Is $A($x1,name) of finite order in $A($A($x1,parent),name) ?} {} {-2 73}} }} {{(((($A($A($x1,parent),checki
+
+
+
+n_type)!=2)&&($A($A($x1,parent),checkin_type)!=1))&&($A($A($x1,parent),checkin_type)!=3))&&($A($A($x1,parent),checkin_type)!=0))} {{{Is $A($x1,name) of finite order in $A($A($x1,parent),name) ?} {} {}} }} {{($A($A($x1,parent),checkin_type)==0)} {{{Is $A($x1,name) of finite order in $A($A($x1,parent),name) ?} {} {-2 74}} }} {{((($A($A($x1,parent),checkin_type)!=2)&&($A($A($x1,parent),checkin_type)!=1))&&($A($A($x1,parent),checkin_type)!=7))} {{{Is $A($x1,name) a proper power in $A($A($x1,parent),name) ?} {} {}} }} {{($A($A($x1,parent),checkin_type)==7)} {{{Is $A($x1,name) a proper power in $A($A($x1,parent),name) ?} {} {-2 75}} }} {{($A($A($x1,parent),checkin_type)==1)} {{{Is $A($x1,name) a proper power in $A($A($x1,parent),name) ?} {} {-2 76}} {{Compute the maximal root of $A($x1,name) in $A($A($x1,parent),name)} {} {-2 77}} }} {{(((($A($A($x1,parent),checkin_type)!=2)&&($A($A($x1,parent),checkin_type)!=1))&&($A($A($x1,parent),checkin_type)!=3))&&($A($A($x1,parent),checkin_type)!=0))} {{{Is $A($x1,name) central in $A($A($x1,parent),name) ?} {} {}} }} {{($A($A($x1,parent),checkin_type)==0)} {{{Is $A($x1,name) central in $A($A($x1,parent),name) ?} {} {-2 78}} }} {1 { s }} {{($A($A($x1,parent),checkin_type)==2)} {{{Compute the canonical decomposition of $A($x1,name)} {} {-2 79}} {{Compute the primary decomposition of  $A($x1,name)} {} {-2 80}} }} {{($A($A($x1,parent),checkin_type)==3)} {{{Compute the centralizers of $A($x1,name) in $A($A($x1,parent),name)} {} {-2 81}} }} {{((($A($A($x1,parent),checkin_type)!=2)&&($A($A($x1,parent),checkin_type)!=3))&&($A($A($x1,parent),checkin_type)!=7))} {{{Compute the centralizer of $A($x1,name) in $A($A($x1,parent),name)} {} {}} }} {{($A($A($x1,parent),checkin_type)==7)} {{{Compute the centralizer of $A($x1,name) in $A($A($x1,parent),name)} {} {-2 82}} }} {{($A($A($x1,parent),checkin_type)==1)} {{{Is $A($x1,name) a commutator in $A($A($x1,parent),name) ?} {} {-2 83}} {{Is $A($x1,name) in the commutator subgroup of $A($A($x1,parent),name) ?} {} {-2 84}} {{Is $A($x1,name) part of 
+
+
+
+a basis of $A($A($x1,parent),name) ?} {} {-2 85}} }} {{(($A($A($x1,parent),checkin_type)==6)||($A($A($x1,parent),checkin_type)==7))} {{{Compute the reduced form of $A($x1,name)} {} {-2 86}} {{Compute the normal form of $A($x1,name)} {} {-2 87}} {{Compute the cyclic normal form of $A($x1,name)} {} {-2 88}} }} {{($A($A($x1,parent),checkin_type)==7)} {{{Compute the maximal root of $A($x1,name) in $A($A($x1,parent),name)} {} {-2 89}} }}}
+<(20) menu_defn_ menu tools signature {SMSubgroup} itemGroups {{{($A($A($x1,parent),checkin_type)==1)} {{{Is $A($x1,name) trivial ?} {} {-2 90}} }} {{((($A($A($x1,parent),checkin_type)==2)||($A($A($x1,parent),checkin_type)==0))||($A($A($x1,parent),checkin_type)==4))} {{{Is $A($x1,name) trivial ?} {} {-2 91}} }} {{(($A($A($x1,parent),checkin_type)==0)||($A($A($x1,parent),checkin_type)==4))} {{{Is $A($x1,name) finite ?} {} {}} {{Is $A($x1,name) abelian ?} {} {-2 92}} }} {{(($A($A($x1,parent),checkin_type)==6)||($A($A($x1,parent),checkin_type)==7))} {{{Is $A($x1,name) abelian ?} {} {-2 93}} }} {{($A($A($x1,parent),checkin_type)==0)} {{{Is $A($x1,name) nilpotent ?} {_defineInt_ {Enter the nilpotency class: } 1 {}} {-2 94}} {{Is $A($x1,name) central ?} {} {-2 95}} }} {{($A($A($x1,parent),checkin_type)==2)} {{{Is $A($x1,name) isolated in $A($A($x1,parent),name) ?} {} {-2 96}} {{Compute  the order of  $A($x1,name)} {} {-2 97}} {{Compute the torsion-free rank of $A($x1,name)} {} {-2 98}} {{Compute the order of the torsion subgroup of $A($x1,name)} {} {-2 99}}  s {{Compute the cyclic decomposition for $A($x1,name)} {} {-2 100}} {{Compute the primary decomposition for  $A($x1,name)} {} {-2 101}}  s {{Is $A($x1,name) = $A($A($x1,parent),name) ?} {} {-2 102}} {{Compute the index of $A($x1,name) in $A($A($x1,parent),name)} {} {-2 103}} {{Compute the isolator of  $A($x1,name)} {} {-2 104}} {{Compute a virtual free complement of  $A($x1,name)} {} {-2 105}} {{Is $A($x1,name) pure in $A($A($x1,parent),name) ?} {} {-2 106}} }} {{($A($A($x1,parent),checkin_type)==3)} {{{Is $A($x1,name) trivial ?} {} {-2 107}} {{Is $A($x1,name) finite ?} {} {-2 108}} {{Is $A($x1,name) abelian ?} {} {-2 109}} {{Is $A($x1,name) central ?} {} {}} }} {{(($A($A($x1,parent),checkin_type)==6)||($A($A($x1,parent),checkin_type)==7))} {{{Is $A($x1,name) trivial ?} {} {-2 110}} }} {{($A($A($x1,parent),checkin_type)==1)} {{{Is $A($x1,name) normal in $A($A($x1,parent),name) ?} {} {-2 111}} {{What is the index of $A($x1,name) in $A($A($x1,parent),name) ?} {} {-2
+
+
+
+ 112}}  s {{Compute a Nielsen basis for $A($x1,name)} {} {-2 113}} {{Compute the normaliser of $A($x1,name) in $A($A($x1,parent),name) ?} {} {-2 114}} {{Compute a finite index subgroup of $A($A($x1,parent),name) with $A($x1,name) as a free factor} {} {-2 115}} }} {{((((($A($A($x1,parent),checkin_type)==0)||($A($A($x1,parent),checkin_type)==6))||($A($A($x1,parent),checkin_type)==7))||($A($A($x1,parent),checkin_type)==5))||($A($A($x1,parent),checkin_type)==4))} {{{Enumerate relators for $A($x1,name)} {} {-2 116}} }}}
+<(21) menu_defn_ menu tools signature {SMSetOfWords} itemGroups {{{($A($A($x1,parent),checkin_type)==1)} {{{Is $A($x1,name) part of a basis of $A($A($x1,parent),name) ?} {} {-2 117}} }}}
+<(22) menu_defn_ menu tools signature {SMVectorOfWords} itemGroups {{{($A($A($x1,parent),checkin_type)==1)} {{{Find Whitehead reduction of $A($x1,name)} {} {-2 118}} }}}
+<(23) menu_defn_ menu tools signature {SMMap} itemGroups {{1 {{{Does $A($x1,name) extend to homomorphism ?} {} {-2 119}} }}}
+<(24) menu_defn_ menu tools signature {SMHomomorphism} itemGroups {{1 {}} {{($A($A($x1,domain),checkin_type)!=2)} {{{Is $A($x1,name) a monomorphism ?} {} {}} {{Is $A($x1,name) an epimorphism ?} {} {}} }} {{($A($A($x1,domain),checkin_type)==2)} {{{Is $A($x1,name) a monomorphism ?} {} {-2 120}} {{Is $A($x1,name) an epimorphism ?} {} {-2 121}} {{Is $A($x1,name) an automorphism ?} {} {-2 122}} }} {{($A($A($x1,domain),checkin_type)==1)} {{{Is $A($x1,name) an automorphism ?} {} {-2 123}} }} {{(($A($A($x1,domain),checkin_type)!=1)&&($A($A($x1,domain),checkin_type)!=2))} {{{Is $A($x1,name) an automorphism ?} {} {}} }} {{($A($x1,auto)&&($A($A($x1,domain),checkin_type)==1))} {{{Is $A($x1,name) an IA-automorphism ?} {} {-2 124}} {{Is $A($x1,name) an inner automorphism ?} {} {-2 125}} {{Compute the inverse of $A($x1,name)} {} {-2 126}} }} {{(!$A($x1,auto)||($A($A($x1,domain),checkin_type)!=1))} {{{Is $A($x1,name) an IA-automorphism ?} {} {}} {{Is $A($x1,name) an inner automorphism ?} {} {}}  s {{Extend $A($A($x1,domain),name) by $A($x1,name)} {} {-2 127}} }}}
+<(25) menu_defn_ menu tools signature {SMHomomorphism2} itemGroups {{1 {}} {{($A($A($x1,domain),checkin_type)!=2)} {{{Is $A($x1,name) a monomorphism ?} {} {}} {{Is $A($x1,name) an epimorphism ?} {} {}} {{Is $A($x1,name) an isomorphism ?} {} {}} }} {{($A($A($x1,domain),checkin_type)==2)} {{{Is $A($x1,name) a monomorphism ?} {} {-2 128}} {{Is $A($x1,name) an epimorphism ?} {} {-2 129}} {{Is $A($x1,name) an isomorphism ?} {} {-2 130}} }} {{($A($x1,auto)&&($A($A($x1,domain),checkin_type)==1))} {{{Compute the inverse of $A($x1,name)} {} {-2 131}}  s {{Extend $A($A($x1,domain),name) by $A($x1,name)} {} {-2 132}} }}}
+<(26) menu_defn_ menu tools signature {SMEquation} itemGroups {{1 {{{Find a surface form of $A($x1,name)} {} {-2 133}} {{Solve the equation $A($x1,name)  = 1} {} {-2 134}} }}}
+<(27) menu_defn_ menu tools signature {SMWord SMWord} itemGroups {{{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==2))} {{{Compute the product $A($x1,name) $A($x2,name) , in abelian form} {} {-2 135}} {{Compute the product $A($x2,name) $A($x1,name) , in abelian form} {} {-2 136}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)!=2))} {{{Compute the formal product $A($x1,name)  *  $A($x2,name)} {} {-2 137}} {{Compute the formal product $A($x2,name)  *  $A($x1,name)} {} {-2 138}} }} {1 { s }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==2))} {{{Is $A($x1,name) = $A($x2,name) ?} {} {-2 139}} {{Is $A($x1,name) a power of $A($x2,name) ?} {} {-2 140}} {{Is $A($x2,name) a power of $A($x1,name) ?} {} {-2 141}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==1))} {{{Is $A($x1,name) = $A($x2,name) ?} {} {-2 142}} }} {{(($A($x1,parent)==$A($x2,parent))&&(($A($A($x1,parent),checkin_type)==6)||($A($A($x1,parent),checkin_type)==7)))} {{{Is $A($x1,name) = $A($x2,name) ?} {} {-2 143}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==0))} {{{Is $A($x1,name) = $A($x2,name) ?} {} {-2 144}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==3))} {{{Are $A($x1,name) and $A($x2,name) conjugate in $A($A($x1,parent),name) ?} {} {}} }} {{(((($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)!=2))&&($A($A($x1,parent),checkin_type)!=3))&&($A($A($x1,parent),checkin_type)!=7))} {{{Are $A($x1,name) and $A($x2,name) conjugate in $A($A($x1,parent),name) ?} {} {-2 145}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==7))} {{{Are $A($x1,name) and $A($x2,name) conjugate in $A($A($x1,parent),name) ?} {} {-2 146}} {{Is $A($x1,name) a proper power of $A($x2,name) ?} {} {-2 147}} {{Is $A($x2,name) a proper power of $A($x1,name) ?} {} {-2 148}} }} {{(((($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)!=1))&&($A($A($x1,parent),checkin_type)!=7))&&($A($
+
+
+
+A($x1,parent),checkin_type)!=2))} {{{Is $A($x1,name) a proper power of $A($x2,name) ?} {} {}} {{Is $A($x2,name) a proper power of $A($x1,name) ?} {} {}} }}}
+<(28) menu_defn_ menu tools signature {SMHomomorphism SMHomomorphism} itemGroups {{{($A($x1,range)==$A($x2,domain))} {{{Form the composition $A($x2,name) $A($x1,name)} {} {-2 149}} }} {{($A($x2,range)==$A($x1,domain))} {{{Form the composition $A($x1,name) $A($x2,name)} {} {-2 150}} }} {{(($A($x1,domain)==$A($x2,domain))&&($A($A($x1,domain),checkin_type)!=1))} {{{Is $A($x1,name) = $A($x2,name) ?} {} {}} }} {{(($A($x1,domain)==$A($x2,domain))&&($A($A($x1,domain),checkin_type)==1))} {{{Is $A($x1,name) = $A($x2,name) ?} {} {-2 151}} }}}
+<(29) menu_defn_ menu tools signature {SMHomomorphism2 SMHomomorphism2} itemGroups {{{($A($x1,range)==$A($x2,domain))} {{{Form the composition $A($x2,name) $A($x1,name)} {} {-2 152}} }} {{($A($x2,range)==$A($x1,domain))} {{{Form the composition $A($x1,name) $A($x2,name)} {} {-2 153}} }} {{((($A($x1,domain)==$A($x2,domain))&&($A($x1,range)==$A($x2,range)))&&($A($A($x1,domain),checkin_type)!=1))} {{{Is $A($x1,name) = $A($x2,name) ?} {} {}} }} {{((($A($x1,domain)==$A($x2,domain))&&($A($x1,range)==$A($x2,range)))&&($A($A($x1,domain),checkin_type)==1))} {{{Is $A($x1,name) = $A($x2,name) ?} {} {-2 154}} }}}
+<(30) menu_defn_ menu tools signature {SMHomomorphism SMHomomorphism2} itemGroups {{{($A($x1,range)==$A($x2,domain))} {{{Form the composition $A($x2,name) $A($x1,name)} {} {-2 155}} }} {{($A($x2,range)==$A($x1,domain))} {{{Form the composition $A($x1,name) $A($x2,name)} {} {-2 156}} }}}
+<(31) menu_defn_ menu tools signature {SMHomomorphism SMWord} itemGroups {{{($A($x2,parent)==$A($x1,domain))} {{{Compute the image of $A($x2,name) under $A($x1,name)} {} {-2 157}} }}}
+<(32) menu_defn_ menu tools signature {SMHomomorphism2 SMWord} itemGroups {{{($A($x2,parent)==$A($x1,domain))} {{{Compute the image of $A($x2,name) under $A($x1,name)} {} {-2 158}} }}}
+<(33) menu_defn_ menu tools signature {SMHomomorphism SMSubgroup} itemGroups {{{($A($x2,parent)==$A($x1,domain))} {{{Compute the image of $A($x2,name) under $A($x1,name)} {} {-2 159}} }}}
+<(34) menu_defn_ menu tools signature {SMHomomorphism2 SMSubgroup} itemGroups {{{($A($x2,parent)==$A($x1,domain))} {{{Compute the image of $A($x2,name) under $A($x1,name)} {} {-2 160}} }}}
+<(35) menu_defn_ menu tools signature {SMSubgroup SMWord} itemGroups {{{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==2))} {{{Is $A($x2,name) in $A($x1,name) ?} {} {-2 161}} {{Compute power of $A($x2,name) in $A($x1,name)} {} {-2 162}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==3))} {{{Is $A($x2,name) in $A($x1,name) ?} {} {}} {{Is a power of $A($x2,name) in $A($x1,name) ?} {} {}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==1))} {{{Does $A($x2,name) represent an element of $A($x1,name) ?} {} {-2 163}} {{Does a power of $A($x2,name) represent an element of $A($x1,name) ?} {} {-2 164}} {{Does a conjugate of $A($x2,name) represent an element of $A($x1,name) ?} {} {-2 165}}  s {{Compute the right Schreier representative of $A($x2,name) mod $A($x1,name)} {} {-2 166}} }}}
+<(36) menu_defn_ menu tools signature {SMSubgroup SMSubgroup} itemGroups {{{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==2))} {{{Does $A($x1,name) contain $A($x2,name) ?} {} {-2 167}} {{Does $A($x2,name) contain $A($x1,name) ?} {} {-2 168}} {{Is  $A($x1,name)  isomorphic to  $A($x2,name) ?} {} {-2 169}} {{Is $A($x1,name) = $A($x2,name) ?} {} {-2 170}}  s {{Compute the join of $A($x1,name) and $A($x2,name)} {} {-2 171}} {{Compute the intersection of $A($x1,name) and $A($x2,name)} {} {}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==3))} {{{Does $A($x1,name) contain $A($x2,name) ?} {} {}} {{Does $A($x2,name) contain $A($x1,name) ?} {} {}} {{Is $A($x1,name) = $A($x2,name) ?} {} {}} }} {{(($A($x1,parent)==$A($x2,parent))&&($A($A($x1,parent),checkin_type)==1))} {{{Does $A($x1,name) contain $A($x2,name) ?} {} {-2 172}} {{Does $A($x2,name) contain $A($x1,name) ?} {} {-2 173}} {{Is $A($x1,name) = $A($x2,name) ?} {} {-2 174}} {{Does $A($x1,name) contain a conjugate of $A($x2,name) ?} {} {-2 175}} {{Does $A($x2,name) contain a conjugate of $A($x1,name) ?} {} {-2 176}} {{Are $A($x1,name) and $A($x2,name) conjugate ?} {} {-2 177}}  s {{Compute the join of $A($x1,name) and $A($x2,name)} {} {-2 178}} {{Compute the intersection of $A($x1,name) and $A($x2,name)} {} {-2 179}} }}}
+<(37) menu_defn_ menu tools signature {SMFPGroup SMFPGroup} itemGroups {{{(($A($x1,checkin_type)==2)&&($A($x2,checkin_type)==2))} {{{Are $A($x1,name) and $A($x2,name) isomorphic ?} {} {-2 180}} }}}
+<(38) menu_defn_ menu make signature {SMFPGroup} itemGroups {{{($A($x1,checkin_type)==2)} {{{Cyclic Decomposition of $A($x1,name)} {} {-2 181}} }} {1 {{{Quotient of $A($x1,name)} {_defineSetOfRelators_ {Define a set of words}} {-2 182}} }} {{($A($x1,checkin_type)!=2)} {{{Abelian Quotient of $A($x1,name)} {} {-2 183}} }} {{(($A($x1,checkin_type)!=2)&&($A($x1,checkin_type)!=3))} {{{Nilpotent Quotient of $A($x1,name)} {_defineInt_ {Enter the nilpotency class: } 1 {}} {-2 184}} }} {1 { s {{Another Presentation of $A($x1,name)} {} {}} }}}
+<(39) menu_defn_ menu make signature {SMFPGroup SMFPGroup SMSubgroup SMSubgroup} itemGroups {{{((((($A($x1,checkin_type)==1)&&($A($x2,checkin_type)==1))&&(($A($x3,parent)==$A($x1,oid))||($A($x3,parent)==$A($x2,oid))))&&(($A($x4,parent)==$A($x1,oid))||($A($x4,parent)==$A($x2,oid))))&&($A($x3,parent)!=$A($x4,parent)))} {{{Amalgamated Product} {} {-2 185}} }}}
+<(40) boot_done_
+>(41) -2 1 G1 < a,b,c,d ; a b a = b a b, b c b = c b c, c d c = d c d, [a,d] = 1 >
+<(42) create_ objectID 0 typeID SMFPGroup iconID group name {G1} dependencies {} properties {{ key {$A(0,checkin_type)} datum {0}} { key {$A(0,oid)} datum {0}} } viewStructure {viewBuilder objectView viewParameters {viewID 0 heritage {User defined finitely presented group}}}
+>(43) -2 24 0
+<(44) create_ objectID 2 typeID ComputationManager iconID problem name {} dependencies { 0} properties {} viewStructure {viewBuilder problemView viewParameters {viewID 2 viewAbbreviation {$A(0,name) = 1 ?} viewTitle {Triviality problem} viewBanner {Is $A(0,name) trivial ?} totalARCs {ARCSlotID -1 value 0} helpID none subproblems {{1 {{ARCSlotID 0 name {For the use of this problem} state 1 value 50 helpID foo } }} {{($A(0,checkin_type)==2)} {{ARCSlotID 2 name {Compute abelian invariants of $A(0,name)} state 1 value 15 helpID foo } }} {{($A(0,checkin_type)!=2)} {{ARCSlotID 2 name {Is abelianization of $A(0,name) trivial ?} state 1 value 15 helpID foo } }} {{($A(0,checkin_type)==0)} {{ARCSlotID 1 name {Enumerate normal closure of relators} state 1 value 50 helpID foo } {ARCSlotID 3 name {Seek a rewriting system for $A(0,name)} state 1 value 50 helpID foo } {ARCSlotID 4 name {Seek a ShortLex automatic structure for $A(0,name)} state 1 value 50 helpID foo } }}}}} definition {}
+>(45) 2 1 0 50
+>(46) 2 1 2 15
+>(47) 2 1 1 50
+>(48) 2 1 3 50
+>(49) 2 1 4 50
+>(50) 2 2
+<(51) confirm_start_ viewID 2
+<(52) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(53) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(54) post_to_log_ {0 } {Found the cyclic decomposition of $A(0,name) abelianized:  Z. } 1
+<(55) post_to_log_ {0 } {The cyclic decomposition allows one to solve a number of algorithmic problems, for example the word problem, the order problem and so on.} 1
+<(56) post_to_log_ {0 } {We use multiplicative notation when dealing with abelian groups,denoting the generators of the infinite cyclic factors in the canonical decomposition of a finitely generated abelian group, by f1, f2, ... , and those of the finite cyclic factors, by t1, t2, ... .} 1
+<(57) post_to_log_ {0 } {@Click here to see the generators of the canonical decomposition of $A(0,name)@CyclicDecomposition@/var/tmp/aaaa003Zd@0@} 1
+<(58) post_to_log_ {0 } {The trivial word word acceptor has 29 vertices.} 2
+<(59) arc_update_ viewID 2 ARCSlotID 1 value 1
+<(60) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(61) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(62) post_to_log_ {2 0 } {$A(0,name) is not trivial: by mapping into the abelianization.} 1
+<(63) terminate_problem_ viewID 2
+>(64) -1 1 1 2
+<(65) confirm_delete_ 2
+>(66) -2 25 0
+<(67) post_to_log_ {0 } {$A(0,name) is infinite: this follows from the cyclic decomposition of $A(0,name).} 1
+<(68) post_to_log_ {2 } {$A(0,name) is infinite: this follows from the cyclic decomposition of $A(0,name).} 2
+>(69) -2 27 0
+<(70) create_ objectID 2 typeID ComputationManager iconID problem name {} dependencies { 0} properties {} viewStructure {viewBuilder problemView viewParameters {viewID 2 viewAbbreviation {$A(0,name) abelian ?} viewTitle {Is abelian problem} viewBanner {Is $A(0,name) abelian ?} totalARCs {ARCSlotID -1 value 0} helpID none subproblems {{{($A(0,checkin_type)==0)} {{ARCSlotID 0 name {For the use of this problem} state 1 value 50 helpID foo } {ARCSlotID 2 name {Compute abelian invariants of $A(0,name) abelianized} state 1 value 15 helpID foo } {ARCSlotID 1 name {Enumerate normal closure of relators} state 1 value 50 helpID foo } {ARCSlotID 3 name {Seek a rewriting system for $A(0,name)} state 1 value 50 helpID foo } {ARCSlotID 4 name {Seek a ShortLex automatic structure for $A(0,name)} state 1 value 50 helpID foo } }}}}} definition {}
+>(71) 2 1 0 50
+>(72) 2 1 2 15
+>(73) 2 1 1 50
+>(74) 2 1 3 50
+>(75) 2 1 4 50
+>(76) 2 2
+<(77) confirm_start_ viewID 2
+<(78) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(79) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(80) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(81) post_to_log_ {0 } {The trivial word word acceptor has 29 vertices.} 2
+<(82) arc_update_ viewID 2 ARCSlotID 1 value 1
+<(83) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(84) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(85) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(86) post_to_log_ {0 } {The trivial word word acceptor has 41 vertices.} 2
+<(87) arc_update_ viewID 2 ARCSlotID 1 value 1
+<(88) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(89) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(90) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(91) post_to_log_ {0 } {The trivial word word acceptor has 77 vertices.} 2
+<(92) arc_update_ viewID 2 ARCSlotID 1 value 1
+<(93) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(94) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(95) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(96) post_to_log_ {0 } {The trivial word word acceptor has 113 vertices.} 2
+<(97) arc_update_ viewID 2 ARCSlotID 1 value 1
+<(98) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(99) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(100) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(101) post_to_log_ {0 } {The trivial word word acceptor has 221 vertices.} 2
+<(102) arc_update_ viewID 2 ARCSlotID 1 value 1
+<(103) arc_update_ viewID 2 ARCSlotID 3 value 1
+>(104) 2 3
+<(105) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(106) confirm_suspend_ viewID 2
+>(107) 2 1 0 45
+>(108) 2 1 2 0
+>(109) 2 1 1 0
+>(110) 2 1 3 44
+>(111) 2 1 4 44
+>(112) 2 4
+<(113) confirm_resume_ viewID 2
+<(114) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(115) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(116) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(117) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(118) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(119) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(120) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(121) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(122) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(123) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(124) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(125) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(126) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(127) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(128) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(129) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(130) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(131) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(132) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(133) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(134) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(135) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(136) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(137) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(138) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(139) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(140) arc_update_ viewID 2 ARCSlotID 0 value 1
+>(141) -2 29 0
+<(142) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(143) post_to_log_ {0 } {The presentation of $A(0,name) is not metric small cancellation; it is only C'(1/2).} 1
+<(144) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(145) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(146) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(147) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(148) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(149) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(150) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(151) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(152) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(153) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(154) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(155) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(156) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(157) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(158) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(159) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(160) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(161) arc_update_ viewID 2 ARCSlotID 3 value 1
+>(162) -2 45 0
+<(163) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(164) create_ objectID 7 typeID ComputationManager iconID problem name {} dependencies { 0} properties {} viewStructure {viewBuilder problemView viewParameters {viewID 7 viewAbbreviation {Aut struct} viewTitle {Seek automatic structure} viewBanner {Seek a ShortLex automatic structure for $A(0,name)} totalARCs {ARCSlotID -1 value 0} helpID AGProblem subproblems {{1 {{ARCSlotID 1 name {For the use of this problem} state 1 value 100 helpID foo } }}}}} definition {}
+<(165) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(166) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(167) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(168) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(169) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(170) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(171) arc_update_ viewID 2 ARCSlotID 0 value 1
+>(172) 7 1 1 100
+>(173) 7 2
+<(174) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(175) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(176) confirm_start_ viewID 7
+<(177) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(178) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(179) arc_update_ viewID 7 ARCSlotID 1 value 1
+<(180) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(181) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(182) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(183) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(184) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(185) arc_update_ viewID 7 ARCSlotID 1 value 1
+<(186) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(187) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(188) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(189) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(190) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(191) arc_update_ viewID 7 ARCSlotID 1 value 1
+<(192) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(193) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(194) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(195) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(196) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(197) arc_update_ viewID 7 ARCSlotID 1 value 1
+<(198) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(199) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(200) arc_update_ viewID 2 ARCSlotID 4 value 1
+<(201) arc_update_ viewID 2 ARCSlotID 0 value 1
+<(202) arc_update_ viewID 2 ARCSlotID 3 value 1
+<(203) post_to_log_ {0 } {Have a ShortLex automatic structure for $A(0,name), discovered by KBMAG, Version 1.2.} 1
+<(204) post_to_log_ {0 } {Have a fast solution of the word problem for $A(0,name): the automatic structure.} 1
+<(205) post_to_log_ {6 0 } {$A(0,name) is automatic.} 1
+<(206) terminate_problem_ viewID 7
+<(207) post_to_log_ {2 0 } {$A(0,name) is not abelian : according to the difference machine.} 1
+<(208) terminate_problem_ viewID 2
+>(209) -2 44 0
+<(210) create_ objectID 3 typeID ComputationManager iconID problem name {} dependencies { 0} properties {} viewStructure {viewBuilder problemView viewParameters {viewID 3 viewAbbreviation {Rewr sys} viewTitle {Seek rewriting system} viewBanner {Seek a rewriting system for $A(0,name)} totalARCs {ARCSlotID -1 value 0} helpID KBProblem subproblems {{1 {{ARCSlotID 1 name {For the use of this problem} state 1 value 100 helpID foo } }}}}} definition {}
+>(211) 3 1 1 100
+>(212) 3 2
+<(213) confirm_start_ viewID 3
+<(214) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(215) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(216) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(217) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(218) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(219) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(220) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(221) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(222) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(223) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(224) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(225) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(226) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(227) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(228) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(229) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(230) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(231) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(232) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(233) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(234) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(235) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(236) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(237) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(238) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(239) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(240) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(241) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(242) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(243) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(244) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(245) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(246) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(247) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(248) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(249) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(250) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(251) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(252) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(253) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(254) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(255) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(256) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(257) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(258) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(259) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(260) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(261) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(262) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(263) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(264) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(265) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(266) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(267) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(268) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(269) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(270) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(271) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(272) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(273) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(274) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(275) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(276) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(277) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(278) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(279) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(280) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(281) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(282) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(283) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(284) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(285) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(286) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(287) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(288) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(289) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(290) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(291) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(292) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(293) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(294) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(295) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(296) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(297) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(298) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(299) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(300) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(301) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(302) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(303) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(304) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(305) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(306) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(307) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(308) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(309) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(310) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(311) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(312) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(313) arc_update_ viewID 3 ARCSlotID 1 value 1
+<(314) problem_stalled_ viewID 3
+>(315) -2 1 B6 <a,b,c,d,e  ;a b a = b a b, b c b = c b c, c d c = d c d, d e d = e d e, [a,c] = 1, [a,e] =1, [a,d] = 1, [b,d] = 1, [b,e] = 1, [c,e] =1  >
+<(316) create_ objectID 5 typeID SMFPGroup iconID group name {B6} dependencies {} properties {{ key {$A(5,checkin_type)} datum {0}} { key {$A(5,oid)} datum {5}} } viewStructure {viewBuilder objectView viewParameters {viewID 5 heritage {User defined finitely presented group}}}
+>(317) -2 45 5
+<(318) create_ objectID 8 typeID ComputationManager iconID problem name {} dependencies { 5} properties {} viewStructure {viewBuilder problemView viewParameters {viewID 8 viewAbbreviation {Aut struct} viewTitle {Seek automatic structure} viewBanner {Seek a ShortLex automatic structure for $A(5,name)} totalARCs {ARCSlotID -1 value 0} helpID AGProblem subproblems {{1 {{ARCSlotID 1 name {For the use of this problem} state 1 value 100 helpID foo } }}}}} definition {}
+>(319) 8 1 1 100
+>(320) 8 2
+<(321) confirm_start_ viewID 8
+<(322) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(323) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(324) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(325) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(326) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(327) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(328) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(329) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(330) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(331) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(332) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(333) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(334) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(335) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(336) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(337) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(338) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(339) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(340) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(341) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(342) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(343) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(344) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(345) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(346) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(347) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(348) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(349) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(350) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(351) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(352) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(353) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(354) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(355) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(356) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(357) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(358) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(359) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(360) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(361) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(362) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(363) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(364) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(365) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(366) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(367) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(368) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(369) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(370) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(371) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(372) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(373) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(374) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(375) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(376) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(377) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(378) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(379) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(380) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(381) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(382) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(383) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(384) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(385) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(386) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(387) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(388) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(389) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(390) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(391) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(392) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(393) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(394) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(395) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(396) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(397) arc_update_ viewID 8 ARCSlotID 1 value 1
+>(398) -2 1 B5 < a,b,c,d ; a b a = b a b, b c b = c b c, c d c = d c d, [a,d] = 1, [a,c] = 1, [b,d] = 1  >
+<(399) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(400) create_ objectID 10 typeID SMFPGroup iconID group name {B5} dependencies {} properties {{ key {$A(10,checkin_type)} datum {0}} { key {$A(10,oid)} datum {10}} } viewStructure {viewBuilder objectView viewParameters {viewID 10 heritage {User defined finitely presented group}}}
+<(401) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(402) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(403) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(404) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(405) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(406) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(407) arc_update_ viewID 8 ARCSlotID 1 value 1
+>(408) -1 1 4 3 7 2 0
+<(409) arc_update_ viewID 8 ARCSlotID 1 value 1
+<(410) terminate_problem_ viewID 3

@@ -1,0 +1,35 @@
+Version 1.0.5 beta.
+
+02/02/96
+
+1. Implemented new interface classes and menu items for Nilpotent
+   Groups, using Sergei's back end code:
+	
+   Is G1 abelian ?
+   Compute the order of G1.
+   Is w1 of finite order in G1 ?
+   Is H1 trivial ?
+   Is H1 abelian ?
+   Is H1 finite ?
+	
+   We don't have anything new to implement for Nilpotent Groups now.
+
+2. Fixed CM NilpotentWordProblem: early the answer wasn't printed in
+   the object view window.
+
+3. Added some preliminary checkings in Whitehead algorithm.
+
+4. Chuck's complaint about troubles with permissions.
+
+5. Worked with bugs of KBmagPackage, some are fixed. I need to discuss
+   the situation with this package, because not everything is ok here.
+
+6. Made new menu item "Make", provided all necessary tools for
+   comunication between SM and FE to make possible addition of
+   new items.
+
+7. Implemented new interface classes and menu items for Make menu:
+
+   Make Abelian quotient of G1
+        Nilpotent quotient of G1
+

@@ -1,0 +1,43 @@
+###this is a test file by xuxw(xuxw76@yahoo.com)
+import Magnus
+g1=Magnus.Generator(3)
+g1=Magnus.Generator(4)
+w1=Magnus.Word()
+w2=Magnus.Word()
+gr=Magnus.Group()
+gr1=Magnus.FGGroup(gr)
+gr2=Magnus.FGGroup(gr)
+a=Magnus.Map( ) 
+b=Magnus.MapFromFGGroups( gr1,  gr2 )
+c=Magnus.MapFromFGGroupsAndVector( gr1,  gr2,[w1,w2] )
+x=a.type( ) 
+x=a.domain( ) 
+x=a.range( ) 
+a.setDomain( gr1 ) 
+a.setRange( gr2) 
+x=a.generatingImages( ) 
+x=a.generatingImagesFromInt(1) 
+x=a.generatingImagesFromGenerator( g1 ) 
+a.setGeneratingImages( [w1,w2] ) 
+a.setGeneratingImagesFromWord( 1, w1 ) 
+a.setGeneratingImagesFromGenerator( g1, w1) 
+x=a.imageOf( w1 ) 
+x=a.imageOfFromGenerator(g1) 
+x=a.evalImage( w1 ) 
+x=a.postEvalImage( w1) 
+x=a.composeAfter( b ) 
+x=a.extendsToHom( ) 
+a.putIsMono( ) 
+x=a.isMono( ) 
+a.putIsEpi( ) 
+x=a.isEpi( ) 
+x=a.isIso( ) 
+x=a.isTrivialMap( )  
+a!=b
+print a
+a.printOn()
+b=Magnus.MapFromString("dgg")
+
+
+
+

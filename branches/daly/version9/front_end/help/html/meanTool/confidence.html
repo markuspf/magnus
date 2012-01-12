@@ -1,0 +1,766 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="description" content="meanTool">
+   <meta name="keywords" content="meanTool">
+   <meta name="resource-type" content="document">
+   <meta name="distribution" content="global">
+   <meta name="Generator" content="LaTeX2HTML v2K.1beta">
+   <meta http-equiv="Content-Style-Type" content="text/css">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (X11; U; Linux 2.4.7-10smp i686) [Netscape]">
+   <title>meanTool</title>
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<link REL="STYLESHEET" HREF="meanTool.css">
+</head>
+<body>
+&nbsp;
+<br>&nbsp;
+<center><b>CONFIDENCE INTERVAL FOR THE MEAN</b></center>
+
+<center><b>OF A ONE VARIABLE DATA SET</b></center>
+
+<center><b>(1) GENERAL ESTIMATION THEORY</b></center>
+
+<p>Estimates in statistics are most often expressed in terms of <b>confidence
+intervals</b>. Roughly these are intervals of numbers with <b>confidence
+levels</b> attached indicating the probability that what is being estimated
+actually falls within the interval. A formal definiiton is presented below.
+First we give a discussion of the estimation procedure in general.
+<p>In most standard statistical analyses the parameters that are of most
+interest are <b>means</b>,&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>,
+<b>standard deviations</b> or <b>variances</b>,&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+or&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>
+and <b>proportions&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER></b>.
+Eachof these has a fairly standard statistic that is used to estimate it.
+For means we have&nbsp;<!-- MATH
+ $\overline
+X$
+ --><img SRC="img6.gif" ALT="$ \overlineX$" BORDER=0 height=17 width=19 align=BOTTOM>,
+the sample mean; for standard deviations,&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>,
+the sample standard deviation; and for proportions&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>,
+the sample proportion&nbsp;<!-- MATH
+ $\frac{x}{n}$
+ --><img SRC="img8.gif" ALT="$ \frac{x}{n}$" BORDER=0 height=29 width=16 align=CENTER>,
+where&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+is the number of items observed and&nbsp;<img SRC="img10.gif" ALT="$ x$" BORDER=0 height=14 width=13 align=BOTTOM>
+is the number of items observed of the characteristic of interest. Each
+of these statistics is called an <b>estimator</b> for the corresponding
+parameter; hence&nbsp;<!-- MATH
+ $\overline{X}$
+ --><img SRC="img11.gif" ALT="$ \overline{X}$" BORDER=0 height=17 width=19 align=BOTTOM>
+is an estimator for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>,<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+is an estimator for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+and&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>
+is an estimator for&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>.
+In general if&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+(theta) stands for a parameter, (it is no harm to think of this as either&nbsp;<img SRC="img13.gif" ALT="$ \mu,s$" BORDER=0 height=28 width=28 align=CENTER>
+or<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>),
+then&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+will stand for an estimator for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>.
+Any particular value of an estimator is called a <b>point estimate</b>
+for the corresponding parameter.
+<p>In general, in statistics we do not use point estimates. There is no
+confidence in a point estimate and in most cases the probability that a
+point estimate is correct is zero. Rather <b>interval estimates</b> are
+used. Interval estimates are ranges of numbers which hopefully contain
+the parameter we are trying to estimate. For example if we are trying to
+estimate the mean completion time for the surgical procedure of the last
+section, 151 minutes would be a point estimate. A typical interval estimate
+might be 143 to 159 minutes. In most cases we use a special type of interval
+estimate called a <b>confidence interval estimate</b> or <b>confidence
+interval</b>. We will give a formal definition below but roughly a confidence
+interval estimate for a parameter is an interval estimate with a confidence
+level attached. The confidence level gives the probability that the parameter
+being estimated actually falls within the interval.
+<br>&nbsp;
+<br>&nbsp;
+<p>EXAMPLE Suppose that a 95% confidence interval for the mean completion
+time of the surgical procedure is given by 143 minutes to 159 minutes.
+This is interpreted in the following manner. The true mean completion time
+is a number. There is a 95% probability that it falls in the interval 143
+to 159.
+<br>&nbsp;
+<br>&nbsp;
+<p>Notice that in using a confidence interval estimate there are two concepts
+of how good this estimate is, <b>confidence</b> and <b>accuracy</b>. The
+confidence of the estimate is given by the confidence level while the accuracy
+is given by the width of the interval. A narrow interval indicates greater
+accuracy than a wider interval. On an intuitive level it is clear that
+these two ideas are <b>inversely related</b>, that is for fixed sample
+size raising the confidence lowers the accuracy and vice versa. We will
+see this computationally in section 5.4. However we note that if we want
+a given confidence and wish to improve the accuracy we must take a larger
+sample size. In the real world this translates into cost and often the
+sample size chosen is a compromise between what the theory requires and
+what the budget of the study dictates.
+<p>If&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+is a parameter for a population&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+and&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an estimator for it, then as one goes from random sample to random sample
+from&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+the values of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+will vary. Hence&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+has its own distribution of values over all possible samples taken from&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+(we assume here the same sample size in each case). This is called the
+<b>sampling distribution</b> of the estimator&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>.
+Hence for a given sample size&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+and a given population&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+with mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+there will be a sampling distribution for&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>,
+consisting of all possible sample means of samples of size&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+drawn from&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>.
+Similarly there will be a sampling distribution for the sample standard
+deviation&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+and a sampling distribution for the sample proportion&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>.
+The sampling distribution of an estimator&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+will have its own mean and own standard deviation. We will denote these
+by&nbsp;<img SRC="img17.gif" ALT="$ \mu_{\th}$" BORDER=0 height=28 width=15 align=CENTER>
+and&nbsp;<!-- MATH
+ $\sigma_{\th}$
+ --><img SRC="img18.gif" ALT="$ \sigma_{\th}$" BORDER=0 height=28 width=14 align=CENTER>.
+<p><!-- MATH
+ \begin{displaymath}
+\mu_{\th} = \text{ mean of the sampling distribution of } \th \text { and }
+\end{displaymath}
+ -->
+<center><img SRC="img19.gif" ALT="$\displaystyle \mu_{\th} =$" BORDER=0 height=28 width=31 align=CENTER>&nbsp;&nbsp;&nbsp;
+mean of the sampling distribution of&nbsp;<img SRC="img20.gif" ALT="$\displaystyle \th$" BORDER=0 height=28 width=4 align=CENTER><img SRC="img21.gif" ALT="$\displaystyle \text { and }$" BORDER=0 height=29 width=30 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+\sigma_{\th} = \text{ standard deviation of the sampling distribution of } \th .
+\end{displaymath}
+ -->
+<center><img SRC="img22.gif" ALT="$\displaystyle \sigma_{\th} =$" BORDER=0 height=28 width=31 align=CENTER>&nbsp;&nbsp;&nbsp;
+standard deviation of the sampling distribution of&nbsp;<img SRC="img23.gif" ALT="$\displaystyle \th .$" BORDER=0 height=28 width=8 align=CENTER></center>
+If&nbsp;<!-- MATH
+ $\mu_{\th} = \theta$
+ --><img SRC="img24.gif" ALT="$ \mu_{\th} = \theta$" BORDER=0 height=29 width=44 align=CENTER>,
+that is the mean of the sampling distribution is equal to the parameter
+it is supposed to estimate, then&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+is called an <b>unbiased estimator</b> for<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>.
+In general&nbsp;<!-- MATH
+ $\sigma_{\th}$
+ --><img SRC="img18.gif" ALT="$ \sigma_{\th}$" BORDER=0 height=28 width=14 align=CENTER>
+is called the <b>standard error</b> of the estimator.
+<p>We examine these ideas relative to sample means.
+<p>For any population with mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+and standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+the sample mean&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an unbiased estimator for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>.
+This means that&nbsp;<!-- MATH
+ $\mu_{\th} = \mu$
+ --><img SRC="img25.gif" ALT="$ \mu_{\th} = \mu$" BORDER=0 height=28 width=45 align=CENTER>
+where&nbsp;<img SRC="img17.gif" ALT="$ \mu_{\th}$" BORDER=0 height=28 width=15 align=CENTER>
+is the mean of the sampling distribution of&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>.
+Further the <b>standard error of the mean</b> is given by&nbsp;<!-- MATH
+ \begin{displaymath}
+\sigma_{\X} = \frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<center><img SRC="img26.gif" ALT="$\displaystyle \sigma_{\X} = \frac{\sigma}{\sqrt{n}}.$" BORDER=0 height=43 width=66 align=CENTER></center>
+It follows that for any population the sample means vary much less than
+the original population (notice that we are dividing by&nbsp;<img SRC="img27.gif" ALT="$ \sqrt{n}$" BORDER=0 height=33 width=27 align=CENTER>
+in finding the standard deviation of the sampling distribution for&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>).
+<br>&nbsp;
+<br>&nbsp;
+<p>EXAMPLE Suppose the discussed surgical procedure has a mean of&nbsp;<img SRC="img28.gif" ALT="$ \mu = 150$" BORDER=0 height=28 width=59 align=CENTER>
+and a standard deviation of&nbsp;<!-- MATH
+ $\sigma = 12$
+ --><img SRC="img29.gif" ALT="$ \sigma = 12$" BORDER=0 height=14 width=51 align=BOTTOM>.
+What is the mean and standard deviation of the sampling distribution of&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+for samples of size 25.
+<p>The mean of the sampling distribution is the same as the original mean.
+Therefore&nbsp;<!-- MATH
+ $\mu_{\X} =
+\mu = 150$
+ --><img SRC="img30.gif" ALT="$ \mu_{\X} =\mu = 150$" BORDER=0 height=28 width=90 align=CENTER>.
+The standard deviation of the sampling distribution or the standard error
+is the original standard deviation divided by the squareroot of the sample
+size. Therefore<!-- MATH
+ \begin{displaymath}
+\sigma_{\X} = \frac{\sigma}{\squareroot{n}} = \frac{12}{5} = 2.4.
+\end{displaymath}
+ -->
+<center><img SRC="img31.gif" ALT="$\displaystyle \sigma_{\X} = \frac{\sigma}{\squareroot{n}} = \frac{12}{5} = 2.4.$" BORDER=0 height=49 width=136 align=CENTER></center>
+
+<p>The idea of an estimator and its sampling distribution is used to give
+a formal definition of a confidence interval. Suppose&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an estimator for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+and&nbsp;<!-- MATH
+ $h(\th),g(\th)$
+ --><img SRC="img32.gif" ALT="$ h(\th),g(\th)$" BORDER=0 height=31 width=53 align=CENTER>
+are functions of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+with&nbsp;<!-- MATH
+ $h(\th) < g(\th)$
+ --><img SRC="img33.gif" ALT="$ h(\th) < g(\th)$" BORDER=0 height=31 width=67 align=CENTER>
+for all values of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>.
+Then&nbsp;<!-- MATH
+ $[h(\th),g(\th)]$
+ --><img SRC="img34.gif" ALT="$ [h(\th),g(\th)]$" BORDER=0 height=31 width=62 align=CENTER>
+forms a <b>random interval</b>, that is an interval of numbers which arises
+randomly. If for some value&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+we have that&nbsp;<!-- MATH
+ \begin{displaymath}
+Prob\{h(\th) \le \theta \le g(\th)\} = \alpha,
+\end{displaymath}
+ -->
+<center><img SRC="img36.gif" ALT="$\displaystyle Prob\{h(\th) \le \theta \le g(\th)\} = \alpha,$" BORDER=0 height=31 width=183 align=CENTER></center>
+then<!-- MATH
+ $[h(\th),g(\th)]$
+ --><img SRC="img34.gif" ALT="$ [h(\th),g(\th)]$" BORDER=0 height=31 width=62 align=CENTER>
+is called an&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%-<b>confidence
+interval for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM></b>.
+This means that in repeated sampling there is a probability of&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+that the random interval&nbsp;<!-- MATH
+ $[h(\th),g(\th)]$
+ --><img SRC="img34.gif" ALT="$ [h(\th),g(\th)]$" BORDER=0 height=31 width=62 align=CENTER>
+will contain the parameter&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>.
+For a particular value of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+we get a particular interval and this gives a <b>confidence interval estimate</b>
+for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>.
+<p>Summarizing all this we have that an&nbsp;<!-- MATH
+ $\alpha  \%$
+ --><img SRC="img37.gif" ALT="$ \alpha \%$" BORDER=0 height=31 width=28 align=CENTER>-<b>confidence
+interval</b> for a paramter&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+is a random interval&nbsp;<!-- MATH
+ $[h(\th),g(\th)]$
+ --><img SRC="img34.gif" ALT="$ [h(\th),g(\th)]$" BORDER=0 height=31 width=62 align=CENTER>,
+where&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an estimator of&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+and<!-- MATH
+ $h(\th),g(\th)$
+ --><img SRC="img32.gif" ALT="$ h(\th),g(\th)$" BORDER=0 height=31 width=53 align=CENTER>
+are functions of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+such that<!-- MATH
+ \begin{displaymath}
+Prob\{h(\th) \le \theta \le g(\th)\} = \alpha.
+\end{displaymath}
+ -->
+<center><img SRC="img38.gif" ALT="$\displaystyle Prob\{h(\th) \le \theta \le g(\th)\} = \alpha.$" BORDER=0 height=31 width=183 align=CENTER></center>
+
+<center><b>(2) ESTIMATION OF MEANS : LARGE SAMPLE PROCEDURES</b></center>
+
+<p>We now look at the particular case where the parameter of interest is
+the population mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+and the estimator is the sample mean&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>.
+The procedures used are separated into small and large sample procedures
+because of the following result, called the <b>Central Limit Theorem</b>
+which says that for <i>large enough </i>sample size the sampling distribution
+of&nbsp;<img SRC="img10.gif" ALT="$ x$" BORDER=0 height=14 width=13 align=BOTTOM>
+from any parent population ( the population from which the sample is drawn)
+is approximately normal.
+<p>Central Limit Theorem If&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+is sample mean for&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+observations from any population&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+with mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+and finite standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>,
+then for"large" sample sizes&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>,
+the sampling distribution of&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+is approximately normal with mean&nbsp;<!-- MATH
+ $\mu_{\X} = \mu$
+ --><img SRC="img39.gif" ALT="$ \mu_{\X} = \mu$" BORDER=0 height=28 width=45 align=CENTER>
+and standard deviation&nbsp;<!-- MATH
+ $\sigma_{\X} = \frac{\sigma}{\sqrt{n}}$
+ --><img SRC="img40.gif" ALT="$ \sigma_{\X} = \frac{\sigma}{\sqrt{n}}$" BORDER=0 height=29 width=57 align=CENTER>.
+<p>The "large" in the theorem says that this is a limiting result. That
+is the theorem is true in the limit as the sample size goes to infinity.
+In practice generally the normal approximation is used when the sample
+size is 30 or greater (although if the parent population is very symmetrical
+itself the approximation works well at lower sample sizes). Therefore the
+cutoff between samll and large sample procedures is usually set at&nbsp;<img SRC="img41.gif" ALT="$ n = 30$" BORDER=0 height=14 width=51 align=BOTTOM>.
+<p>We now turn to the problem of actually estimating a population mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>.
+Recall that what we are looking for is a <b>confidence interval estimate</b>.
+This means finding a random interval with a given probability of containing
+the population mean. In terms of a general formula we are looking for a
+random interval which contains the population mean a given proportion of
+the time. The sample mean&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an estimator for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+and we use the ideas concerning the sampling distribution of<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+together with the central limit theorem to construct <b>large sample confidence
+intervals for<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER></b>.
+<p>We suppose that&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+is a population with mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+and standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+and that we can choose a sample size&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+large enough (at least 30) so that the central limit theorem applies. The
+sampling distribution of&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+is then approximately normal with&nbsp;<!-- MATH
+ \begin{displaymath}
+\mu_{\X} = \mu \text { and } \sigma_{\X} = \frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<center><img SRC="img42.gif" ALT="$\displaystyle \mu_{\X} = \mu$" BORDER=0 height=28 width=45 align=CENTER><img SRC="img43.gif" ALT="$\displaystyle \text { and } \sigma_{\X} = \frac{\sigma}{\sqrt{n}}.$" BORDER=0 height=43 width=93 align=CENTER></center>
+Equivalently the z-value<!-- MATH
+ \begin{displaymath}
+z = \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}}
+\end{displaymath}
+ -->
+<center><img SRC="img44.gif" ALT="$\displaystyle z = \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}}$" BORDER=0 height=47 width=59 align=CENTER></center>
+follows a standard normal distribution. For a given&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+find the standard normal z-value&nbsp;<!-- MATH
+ $z_{\alpha/2}$
+ --><img SRC="img45.gif" ALT="$ z_{\alpha/2}$" BORDER=0 height=28 width=33 align=CENTER>
+so that&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+is centered between&nbsp;<!-- MATH
+ $-z_{\alpha/2}$
+ --><img SRC="img46.gif" ALT="$ -z_{\alpha/2}$" BORDER=0 height=28 width=46 align=CENTER>
+and&nbsp;<!-- MATH
+ $z_{\alpha/2}$
+ --><img SRC="img45.gif" ALT="$ z_{\alpha/2}$" BORDER=0 height=28 width=33 align=CENTER>.
+(The&nbsp;<img SRC="img47.gif" ALT="$ \alpha/2$" BORDER=0 height=31 width=30 align=CENTER>
+indicates that half is on each side of the mean. Therefore in locating
+this z-value in the normal table we locate the z-value that goes with half
+of&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>.
+In MAGNUSSTAT this is done automatically within the program.
+<p>From the normal distribution we have the following inequality on z-values
+which occurs&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+of the time<!-- MATH
+ \begin{displaymath}
+-z_{\alpha/2} \le z \le z_{\alpha/2} .
+\end{displaymath}
+ -->
+<center><img SRC="img48.gif" ALT="$\displaystyle -z_{\alpha/2} \le z \le z_{\alpha/2} .$" BORDER=0 height=28 width=130 align=CENTER></center>
+Since the sampling distribution of&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+is approximately normal we can apply this to the z-value<!-- MATH
+ \begin{displaymath}
+z= \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}}
+\end{displaymath}
+ -->
+<center><img SRC="img44.gif" ALT="$\displaystyle z = \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}}$" BORDER=0 height=47 width=59 align=CENTER></center>
+to get the following inequality which also must occur&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+of the time<!-- MATH
+ \begin{displaymath}
+-z_{\alpha/2} \le \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}} \le z_{\alpha/2}
+\end{displaymath}
+ -->
+<center><img SRC="img49.gif" ALT="$\displaystyle -z_{\alpha/2} \le \frac{\X - \mu}{\frac{\sigma}{\sqrt{n}}} \le z_{\alpha/2} $" BORDER=0 height=47 width=144 align=CENTER></center>
+Solving this inequality for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>,
+the value which we are trying to estimate, we obtain the following inequality
+which must occur&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+of the time:<!-- MATH
+ \begin{displaymath}
+\X - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \le \mu \le \X + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<center><img SRC="img50.gif" ALT="$\displaystyle \X - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \le \mu \le \X + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.$" BORDER=0 height=43 width=197 align=CENTER></center>
+The inequality above defines a random interval containing&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+which must occur&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+of the time and thus defines an&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>-percent
+confidence interval for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>.
+Particular values for the variables will give a confidence interval estimate.
+<p>The formula given above depends upon the population standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>.
+The following question arises. If we don't know&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+why would&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+be known? In practice this is averted by using&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+in place of&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>.
+Usually for large samples, the sample standard deviation,&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>,
+is close enough to the population standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>,
+so that the estimate still has the required confidence. Using the ANALYSIS
+OF THE VARIANCE TOOL we can build confidence intervals for standard deviations.
+<p>Large Sample Confidence Intervals for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+If&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+is any population with mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+then a large sample&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+confidence interval for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+is given by<!-- MATH
+ \begin{displaymath}
+\X - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \le \mu \le \X + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}
+\end{displaymath}
+ -->
+<center><img SRC="img51.gif" ALT="$\displaystyle \X - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \le \mu \le \X + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$" BORDER=0 height=43 width=193 align=CENTER></center>
+where&nbsp;<!-- MATH
+ \begin{displaymath}
+\X = \text { sample mean}
+\end{displaymath}
+ -->
+<center><img SRC="img52.gif" ALT="$\displaystyle \X =$" BORDER=0 height=28 width=16 align=CENTER><img SRC="img53.gif" ALT="$\displaystyle \text { sample mean}$" BORDER=0 height=29 width=94 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+\sigma = \text {standard deviation}
+\end{displaymath}
+ -->
+<center><img SRC="img54.gif" ALT="$\displaystyle \sigma =$" BORDER=0 height=28 width=30 align=CENTER><img SRC="img55.gif" ALT="$\displaystyle \text {standard deviation}$" BORDER=0 height=29 width=134 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+z_{\alpha/2} = \alpha\% \text { confidence coefficient and }
+\end{displaymath}
+ -->
+<center><img SRC="img56.gif" ALT="$\displaystyle z_{\alpha/2} = \alpha\%$" BORDER=0 height=31 width=78 align=CENTER><img SRC="img57.gif" ALT="$\displaystyle \text { confidence coefficient and }$" BORDER=0 height=29 width=191 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+n = \text { sample size which is assumed at least 30 }.
+\end{displaymath}
+ -->
+<center><img SRC="img58.gif" ALT="$\displaystyle n =$" BORDER=0 height=28 width=30 align=CENTER><img SRC="img59.gif" ALT="$\displaystyle \text { sample size which is assumed at least 30 }. $" BORDER=0 height=29 width=269 align=CENTER></center>
+
+<p>Notice that the confidence interval has the format<!-- MATH
+ \begin{displaymath}
+\X - E \le \mu \le \X + E
+\end{displaymath}
+ -->
+<center><img SRC="img60.gif" ALT="$\displaystyle \X - E \le \mu \le \X + E$" BORDER=0 height=29 width=106 align=CENTER></center>
+where&nbsp;<!-- MATH
+ \begin{displaymath}
+E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<center><img SRC="img61.gif" ALT="$\displaystyle E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.$" BORDER=0 height=43 width=98 align=CENTER></center>
+<!-- MATH
+ $E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$
+ --><img SRC="img62.gif" ALT="$ E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$" BORDER=0 height=29 width=90 align=CENTER>
+is called the&nbsp;<img SRC="img37.gif" ALT="$ \alpha \%$" BORDER=0 height=31 width=28 align=CENTER><b>-error
+term</b>.
+<p>The construction of these confidence interval estimates depends upon
+determining the confidence coefficients so we first show how this is done.
+<br>&nbsp;
+<p>EXAMPLE Determine the large sample 95% and 99% confidence coefficients.
+<br>&nbsp;
+<br>&nbsp;
+<p>The desired percentage 95% is centered on the mean so that 47.5% is
+on either side. Looking in the standard normal table for the entry .4750
+we find that it corresponds to z = 1.96. Therefore z = 1.96 is the 95%
+large sample confidence coefficient. Again in MAGNUSSTAT this is done automatically
+and presented in the output box.
+<p>To find the 99% confidence coefficient we follow the same procedure.
+Draw a normal curve and place 99% centered on the mean. This gives 49.5%
+on either side and this is the value we look for in the normal table. We
+see that the required z-value is between z = 2.57 and z = 2.58. We will
+take the 99% confidence coefficient as z = 2.58.
+<p>Determining confidence interval estimates is then reduced to computing
+the required information and substituting in the given formula.
+<p>EXAMPLE A study was done to determine the mean completion time of a
+certain operation. A random sample of 64 such operations had a sample mean
+of 151 minutes with a sample standard deviation of 18 minutes. Determine
+95% and 99% confidence interval estimates for the true mean completion
+time.
+<p>Here&nbsp;<img SRC="img63.gif" ALT="$ n = 64$" BORDER=0 height=14 width=51 align=BOTTOM>
+so large sample procedures can be used. For 95% the confidence coefficient
+is z = 1.96. The computed information is<!-- MATH
+ \begin{displaymath}
+\X = 151 \text { and } s = 18.
+\end{displaymath}
+ -->
+<center><img SRC="img64.gif" ALT="$\displaystyle \X = 151$" BORDER=0 height=28 width=45 align=CENTER><img SRC="img65.gif" ALT="$\displaystyle \text { and } s = 18.$" BORDER=0 height=29 width=79 align=CENTER></center>
+Therefore the confidence interval estimate is<!-- MATH
+ \begin{displaymath}
+151 - 1.96\frac{18}{8} \le \mu \le 151 + 1.96\frac{18}{8}
+\end{displaymath}
+ -->
+<center><img SRC="img66.gif" ALT="$\displaystyle 151 - 1.96\frac{18}{8} \le \mu \le 151 + 1.96\frac{18}{8}$" BORDER=0 height=49 width=239 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+151 - 4.41 \le \mu \le 151 + 4.41
+\end{displaymath}
+ -->
+<center><img SRC="img67.gif" ALT="$\displaystyle 151 - 4.41 \le \mu \le 151 + 4.41$" BORDER=0 height=28 width=199 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+146.59 \le \mu \le 155.41.
+\end{displaymath}
+ -->
+<center><img SRC="img68.gif" ALT="$\displaystyle 146.59 \le \mu \le 155.41.$" BORDER=0 height=28 width=149 align=CENTER></center>
+There are two ways in which the results can be reported. First:
+<br>&nbsp;
+<br>&nbsp;
+<p>A 95% confidence interval for the mean completion time is 146.59 minutes
+to 155.41 minutes.
+<br>&nbsp;
+<br>&nbsp;
+<p>The second:
+<br>&nbsp;
+<br>&nbsp;
+<p>The mean completion time is 151 minutes with a 95% <b>margin of sampling
+error</b> of&nbsp;<img SRC="img69.gif" ALT="$ \pm 4.41$" BORDER=0 height=28 width=45 align=CENTER>
+minutes.
+<br>&nbsp;
+<br>&nbsp;
+<p>To convert this into a 99% confidence interval, all that must be changed
+is the confidence coefficient. The coefficient for 99% was 2.58 so the
+computations must be redone with z = 2.58 rather than z = 1.96. Therefore
+here the confidence interval estimate is<!-- MATH
+ \begin{displaymath}
+151 - 2.58\frac{18}{8} \le \mu \le 151 + 2.58\frac{18}{8}
+\end{displaymath}
+ -->
+<center><img SRC="img70.gif" ALT="$\displaystyle 151 - 2.58\frac{18}{8} \le \mu \le 151 + 2.58\frac{18}{8}$" BORDER=0 height=49 width=239 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+151 - 5.81 \le \mu \le 151 + 5.81
+\end{displaymath}
+ -->
+<center><img SRC="img71.gif" ALT="$\displaystyle 151 - 5.81 \le \mu \le 151 + 5.81$" BORDER=0 height=28 width=199 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+145.19 \le \mu \le 156.81.
+\end{displaymath}
+ -->
+<center><img SRC="img72.gif" ALT="$\displaystyle 145.19 \le \mu \le 156.81.$" BORDER=0 height=28 width=149 align=CENTER></center>
+Again the two ways in which the results can be reported are:
+<br>&nbsp;
+<br>&nbsp;
+<p>A 99% confidence interval for the mean completion time is 145.19 minutes
+to 156.81 minutes.
+<br>&nbsp;
+<br>&nbsp;
+<p>or
+<br>&nbsp;
+<br>&nbsp;
+<p>The mean completion time is 151 minutes with a 99% margin of sampling
+error of&nbsp;<img SRC="img73.gif" ALT="$ \pm 5.81$" BORDER=0 height=28 width=45 align=CENTER>
+minutes.
+<br>&nbsp;
+<br>&nbsp;
+<p>As expected the 99% interval is wider ( the error is larger) and hence
+less accurate.
+<br>&nbsp;
+<br>&nbsp;
+<center><b>(3) ESTIMATION OF MEANS : DETERMINATION OF SAMPLE SIZE</b></center>
+
+<p>Suppose that in the previous example the error in the 95% estimate of&nbsp;<img SRC="img69.gif" ALT="$ \pm 4.41$" BORDER=0 height=28 width=45 align=CENTER>
+minutes is too large and it is desired to improve the accuracy to an error
+of&nbsp;<img SRC="img74.gif" ALT="$ \pm 2.0$" BORDER=0 height=28 width=37 align=CENTER>
+minutes. If the 95% confidence level is maintained the only way this could
+be done is to increase the sample size. The question is how large large
+a sample is needed.
+<p>From before we have that the error is given by<!-- MATH
+ \begin{displaymath}
+E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<center><img SRC="img61.gif" ALT="$\displaystyle E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.$" BORDER=0 height=43 width=98 align=CENTER></center>
+In the example we knew&nbsp;<!-- MATH
+ $z_{\alpha/2},s$
+ --><img SRC="img75.gif" ALT="$ z_{\alpha/2},s$" BORDER=0 height=28 width=48 align=CENTER>
+and&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+and determined&nbsp;<img SRC="img76.gif" ALT="$ E$" BORDER=0 height=14 width=17 align=BOTTOM>.
+Now we are given&nbsp;<img SRC="img76.gif" ALT="$ E$" BORDER=0 height=14 width=17 align=BOTTOM>
+and wish to determine&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>.
+We will use the value of&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+as an estimate of&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>.
+Here&nbsp;<img SRC="img77.gif" ALT="$ E = 2.0$" BORDER=0 height=15 width=58 align=BOTTOM>
+so<!-- MATH
+ \begin{displaymath}
+2.0 = 1.96\frac{18}{\sqrt{n}} \Doublerightarrow \sqrt{n} = 1.96\frac{18}{2.0} = 17.64.
+\end{displaymath}
+ -->
+<center><img SRC="img78.gif" ALT="$\displaystyle 2.0 = 1.96\frac{18}{\sqrt{n}} \Doublerightarrow \sqrt{n} = 1.96\frac{18}{2.0} = 17.64.$" BORDER=0 height=49 width=259 align=CENTER></center>
+It follows that<!-- MATH
+ \begin{displaymath}
+n = (17.64)^2  = 311.2.
+\end{displaymath}
+ -->
+<center><img SRC="img79.gif" ALT="$\displaystyle n = (17.64)^2 = 311.2.$" BORDER=0 height=35 width=153 align=CENTER></center>
+Therefore to get the desired accuracy we would have to sample 312 items.
+Notice that we round up not round off.
+<p>Now we do the same computations in terms of symbols to get a general
+formula. We have that<!-- MATH
+ \begin{displaymath}
+E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<center><img SRC="img61.gif" ALT="$\displaystyle E = z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.$" BORDER=0 height=43 width=98 align=CENTER></center>
+Solving for&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+gives<!-- MATH
+ \begin{displaymath}
+n = (\frac{z_{\alpha/2}\sigma}{E})^2
+\end{displaymath}
+ -->
+<center><img SRC="img80.gif" ALT="$\displaystyle n = (\frac{z_{\alpha/2}\sigma}{E})^2$" BORDER=0 height=45 width=97 align=CENTER></center>
+where in the formula&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+is usually approximated by&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>.
+<p>Determination of Appropriate Sample Size To get a desired error of&nbsp;<img SRC="img76.gif" ALT="$ E$" BORDER=0 height=14 width=17 align=BOTTOM>
+in the determination of the sample mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+for a confidence level of&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+the appropriate sample size is given by<!-- MATH
+ \begin{displaymath}
+n = (\frac{z_{\alpha/2}\sigma}{E})^2
+\end{displaymath}
+ -->
+<center><img SRC="img80.gif" ALT="$\displaystyle n = (\frac{z_{\alpha/2}\sigma}{E})^2$" BORDER=0 height=45 width=97 align=CENTER></center>
+where in the formula&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+is usually approximated by&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>.
+<p>What is sometimes done in practice is that a pilot study is conducted
+to get a value of&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+and this is then used in the above formula.
+<br>&nbsp;
+<br>&nbsp;
+<center><b>(4) ESTIMATION OF MEANS : SMALL SAMPLE PROCEDURES</b></center>
+
+<p>The techniques that we have examined so far depend upon being able to
+draw a large enough sample so that the central limit theorem can be used.
+In many situations though, it is impractical or impossible to draw a large
+sample. Two very common testing situations where it is difficult, if not
+impossible, to draw large samples are in <b>destructive testing</b> and
+more importantly for nurses and other health care professionals, <b>medical
+testing</b>. Destructive testing refers to statistical testing where the
+sample is destroyed or made unusable by the test. For example in testing
+the breaking strength of a steel rod the rod must be broken. Similarly
+a disposable syringe cannot be reused. Because of the costs involved we
+are most times restricted to relatively small samples. In medical testing
+we are also in many cases restricted to smaller samples. Ultimately testing
+must be done on human subjects and this cannot always be done with enough
+subjects to apply large sample techniques. Because of this, bias questions
+often arise in medical testing. Human subjects are frequently obtained
+by paying people. However the population of people who would subject themselves
+to some sort of medical test for payment is not the same as the general
+population. We must be aware of this in evaluating many medical findings.
+<p>To handle estimation and other inference procedures concerning means
+when large samples cannot be drawn, we must deal with parent populations
+that are themselves normal or at least not too skewed. If this is not a
+viable assumption then very little can be done. Hence we will assume that
+our parent population is normal with mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>.
+The estimation of&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+proceeds by using another continuous distribution which is very similar
+to a standard normal distribution.
+<p>If&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+is a positive integer a <b>t-distribution with n degrees of freedom</b>
+is a continuous distribution whose density curve has the equation<!-- MATH
+ \begin{displaymath}
+f(x) = K(n) (1 + \frac{x^2}{n})^{-\frac{n+1}{2} f(x) = K(n) (1 + \frac{x^2}{n})^}-\frac{n+1}{2}$$
+where $K(n)$ is a constant depending on $n$.  There is thus a t-distribution for each positive
+integer $n$. The integer $n$ that it depends upon is called its {\bf degrees of freedom}
+abbreviated d.f..  Each of these curves looks very similar to a standard normal distribution and is
+symmetric about and centered on 0 - however there is slightly more in the tail than in the standard
+normal.  As $n$ gets larger the t-distributions become closer and closer to the standard normal and
+for $n \ge 30$ they almost indistinguishable from the standard normal.
+\par Tables are given for the t-distribution which put given percentages in the tails for
+given degrees of freedom. Thus a tail entry given by $t_{\alpha,n}$ is the value which puts
+$\alpha\%$ in the right hand tail for a t-distribution with $n$ degrees of freedom.  For example
+the value for $t_{.025,8} = 2.306$. In MAGNUSSTAT this is computed automatically.  This indicates
+that for a t-distribution with 8 d.f. the value 2.306 has 2.5\% to the right of it.  If $n > 30$
+normal distribution values are used.
+\par The t-distribution plays a role in the estimation of means through the following fundamental
+result.
+\par\proclaim{Sampling Distribution of $\X$ - Small Samples} If $\X$ is the sample mean based on $n$
+observations from a normal population with mean $\mu$ then 
+\end{displaymath}
+ -->
+<center><img SRC="img81.gif" ALT="$\displaystyle f(x) = K(n) (1 + \frac{x^2}{n})^{-\frac{n+1}{2} f(x) = K(n) (1 + ...... mean based on $n$observations from a normal population with mean $\mu$ then$" BORDER=0 height=29 width=496 align=BOTTOM></center>
+t = - &amp;mu#mu;sn<!-- MATH
+ \begin{displaymath}
+has a t-distribution with $n-1$ degrees of freedom.
+\endproclaim
+\par Using this result we can derive a {\bf small sample confidence interval} for $\mu$ when
+sampling is done from a normal population. The derivation is done in much the same manner that was
+used in deriving the large sample result.
+\par For a given $\alpha$, find the t-value $t_{\alpha/2}$ so that for a t-distribution with the given
+degrees of freedom $\alpha$\% is in the right hand tail.  The value
+$t_{\alpha/2}$ is called the small sample $1-\alpha$\% {\bf confidence coefficient}.  Of course it
+depends both on $\alpha$ and on the degrees of freedom. 
+\par From the t-distribution and the way we choose $t_{\alpha/2}$ we have the following inequality 
+on t-values occurring $\alpha$\% of the time
+\end{displaymath}
+ -->
+<center><img SRC="img82.gif" ALT="$\displaystyle has a t-distribution with $n-1$ degrees of freedom.\endproclaim......we have the following inequalityon t-values occurring $\alpha$\% of the time$" BORDER=0 height=15 width=48 align=BOTTOM></center>
+-t_&amp;alpha#alpha;/2 &amp;le#le;t &amp;le#le;t_&amp;alpha#alpha;/2 .<!-- MATH
+ \begin{displaymath}
+We can apply the small sample sampling distribution result to the t-value
+\end{displaymath}
+ -->
+<center><img SRC="img83.gif" ALT="$\displaystyle We can apply the small sample sampling distribution result to the t-value$" BORDER=0 height=12 width=16 align=CENTER></center>
+z= - &amp;mu#mu;sn<!-- MATH
+ \begin{displaymath}
+to get the following inequality which must occur $\alpha$\% of the time
+\end{displaymath}
+ -->
+<center><img SRC="img84.gif" ALT="$\displaystyle to get the following inequality which must occur $\alpha$\% of the time$" BORDER=0 height=29 width=94 align=BOTTOM></center>
+-t_&amp;alpha#alpha;/2 &amp;le#le;- &amp;mu#mu;sn &amp;le#le;t_&amp;alpha#alpha;/2&nbsp;<!-- MATH
+ \begin{displaymath}
+Solving this inequality for $\mu$ the value which we are trying to estimate, we get the following
+inequality which must occur $\alpha$\% of the time.
+\end{displaymath}
+ -->
+<center><img SRC="img85.gif" ALT="$\displaystyle Solving this inequality for $\mu$ the value which we are trying t......mate, we get the followinginequality which must occur $\alpha$\% of the time.$" BORDER=0 height=29 width=185 align=BOTTOM></center>
+- t_&amp;alpha#alpha;/2sn &amp;le#le;&amp;mu#mu;&amp;le#le;+ t_&amp;alpha#alpha;/2sn<!-- MATH
+ \begin{displaymath}
+\par This inequality  defines a random interval containing $\mu$ which must occur $\alpha$\% of
+the time and thus defines an $\alpha$-percent confidence interval for $\mu$.  Particular values for
+the variables will give a confidence interval estimate. Notice in practice the only difference
+between this and the large sample interval is that a t-coefficient is used instead of a
+z-coefficient.  However we are making the additional assumption that the parent population is
+normal.  However this last assumption is rather mild since the sampling distribution result is
+fairly {\bf robust}.  By this it is meant that the result is still true under mild departures from
+the normality assumption - in practice if the parent population is not too skewed.
+\par\proclaim{Small Sample Confidence Intervals for $\mu$} If $P$ is a normal population with mean $\mu$
+then an$\alpha$\% confidence interval for $\mu$ is given by
+\end{displaymath}
+ -->
+<center><img SRC="img86.gif" ALT="$\displaystyle \par This inequality defines a random interval containing $\mu$ w......on with mean $\mu$then an$\alpha$\% confidence interval for $\mu$ is given by$" BORDER=0 height=31 width=76 align=BOTTOM></center>
+- t_&amp;alpha#alpha;/2sn &amp;le#le;&amp;mu#mu;&amp;le#le;+ t_&amp;alpha#alpha;/2sn
+$<img SRC="img87.gif" ALT="$ where$" BORDER=0 height=29 width=283 align=BOTTOM><!-- MATH
+ $\X = \text { sample mean}$
+ --><img SRC="img88.gif" ALT="$ \X =$" BORDER=0 height=29 width=87 align=BOTTOM><img SRC="img89.gif" ALT="$ \text { sample mean}$" BORDER=0 height=14 width=51 align=CENTER><!-- MATH
+ \begin{displaymath}
+$s = \text {sample standard deviation}
+\end{displaymath}
+ -->
+<center><img SRC="img90.gif" ALT="$\displaystyle $s =$" BORDER=0 height=28 width=112 align=BOTTOM><img SRC="img91.gif" ALT="$\displaystyle \text {sample standard deviation}$" BORDER=0 height=28 width=41 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+t_{\alpha/2} = \alpha\% \text { confidence coefficient based on n-1 d.f. }
+\end{displaymath}
+ -->
+<center><img SRC="img92.gif" ALT="$\displaystyle t_{\alpha/2} = \alpha\%$" BORDER=0 height=29 width=84 align=CENTER><img SRC="img93.gif" ALT="$\displaystyle \text { confidence coefficient based on n-1 d.f. }$" BORDER=0 height=49 width=256 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+n = \text { sample size }.
+\end{displaymath}
+ -->
+<center><img SRC="img58.gif" ALT="$\displaystyle n =$" BORDER=0 height=28 width=30 align=CENTER><img SRC="img94.gif" ALT="$\displaystyle \text { sample size }. $" BORDER=0 height=28 width=176 align=CENTER></center>
+EXAMPLE A study was done to determine the mean time to toleration of solid
+food after a stomach surgery. A random sample of 16 patients had a sample
+mean of 6.2 days with a sample standard deviation of 1.2 days. Determine
+a 95% confidence interval estimate for the true mean time.
+<p>Here&nbsp;<img SRC="img95.gif" ALT="$ n = 16$" BORDER=0 height=28 width=117 align=BOTTOM>
+so large sample procedures cannot be used. Assuming that the mean time
+follows a normal distribution we can apply the small sample procedure.
+First we must find the 95% t confidence coefficient. Since a 95% interval
+will leave a total of 5% in the tails there is 2.5% in each tail. There
+are 16 observations so 15 d.f. Therefore the appropriate t-confidence coefficient
+is
+<p><!-- MATH
+ \begin{displaymath}
+t_{.025,15} = 2.131.
+\end{displaymath}
+ -->
+<center><img SRC="img96.gif" ALT="$\displaystyle t_{.025,15} = 2.131.$" BORDER=0 height=29 width=25 align=CENTER></center>
+The remaining computed information is&nbsp;<!-- MATH
+ \begin{displaymath}
+\X = 6.2 \text { and } s =
+1.2.
+\end{displaymath}
+ -->
+<center><img SRC="img97.gif" ALT="$\displaystyle \X = 6.2$" BORDER=0 height=29 width=81 align=CENTER><img SRC="img98.gif" ALT="$\displaystyle \text { and } s =1.2.$" BORDER=0 height=29 width=19 align=CENTER></center>
+Therefore the confidence interval estimate is&nbsp;<!-- MATH
+ \begin{displaymath}
+6.2 - 2.131\frac{1.2}{4} \le \mu \le 6.2 +
+2.131\frac{1.2}{4}
+\end{displaymath}
+ -->
+<center><img SRC="img99.gif" ALT="$\displaystyle 6.2 - 2.131\frac{1.2}{4} \le \mu \le 6.2 +2.131\frac{1.2}{4}$" BORDER=0 height=29 width=97 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+6.2 - .64 \le \mu \le 6.2-.64
+\end{displaymath}
+ -->
+<center><img SRC="img100.gif" ALT="$\displaystyle 6.2 - .64 \le \mu \le 6.2-.64$" BORDER=0 height=28 width=24 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+5.56 \le \mu \le 6.84.
+\end{displaymath}
+ -->
+<center><img SRC="img101.gif" ALT="$\displaystyle 5.56 \le \mu \le 6.84.$" BORDER=0 height=28 width=25 align=CENTER></center>
+Then:
+<p>A 95% confidence interval for the mean time to tolerate solid food is
+5.56 days to 6.84 days
+<br>&nbsp;
+<br>&nbsp;
+<p>
+<hr>
+</body>
+</html>

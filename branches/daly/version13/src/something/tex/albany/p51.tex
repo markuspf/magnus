@@ -1,0 +1,33 @@
+\documentclass{slides} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+%\maketitle
+\pagestyle{empty}
+
+\begin{center} \Large\textbf{New fitness function} \end{center}
+%\vspace{3mm}
+
+Here we compare two words coordinate-wise. The fitness function is the
+Hamming distance between the words. The shortest word is appended by
+\$'s, so that the words have the same length. The fitness value is
+initialized to zero and gets increased by one for every mismatch
+between the letters. Then we try to minimize it.
+
+However, under such fitness function the similar words $a b c d$ and
+$b c d$ will have fitness 4, so it is better to compute values for all
+cyclical permutations of one of the words and take the minimum. When
+working with the forms from the theorem we must check all cyclical
+permutations of a given constant anyway, so here we kill two birds
+with one stone.
+
+\end{document}
+
+
+
+
+
+
+

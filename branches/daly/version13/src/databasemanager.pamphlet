@@ -1,0 +1,2159 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/databasemanager.pamphlet}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Chars.h"
+#include "Vector.h"
+#include "OID.h"
+
+@
+<<include.c>>=
+#include "OutMessages.h"
+#include "DatabaseManager.h"
+#include "TheObjects.h"
+#include "SMFPGroup.h"
+#include "SMWord.h"
+#include "SMHomomorphism.h"
+#include "SMMap.h"
+#include "SMSubgroup.h"
+#include "SMEquation.h"
+#include "SMSetOfWords.h"
+#include "SMVectorOfWords.h"
+#include "EquationParser.h"
+#include "APwithOneRelator.h"
+
+@
+\section{class DBState}
+\subsection{Constructors}
+<<DBState constructor1.h>>=
+  DBState( ) : theNextState(0) { }
+@
+<<DBState constructor2.h>>=
+  DBState( const DBState& state );
+@
+<<DBState constructor2.c>>=
+DBState::DBState( const DBState& state )
+  : theNextState( copyState(state.theNextState) )
+{ }
+
+@
+\subsection{operator equal}
+<<DBState operator equal.h>>=
+  const DBState& operator=( const DBState& state );
+@
+<<DBState operator equal.c>>=
+const DBState& DBState::operator=( const DBState& state )
+{
+  if( &state != this ) {
+    delete theNextState;
+    theNextState = copyState( state.theNextState );
+  }
+  return *this;
+}
+
+@
+\subsection{destructor}
+<<DBState destructor.h>>=
+  virtual ~DBState();
+@
+We do not enter into infinite recursion because we should stop
+on a null pointer somewhere inside.
+
+Calling delete on [[theNextState]] calls delete on [[State]].
+<<DBState destructor.c>>=
+DBState::~DBState( )
+{ 
+  delete theNextState; 
+}
+
+@
+\subsection{class DBState}
+<<class DBState>>=
+class DBState 
+{
+public:
+<<DBState constructor1.h>>
+<<DBState constructor2.h>>
+<<DBState operator equal.h>>
+<<DBState destructor.h>>
+  virtual void init( ) { }
+  //virtual void Event getEvent( ) const = 0;
+  virtual void handleEvent( const DBEvent& event ) = 0;
+
+  const DBState* nextState( ) const { return theNextState; }
+  virtual DBState* clone() const = 0;
+
+  virtual bool isFinal( ) const = 0;
+  virtual DB2FE_MESSAGE initMessage() const { return NO_MESSAGE; }
+
+  virtual void printOn( ostream& ostr ) const { ostr << "DBState"; }
+protected:
+  //void setNextState( const DBState *nstate ) { theNextState = nstate; }
+
+  //private:
+  DBState *theNextState;
+  //DBState *theFailure;
+};
+
+@
+\section{class MainState}
+<<class MainState>>=
+class MainState : public DBState 
+{
+public:
+  MainState( ) : DBState() { }
+  //MainState( const DBState *nstate, const DBState *onFailure );
+};
+
+@
+\section{class IntermediateState}
+\subsection{constructor}
+<<IntermediateState constructor1.h>>=
+  IntermediateState( ) : theFailure(0), theSecondState(0) { }
+@
+<<IntermediateState constructor2.h>>=
+  IntermediateState( const IntermediateState& state );
+@
+<<IntermediateState constructor2.c>>=
+IntermediateState::IntermediateState( const IntermediateState& state )
+  : theFailure( copyState(state.theFailure) ),
+    theSecondState( copyState(state.theSecondState) )
+{
+  // do nothing.
+}
+
+@
+<<IntermediateState constructor3.h>>=
+  IntermediateState( DBState *onFailure, DBState *secondState )
+    : theFailure(onFailure), theSecondState(secondState) {}
+@
+\subsection{destructor}
+<<IntermediateState destructor.h>>=
+  ~IntermediateState();
+@
+<<IntermediateState destructor.c>>=
+IntermediateState::~IntermediateState() 
+{ 
+  // We do not enter into infinite recursion because we should stop
+  // on a null pointer somewhere inside.
+  delete theFailure;     // calling virtual ~State().
+  delete theSecondState; // calling virtual ~DBState().
+}
+
+@
+\subsection{operator equal}
+<<IntermediateState operator equal.h>>=
+  const IntermediateState& operator=( const IntermediateState& state );
+@
+<<IntermediateState operator equal.c>>=
+const IntermediateState& IntermediateState::operator=( 
+  const IntermediateState& state )
+{
+  if( &state != this ) {
+    DBState::operator=( state );
+    delete theFailure;
+    delete theSecondState;
+    theFailure     =  copyState( state.theFailure );
+    theSecondState =  copyState( state.theSecondState );
+  }
+  return *this;
+}
+
+@
+\subsection{isFinal}
+<<IntermediateState isFinal.h>>=
+  bool isFinal( ) const { return false; }
+
+@
+\subsection{printOn}
+<<IntermediateState printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "IntermediateState"; }
+@
+\subsection{handleFailure}
+<<IntermediateState handleFailure.h>>=
+  void handleFailure();
+@
+<<IntermediateState handleFailure.c>>=
+void IntermediateState::handleFailure() 
+{
+  if( theFailure ) {
+    theNextState = theFailure;
+    theFailure = 0;
+  }
+}
+
+@
+\subsection{useSecondState}
+<<IntermediateState useSecondState.h>>=
+  void useSecondState( DBState *state );
+@
+<<IntermediateState useSecondState.c>>=
+void IntermediateState::useSecondState( DBState* state ) 
+{
+  if( theSecondState ) {
+    theNextState = theSecondState;
+    theSecondState = 0;
+    delete state;
+  }
+  else {
+    theNextState = state;
+  }
+}
+
+@
+\subsection{class IntermediateState}
+<<class IntermediateState>>=
+class IntermediateState : public DBState
+{
+public:
+<<IntermediateState constructor1.h>>
+<<IntermediateState constructor2.h>>
+<<IntermediateState constructor3.h>>
+<<IntermediateState destructor.h>>
+<<IntermediateState operator equal.h>>
+<<IntermediateState isFinal.h>>
+<<IntermediateState printOn.h>>
+protected:
+<<IntermediateState handleFailure.h>>
+<<IntermediateState useSecondState.h>>
+  DBState *theFailure;
+  DBState *theSecondState;
+};
+
+@
+\section{class DatabaseClosed}
+\subsection{handleEvent}
+<<DatabaseClosed handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseClosed handleEvent.c>>=
+void DatabaseClosed::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_NEW:
+    theNextState = new DatabaseCreating( new DatabaseClosed() ); 
+    break;
+  case DB_OPEN:
+    theNextState = new DatabaseOpening( new DatabaseClosed() );
+    break;
+  case DB_SAVE:
+  case DB_SAVE_AS:
+  case DB_CLOSE:
+  case DB_ADD_OBJECTS:
+  case DB_GET_OBJECTS: {
+    Message msg;
+    msg << "The database closed -- operation is not permitted. "
+	<< "Try to create new or open existing database.";
+    msg.send();
+    break;
+  }
+  default:
+    error("unknown state in DatabaseClosed::handleEvent(const DBEvent&)");
+  }
+}
+
+@
+\subsection{constructor}
+<<DatabaseClosed constructor.h>>=
+  DatabaseClosed() { }
+@
+\subsection{isFinal}
+<<DatabaseClosed isFinal.h>>=
+  bool isFinal( ) const { return true; }
+@
+\subsection{initMessage}
+<<DatabaseClosed initMessage.h>>=
+  DB2FE_MESSAGE initMessage() const { return MSG_CLOSE_DATABASE; }
+@
+\subsection{clone}
+<<DatabaseClosed clone.h>>=
+  DBState *clone() const { return new DatabaseClosed(*this); }
+@
+\subsection{printOn}
+<<DatabaseClosed printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseClosed"; }
+@
+\subsection{class DatabaseClosed}
+<<class DatabaseClosed : public MainState>>=
+class DatabaseClosed : public MainState
+{
+public:
+<<DatabaseClosed constructor.h>>
+<<DatabaseClosed isFinal.h>>
+<<DatabaseClosed initMessage.h>>
+<<DatabaseClosed handleEvent.h>>
+<<DatabaseClosed clone.h>>
+<<DatabaseClosed printOn.h>>
+};
+
+
+@
+\section{class DatabaseSaved}
+\subsection{constructor}
+<<DatabaseSaved constructor.h>>=
+  DatabaseSaved() { }
+@
+\subsection{isFinal}
+<<DatabaseSaved isFinal.h>>=
+  bool isFinal( ) const { return true; }
+@
+\subsection{handleEvent}
+<<DatabaseSaved handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseSaved handleEvent.c>>=
+void DatabaseSaved::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_NEW:
+    theNextState = new DatabaseCreating( new DatabaseSaved() );
+    break;
+  case DB_OPEN:
+    theNextState = new DatabaseOpening( new DatabaseSaved() );
+    break;
+  case DB_CLOSE:
+    theNextState = new DatabaseClosed(); 
+    break;
+  case DB_SAVE: // do nothing;
+    break;
+  case DB_SAVE_AS:
+    theNextState = new DatabaseSavingAs( new DatabaseSaved() );
+    break;
+  case DB_GET_OBJECTS:
+    theNextState = new DatabaseGettingObjects( 
+                     new DatabaseSaved(), // on failure
+                     new DatabaseSaved()  // on success
+                   );
+    break;
+  case DB_ADD_OBJECTS:
+    theNextState = new DatabaseAddingObjects( new DatabaseSaved() );
+    break;
+  default:
+    error("unknown state in DatabaseSaved::handleEvent(const DBEvent&)");
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseSaved clone.h>>=
+  DBState *clone() const { return new DatabaseSaved(*this); }
+@
+\subsection{printOn}
+<<DatabaseSaved printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseSaved"; }
+@
+\subsection{class DatabaseSaved}
+<<class DatabaseSaved : public MainState>>=
+class DatabaseSaved : public MainState
+{
+public:
+<<DatabaseSaved constructor.h>>
+<<DatabaseSaved isFinal.h>>
+<<DatabaseSaved handleEvent.h>>
+<<DatabaseSaved clone.h>>
+<<DatabaseSaved printOn.h>>
+};
+
+@
+\section{class DatabaseModified}
+\subsection{constructor}
+<<DatabaseModified constructor.h>>=
+  DatabaseModified() { }
+@
+\subsection{isFinal}
+<<DatabaseModified isFinal.h>>=
+  bool isFinal( ) const { return false; }
+@
+\subsection{handleEvent}
+<<DatabaseModified handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseModified handleEvent.c>>=
+void DatabaseModified::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_NEW:
+    theNextState = new DatabaseClosing( 
+                    new DatabaseModified(), // on failure
+                    new DatabaseCreating( new DatabaseModified() ) //on success
+                   );
+    break;
+  case DB_OPEN:
+    theNextState = new DatabaseClosing( 
+                     new DatabaseModified(), // on failure
+                     new DatabaseOpening( new DatabaseModified() ) //on success
+                   );
+    break;
+  case DB_CLOSE:
+    theNextState = new DatabaseClosing( new DatabaseModified(),
+					new DatabaseClosed() );
+    break;
+  case DB_SAVE:
+    theNextState = new DatabaseSaving( new DatabaseModified() );
+    break;
+  case DB_SAVE_AS:
+    theNextState = new DatabaseSavingAs( new DatabaseModified() );
+    break;
+  case DB_GET_OBJECTS: 
+    theNextState = new DatabaseGettingObjects( new DatabaseModified() );
+    break;
+  case DB_ADD_OBJECTS:
+    theNextState = new DatabaseAddingObjects( new DatabaseModified() );
+    break;
+  default:
+    error("unknown state in DatabaseModified::handleEvent(const DBEvent&)");
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseModified clone.h>>=
+  DBState *clone() const { return new DatabaseModified(*this); }
+@
+\subsection{printOn}
+<<DatabaseModified printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseModified"; }
+@
+\subsection{class DatabaseModified}
+<<class DatabaseModified : public MainState>>=
+class DatabaseModified : public MainState
+{
+public:
+<<DatabaseModified constructor.h>>
+<<DatabaseModified isFinal.h>>
+<<DatabaseModified handleEvent.h>>
+<<DatabaseModified clone.h>>
+<<DatabaseModified printOn.h>>
+};
+
+@
+\section{class DatabaseCreating}
+\subsection{contructor}
+<<DatabaseCreating constructor1.h>>=
+  DatabaseCreating() { }
+@
+<<DatabaseCreating constructor2.h>>=
+  DatabaseCreating( DBState *onFailure, DBState *secondState = 0 )
+    : IntermediateState(onFailure,secondState) {}
+@
+\subsection{initMessage}
+<<DatabaseCreating initMessage.h>>=
+  DB2FE_MESSAGE initMessage() const { return MSG_NEW_FILENAME; }
+@
+\subsection{handleEvent}
+<<DatabaseCreating handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseCreating handleEvent.c>>=
+void DatabaseCreating::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_SUCCESS: { 
+    LogMessage msg;
+    msg << "Created the database " << event.str << ".";
+    msg.send();
+    TheDatabaseManager.setFileName(event.str);
+    TheDatabaseManager.postMessage(MSG_NEW_DATABASE);
+    useSecondState( new DatabaseSaved() );
+    break;
+  }
+  case DB_FAILURE: { 
+    Message msg;
+    msg << "Could not create the database " << event.str << ".";
+    msg.send();
+    handleFailure();
+    break;
+  }
+  case DB_CANCEL:
+    handleFailure();
+    break;
+  default:
+    error("unknown state in DatabaseCreating::handleEvent(const DBEvent&)");
+    handleFailure();
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseCreating clone.h>>=
+  DBState *clone() const { return new DatabaseCreating(*this); }
+@
+\subsection{printOn}
+<<DatabaseCreating printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseCreating"; }
+@
+\subsection{class DatabaseCreating}
+<<class DatabaseCreating : public IntermediateState>>=
+class DatabaseCreating : public IntermediateState
+{
+public:
+<<DatabaseCreating constructor1.h>>
+<<DatabaseCreating constructor2.h>>
+<<DatabaseCreating initMessage.h>>
+<<DatabaseCreating handleEvent.h>>
+<<DatabaseCreating clone.h>>
+<<DatabaseCreating printOn.h>>
+};
+
+@
+\section{class DatabaseOpening}
+\subsection{constructor}
+<<DatabaseOpening constructor1.h>>=
+  DatabaseOpening() { }
+@
+<<DatabaseOpening constructor2.h>>=
+  DatabaseOpening( DBState *onFailure, DBState *secondState = 0 )
+    : IntermediateState(onFailure,secondState) {}
+@
+\subsection{initMessage}
+<<DatabaseOpening initMessage.h>>=
+  DB2FE_MESSAGE initMessage() const { return MSG_OPEN_DATABASE; }
+@
+\subsection{handleEvent}
+<<DatabaseOpening handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseOpening handleEvent.c>>=
+void DatabaseOpening::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_SUCCESS: { 
+    LogMessage msg;
+    msg << "Open the database " << event.str << ".";
+    msg.send();
+    theNextState = new DatabaseSaved();
+    break;
+  }
+  case DB_FAILURE: { 
+    Message msg;
+    msg << "The database was not opened -- " << event.str << ".";
+    msg.send();
+    handleFailure();
+    break;
+  }
+  case DB_CANCEL:
+    handleFailure();
+    break;
+  default:
+    error("unknown state in DatabaseOpening::handleEvent(const DBEvent&)");
+    handleFailure();
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseOpening clone.h>>=
+  DBState *clone() const { return new DatabaseOpening(*this); }
+@
+\subsection{printOn}
+<<DatabaseOpening printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseOpening"; }
+@
+\subsection{class DatabaseOpening}
+<<class DatabaseOpening : public IntermediateState>>=
+class DatabaseOpening : public IntermediateState
+{
+public:
+<<DatabaseOpening constructor1.h>>
+<<DatabaseOpening constructor2.h>>
+<<DatabaseOpening initMessage.h>>
+<<DatabaseOpening handleEvent.h>>
+<<DatabaseOpening clone.h>>
+<<DatabaseOpening printOn.h>>
+};
+
+@
+\section{class DatabaseSaving}
+\subsection{constructor}
+<<DatabaseSaving constructor1.h>>=
+  DatabaseSaving() { }
+@
+<<DatabaseSaving constructor2.h>>=
+  DatabaseSaving( DBState *onFailure, DBState *secondState = 0 )
+    : IntermediateState(onFailure,secondState) {}
+@
+\subsection{initMessage}
+<<DatabaseSaving initMessage.h>>=
+  DB2FE_MESSAGE initMessage() const { return MSG_SAVE_DATABASE; }
+@
+\subsection{handleEvent}
+<<DatabaseSaving handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseSaving handleEvent.c>>=
+void DatabaseSaving::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_SUCCESS: { 
+    LogMessage msg;
+    msg << "The database was saved in " << event.str << ".";
+    msg.send();
+    TheDatabaseManager.setFileName(event.str);
+    useSecondState( new DatabaseSaved() );
+    break;
+  }
+  case DB_FAILURE: { 
+    Message msg;
+    msg << "The database was not opened -- " << event.str << ".";
+    msg.send();
+    handleFailure();
+    break;
+  }
+  default:
+    error("unknown state in DatabaseSaving::handleEvent(const DBEvent&)");
+    handleFailure();
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseSaving clone.h>>=
+  DBState *clone() const { return new DatabaseSaving(*this); }
+@
+\subsection{printOn}
+<<DatabaseSaving printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseSaving"; }
+@
+\subsection{class DatabaseSaving}
+<<class DatabaseSaving : public IntermediateState>>=
+class DatabaseSaving : public IntermediateState
+{
+public:
+<<DatabaseSaving constructor1.h>>
+<<DatabaseSaving constructor2.h>>
+<<DatabaseSaving initMessage.h>>
+<<DatabaseSaving handleEvent.h>>
+<<DatabaseSaving clone.h>>
+<<DatabaseSaving printOn.h>>
+};
+
+@
+\section{class DatabaseSavingAs}
+\subsection{constructor}
+<<DatabaseSavingAs constructor1.h>>=
+  DatabaseSavingAs() { }
+@
+<<DatabaseSavingAs constructor2.h>>=
+  DatabaseSavingAs( DBState *onFailure, DBState *secondState = 0 )
+    : IntermediateState(onFailure,secondState) {}
+@
+\subsection{initMessage}
+<<DatabaseSavingAs initMessage.h>>=
+  DB2FE_MESSAGE initMessage() const { return MSG_SAVE_DATABASE_AS; }
+@
+\subsection{handleEvent}
+<<DatabaseSavingAs handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseSavingAs handleEvent.c>>=
+void DatabaseSavingAs::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_SUCCESS: { 
+    LogMessage msg;
+    msg << "The database was saved in " << event.str << ".";
+    msg.send();
+    TheDatabaseManager.setFileName(event.str);
+
+    theNextState = new DatabaseSaved();
+    break;
+  }
+  case DB_CANCEL: { 
+    handleFailure();
+    break;
+  }
+  case DB_FAILURE: { 
+    Message msg;
+    msg << "The database was not opened -- " << event.str << ".";
+    msg.send();
+    handleFailure();
+    break;
+  }
+  default:
+    error("unknown state in DatabaseSaving::handleEvent(const DBEvent&)");
+    handleFailure();
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseSavingAs clone.h>>=
+  DBState *clone() const { return new DatabaseSavingAs(*this); }
+@
+\subsection{printOn}
+<<DatabaseSavingAs printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseSavingAs"; }
+@
+\subsection{class DatabaseSavingAs}
+<<class DatabaseSavingAs : public IntermediateState>>=
+class DatabaseSavingAs : public IntermediateState
+{
+public:
+<<DatabaseSavingAs constructor1.h>>
+<<DatabaseSavingAs constructor2.h>>
+<<DatabaseSavingAs initMessage.h>>
+<<DatabaseSavingAs handleEvent.h>>
+<<DatabaseSavingAs clone.h>>
+<<DatabaseSavingAs printOn.h>>
+};
+
+@
+\section{class DatabaseClosing}
+\subsection{constructor}
+<<DatabaseClosing constructor1.h>>=
+  DatabaseClosing() { }
+@
+<<DatabaseClosing constructor2.h>>=
+  DatabaseClosing( DBState *onFailure, DBState *secondState = 0 )
+    : IntermediateState(onFailure,secondState) {}
+@
+\subsection{initMessage}
+<<DatabaseClosing initMessage.h>>=
+  DB2FE_MESSAGE initMessage() const { return MSG_SAVE_ON_CLOSE; }
+@
+\subsection{handleEvent}
+<<DatabaseClosing handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseClosing handleEvent.c>>=
+void DatabaseClosing::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_YES:
+    theNextState = new DatabaseSaving( theFailure, theSecondState );
+    theFailure = theSecondState = 0;
+    break;
+  case DB_NO: {
+    LogMessage msg;
+    msg << "The changes in database were not saved.";
+    msg.send();
+    useSecondState( 0 );
+    break;
+  }
+  case DB_CANCEL:
+    handleFailure();
+    break;
+  default:
+    error("unknown state in DatabaseClosing::handleEvent(const DBEvent&)");
+    handleFailure();
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseClosing clone.h>>=
+  DBState *clone() const { return new DatabaseClosing(*this); }
+@
+\subsection{printOn}
+<<DatabaseClosing printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseClosing"; }
+@
+\subsection{class DatabaseClosing}
+<<class DatabaseClosing : public IntermediateState>>=
+class DatabaseClosing : public IntermediateState
+{
+public:
+<<DatabaseClosing constructor1.h>>
+<<DatabaseClosing constructor2.h>>
+<<DatabaseClosing initMessage.h>>
+<<DatabaseClosing handleEvent.h>>
+<<DatabaseClosing clone.h>>
+<<DatabaseClosing printOn.h>>
+};
+
+@
+\section{class DatabaseAddingObjects}
+\subsection{constructor}
+<<DatabaseAddingObjects constructor1.h>>=
+  DatabaseAddingObjects() { }
+@
+<<DatabaseAddingObjects constructor2.h>>=
+  DatabaseAddingObjects( DBState *onFailure, DBState *secondState = 0 )
+    : IntermediateState(onFailure,secondState) {}
+@
+\subsection{initMessage}
+<<DatabaseAddingObjects initMessage.h>>=
+  DB2FE_MESSAGE initMessage() const { return MSG_ADD_OBJECTS; }
+@
+\subsection{handleEvent}
+<<DatabaseAddingObjects handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseAddingObjects handleEvent.c>>=
+void DatabaseAddingObjects::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_SUCCESS: { 
+    LogMessage msg;
+    msg << "Update the database with new experiment" << event.str << ".";
+    msg.send();
+    theNextState = new DatabaseModified();
+    break;
+  }
+  case DB_CANCEL:
+    handleFailure();
+    break;
+  default:
+    error("unknown state in DatabaseAddingObjects::handleEvent(DBEvent&)");
+    handleFailure();
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseAddingObjects clone.h>>=
+  DBState *clone() const { return new DatabaseAddingObjects(*this); }
+@
+\subsection{printOn}
+<<DatabaseAddingObjects printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseAddingObjects"; }
+@
+\subsection{class DatabaseAddingObjects}
+<<class DatabaseAddingObjects : public IntermediateState>>=
+class DatabaseAddingObjects : public IntermediateState
+{
+public:
+<<DatabaseAddingObjects constructor1.h>>
+<<DatabaseAddingObjects constructor2.h>>
+<<DatabaseAddingObjects initMessage.h>>
+<<DatabaseAddingObjects handleEvent.h>>
+<<DatabaseAddingObjects clone.h>>
+<<DatabaseAddingObjects printOn.h>>
+};
+
+@
+\section{class DatabaseGettingObjects}
+\subsection{constructor}
+<<DatabaseGettingObjects constructor1.h>>=
+  DatabaseGettingObjects() { }
+@
+<<DatabaseGettingObjects constructor2.h>>=
+  DatabaseGettingObjects( DBState *onFailure, DBState *secondState = 0)
+    : IntermediateState(onFailure,secondState) {}
+@
+\subsection{initMessage}
+<<DatabaseGettingObjects initMessage.h>>=
+  DB2FE_MESSAGE initMessage() const { return MSG_GET_OBJECTS; }
+@
+\subsection{handleEvent}
+<<DatabaseGettingObjects handleEvent.h>>=
+  void handleEvent( const DBEvent& event );
+@
+<<DatabaseGettingObjects handleEvent.c>>=
+void DatabaseGettingObjects::handleEvent( const DBEvent& event )
+{
+  switch( event.key ) {
+  case DB_SUCCESS: { 
+    useSecondState( 0 );
+    break;
+  }
+  case DB_CANCEL:
+    handleFailure();
+    break;
+  default:
+    error("unknown state in DatabaseGettingObjects::handleEvent(DBEvent&)");
+    handleFailure();
+  }
+}
+
+@
+\subsection{clone}
+<<DatabaseGettingObjects clone.h>>=
+  DBState *clone() const { return new DatabaseGettingObjects(*this); }
+@
+\subsection{printOn}
+<<DatabaseGettingObjects printOn.h>>=
+  void printOn( ostream& ostr ) const { ostr << "DatabaseGettingObjects"; }
+@
+\subsection{class DatabaseGettingObjects}
+<<class DatabaseGettingObjects : public IntermediateState>>=
+class DatabaseGettingObjects : public IntermediateState
+{
+public:
+<<DatabaseGettingObjects constructor1.h>>
+<<DatabaseGettingObjects constructor2.h>>
+<<DatabaseGettingObjects initMessage.h>>
+<<DatabaseGettingObjects handleEvent.h>>
+<<DatabaseGettingObjects clone.h>>
+<<DatabaseGettingObjects printOn.h>>
+};
+
+@
+\section{inline copyState}
+<<inline DBState *copyState>>=
+inline DBState *copyState( const DBState *state )
+{
+  return (state ? state->clone() : 0 );
+}
+
+@
+\section{inline operator equal}
+<<inline ostream& operator>>=
+inline ostream& operator<<(ostream& ostr, const DBState& state)
+{
+  state.printOn( ostr );
+  return ostr;
+}
+
+@
+\section{class DatabaseObjectCategory}
+\subsection{constructor}
+<<DatabaseObjectCategory constructor.h>>=
+  DatabaseObjectCategory(Category cath = NO_CATEGORY) :theCategory(cath) {}
+@
+\subsection{enum Category}
+<<DatabaseObjectCategory enum Category.h>>=
+  enum Category
+  {
+    NO_CATEGORY = -1, 
+    // Group types -- 
+    FP, FREE, ABELIAN, NILPOTENT, SMALL_CANCELLATION, ONE_RELATOR,
+    AP_FREE, AP_FREE_CYCLIC, FREE_NILPOTENT, HNN_FREE, 
+    ONE_RELATOR_WITH_TORSION,
+    // Other object types
+    SUBGROUP, WORD, MAP, MAP2, HOMOMORPHISM, HOMOMORPHISM2,
+    EQUATION, EQUATION2, SET_OF_WORDS, VECTOR_OF_WORDS, 
+  };
+@
+\subsection{str}
+<<DatabaseObjectCategory str1.h>>=
+  static Chars str(const Category cath);
+@
+<<DatabaseObjectCategory str2.h>>=
+  Chars str() const { return DatabaseObjectCategory::str(theCategory); }
+@
+<<DatabaseObjectCategory str2.c>>=
+Chars DatabaseObjectCategory::str(Category category) 
+{
+  Chars res;
+  switch( category ) {
+  case FP:                 res = "FP";                 break;
+  case FREE:               res = "FREE";               break;
+  case ABELIAN:            res = "ABELIAN";            break;
+  case ONE_RELATOR:        res = "ONE_RELATOR";        break;
+  case ONE_RELATOR_WITH_TORSION: res ="ONE_RELATOR_WITH_TORSION"; break;
+  case SMALL_CANCELLATION: res = "SMALL_CANCELLATION"; break;
+  case AP_FREE:            res = "AP_FREE";            break;
+  case AP_FREE_CYCLIC:     res = "AP_FREE_CYCLIC";     break;
+  case HNN_FREE:           res = "HNN_FREE";           break;
+  case NILPOTENT:          res = "NILPOTENT";          break;
+  case FREE_NILPOTENT:     res = "FREE_NILPOTENT";     break;
+  case WORD:               res = "WORD";               break;
+  case SUBGROUP:           res = "SUBGROUP";           break;
+  case MAP:                res = "MAP";                break;
+  case MAP2:               res = "MAP2";               break;
+  case HOMOMORPHISM:       res = "HOMOMORPHISM";       break;
+  case HOMOMORPHISM2:      res = "HOMOMORPHISM2";      break;
+  case EQUATION:           res = "EQUATION";           break;
+  case EQUATION2:          res = "EQUATION2";          break;
+  case SET_OF_WORDS:       res = "SET_OF_WORDS";       break;
+  case VECTOR_OF_WORDS:    res = "VECTOR_OF_WORDS";    break;
+  default: res = "";
+  }
+  return res;
+} 
+
+@
+\subsection{id}
+<<DatabaseObjectCategory id.h>>=
+  Category id() const { return theCategory; }
+@
+\subsection{getSMObjectCategory}
+<<DatabaseObjectCategory getSMObjectCategory.h>>=
+  static Chars getSMObjectCategory( class SMObject *smo );
+@
+<<DatabaseObjectCategory getSMObjectCategory.c>>=
+Chars DatabaseObjectCategory::getSMObjectCategory( SMObject *smo ) 
+{
+  const char * type = smo->typeID(); 
+  Chars res;
+  if( type == SMFPGroup::type() ) {
+     const SMFPGroup *group = (const SMFPGroup*)smo;
+     res = 
+       DatabaseObjectCategory::str(FORCECATEGORY(group->getCheckinType()));
+     if( group->getCheckinType() == SMFPGroup::NILPOTENT ||
+	 group->getCheckinType() == SMFPGroup::FREE_NILPOTENT ) {
+       char buf[20];
+       sprintf(buf,"%d", group->gic.getNilpotentcyClass());
+       res += Chars(" {nilpotency class ") + buf + "}";
+     }
+  } else if( type == SMWord::type() ) {
+    res = CATEGORYSTR(WORD);
+  } else if( type == SMSubgroup::type() ) {
+    res = CATEGORYSTR(SUBGROUP);
+  } else if( type == SMMap::type() ) {
+    SMMap *obj = (SMMap*) smo;
+    if( &obj->getDomain() == &obj->getRange() )
+      res = CATEGORYSTR(MAP);
+    else
+      res = CATEGORYSTR(MAP2);
+  } else if( type == SMHomomorphism::type() ) {
+    res = CATEGORYSTR(HOMOMORPHISM);
+  } else if( type == SMHomomorphism2::type() ) {
+    res = CATEGORYSTR(HOMOMORPHISM);
+  } else if( type == SMEquation::type() ) {
+    res = CATEGORYSTR(EQUATION); 
+  } else if( type == SMEquation2::type() ) {
+    res = CATEGORYSTR(EQUATION2); 
+  } else if( type == SMSetOfWords::type() ) {
+    res = CATEGORYSTR(SET_OF_WORDS); 
+  } else if( type == SMVectorOfWords::type() ) {
+    res = CATEGORYSTR(VECTOR_OF_WORDS); 
+  }
+  return Chars("{") + res + Chars("}");
+}
+
+@
+\subsection{operator input}
+<<DatabaseObjectCategory operatorinput.h>>=
+  friend istream& operator>>(istream& istr, DatabaseObjectCategory& cath ) {
+    int i;
+    istr >> i;
+    cath.theCategory = (DatabaseObjectCategory::Category)i;
+  }
+@
+\subsection{operator output}
+<<DatabaseObjectCategory operatoroutput.h>>=
+  friend ostream& operator<<(ostream& ostr, 
+			     const DatabaseObjectCategory& cath ) {
+    ostr << (int)cath.theCategory;
+  }
+@
+\subsection{private data}
+\subsubsection{theCategory}
+<<DatabaseObjectCategory theCategory.h>>=
+  Category theCategory;
+@
+\subsection{class DatabaseObjectCategory}
+<<class DatabaseObjectCategory>>=
+class DatabaseObjectCategory {
+public:
+<<DatabaseObjectCategory enum Category.h>>
+<<DatabaseObjectCategory constructor.h>>
+<<DatabaseObjectCategory str1.h>>
+<<DatabaseObjectCategory str2.h>>
+<<DatabaseObjectCategory id.h>>
+<<DatabaseObjectCategory getSMObjectCategory.h>>
+<<DatabaseObjectCategory operatorinput.h>>
+<<DatabaseObjectCategory operatoroutput.h>>
+private:
+<<DatabaseObjectCategory theCategory.h>>
+};
+
+@
+\section{class DatabaseObjectSmith}
+\subsection{checkinObjectFromDatabase}
+<<DatabaseObjectSmith checkinObjectFromDatabase.h>>=
+  void checkinObjectFromDatabase(istream& istr);
+@
+<<DatabaseObjectSmith checkinObjectFromDatabase.c>>=
+void DatabaseObjectSmith::checkinObjectFromDatabase( istream& istr )
+{
+  enum {OBJECTS_STOP = 0, CHECKIN_OBJECT = 1, LOAD_PROPERTIES = 2};
+  int command;
+  istr >> command;
+  switch( command ) {
+  case OBJECTS_STOP: {
+    reset();
+    break;
+  } 
+  case CHECKIN_OBJECT: {
+    checkinObjectDefinition(istr);
+    break;
+  }
+  case LOAD_PROPERTIES: {
+    checkinObjectProperties(istr);
+    break;
+  }
+  default:
+    error("DatabaseObjectSmith::checkinObjectFromDatabase(): unknown command");
+  }
+  if( theError.length() > 0 ) {
+    LogMessage msg;
+    msg << theError;
+    msg.send();
+    theError = Chars();
+  }
+}
+
+@
+\subsection{reset}
+<<DatabaseObjectSmith reset.h>>=
+  void reset();
+@
+<<DatabaseObjectSmith reset.c>>=
+void DatabaseObjectSmith::reset( )
+{
+  if( theExperiment.length() > 0 ) {
+    int total = 0;
+    ostrstream names;
+    for( int i = 0; i < theExperiment.length(); ++i ) {
+      if( theExperiment[i] ) {
+	if( total )
+	  names << ", ";
+	names << FEData::Name( *theExperiment[i] );
+	++total;
+      }
+    }
+    names << ends;
+    LogMessage msg;
+    msg << total << " objects loaded from database";
+    if( total ) {
+      msg << ":  " << names.str();  
+      names.freeze(0);
+    }
+    msg << ".";
+    msg.send();
+  }
+  theExperiment.shrink(0); 
+}
+
+@
+\subsection{checkinObjectProperties}
+<<DatabaseObjectSmith checkinObjectProperties.h>>=
+  void checkinObjectProperties( istream& istr );
+@
+<<DatabaseObjectSmith checkinObjectProperties.c>>=
+void DatabaseObjectSmith::checkinObjectProperties( istream& istr )
+{
+  AlgebraicObject *current = 
+    (AlgebraicObject *)theExperiment[ theExperiment.length()-1 ];
+  if( current && current->infoCenter() ) {
+    current->infoCenter()->read( istr, true );
+  }
+}
+
+@
+\subsection{checkinObjectDefinition}
+<<DatabaseObjectSmith checkinObjectDefinition.h>>=
+  void checkinObjectDefinition( istream& istr );
+@
+<<DatabaseObjectSmith checkinObjectDefinition.c>>=
+void DatabaseObjectSmith::checkinObjectDefinition( istream& istr )
+{
+  istr >> theObjectName; 
+  theObjectName = decodeSpaces(theObjectName);
+  DatabaseObjectCategory theObjectCategory;
+  istr >> theObjectCategory;
+  SMObject *smo = 0;
+  switch( theObjectCategory.id() ) {
+  case DatabaseObjectCategory::FP:
+  case DatabaseObjectCategory::FREE:
+  case DatabaseObjectCategory::ABELIAN:
+  case DatabaseObjectCategory::ONE_RELATOR:
+  case DatabaseObjectCategory::ONE_RELATOR_WITH_TORSION:
+  case DatabaseObjectCategory::SMALL_CANCELLATION:
+  case DatabaseObjectCategory::AP_FREE:
+  case DatabaseObjectCategory::AP_FREE_CYCLIC:
+  case DatabaseObjectCategory::HNN_FREE: 
+  case DatabaseObjectCategory::NILPOTENT:
+  case DatabaseObjectCategory::FREE_NILPOTENT: 
+    smo = checkinFPGroup( istr, theObjectCategory ); 
+    break;
+  case DatabaseObjectCategory::WORD: 
+    smo = checkinWord(istr); 
+    break;
+  case DatabaseObjectCategory::SUBGROUP:
+    smo = checkinSubgroup(istr); 
+    break;
+  case DatabaseObjectCategory::MAP:
+  case DatabaseObjectCategory::MAP2:
+    smo = checkinMap(istr, theObjectCategory); 
+    break;
+  case DatabaseObjectCategory::HOMOMORPHISM:
+  case DatabaseObjectCategory::HOMOMORPHISM2:
+    smo = checkinHomomorphism(istr, theObjectCategory); 
+    break;
+  case DatabaseObjectCategory::EQUATION:
+  case DatabaseObjectCategory::EQUATION2:
+    smo = checkinEquation(istr, theObjectCategory); 
+    break;
+  default:
+    ;
+  }
+  theExperiment.append( smo );
+  if( smo ) {
+    CheckinMessage( *smo, "" /*theObjectName*/, dependencies ).send();
+  }
+  dependencies = ListOf<OID>();
+}
+
+@
+\subsection{checkinFPGroup}
+<<DatabaseObjectSmith checkinFPGroup.h>>=
+  SMObject* checkinFPGroup(istream& istr, DatabaseObjectCategory type );
+@
+<<DatabaseObjectSmith checkinFPGroup.c>>=
+SMObject* DatabaseObjectSmith::checkinFPGroup(
+  istream& istr, DatabaseObjectCategory cath ) 
+{
+  int theClass;
+  FPGroup *G;
+  Chars err;
+  switch( cath.id() ) {
+  case DatabaseObjectCategory::AP_FREE:
+    G = new AmalgProductOfFreeGroups();
+    break;
+  case DatabaseObjectCategory::AP_FREE_CYCLIC:
+    G = new APwithOneRelator();
+    break;
+  case DatabaseObjectCategory::NILPOTENT:
+  case DatabaseObjectCategory::FREE_NILPOTENT:
+    istr >> theClass;
+    break;
+  default:
+    G = new FPGroup();
+  }
+  err = istr >> *G;
+  if( err.length() > 0 ) {
+    parseError( Chars("The definition of group ") + theObjectName 
+		+ " is corrupted. Object is not created.");
+    return 0;
+  }
+  Chars theHeritage;
+  switch( cath.id() ) {
+    case DatabaseObjectCategory::FP: 
+      theHeritage = "finitely presented group"; break;
+    case DatabaseObjectCategory::FREE: 
+      theHeritage = "free group"; break;
+    case DatabaseObjectCategory::ABELIAN: 
+      theHeritage = "abelian group"; break;
+    case DatabaseObjectCategory::ONE_RELATOR: 
+      theHeritage = "one-relator group"; break;
+    case DatabaseObjectCategory::ONE_RELATOR_WITH_TORSION:
+      theHeritage = "one-relator group with torsion"; break;
+    case DatabaseObjectCategory::SMALL_CANCELLATION:
+      theHeritage = "small cancellation group"; break;
+    case DatabaseObjectCategory::AP_FREE: 
+      theHeritage = "amalgamated product of free groups"; break;
+    case DatabaseObjectCategory::AP_FREE_CYCLIC: 
+      theHeritage = "amalgamated product of free groups with cyclic subgroup";
+      break;
+    case DatabaseObjectCategory::HNN_FREE: 
+      theHeritage = "HNN-extension of free group"; break;
+    case DatabaseObjectCategory::NILPOTENT: 
+      theHeritage = "nilpotent group"; break;
+    case DatabaseObjectCategory::FREE_NILPOTENT: 
+      theHeritage = "free nilpotent group"; break;
+  }
+  theHeritage = Chars("User defined ") + theHeritage;
+  SMFPGroup *smo = 
+    new SMFPGroup(*G,theHeritage,(SMFPGroup::Checkin_Type)cath.id());
+  if( cath.id() == DatabaseObjectCategory::NILPOTENT ) {
+    smo->gic.putIsNilpotent( theClass );
+  } 
+  else if( cath.id() == DatabaseObjectCategory::FREE_NILPOTENT ) {
+    FreeGroup FG(G->namesOfGenerators());
+    smo->gic.putIsFreeNilpotent( FG, theClass );
+  }
+  delete G;
+  return smo;
+}
+
+@
+\subsection{checkinWord}
+<<DatabaseObjectSmith checkinWord.h>>=
+  SMObject* checkinWord(istream& istr);
+@
+<<DatabaseObjectSmith checkinWord.c>>=
+SMObject* DatabaseObjectSmith::checkinWord(istream& istr) 
+{
+  int parentIndex;
+  istr >> parentIndex;
+  SMFPGroup *theGroup = (SMFPGroup*)theExperiment[parentIndex];
+  if( !theGroup ) {
+    parseError( Chars("The word ") + theObjectName 
+		+ " is not defined -- the parent group is undefined.");
+    return 0;
+  }
+  FPGroup G = theGroup->getFPGroup();
+  Chars err;
+  Word w = G.readWord( istr, err );
+  if( err.length() > 0 ) {
+    parseError( Chars("The definition of the word ") + theObjectName 
+		+ " is corrupted. The object is not created.");
+    return 0;
+  }
+  dependencies.append( *theGroup );
+  Chars theHeritage = 
+    FEData::Text("User defined word in the generators of")
+    + FEData::Name(*theGroup);
+  return new SMWord( *theGroup, w, theHeritage );
+}
+
+@
+\subsection{checkinSubgroup}
+<<DatabaseObjectSmith checkinSubgroup.h>>=
+  SMObject* checkinSubgroup(istream& istr);
+@
+<<DatabaseObjectSmith checkinSubgroup.c>>=
+SMObject* DatabaseObjectSmith::checkinSubgroup(istream& istr) 
+{
+  int parentIndex;
+  istr >> parentIndex;
+  SMFPGroup *theGroup = (SMFPGroup*)theExperiment[parentIndex];
+  if( !theGroup ) {
+    parseError( Chars("The subgroup ") + theObjectName 
+		+ " is not defined -- the parent group is undefined.");
+    return 0;
+  }
+  FPGroup G = theGroup->getFPGroup();
+  Chars err;
+  // Parse 'gp' at the input stream.
+  PresentationParser P(istr);
+  VectorOf<Word> generators;
+  char ch;
+  while ( istr.peek() == ' ' ) 
+    istr.get(ch);
+  if( istr.peek() == '{' ) {
+    // Parse generators at the input stream.
+    generators = P.parseVectorOfWords( G.namesOfGenerators(), err, 
+				       PresentationParser::SET );
+  } else if( istr.peek() == 'g' ) {
+    // skip 'gp'
+    istr.get(ch);
+    istr.get(ch);
+    // Parse generators at the input stream.
+    generators = P.parseVectorOfWords( G.namesOfGenerators(), err, 
+				       PresentationParser::PAREN );
+  } else {
+    error( "Undefined input format on reading an subgroup definition "
+	   "from the database." );
+  }
+  if( err.length() > 0 ) {
+    parseError( Chars("The definition of the subgroup ") + theObjectName 
+		+ " is corrupted. The object is not created.");
+    return 0;
+  }
+  dependencies.append( *theGroup );
+  Chars theHeritage = 
+    FEData::Text("User defined subgroup of") + FEData::Name( *theGroup );
+  return new SMSubgroup( *theGroup,
+			 SGofFreeGroup(theGroup->getFreePreimage(),generators),
+			 theHeritage );
+}
+
+@
+\subsection{checkinSetOfWords}
+<<DatabaseObjectSmith checkinSetOfWords.h>>=
+  SMObject* checkinSetOfWords(istream& istr);
+@
+<<DatabaseObjectSmith checkinSetOfWords.c>>=
+SMObject* DatabaseObjectSmith::checkinSetOfWords(istream& istr) 
+{
+  int parentIndex;
+  istr >> parentIndex;
+  SMFPGroup *theGroup = (SMFPGroup*)theExperiment[parentIndex];
+  if( !theGroup ) {
+    parseError( Chars("The subgroup ") + theObjectName 
+		+ " is not defined -- the parent group is undefined.");
+    return 0;
+  }
+  FPGroup G = theGroup->getFPGroup();
+  Chars err;
+  SetOf<Word> generators = G.readSetOfWords( istr, err );
+  if( err.length() > 0 ) {
+    parseError( Chars("The definition of the set ") + theObjectName 
+		+ " of words is corrupted. The object is not created.");
+    return 0;
+  }
+  dependencies.append( *theGroup );
+  Chars theHeritage = 
+    FEData::Text("User defined set of words in") + FEData::Name( *theGroup );
+
+  return new SMSetOfWords( *theGroup, generators, theHeritage );
+}
+
+@
+\subsection{checkinVectorOfWords}
+<<DatabaseObjectSmith checkinVectorOfWords.h>>=
+  SMObject* checkinVectorOfWords(istream& istr);
+@
+<<DatabaseObjectSmith checkinVectorOfWords.c>>=
+SMObject* DatabaseObjectSmith::checkinVectorOfWords(istream& istr) 
+{
+  int parentIndex;
+  istr >> parentIndex;
+  SMFPGroup *theGroup = (SMFPGroup*)theExperiment[parentIndex];
+  if( !theGroup ) {
+    parseError( Chars("The tuple ") + theObjectName 
+		+" of vords is not defined -- the parent group is undefined.");
+    return 0;
+  }
+  FPGroup G = theGroup->getFPGroup();
+  Chars err;
+  VectorOf<Word> generators = G.readVectorOfWords( istr, err );
+  if( err.length() > 0 ) {
+    parseError( Chars("The definition of the tuple ") +theObjectName 
+		+ " of words is corrupted. The object is not created.");
+    return 0;
+  }
+  dependencies.append( *theGroup );
+  Chars theHeritage = 
+    FEData::Text("User defined tuple of words in") + FEData::Name( *theGroup );
+  return new SMVectorOfWords( *theGroup, generators, theHeritage );
+}
+
+@
+\subsection{checkinMap}
+<<DatabaseObjectSmith checkinMap.h>>=
+  SMObject* checkinMap(istream& istr, DatabaseObjectCategory type);
+@
+<<DatabaseObjectSmith checkinMap.c>>=
+SMObject* DatabaseObjectSmith::checkinMap(istream& istr, 
+  DatabaseObjectCategory cath) 
+{
+  int domainIndex;
+  istr >> domainIndex;
+  SMFPGroup *domain = (SMFPGroup*)theExperiment[domainIndex];
+  if( !domain ) {
+    parseError( Chars("The map ") + theObjectName 
+		+ " is not defined -- the domain group is undefined.");
+    return 0;
+  }
+  FPGroup G1 = domain->getFPGroup();
+  FPGroup G2 = domain->getFPGroup();
+  SMFPGroup *range = domain;
+  if( cath.id() == DatabaseObjectCategory::MAP2 ) {
+    int rangeIndex;
+    istr >> rangeIndex;
+    range = (SMFPGroup*)theExperiment[rangeIndex];
+    if( !range ) {
+      parseError( Chars("The map ") + theObjectName 
+		  + " is not defined -- the range group is undefined.");
+      return 0;
+    }
+    G2 = range->getFPGroup();
+  }
+  Map m(G1,G2);
+  Chars err = istr >> m;
+  if( err.length() > 0 ) {
+    parseError( Chars("The definition of the map ") + theObjectName  
+		+ " is corrupted. The object is not created.");
+    return 0;
+  }
+  dependencies.append( *domain );
+  Chars theHeritage = 
+    FEData::Text("User defined map from the generators of")
+    + FEData::Name( *domain ) + "to" + FEData::Name( *range );
+  if( cath.id() == DatabaseObjectCategory::MAP2 ) {
+    dependencies.append( *range );
+  }
+  return new SMMap( *domain, *range, m, theHeritage );
+}
+
+@
+\subsection{checkinHomomorphism}
+<<DatabaseObjectSmith checkinHomomorphism.h>>=
+  SMObject* checkinHomomorphism(istream& istr, DatabaseObjectCategory type);
+@
+<<DatabaseObjectSmith checkinHomomorphism.c>>=
+SMObject* DatabaseObjectSmith::checkinHomomorphism(
+  istream& istr, DatabaseObjectCategory cath) 
+{
+  int domainIndex;
+  istr >> domainIndex;
+  SMFPGroup *domain = (SMFPGroup*)theExperiment[domainIndex];
+  if( !domain ) {
+    parseError( Chars("The homomorphism ") + theObjectName 
+		+ " is not defined -- the domain group is undefined.");
+    return 0;
+  }
+  FPGroup G1 = domain->getFPGroup();
+  FPGroup G2 = domain->getFPGroup();
+  SMFPGroup *range = domain;
+  if( cath.id() == DatabaseObjectCategory::HOMOMORPHISM2 ) {
+    int rangeIndex;
+    istr >> rangeIndex;
+    range = (SMFPGroup*)theExperiment[rangeIndex];
+    if( !range ) {
+      parseError( Chars("The homomorphism ") + theObjectName 
+		  + " is not defined -- the range group is undefined.");
+      return 0;
+    }
+    G2 = range->getFPGroup();
+  }
+  Map m(G1,G2);
+  Chars err = istr >> m;
+  if( err.length() > 0 ) {
+    parseError( Chars("The definition of the homomorphism ") + theObjectName 
+		+ " is corrupted. The object is not created.");
+    return 0;
+  }
+  SMObject *smo;
+  dependencies.append( *domain );
+  Chars theHeritage = 
+    FEData::Text("User defined homomorphism from the generators of")
+    + FEData::Name( *domain ) + "to" + FEData::Name( *range );
+
+  if( cath.id() == DatabaseObjectCategory::HOMOMORPHISM ) {
+    smo = new SMHomomorphism( *domain, *range, m, theHeritage );
+  } else {
+    dependencies.append( *range );
+    smo = new SMHomomorphism2( *domain, *range, m, theHeritage );
+  }
+  return smo;
+}
+
+@
+\subsection{checkinEquation}
+<<DatabaseObjectSmith checkinEquation.h>>=
+  SMObject* checkinEquation(istream& istr, DatabaseObjectCategory type);
+@
+<<DatabaseObjectSmith checkinEquation.c>>=
+SMObject* DatabaseObjectSmith::checkinEquation(istream& istr, 
+  DatabaseObjectCategory cath) 
+{
+  int parentIndex;
+  istr >> parentIndex;
+  SMFPGroup *theGroup = (SMFPGroup*)theExperiment[parentIndex];
+  if( !theGroup ) {
+    parseError( Chars("The equation ") + theObjectName 
+		+ " is not defined -- the parent group is undefined.");
+    return 0;
+  }
+  FPGroup G = theGroup->getFPGroup();
+  EquationParser P( istr );
+  VectorOf<Chars> newNames;
+  Chars err;
+  Word E = P.parseEquation( G.namesOfGenerators(), newNames, err );  
+  if ( err.length() > 0 ) {
+    parseError( Chars("The definition of the equation ") + theObjectName
+		+ " is corrupted. The object is not created.");
+    return 0;
+  }
+  SMObject *smo;
+  Chars theHeritage = 
+    FEData::Text("User defined equation in") + FEData::Name( *theGroup );
+  if( cath.id() == DatabaseObjectCategory::EQUATION ) {
+    // Check for quadraticness
+    int numOfVar = newNames.length() - G.numberOfGenerators();
+    for( int i = 0; i < numOfVar; ++i ) {
+      int count = E.numberOfOccurrences( Generator( i + 1 ) );
+      if ( count != 2 && count != 0 ) {
+	parseError( Chars("The definition of the equation ") + theObjectName
+		    + " is corrupted. The object is not created.");
+	return 0;
+      }
+    }
+    smo = new SMEquation( *theGroup, FreeGroup( newNames ), E, numOfVar,
+			  theHeritage 	);
+  }
+  else {
+    int numOfVar = newNames.length() - G.numberOfGenerators();
+    smo = new SMEquation2( *theGroup, FreeGroup( newNames ), E, numOfVar,
+			   theHeritage   );
+
+  }
+  dependencies.append( *theGroup );
+  return smo;
+}
+
+@
+\subsection{parseError}
+<<DatabaseObjectSmith parseError.h>>=
+  void parseError(const Chars& str) { theError = str; }
+@
+\subsection{private data}
+\subsubsection{theError}
+<<DatabaseObjectSmith theError.h>>=
+  Chars theError;
+@
+\subsubsection{theObjectName}
+<<DatabaseObjectSmith theObjectName.h>>=
+  Chars theObjectName;
+@
+\subsubsection{theExperiment}
+<<DatabaseObjectSmith theExperiment.h>>=
+  VectorOf<SMObject *> theExperiment;
+@
+\subsubsection{dependencies}
+<<DatabaseObjectSmith dependencies.h>>=
+  ListOf<OID> dependencies;
+@
+\subsection{class DatabaseObjectSmith}
+Default ctor, copy ctor, operator=, dtor supplied by compiler.
+<<class DatabaseObjectSmith>>=
+class DatabaseObjectSmith {
+public:
+<<DatabaseObjectSmith checkinObjectFromDatabase.h>>
+private:
+<<DatabaseObjectSmith reset.h>>
+<<DatabaseObjectSmith checkinObjectProperties.h>>
+<<DatabaseObjectSmith checkinObjectDefinition.h>>
+<<DatabaseObjectSmith checkinFPGroup.h>>
+<<DatabaseObjectSmith checkinWord.h>>
+<<DatabaseObjectSmith checkinSubgroup.h>>
+<<DatabaseObjectSmith checkinSetOfWords.h>>
+<<DatabaseObjectSmith checkinVectorOfWords.h>>
+<<DatabaseObjectSmith checkinMap.h>>
+<<DatabaseObjectSmith checkinHomomorphism.h>>
+<<DatabaseObjectSmith checkinEquation.h>>
+<<DatabaseObjectSmith parseError.h>>
+<<DatabaseObjectSmith theError.h>>
+<<DatabaseObjectSmith theObjectName.h>>
+<<DatabaseObjectSmith theExperiment.h>>
+<<DatabaseObjectSmith dependencies.h>>
+};
+
+@
+\section{class DatabaseManager}
+\subsection{constructor}
+<<DatabaseManager constructor.h>>=
+  DatabaseManager(); //( const Chars& filename );
+@
+<<DatabaseManager constructor.c>>=
+DatabaseManager::DatabaseManager( ) 
+  : theCurrentState( new DatabaseClosed() ),
+    theFileName(), theExternalState(WORKING), event()
+{
+}
+
+@
+Hidden, not to implement.
+<<DatabaseManager constructor1.h>>=
+  DatabaseManager( const DatabaseManager& );
+@
+\subsection{destructor}
+<<DatabaseManager destructor.h>>=
+  ~DatabaseManager( );
+@
+<<DatabaseManager destructor.c>>=
+DatabaseManager::~DatabaseManager( ) 
+{
+  delete theCurrentState;
+}
+@
+\subsection{printGlobalMessageTemplate}
+<<DatabaseManager printGlobalMessageTemplate.h>>=
+  static void printGlobalMessageTemplate( ostream& ostr );
+@
+<<DatabaseManager printGlobalMessageTemplate.c>>=
+void DatabaseManager::printGlobalMessageTemplate( ostream& ostr )
+{
+  const int oid = -3; //HACK: SessionManager::databaseManagerOid;
+  ostr 
+    << "init_db_new_msg_ {"     << oid << ' ' << DB_NEW     << '}' << endl
+    << "init_db_open_msg_ {"    << oid << ' ' << DB_OPEN    << '}' << endl
+    << "init_db_save_msg_ {"    << oid << ' ' << DB_SAVE    << '}' << endl
+    << "init_db_save_as_msg_ {" << oid << ' ' << DB_SAVE_AS << '}' << endl
+    << "init_db_close_msg_ {"   << oid << ' ' << DB_CLOSE   << '}' << endl
+    << "init_db_cancel_msg_ {"  << oid << ' ' << DB_CANCEL  << '}' << endl
+    << "init_db_success_msg_ {" << oid << ' ' << DB_SUCCESS << '}' << endl
+    << "init_db_failure_msg_ {" << oid << ' ' << DB_FAILURE << '}' << endl
+    << "init_db_yes_msg_ {"     << oid << ' ' << DB_YES     << '}' << endl
+    << "init_db_no_msg_ {"      << oid << ' ' << DB_NO      << '}' << endl
+    << "init_db_get_exp_msg_ {" << oid << ' ' << DB_GET_OBJECTS << '}' << endl
+    << "init_db_add_exp_msg_ {" << oid << ' ' << DB_ADD_OBJECTS << '}' << endl
+    << "init_db_select_objects_msg_ {" << oid << ' ' << DB_SELECT_OBJECTS 
+                                       << '}' << endl
+    << "init_db_object_definition_msg_ {" << oid << ' ' << DB_OBJECT_DEFINITION
+                                       << '}' << endl;
+  printDatabaseObjectCategories( ostr );
+}
+
+@
+\subsection{postMessage}
+<<DatabaseManager postMessage.h>>=
+  void postMessage( const DB2FE_MESSAGE message ) const;
+@
+<<DatabaseManager postMessage.c>>=
+void DatabaseManager::postMessage( const DB2FE_MESSAGE message ) const
+{
+  InvokingMessage msg;
+  switch( message ) {
+  case NO_MESSAGE:
+    return;
+  case MSG_NEW_FILENAME:
+    msg << "new_filename_";
+    break;
+  case MSG_NEW_DATABASE:
+    msg << "new_database_ {" << theFileName << "}";
+    break;
+  case MSG_OPEN_DATABASE:
+    msg << "open_database_";
+    break;
+  case MSG_SAVE_DATABASE:
+    msg << "save_database_";
+    break;
+  case MSG_SAVE_DATABASE_AS:
+    msg << "save_database_as_";
+    break;
+  case MSG_CLOSE_DATABASE:
+    msg << "close_database_";
+    break;
+  case MSG_SAVE_ON_CLOSE:
+    msg << "save_on_close_";
+    break;
+  case MSG_ADD_OBJECTS:
+    msg << "db_add_experiment_";
+    break;
+  case MSG_GET_OBJECTS:
+    msg << "db_get_experiment_";
+    break;
+  default:
+    error( "Unknown message in DatabaseManager::postMessage(...)" );
+  }
+  msg.send();
+}
+
+@
+\subsection{setFileName}
+<<DatabaseManager setFileName.h>>=
+  void setFileName( const Chars& filename );
+@
+<<DatabaseManager setFileName.c>>=
+void DatabaseManager::setFileName( const Chars& filename ) 
+{
+  theFileName = filename;
+}
+@
+\subsection{getSecondaryFileName}
+<<DatabaseManager getSecondaryFileName.h>>=
+  Chars getSecondaryFileName() const;
+@
+<<DatabaseManager getSecondaryFileName.c>>=
+Chars DatabaseManager::getSecondaryFileName( ) const 
+{
+  Chars sec_name;
+  sec_name = theFileName + ".sec";
+  return sec_name;
+}
+
+@
+\subsection{forceToFinish}
+<<DatabaseManager forceToFinish.h>>=
+  void forceToFinish();
+@
+<<DatabaseManager forceToFinish.c>>=
+void DatabaseManager::forceToFinish() 
+{ 
+  theExternalState = STOPPING; 
+}
+
+@
+\subsection{takeControl}
+<<DatabaseManager takeControl.h>>=
+  void takeControl( );
+@
+<<DatabaseManager takeControl.c>>=
+void DatabaseManager::takeControl( )
+{
+  if( theExternalState != STOPPED ) {
+    if( theExternalState == STOPPING && theCurrentState->isFinal() ) {
+      theExternalState = STOPPED;
+      return;
+    }
+    if( event.key != DB_NO_EVENT ) {
+#ifdef DEBUG_DATABASE
+      static bool start = true;
+      if( start ) {
+	dbg << "\n\nStarting a session....\n" << endl;
+	start = false;
+      }
+      dbg << "current state = " << *theCurrentState 
+	  << ", event = " << event << endl;
+#endif
+      theCurrentState -> handleEvent( event );
+      const DBState *nextState = theCurrentState -> nextState();
+      if( nextState ) {
+	DBState *oldState = theCurrentState;
+	theCurrentState = nextState -> clone();
+	delete oldState;
+      }
+      postMessage( theCurrentState -> initMessage( ) );
+    }
+  }
+  event = DBEvent();
+}
+
+@
+\subsection{readMessage}
+<<DatabaseManager readMessage.h>>=
+  void readMessage( istream& istr );
+@
+<<DatabaseManager readMessage.c>>=
+void DatabaseManager::readMessage( istream& istr )
+{
+  int k;
+  istr >> k;
+  event.key = (FE2DB_MESSAGE) k; 
+  event.str = Chars();
+  if( event.key == DB_SELECT_OBJECTS ) {
+    InvokingMessage msg;
+    msg << "db_select_objects_details_ {";
+    int n; 
+    istr >> n;
+    for(int i = 0; i < n; ++i ) {
+      int oid;
+      istr >> oid;
+      AlgebraicObject *object = (AlgebraicObject*) TheObjects::get( oid );
+      msg << " { " << oid << ' ' 
+	  << DatabaseObjectCategory::getSMObjectCategory( object ) << ' ';
+      InformationCenter *ic = object->infoCenter();
+      if( !ic ) {
+	msg << "{}";
+      }
+      else {
+	ic->write( msg, true );
+      }
+      msg << " }";
+    }
+    msg << " }";
+    msg.send();
+    event.key = DB_NO_EVENT;
+    return;
+  } else if ( event.key == DB_OBJECT_DEFINITION ) {
+    TheDatabaseObjectSmith.checkinObjectFromDatabase( istr );
+    event.key = DB_NO_EVENT;
+    return;
+  }
+  char ch = ' ';
+  while( !istr.eof() && (ch = istr.get()) == ' '  )
+    ; 
+  if( ch != ' ' && ch != '\n' && ch != EOF ) event.str = ch;
+  while( !istr.eof() && (ch = istr.get()) != '\n'  && ch != EOF  )
+    event.str += ch;
+}
+
+@
+\subsection{printDatabaseObjectCategories}
+<<DatabaseManager printDatabaseObjectCategories.h>>=
+  static void printDatabaseObjectCategories( ostream& ostr );
+@
+<<DatabaseManager printDatabaseObjectCategories.c>>=
+void DatabaseManager::printDatabaseObjectCategories(ostream& ostr) 
+{
+  ostr 
+    << "db_set_category_ " << CATEGORY(FP) << " {Finitely presented groups}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(FREE) << " {Free groups}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(ABELIAN) << " {Abelian groups}"  
+    << endl
+    << "db_set_category_ " << CATEGORY(SMALL_CANCELLATION) 
+    << " {Small cancellation groups}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(NILPOTENT) << " {Nilpotent groups}"
+    << endl
+    << "db_set_category_ " << CATEGORY(FREE_NILPOTENT) 
+    << " {Free nilpotent groups}" << 
+    endl
+    << "db_set_category_ " << CATEGORY(ONE_RELATOR) 
+    << " {One-relator groups}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(ONE_RELATOR_WITH_TORSION) 
+    << " {One-relator groups with torsion}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(HNN_FREE) 
+    << " {HNN-extensions of free groups}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(AP_FREE) 
+    << " {Amalgamated products of free groups}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(AP_FREE_CYCLIC) 
+    << " {Amalgamated products of free groups with cyclic subgroup}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(WORD) << " {Words}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(SUBGROUP) << " {Subgroups}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(EQUATION) << " {Equations}"
+    << endl
+    << "db_set_category_ " << CATEGORY(EQUATION2) << " {Quadratic equations}"
+    << endl
+    << "db_set_category_ " << CATEGORY(MAP) << " {Maps}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(MAP2) << " {Maps 2}" 
+    << endl
+    << "db_set_category_ " << CATEGORY(HOMOMORPHISM) << " {Homomorphisms}"
+    << endl
+    << "db_set_category_ " << CATEGORY(HOMOMORPHISM2) << " {Homomorphisms 2}"
+    << endl
+    << "db_set_category_ " << CATEGORY(SET_OF_WORDS) << " {Set of words}"
+    << endl
+    << "db_set_category_ " << CATEGORY(VECTOR_OF_WORDS)
+    << " {Tuples of words}"
+    << endl;
+}
+
+@
+\subsection{getFileName}
+<<DatabaseManager getFileName.h>>=
+  Chars getFileName() const { return theFileName; } 
+@
+\subsection{enum ManagerState}
+<<DatabaseManager ManagerState.h>>=
+  enum ManagerState { WORKING, STOPPING, STOPPED };
+@
+\subsection{state}
+<<DatabaseManager state.h>>=
+  ManagerState state() const { return theExternalState; }
+@
+\subsection{operator equal}
+Hidden, not to implement.
+<<DatabaseManager operatorequal.h>>=
+  DatabaseManager& operator=( const DatabaseManager& );
+@
+\subsection{private data}
+\subsubsection{theCurrentState}
+<<DatabaseManager theCurrentState.h>>=
+  DBState *theCurrentState;
+@
+\subsubsection{theFileName}
+<<DatabaseManager theFileName.h>>=
+  Chars  theFileName;
+@
+\subsubsection{theExternalState}
+<<DatabaseManager theExternalState.h>>=
+  ManagerState theExternalState;
+@
+\subsubsection{event}
+<<DatabaseManager event.h>>=
+  DBEvent event;
+@
+\subsection{class DatabaseManager}
+<<class DatabaseManager>>=
+class DatabaseManager 
+{
+public:
+<<DatabaseManager constructor.h>>
+<<DatabaseManager destructor.h>>
+<<DatabaseManager printGlobalMessageTemplate.h>>
+<<DatabaseManager getSecondaryFileName.h>>
+<<DatabaseManager forceToFinish.h>>
+<<DatabaseManager takeControl.h>>
+<<DatabaseManager readMessage.h>>
+<<DatabaseManager ManagerState.h>>
+<<DatabaseManager state.h>>
+<<DatabaseManager getFileName.h>>
+private:
+  friend void DatabaseCreating::handleEvent( const DBEvent& event );
+  friend void DatabaseSaving::handleEvent( const DBEvent& event );
+  friend void DatabaseSavingAs::handleEvent( const DBEvent& event );
+<<DatabaseManager constructor1.h>>
+<<DatabaseManager setFileName.h>>
+<<DatabaseManager postMessage.h>>
+<<DatabaseManager printDatabaseObjectCategories.h>>
+<<DatabaseManager operatorequal.h>>
+<<DatabaseManager theCurrentState.h>>
+<<DatabaseManager theFileName.h>>
+<<DatabaseManager theExternalState.h>>
+<<DatabaseManager event.h>>
+};
+
+@
+\section{static declarations}
+\subsection{TheDatabaseManager}
+<<TheDatabaseManager>>=
+DatabaseManager TheDatabaseManager;
+@
+\subsection{TheDatabaseObjectSmith}
+<<TheDatabaseObjectSmith>>=
+DatabaseObjectSmith TheDatabaseObjectSmith;
+@
+\subsection{static declarations}
+<<static declarations>>=
+<<TheDatabaseManager>>
+<<TheDatabaseObjectSmith>>
+@
+\section{printOn}
+<<printOn.h>>=
+enum DB2FE_MESSAGE { NO_MESSAGE,        MSG_NEW_FILENAME,  
+		     MSG_NEW_DATABASE,  MSG_OPEN_DATABASE,
+		     MSG_SAVE_DATABASE, MSG_SAVE_DATABASE_AS,
+		     MSG_SAVE_ON_CLOSE, MSG_CLOSE_DATABASE,
+		     MSG_ADD_OBJECTS,   MSG_GET_OBJECTS
+};
+
+enum FE2DB_MESSAGE { DB_NO_EVENT,
+		     DB_NEW, DB_OPEN, DB_SAVE, DB_SAVE_AS, DB_CLOSE, 
+		     DB_ADD_OBJECTS, DB_GET_OBJECTS, 
+		     DB_CANCEL, DB_SUCCESS, DB_FAILURE, 
+		     DB_YES, DB_NO, DB_SELECT_OBJECTS, DB_OBJECT_DEFINITION 
+};
+
+@
+<<printOn.c>>=
+void printOn( ostream& ostr, const DB2FE_MESSAGE& msg )
+{
+  switch( msg ) {
+  case NO_MESSAGE: ostr << "NO_MESSAGE"; break;
+  case MSG_NEW_FILENAME: ostr << "MSG_NEW_FILENAME"; break;
+  case MSG_NEW_DATABASE: ostr << "MSG_NEW_DATABASE"; break;
+  case MSG_OPEN_DATABASE: ostr << "MSG_OPEN_DATABASE"; break;
+  case MSG_SAVE_DATABASE: ostr << "MSG_SAVE_DATABASE"; break;
+  case MSG_SAVE_DATABASE_AS: ostr << "MSG_SAVE_DATABASE_AS"; break;
+  case MSG_SAVE_ON_CLOSE: ostr << "MSG_SAVE_ON_CLOSE"; break;
+  case MSG_CLOSE_DATABASE: ostr << "MSG_CLOSE_DATABASE"; break;
+  case MSG_ADD_OBJECTS: ostr << "MSG_ADD_OBJECTS"; break;
+  case MSG_GET_OBJECTS: ostr << "MSG_GET_OBJECTS"; break;
+  default: ostr << "unknown message to FE";
+  }
+}
+
+void printOn( ostream& ostr, const FE2DB_MESSAGE& msg ) 
+{
+  switch( msg ) {
+  case DB_NO_EVENT: ostr << "DB_NO_EVENT"; break;
+  case DB_NEW: ostr << "DB_NEW"; break;
+  case DB_OPEN: ostr << "DB_OPEN"; break;
+  case DB_SAVE: ostr << "DB_SAVE"; break;
+  case DB_SAVE_AS: ostr << "DB_SAVE_AS"; break;
+  case DB_CLOSE: ostr << "DB_CLOSE"; break;
+  case DB_ADD_OBJECTS: ostr << "DB_ADD_OBJECTS"; break;
+  case DB_GET_OBJECTS: ostr << "DB_GET_OBJECTS"; break;
+  case DB_SELECT_OBJECTS: ostr << "DB_SELECT_OBJECTS"; break;
+  case DB_OBJECT_DEFINITION: ostr << "DB_OBJECT_DEFINITION"; break;
+  case DB_CANCEL: ostr << "DB_CANCEL"; break;
+  case DB_SUCCESS: ostr << "DB_SUCCESS"; break;
+  case DB_FAILURE: ostr << "DB_FAILURE"; break;
+  case DB_YES: ostr << "DB_YES"; break;
+  case DB_NO: ostr << "DB_NO"; break;
+  default: ostr << "Unknown message FE2DB";
+  }
+}
+
+@
+\section{operator output}
+<<DBState operator output.h>>=
+ostream& operator<<( ostream& ostr, const DBEvent& event );
+
+@
+<<DBState operator output.c>>=
+ostream& operator<<( ostream& ostr, const DBEvent& event )
+{
+  ostr << '<';
+  printOn( ostr, event.key);
+  ostr << ':' << event.str << '>';
+  return ostr;
+}
+
+@
+\section{struct DBEvent}
+<<struct DBEvent>>=
+struct DBEvent {
+  FE2DB_MESSAGE key;
+  Chars str;
+  DBEvent() : key(DB_NO_EVENT), str() {}
+};
+
+@
+\section{license}
+Copyright (C) 1994-2004 The New York Group Theory Cooperative
+See license/NYGTC for the full notice
+\section{Include File}
+<<DatabaseManager.h>>=
+// src/databasemanager.pamphlet
+#ifndef _DATABASE_MANAGER_H_
+#define _DATABASE_MANAGER_H_
+
+<<include.h>>
+<<printOn.h>>
+<<struct DBEvent>>
+<<DBState operator output.h>>
+<<class DBState>>
+<<class MainState>>
+<<class IntermediateState>>
+<<class DatabaseClosed : public MainState>>
+<<class DatabaseSaved : public MainState>>
+<<class DatabaseModified : public MainState>>
+<<class DatabaseCreating : public IntermediateState>>
+<<class DatabaseOpening : public IntermediateState>>
+<<class DatabaseSaving : public IntermediateState>>
+<<class DatabaseSavingAs : public IntermediateState>>
+<<class DatabaseClosing : public IntermediateState>>
+<<class DatabaseAddingObjects : public IntermediateState>>
+<<class DatabaseGettingObjects : public IntermediateState>>
+<<inline DBState *copyState>>
+<<inline ostream& operator>>
+<<class DatabaseObjectCategory>>
+class SMObject;
+<<class DatabaseObjectSmith>>
+<<class DatabaseManager>>
+extern DatabaseManager TheDatabaseManager;
+#endif
+@
+\section{Code}
+<<*>>=
+<<include.c>>
+//#define DEBUG_DATABASE 1
+#define QUALIFY(c) (DatabaseObjectCategory::c)
+#define FORCECATEGORY(c) ((DatabaseObjectCategory::Category)c)
+#define CATEGORY(c) DatabaseObjectCategory::str( QUALIFY(c) ) << ' ' \
+                     << QUALIFY(c)
+#define SAMETYPES(a,b) (!strcmp(a,b))
+#define CATEGORYSTR(c) (DatabaseObjectCategory::str(QUALIFY(c))) 
+extern DatabaseManager TheDatabaseManager;
+extern DatabaseObjectSmith TheDatabaseObjectSmith;
+ 
+<<printOn.c>>
+
+<<DBState operator output.c>>
+<<DBState constructor2.c>>
+<<DBState operator equal.c>>
+<<DBState destructor.c>>
+
+<<IntermediateState constructor2.c>>
+<<IntermediateState operator equal.c>>
+<<IntermediateState destructor.c>>
+<<IntermediateState handleFailure.c>>
+<<IntermediateState useSecondState.c>>
+
+<<DatabaseClosed handleEvent.c>>
+<<DatabaseSaved handleEvent.c>>
+<<DatabaseModified handleEvent.c>>
+<<DatabaseCreating handleEvent.c>>
+<<DatabaseOpening handleEvent.c>>
+<<DatabaseSaving handleEvent.c>>
+<<DatabaseSavingAs handleEvent.c>>
+<<DatabaseClosing handleEvent.c>>
+<<DatabaseAddingObjects handleEvent.c>>
+<<DatabaseGettingObjects handleEvent.c>>
+
+<<DatabaseManager constructor.c>>
+<<DatabaseManager destructor.c>>
+<<DatabaseManager printGlobalMessageTemplate.c>>
+<<DatabaseManager postMessage.c>>
+<<DatabaseManager setFileName.c>>
+<<DatabaseManager getSecondaryFileName.c>>
+<<DatabaseManager forceToFinish.c>>
+<<DatabaseManager takeControl.c>>
+<<DatabaseManager readMessage.c>>
+<<DatabaseManager printDatabaseObjectCategories.c>>
+#ifdef DEBUG_DATABASE
+ofstream dbg("/home/users/pechkin6/.magnus/db_events", ios::app);
+#endif
+
+<<DatabaseObjectCategory str2.c>>
+<<DatabaseObjectCategory getSMObjectCategory.c>>
+
+<<DatabaseObjectSmith reset.c>>
+<<DatabaseObjectSmith checkinObjectProperties.c>>
+<<DatabaseObjectSmith checkinObjectDefinition.c>>
+<<DatabaseObjectSmith checkinObjectFromDatabase.c>>
+<<DatabaseObjectSmith checkinFPGroup.c>>
+<<DatabaseObjectSmith checkinWord.c>>
+<<DatabaseObjectSmith checkinSubgroup.c>>
+<<DatabaseObjectSmith checkinSetOfWords.c>>
+<<DatabaseObjectSmith checkinVectorOfWords.c>>
+<<DatabaseObjectSmith checkinMap.c>>
+<<DatabaseObjectSmith checkinHomomorphism.c>>
+<<DatabaseObjectSmith checkinEquation.c>>
+
+<<static declarations>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

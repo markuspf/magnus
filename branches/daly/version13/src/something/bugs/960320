@@ -1,0 +1,2 @@
+1. from gb: when we are trying to delete too many objects, SM quits
+abnormally.

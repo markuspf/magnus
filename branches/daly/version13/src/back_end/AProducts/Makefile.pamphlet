@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage{../../../mnt/linux/bin/axiom}
+\begin{document}
+\title{src/backend/AProducts}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{includedir}
+<<includedir>>=
+includedir:
+	@echo 1 making ${SRC}/backend/AProducts/include
+	@mkdir -p ${INT}/backend/AProducts/include
+	@mkdir -p ${MNT}/${SYS}/doc/src/backend/AProducts/include
+	@(cd include ; \
+	 ${DOCUMENT} src Makefile ; \
+	 ${DOCUMENT} dvi Makefile . Makefile ${NOISE} ; \
+	 ${ENV} ${MAKE} )
+
+@
+<<*>>=
+
+ENV= MAG=${MAG} SYS=${SYS} SRC=${SRC} INC=${MID} INT=${INT} OBJ=${OBJ} \
+     TMP=${TMP} BIN=${BIN} MNT=${MNT} ZIPS=${ZIPS} \
+     CCFLAGS='${CCFLAGS}' INCLUDE='${INCLUDE}' NOISE=${NOISE} \
+     DOCUMENT=${DOCUMENT} TANGLE=${TANGLE} WEAVE=${WEAVE} 
+
+DIRS= includedir 
+all: ${DIRS}
+
+<<includedir>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

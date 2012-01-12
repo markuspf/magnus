@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/ACConjecture.h}
+\author{Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "ACGA.h"
+#include "ACConfig.h"
+#include "SMVectorOfWords.h"
+
+@
+\section{class ACConjectureARCer}
+<<class ACConjectureARCer>>=
+class ACConjectureARCer : public ARCer
+{
+public:
+  ACConjectureARCer( ComputationManager& );
+  ~ACConjectureARCer( ) { }
+  void setArguments( FPGroup );
+  Chars getComputationFileName() const { return compFile.getFileName();}
+  Chars getResultFileName() const { return resultFile.getFileName();}
+  bool getResult() const { return result; }
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  FPGroup theGroup;
+  File compFile;
+  File resultFile;
+  bool result;
+};
+
+@
+\section{class ACConjectureProblem}
+<<class ACConjectureProblem>>=
+class ACConjectureProblem : public Supervisor
+{
+public:
+  ACConjectureProblem( const class SMVectorOfWords& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const SMVectorOfWords& theTuple;
+  bool linkHasBeenSent;
+  ACConjectureARCer arcer;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/ACConjecture.h
+#ifndef _AC_CONJECTURE_H_
+#define _AC_CONJECTURE_H_
+
+<<license>>
+<<include>>
+<<class ACConjectureARCer>>
+<<class ACConjectureProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

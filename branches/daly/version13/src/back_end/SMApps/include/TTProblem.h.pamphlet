@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/TTProblem.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SMFPGroup.h"
+#include "TTP.h"
+
+@
+\section{class TTArcer}
+<<class TTArcer>>=
+class TTArcer : public ARCer
+{
+public:
+  TTArcer( ComputationManager& boss ) 
+    : ARCer( boss ), ttp( 0 ), bHappy( true ) { } 
+
+  ~TTArcer( ) { delete ttp; }
+
+  void setArguments( const FPGroup& G );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  Chars getFileName( );
+  bool isHappy( ) { return bHappy; }
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  FPGroup theGroup;
+  bool bHappy;
+  TTP* ttp;
+};
+
+@
+\section{class TTCM}
+<<class TTCM>>=
+class TTCM : public ComputationManager
+{
+public:
+  TTCM(class TTProblem& PO);
+  ~TTCM( );
+  Chars getFileName( ) { return out.getFileName(); }
+  bool isHappy() { return arcer.isHappy(); }
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+  
+private:
+  const SMFPGroup& theGroup;
+  long inPos;
+  File out;
+  FILE* in;
+  bool bInstructions;
+  TTArcer arcer;
+};
+
+@
+\section{class TTProblem}
+<<class TTProblem>>=
+class TTProblem : public Supervisor
+{
+public:
+  TTProblem(class SMFPGroup& G);
+  const SMFPGroup& getGroup( ) const { return theGroup; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  bool linkHasBeenSent;
+  Subordinate<TTProblem, TTCM> tt;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/TTProblem.h
+#ifndef _TTProblem_H_
+#define _TTProblem_H_
+
+<<license>>
+<<include>>
+<<class TTArcer>>
+<<class TTCM>>
+<<class TTProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

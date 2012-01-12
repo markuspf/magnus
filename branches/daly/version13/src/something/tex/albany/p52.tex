@@ -1,0 +1,41 @@
+\documentclass{slides} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+%\maketitle
+\pagestyle{empty}
+
+\begin{center} \Large\textbf{Experiment 2} \end{center}
+%\vspace{3mm}
+
+This example comes from J. Comerford and Y. Lee. Let
+
+$x_1 = a B A,$ \\
+$x_2 = a b A A B A b a a B A,$ \\
+$x_3 = a b A B A,$ \\
+$x_4 = a a a b A$
+
+Then $x_1^2 x_2^2 x_3^2 x_4^2 = 1$ \\ 
+and $C = x_1 x_2 x_3 x_4$ is not a commutator.
+
+Performing the substitution will give us 
+\begin{eqnarray*}
+C = a B A a b A A B A b a a B A a b A B A a a a b A
+\end{eqnarray*}
+As computed by the genetic algorithm it can be expressed as a product
+of two commutators:
+\begin{eqnarray*}
+& [ A B a b a B a b a, A B a b A B A b a ] \\
+& [ A B A b a, A B ] ] \\
+\end{eqnarray*}
+
+\end{document}
+
+
+
+
+
+
+

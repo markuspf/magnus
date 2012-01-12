@@ -1,0 +1,23 @@
+1) how to change window box help:
+   a) goto help file:
+
+      cd ~xuxw/outgoing/
+      ls
+      (u can see the file--permutationhelp.txt)
+   b) edit the file --permutationhelp.txt, ex:
+
+      emacs permutationhelp.txt
+
+2) how to run the program:
+   a) goto the program directory
+      
+      cd ~xuxw/new_gap_mag/front_end
+
+   b) run the program:
+
+      ./gapmag
+
+
+
+
+

@@ -1,0 +1,54 @@
+010111
+
+Shortcuts: LCS
+
+For abelian groups:
+ Is automatic? and Compute aut str? - I removed second
+
+For free nilp.
+ Compute a presentation (polycyc?) - left "a presentation"
+ Compute a basis - removed Malcev
+ Compute "A TERM" of LCS - not the LCS
+ No enumerators!
+
+For NG
+Not Malcev - just basis
+
+
+For OR:
+Enumerate consecuences of the relator - added
+
+--------
+
+010117
+
+1. For OR word menus are missing
+
+2. Text shortened ( a) changed to b) )
+
+a) Compute the first n terms for a short-lex system of representatives
+for the elements of A1
+
+b) Compute a short-lex system of representatives for A1
+
+a) Compute the quotient of two successive terms of the lower central
+series of G1
+
+b) Compute lower central quotients of G1
+
+
+a) Compute the quotient of two successive terms of the derived series
+of N1
+
+b) Compute quotients of the derived series of N1
+
+
+a) Compute a Schreier system of representatives for the elements of G1
+
+b) Compute Schreier representatives for G1
+
+
+a) Compute the first n terms for a short-lex system of representatives for the
+elements of G1
+
+b) Compute a short-lex system of representatives for G1

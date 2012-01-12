@@ -1,0 +1,212 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/RandomDefinitionsGenerator.h}
+\author{Alexei Miasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "RandomNumbers.h"
+#include "FPGroup.h"
+#include "Chars.h"
+#include "ViewContents.h"
+#include <iostream.h>
+
+@
+\subsection{class RandomDefinitionGenerate}
+<<class RandomDefinitionGenerate>>=
+class RandomDefinitionGenerate
+{
+public:
+  RandomDefinitionGenerate() : gw("Parameters") { }
+
+  virtual void readParameters(istream& istr); 
+  virtual void requireParameters() = 0; 
+  virtual void printDefinition() = 0;
+protected:  
+  GroupWindow gw;
+};
+
+@
+\subsection{class RandomWordGenerate}
+<<class RandomWordGenerate>>=
+class RandomWordGenerate : public RandomDefinitionGenerate
+{
+public:
+  RandomWordGenerate(istream& is, const FPGroup& p, Chars id);
+  void requireParameters(); 
+  void printDefinition();
+
+private:
+
+  RandomWordGenerate(const RandomWordGenerate &);
+  // just for safety sake
+
+  Chars generateWord( );
+
+  istream& istr; 
+  FPGroup parent; 
+  Chars theID;
+  UniformRandom ur;
+  int averagelength;
+};
+
+@
+\subsection{class RandomCollectionOfWordsGenerate}
+<<class RandomCollectionOfWordsGenerate>>=
+class RandomCollectionOfWordsGenerate : public RandomDefinitionGenerate
+{
+public:
+  RandomCollectionOfWordsGenerate(istream& is, const FPGroup& p, Chars id, bool isS = false);
+  void requireParameters(); 
+  void printDefinition();
+
+private:
+
+  RandomCollectionOfWordsGenerate(const RandomCollectionOfWordsGenerate &);
+  // just for safety sake
+
+  Chars generateCollection( );
+
+  istream& istr; 
+  FPGroup parent; 
+  Chars theID;
+  UniformRandom ur;
+  int averagelength;
+  int numberOfWords;
+  bool isSet;
+};
+
+@
+\subsection{class RandomMapGenerate}
+<<class RandomMapGenerate>>=
+class RandomMapGenerate : public RandomDefinitionGenerate
+{
+public:
+  RandomMapGenerate(istream& is, const FPGroup& p, Chars id);
+  void requireParameters(); 
+  void printDefinition();
+
+private:
+
+  RandomMapGenerate(const RandomMapGenerate &);
+  // just for safety sake
+
+  Chars generateMap( );
+
+  istream& istr; 
+  FPGroup parent; 
+  Chars theID;
+  UniformRandom ur;
+  int averagelength;
+
+};
+
+@
+\subsection{class RandomGroupGenerate}
+<<class RandomGroupGenerate>>=
+class RandomGroupGenerate : public RandomDefinitionGenerate
+{
+public:
+  RandomGroupGenerate(istream& is, Chars id, bool iF = false, bool iN = false, bool iOR = false);
+  void requireParameters(); 
+  void printDefinition();
+
+private:
+
+  RandomGroupGenerate(const RandomGroupGenerate &);
+  // just for safety sake
+
+  Chars generateGroup( );
+
+  istream& istr; 
+  Chars theID;
+  int maxGens;
+  int maxRels;
+  int averageRels;
+  int nilpClass;
+
+  bool isFree;
+  bool isNilpotent;
+  bool isOR;
+};
+
+@
+\subsection{class RandomSCGroupGenerate}
+<<class RandomSCGroupGenerate>>=
+class RandomSCGroupGenerate : public RandomDefinitionGenerate
+{
+public:
+  RandomSCGroupGenerate(istream& is, Chars id);
+  void requireParameters(); 
+  void printDefinition();
+
+private:
+
+  RandomSCGroupGenerate(const RandomSCGroupGenerate &);
+  // just for safety sake
+
+  Chars generateSCGroup( );
+
+  istream& istr; 
+  Chars theID;
+  int maxGens;
+  int maxRels;
+  int averageRels;
+
+};
+
+@
+\subsection{class RandomDefinitionsGenerator}
+<<class RandomDefinitionsGenerator>>=
+class RandomDefinitionsGenerator
+{
+ private:
+  RandomDefinitionsGenerator( );
+  friend class SessionManager;
+  
+  static void readMessage(istream& istr);
+  // Used by class SessionManager.
+  // this function reads message from the front end which is request for 
+  // a definition of an algebraic object. Format of the message is following:
+  //   "object_type  window_name", here object type is a string identifying the 
+  // object to be defined and window_name - is a  name for a text window where
+  // definition will be displayed.
+  
+  static Chars generateFPGroupPresentation();
+
+  static RandomDefinitionGenerate* defGenerator;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/RandomDefinitionsGenerator.h
+#ifndef _RANDOM_DEFINITIONS_H_
+#define _RANDOM_DEFINITIONS_H_
+
+<<license>>
+<<include>>
+<<class RandomDefinitionGenerate>>
+<<class RandomWordGenerate>>
+<<class RandomCollectionOfWordsGenerate>>
+<<class RandomMapGenerate>>
+<<class RandomGroupGenerate>>
+<<class RandomSCGroupGenerate>>
+<<class RandomDefinitionsGenerator>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

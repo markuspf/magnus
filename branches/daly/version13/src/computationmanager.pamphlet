@@ -1,0 +1,532 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/computationmanager.pamphlet}
+\author{Roger Needham, Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "SMObject.h"
+#include "ResourceManager.h"
+#include "TheObjects.h"
+#include "ARCer.h"
+
+@
+<<include.c>>=
+#include "ComputationManager.h"
+#include "OutMessages.h"
+#include "SMFPGroup.h"
+
+@
+\section{friends}
+<<friends.h>>=
+  friend class ARCer;
+  friend class RelatorEnumeratorARCer;
+  friend class ExternalARCer;
+  friend class Supervisor;
+
+@
+\section{enum State}
+<<enum State.h>>=
+  enum State { UNSTARTED, RUNNING, SUSPENDED, TERMINATED };
+
+@
+\section{crashed}
+<<ComputationManager::crashed.h>>=
+  bool crashed( ) const { return isCrashed; }
+@
+\section{getCrashMessage}
+Override this function to change the default crash message 
+<<ComputationManager::getCrashMessage.h>>=
+  virtual Chars getCrashMessage( ) const { return ""; }
+@
+\section{isSupervisor}
+<<ComputationManager::isSupervisor.h>>=
+  virtual bool isSupervisor() const { return false; }
+@
+\section{displayInFE}
+<<ComputationManager::displayInFE.h>>=
+  bool displayInFE( ) const { return showMe; }  // overrides SMObject
+@
+\section{takeControl}
+<<ComputationManager::takeControl>>=
+  virtual void takeControl( ) = 0;
+@
+\section{fastResult}
+A derivative's ctor may decide that the result can be gotten so
+quickly that there is no need, e.g., to create a problem object.
+<<ComputationManager::fastResult>>=
+  bool fastResult( ) const { return amFast; }
+@
+\section{start}
+<<ComputationManager::start.h>>=
+  virtual void start( ) { }
+@
+\section{suspend}
+<<ComputationManager::suspend.h>>=
+  virtual void suspend( ) { }     // Probably no need to override
+@
+\section{resume}
+<<ComputationManager::resume.h>>=
+  virtual void resume( ) { }      // Probably no need to override
+@
+\section{terminate}
+<<ComputationManager::terminate.h>>=
+  virtual void terminate( ) { }
+@
+\section{class ComputationManager}
+\subsection{Constructors}
+<<ComputationManager constructor.h>>=
+  ComputationManager( bool display_in_fe = false );
+@
+<<ComputationManager constructor.c>>=
+ComputationManager::ComputationManager( bool display_in_fe )
+  : SMObject( true ),
+    ResourceManager( oid() ),
+    amFast( false ),
+    showMe( display_in_fe ),
+    wasStalled( false ),
+    isCrashed( false ),
+    theState( UNSTARTED )
+{ }
+
+@
+\subsection{Destructor}
+<<ComputationManager destructor.h>>=
+  ~ComputationManager( );
+@
+<<ComputationManager destructor.c>>=
+ComputationManager::~ComputationManager( )
+{
+}
+
+@
+\subsection{ComputationManager::state}
+<<ComputationManager::state.h>>=
+  State state( ) const;
+@
+<<ComputationManager::state.c>>=
+ComputationManager::State ComputationManager::state( ) const
+{
+  return theState;
+}
+
+@
+\subsection{ComputationManager::iconID}
+<<ComputationManager::iconID.h>>=
+  const IconID iconID( ) const;                 // overrides SMObject
+@
+<<ComputationManager::iconID.c>>=
+const IconID ComputationManager::iconID( ) const
+{
+  return IconID::problem;
+}
+
+@
+\subsection{ComputationManager::viewStructure}
+Blank provided here to save the nuisance of supplying it
+in derivatives, many of which do not have `viewStructures'.
+<<ComputationManager::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;      // overrides SMObject
+@
+<<ComputationManager::viewStructure.c>>=
+void ComputationManager::viewStructure(ostream& ostr) const
+{
+}
+
+@
+\subsection{ComputationManager::typeID}
+<<ComputationManager::typeID.h>>=
+  const char* typeID( ) const;                  // overrides SMObject
+@
+<<ComputationManager::typeID.c>>=
+const char* ComputationManager::typeID( ) const
+{
+  return "ComputationManager";
+}
+
+@
+\subsection{ComputationManager::printProperties}
+Blank provided here to save the nuisance of supplying it
+in derivatives, most of which do not have `properties'.
+<<ComputationManager::printProperties.h>>=
+  void printProperties(ostream& ostr) const;    // overrides SMObject  
+@
+<<ComputationManager::printProperties.c>>=
+void ComputationManager::printProperties(ostream& ostr) const
+{
+}
+
+@
+\subsection{ComputationManager::printDefinition}
+Blank provided here to save the nuisance of supplying it
+in derivatives, most of which do not have `definitions'.
+<<ComputationManager::printDefinition.h>>=
+  void printDefinition(ostream& ostr) const;    // overrides SMObject
+@
+<<ComputationManager::printDefinition.c>>=
+void ComputationManager::printDefinition(ostream& ostr) const
+{
+}
+
+@
+\subsection{ComputationManager::resultIsFast}
+A derivative reports its quickness with this.
+<<ComputationManager::resultIsFast.h>>=
+  void resultIsFast( );
+@
+<<ComputationManager::resultIsFast.c>>=
+void ComputationManager::resultIsFast( )
+{
+  amFast = true;
+  showMe = false;
+}
+
+@
+\subsection{ComputationManager::printGlobalMessageTemplates}
+<<ComputationManager::printGlobalMessageTemplates.h>>=
+  static void printGlobalMessageTemplates(ostream& ostr);
+@
+<<ComputationManager::printGlobalMessageTemplates.c>>=
+void ComputationManager::printGlobalMessageTemplates(ostream& ostr)
+{
+  ostr
+	 << "init_view_req_msg_ {${viewID} " << VIEW_REQUEST
+	 << " ${ARCSlotID}}" << endl
+	 << "init_arc_msg_ {${viewID} " << ARC_UPDATE
+	 << " ${ARCSlotID} ${value}}" << endl
+	 << "init_start_msg_ {${viewID} " << START << '}' << endl
+	 << "init_suspend_msg_ {${viewID} " << SUSPEND << '}' << endl
+	 << "init_resume_msg_ {${viewID} " << RESUME << '}' << endl
+	 << "init_terminate_msg_ {${viewID} " << TERMINATE << '}' << endl
+	 << "init_parameter_msg_ {${viewID} " << PARAMETER 
+	 << " ${value} {EOF_PARAM} }" << endl;
+}
+
+@
+\subsection{ComputationManager::readMessage}
+<<ComputationManager::readMessage.h>>=
+  void readMessage(istream& istr);  // Overrides SMObject
+@
+<<ComputationManager::readMessage.c>>=
+void ComputationManager::readMessage(istream& istr)
+{
+  MessageTag tag;
+  istr >> (int&)tag;
+  if ( tag == ARC_UPDATE ) {
+	 int asi, arcs;
+	 istr >> asi;
+	 istr >> arcs;
+	 acceptAllocation( oid(), ARCSlotID(asi), ARC(arcs), true );
+  } else if ( tag == START ) {
+	 adminStart();
+  } else if ( tag == SUSPEND ) {
+	 adminSuspend();
+  } else if ( tag == RESUME ) {
+	 adminResume();
+  } else if ( tag == TERMINATE ) {
+	 adminTerminate();
+  }
+}
+
+@
+\subsection{ComputationManager::attachClient}
+<<ComputationManager::attachClient.h>>=
+  void attachClient( const SMObject& client ); 
+@
+<<ComputationManager::attachClient.c>>=
+void ComputationManager::attachClient( const SMObject& client ) { 
+  theClients |= client.oid(); 
+}
+
+@
+\subsection{ComputationManager::detachClient}
+<<ComputationManager::detachClient.h>>=
+  void detachClient( const SMObject& client );
+@
+<<ComputationManager::detachClient.c>>=
+void ComputationManager::detachClient( const SMObject& client ) {  
+  theClients -= client.oid(); 
+}
+
+@
+\subsection{ComputationManager::getClients}
+<<ComputationManager::getClients.h>>=
+  SetOf<OID> getClients( ) const;
+@
+<<ComputationManager::getClients.c>>=
+SetOf<OID> ComputationManager::getClients( ) const { 
+  return theClients; 
+}
+
+@
+\subsection{ComputationManager::checkForStall}
+To move into any of the four States, there is an administrative
+member which handles the invariant stuff like informing the front
+end of the change. For each of these, there is a virtual
+counterpart, which is overridden to do the actual work required
+by the state change.
+
+Definition of `stalled': A CM X which is displayed in the FE, is
+in state RUNNING, and for which no CM (including X), which has
+ever had ARCs with benefactor X, has any free ARCs now.
+
+We can check the first two conditions here. For the last, we must
+ask TheObjects, since it is the only one (so far) who knows where
+all of the CMs are. TheObjects asks the ResourceManager of each
+CM whether it works for X; it can answer, because (so far) it
+never throws out zeroed Resource records.
+
+Checks whether this is stalled (returns true if so), and sends
+StateTransition if necessary.
+<<ComputationManager::checkForStall.h>>=
+  bool checkForStall( );
+@
+<<ComputationManager::checkForStall.c>>=
+bool ComputationManager::checkForStall( )
+{
+  if ( displayInFE() && theState == RUNNING ) {
+	 if ( TheObjects::isStalled( *this ) ) {
+		if ( ! wasStalled )
+		  StateTransition( StateTransition::STALLED, *this ).send();
+		wasStalled = true;
+		return true;
+	 } else {  // Any state other than RUNNING overrides in the FE.
+		if ( wasStalled )
+		  StateTransition( StateTransition::RESUME, *this ).send();
+		wasStalled = false;
+	 }
+  }
+  return false;
+}
+
+@
+\subsection{ComputationManager::adminStart}
+<<ComputationManager::adminStart.h>>=
+  void adminStart( );
+@
+<<ComputationManager::adminStart.c>>=
+void ComputationManager::adminStart( )
+{
+  theState = RUNNING;
+  liquefy();
+  if ( displayInFE() )
+	 StateTransition( StateTransition::START, oid() ).send();
+  start();
+}
+
+@
+\subsection{ComputationManager::adminSuspend}
+<<ComputationManager::adminSuspend.h>>=
+  void adminSuspend( );
+@
+<<ComputationManager::adminSuspend.c>>=
+void ComputationManager::adminSuspend( )
+{
+  theState = SUSPENDED;
+  freeze();
+  suspend();
+  if ( displayInFE() )
+	 StateTransition( StateTransition::SUSPEND, oid() ).send();
+}
+
+@
+\subsection{ComputationManager::adminResume}
+<<ComputationManager::adminResume.h>>=
+  void adminResume( );
+@
+<<ComputationManager::adminResume.c>>=
+void ComputationManager::adminResume( )
+{
+  theState = RUNNING;
+  liquefy();
+  resume();
+  if ( displayInFE() )
+    StateTransition( StateTransition::RESUME, oid() ).send();
+}
+
+@
+\subsection{ComputationManager::adminTerminate}
+<<ComputationManager::adminTerminate.h>>=
+  virtual void adminTerminate( );
+@
+<<ComputationManager::adminTerminate.c>>=
+void ComputationManager::adminTerminate( )
+{
+  //@db
+  if( theState == TERMINATED ) return;
+  theState = TERMINATED;
+  freeze();
+  terminate();
+  terminateArcers();
+  if ( displayInFE() )
+    StateTransition( StateTransition::TERMINATE, oid() ).send();
+}
+
+@
+\subsection{ComputationManager::hireArcer}
+<<ComputationManager::hireArcer.h>>=
+  void hireArcer( ARCer* arcer );
+@
+<<ComputationManager::hireArcer.c>>=
+void ComputationManager::hireArcer( ARCer* arcer )
+{
+  theArcers.append(arcer);
+}
+
+@
+\subsection{ComputationManager::terminateArcers}
+<<ComputationManager::terminateArcers.h>>=
+  void terminateArcers( );
+@
+<<ComputationManager::terminateArcers.c>>=
+void ComputationManager::terminateArcers( )
+{
+  int len = theArcers.length();
+  for( int i = 0; i < len; ++i )
+    theArcers[i]->terminate();
+}
+
+@
+\subsection{ComputationManager::helpID}
+This function returns a standard helpID ( page reference in the
+magnus manual). It can be given to FE by supervisors. It is a
+function of the ComputationManager class, because some of CMs can
+be supervisors to others.
+<<ComputationManager::helpID.h>>=
+  Chars helpID( const Chars& problemName, const SMFPGroup& parent ) const;
+@
+<<ComputationManager::helpID.c>>=
+Chars ComputationManager::helpID( const Chars& problemName, 
+				  const SMFPGroup& parent ) const
+{
+  return problemName + "::" + parent.getCheckinTypeStr();
+}
+
+@
+\subsection{ComputationManager::setCrashState}
+<<ComputationManager::setCrashState.h>>=
+  void setCrashState( );
+@
+<<ComputationManager::setCrashState.c>>=
+void ComputationManager::setCrashState( ) 
+{ 
+  isCrashed = true; 
+  adminTerminate();
+}
+
+@
+\section{static declarations}
+<<static declarations.h>>=
+  ListOf<ARCer*> theArcers;
+  SetOf<OID> theClients;
+  bool amFast;
+  bool showMe;
+  State theState;
+  bool isCrashed;
+  // true when arcer reported about it's crash
+  bool wasStalled;
+  // Used to prevent repeated stall messages.
+  // These are the tags for messages handled by objects in this class:
+  enum MessageTag {
+	 VIEW_REQUEST, ARC_UPDATE, START, SUSPEND, RESUME, TERMINATE, PARAMETER
+  };
+@
+\subsection{Class ComputationManager}
+<<Class ComputationManager>>=
+<<include.c>>
+#define DEBUG_CLIENTS
+<<ComputationManager constructor.c>>
+<<ComputationManager destructor.c>>
+<<ComputationManager::state.c>>
+<<ComputationManager::iconID.c>>
+<<ComputationManager::viewStructure.c>>
+<<ComputationManager::typeID.c>>
+<<ComputationManager::printProperties.c>>
+<<ComputationManager::printDefinition.c>>
+<<ComputationManager::resultIsFast.c>>
+<<ComputationManager::printGlobalMessageTemplates.c>>
+<<ComputationManager::readMessage.c>>
+<<ComputationManager::attachClient.c>>
+<<ComputationManager::detachClient.c>>
+<<ComputationManager::getClients.c>>
+<<ComputationManager::checkForStall.c>>
+<<ComputationManager::adminStart.c>>
+<<ComputationManager::adminSuspend.c>>
+<<ComputationManager::adminResume.c>>
+<<ComputationManager::adminTerminate.c>>
+<<ComputationManager::hireArcer.c>>
+<<ComputationManager::terminateArcers.c>>
+<<ComputationManager::helpID.c>>
+<<ComputationManager::setCrashState.c>>
+@
+\section{license}
+Copyright (C) 1994-2004 The New York Group Theory Cooperative
+See license/NYGTC for the full notice
+<<ComputationManager.h>>=
+// src/computationmanager.pamphlet
+#ifndef _COMPUTATIONMANAGER_H_
+#define _COMPUTATIONMANAGER_H_
+
+<<include.h>>
+class ARCer;
+class ComputationManager : public SMObject, public ResourceManager
+{
+
+<<friends.h>>
+public:
+<<enum State.h>>
+<<ComputationManager constructor.h>>
+<<ComputationManager destructor.h>>
+<<ComputationManager::state.h>>
+<<ComputationManager::crashed.h>>
+<<ComputationManager::getCrashMessage.h>>
+<<ComputationManager::isSupervisor.h>>
+<<ComputationManager::helpID.h>>
+<<ComputationManager::typeID.h>>
+<<ComputationManager::iconID.h>>
+<<ComputationManager::viewStructure.h>>
+<<ComputationManager::printProperties.h>>
+<<ComputationManager::printDefinition.h>>
+<<ComputationManager::displayInFE.h>>
+<<ComputationManager::printGlobalMessageTemplates.h>>
+<<ComputationManager::takeControl>>
+<<ComputationManager::fastResult>>
+<<ComputationManager::checkForStall.h>>
+<<ComputationManager::attachClient.h>>
+<<ComputationManager::detachClient.h>>
+<<ComputationManager::getClients.h>>
+<<ComputationManager::adminStart.h>>
+<<ComputationManager::adminSuspend.h>>
+<<ComputationManager::adminResume.h>>
+<<ComputationManager::adminTerminate.h>>
+<<ComputationManager::start.h>>
+<<ComputationManager::suspend.h>>
+<<ComputationManager::resume.h>>
+<<ComputationManager::terminate.h>>
+protected:
+<<ComputationManager::readMessage.h>>
+<<ComputationManager::resultIsFast.h>>
+private:
+<<ComputationManager::hireArcer.h>>
+<<ComputationManager::terminateArcers.h>>
+<<ComputationManager::setCrashState.h>>
+<<static declarations.h>>
+};
+
+#endif
+@
+<<*>>=
+<<Class ComputationManager>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

@@ -1,0 +1,2 @@
+Automatic structure stoped in 468 ARCs on this group:
+< u,x ; [u, x u^2 x u^3 x] >

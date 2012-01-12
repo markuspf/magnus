@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Map/include/RandomAutoInFree.h}
+\author{Alexey Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "RandomNumbers.h"
+#include "FreeGroup.h"
+#include "Map.h"
+
+@
+\section{class RandomAutoInFree}
+<<class RandomAutoInFree>>=
+class RandomAutoInFree
+{
+public:
+  RandomAutoInFree(const FreeGroup& F, int avgNumGens);
+
+  Map getAutomorphism();
+  // Returns random automorhism.
+  Map getFiniteAutomorphism(int& order);
+  // Returns random automorhism of finite order. "order" is equal to
+  // order of automorpism.
+  Trichotomy isFiniteAutomorphism(const Map& m,int& order)const;
+  // Returns true if automorhism of finite order, no if not and dontknow, if
+  // it can't solve this problem. "order" 
+  // is equal to order of automorpism if it finite.
+
+private:
+
+  bool isTooLong(const VectorOf<Word>& images )const;
+  int sumOfImagesLens(const VectorOf<Word>& images)const;
+
+  static const short MAXLENGTH = 32767; //??????????????????
+  FreeGroup theGroup;
+
+  int numberOfGroupGens;
+
+  NormalRandom numGensPicker;
+  UniformRandom typeGenPicker;
+
+  int avgNumGens;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1998 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+
+@
+<<*>>=
+// src/backend/Map/include/RandomAutoInFree.h
+#ifndef _RANDOMAUTOINFREE_H_
+#define _RANDOMAUTOINFREE_H_
+
+<<license>>
+<<include>>
+<<class RandomAutoInFree>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

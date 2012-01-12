@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Equations/include/GAP.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "global.h"
+
+@
+\section{class GAP}
+<<class GAP>>=
+class GAP
+{
+public:
+  GAP( ) { }
+  bool available( ) const;
+  // returns true 
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Equations/include/GAP.h
+#ifndef _GAP_h_
+#define _GAP_h_
+
+<<license>>
+<<include>>
+
+<<class GAP>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+

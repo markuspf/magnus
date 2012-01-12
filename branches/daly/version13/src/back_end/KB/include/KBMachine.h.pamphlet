@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/KB/include/KBMachine.h}
+\author{Sarah Rees}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include <Integer.h>
+#include "Vector.h"
+#include "FSA.h"
+#include "DFSA.h"
+#include "KBMachineRep.h"
+
+@
+\section{class KBMachine}
+<<class KBMachine>>=
+class KBMachine : public FSA {
+// this should surely be derived from GroupDFSA but I can't get the
+// constructor to work except by doing this
+  friend class RKBPackage;
+public:
+  KBMachine( ) : FSA( new KBMachineRep() ) { }
+
+  KBMachine( const VectorOf<Chars> & genNames ) : 
+    FSA( new KBMachineRep( genNames ) ) { }
+
+  KBMachine( const VectorOf<Chars> & genNames,const WordOrder & word_order ) : 
+    FSA( new KBMachineRep( genNames,word_order) ) { }
+
+  KBMachine( const VectorOf<Chars> & genNames,const WordOrder & word_order,
+          int numOfRules) :
+    FSA( new KBMachineRep( genNames,word_order,numOfRules) ) { }
+
+  KBMachine( const VectorOf<Chars> & genNames,const WordOrder & word_order,
+        int numOfRules, int numOfStates) :
+    FSA( new KBMachineRep( genNames,numOfRules,numOfStates) ) { }
+
+  void oldFormatPrintOn(ostream & str=cout) const {  look()->oldFormatPrintOn(str); }
+  // for use with old code, which should one day be updated.
+
+  Bool rewrite(Word & w) const { return look()->rewrite(w); }
+
+  //Bool finiteLanguage() const { return look()->finiteLanguage(); }
+
+  //Integer sizeLanguage() const { return look()->sizeLanguage(); }
+
+protected:
+  KBMachine( KBMachineRep * rep ) : FSA((FSARep *)rep) { }
+  // Need to shadow inherited look() and change(), to get right ptr types.
+  const KBMachineRep *look() const { 
+    return (KBMachineRep*)FSA::look(); }
+  KBMachineRep *change() { 
+    return (KBMachineRep*)FSA::change(); }
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/KB/include/KBMachine.h
+#ifndef _KBMachine_H_
+#define _KBMachine_H_
+
+<<license>>
+<<include>>
+
+class RKBPackage;
+
+<<class KBMachine>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

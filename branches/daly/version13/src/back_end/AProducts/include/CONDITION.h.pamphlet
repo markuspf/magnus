@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/AProducts/include/CONDITION.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{define}
+<<define>>=
+#define WARNING 1
+#define ERROR   2
+#define PRECONDITION(type,condition)	debugMessage( (type), (condition), "PRECONDITION "###condition, __FILE__, __LINE__)
+#define CONDITION(type,condition)	debugMessage( (type), (condition), "CONDITION "###condition, __FILE__, __LINE__)
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/AProducts/include/CONDITION.h
+#ifndef __CONDITION_H__
+#define __CONDITION_H__
+
+<<license>>
+<<define>>
+void debugMessage( int msgType, bool condition, const char *condDescription, 
+		   const char *fileName, int lineno );
+
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

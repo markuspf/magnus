@@ -1,0 +1,7 @@
+\section{axiom.sty}
+<<axiom.sty (OUT from IN)>>=
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 16 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@${DOCUMENT} chunk "axiom.sty" ${SRC}/doc/axiom.sty ${DOC} axiom.sty
+ 
+@

@@ -1,0 +1,97 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/Object.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "global.h"
+
+@
+\section{class Object}
+Status: under development - don't use it yet!
+
+Usage:
+
+Derive all classes from Object or its derivation
+
+Every class must have 
+\begin{list}{}
+\item default and copy constructors
+\item virtual destructor
+\item operators = and ==   
+\item I/O functions printOn and readFrom
+\item IPC functions read and write  
+\end{list}
+
+<<class Object>>=
+class Object
+{
+public:
+  Object( ) { }
+  virtual ~Object( ) { }
+
+  bool operator != ( const Object& o ) const { return !(*this == o); }
+
+  friend ostream& operator << ( ostream& ostr, const Object& o ) {
+    o.printOn(ostr);
+    return ostr;
+  }
+
+  friend istream& operator >> ( istream& istr, Object& o ) {
+    o.readFrom(istr);
+    return istr;
+  }
+
+  friend ostream& operator < ( ostream& ostr, const Object& o )
+  {
+    o.write(ostr);
+    return ostr;
+  }
+  
+  friend istream& operator > ( istream& istr, Object& o )
+  {
+    o.read(istr);
+    return istr;
+  }
+ 
+  virtual Object& operator = ( const Object& );
+  virtual bool operator == ( const Object& ) const = 0;
+
+protected:
+  virtual void printOn( ostream& ostr ) const = 0;
+  virtual void readFrom( istream& istr ) = 0;
+  virtual void write( ostream& ostr ) const = 0;
+  virtual void read( istream& istr ) = 0;
+
+private:
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/Object.h
+#ifndef _Object_h_
+#define _Object_h_
+
+<<license>>
+<<include>>
+<<class Object>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

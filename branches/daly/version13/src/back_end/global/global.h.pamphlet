@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/global.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include <stream.h>
+#include <iostream.h>
+#include <fstream.h>
+#include <strstream.h>
+//@rn #include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <math.h>
+
+#include "error.h"
+#include "IPC.h"
+#include "Trichotomy.h"
+
+@
+\section{global.h}
+Contents: Global declarations to be included by all other header files.
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/global.h
+#ifndef _GLOBAL_H_
+#define _GLOBAL_H_
+
+<<include>>
+<<license>>
+
+//#define NULL 0
+
+#define SAFETY 2
+
+#define TRUE  1
+#define FALSE 0
+
+typedef int Bool;
+
+#define INFINITE 0
+
+
+//------ global function prototypes, variables, inline functions ------------//
+
+inline int min(int i, int j) { return ((i<j) ? i : j); }
+inline int max(int i, int j) { return ((i>j) ? i : j); }
+inline int abs(int i) { return ((i < 0) ? -i : i); }
+inline int sign(int i) { return (i == 0) ? 0 : ( (i > 0) ? 1 : -1 ); }
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

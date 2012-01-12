@@ -1,0 +1,136 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/WordProblem.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SMWord.h"
+#include "SetOfWordsChecker.h"
+#include "NilpotentQuotients.h"
+#include "ARCer.h"
+#include "GeneticProblems.h"
+#include "FNWP.h"
+#include "GAWordProblemForORGroup.h"
+
+@
+\section{class ORWordProblemARCer}
+<<class ORWordProblemARCer>>=
+class ORWordProblemARCer : public ARCer
+{
+public:
+  ORWordProblemARCer( ComputationManager& );
+  void setArguments( const Word& relator, const Word& testWord );
+  bool getRetValue() { return retValue; }
+  ProductOfRelatorConjugates wordDecomposition() const { return wDeco; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  void printWord(const Word& w, ostream& ostr);
+  Word theRelator;
+  Word theTestWord;
+  Trichotomy answer;
+  bool retValue;
+  ProductOfRelatorConjugates wDeco;
+};
+
+@
+\section{class ORWordProblemCM}
+<<class ORWordProblemCM>>=
+class ORWordProblemCM : public ComputationManager
+{
+public:
+  ORWordProblemCM( class WordProblem& PO );
+  //  ~ORWordProblemCM( );
+  Trichotomy isTrivial( ) { return itIsTrivial; }
+  ProductOfRelatorConjugates wordDecomposition() const { return wDeco; }
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  Word theRelator;
+  const SMWord& testWord;
+  Trichotomy itIsTrivial;
+  bool bStarted;
+  ProductOfRelatorConjugates wDeco;
+  ORWordProblemARCer arcer;
+};
+
+@
+\section{class WordProblem}
+<<class WordProblem>>=
+class WordProblem : public Supervisor
+{
+public:
+  WordProblem( class SMWord& w);
+
+  Trichotomy answer( ) const { return theAnswer; }
+  // When a WordProblem is used internally, it does not report the result
+  // to the FE, but just sits and waits to be polled through this member.
+  // yes => trivial, no => not trivial, dontknow => not done yet.
+
+  const SMWord& getTestWord( ) const { return theWord; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }           // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  SetOfWordsChecker theChecker;
+  Trichotomy theAnswer;
+  Chars explanation;
+  bool triedAbelianization;
+  MirrorSubordinate normalClosure;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate computeBasis;
+  MirrorSubordinate nilpotentQuotients;
+  Subordinate<WordProblem,NilpotentWPInQuotients> nilpotentWPInQuotients;
+  Subordinate<WordProblem, ORWordProblemCM> orwp;
+  Subordinate<WordProblem, NilpotentWP> nilpotentWP;
+  Subordinate<WordProblem, GeneticWPCM> genetic;
+  bool linkGenORHasBeenSent;
+  Subordinate<WordProblem, GAWordForORGroup> geneticForORG;
+  Subordinate<WordProblem, FNWPCM> fnwp;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/WordProblem.h
+#ifndef _WordProblem_h_
+#define _WordProblem_h_
+
+<<license>>
+<<include>>
+<<class ORWordProblemARCer>>
+<<class ORWordProblemCM>>
+<<class WordProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

@@ -1,0 +1,177 @@
+\documentclass{article}
+\usepackage{../../../../mnt/linux/bin/axiom}
+\begin{document}
+\title{src/backend/Equations/include/Makefile}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Environment}
+<<environment>>=
+IN=${SRC}/backend/Equations/include
+OUT=${INT}/include
+DOC=${MNT}/${SYS}/doc/src/backend/Equations/include
+
+@
+\section{Code}
+\section{axiom.sty}
+\section{DGESolver}
+<<DGESolver.h (OUT from IN)>>=
+${OUT}/DGESolver.h: ${IN}/DGESolver.h.pamphlet
+	@echo 1 making ${OUT}/DGESolver.h from ${IN}/DGESolver.h.pamphlet
+	@${DOCUMENT} src DGESolver.h ${OUT}
+
+@
+<<DGESolver.h.dvi (DOC from IN)>>=
+${DOC}/DGESolver.h.dvi: ${IN}/DGESolver.h.pamphlet ${DOC}/axiom.sty
+	@echo 2 making ${DOC}/DGESolver.h.dvi from ${IN}/DGESolver.h.pamphlet 
+	@${DOCUMENT} dvi DGESolver.h ${DOC} DGESolver.h ${NOISE}
+
+@
+\section{NielsenTransformations}
+<<NielsenTransformations.h (OUT from IN)>>=
+${OUT}/NielsenTransformations.h: ${IN}/NielsenTransformations.h.pamphlet
+	@echo 3 making ${OUT}/NielsenTransformations.h from ${IN}/NielsenTransformations.h.pamphlet
+	@${DOCUMENT} src NielsenTransformations.h ${OUT}
+
+@
+<<NielsenTransformations.h.dvi (DOC from IN)>>=
+${DOC}/NielsenTransformations.h.dvi: ${IN}/NielsenTransformations.h.pamphlet ${DOC}/axiom.sty
+	@echo 4 making ${DOC}/NielsenTransformations.h.dvi from ${IN}/NielsenTransformations.h.pamphlet 
+	@${DOCUMENT} dvi NielsenTransformations.h ${DOC} NielsenTransformations.h ${NOISE}
+
+@
+\section{QEqnSolutions}
+<<QEqnSolutions.h (OUT from IN)>>=
+${OUT}/QEqnSolutions.h: ${IN}/QEqnSolutions.h.pamphlet
+	@echo 5 making ${OUT}/QEqnSolutions.h from ${IN}/QEqnSolutions.h.pamphlet
+	@${DOCUMENT} src QEqnSolutions.h ${OUT}
+
+@
+<<QEqnSolutions.h.dvi (DOC from IN)>>=
+${DOC}/QEqnSolutions.h.dvi: ${IN}/QEqnSolutions.h.pamphlet ${DOC}/axiom.sty
+	@echo 6 making ${DOC}/QEqnSolutions.h.dvi from ${IN}/QEqnSolutions.h.pamphlet 
+	@${DOCUMENT} dvi QEqnSolutions.h ${DOC} QEqnSolutions.h ${NOISE}
+
+@
+\section{Queue}
+<<Queue.h (OUT from IN)>>=
+${OUT}/Queue.h: ${IN}/Queue.h.pamphlet
+	@echo 7 making ${OUT}/Queue.h from ${IN}/Queue.h.pamphlet
+	@${DOCUMENT} src Queue.h ${OUT}
+
+@
+<<Queue.h.dvi (DOC from IN)>>=
+${DOC}/Queue.h.dvi: ${IN}/Queue.h.pamphlet ${DOC}/axiom.sty
+	@echo 8 making ${DOC}/Queue.h.dvi from ${IN}/Queue.h.pamphlet 
+	@${DOCUMENT} dvi Queue.h ${DOC} Queue.h ${NOISE}
+
+@
+\section{SolutionsEnum}
+<<SolutionsEnum.h (OUT from IN)>>=
+${OUT}/SolutionsEnum.h: ${IN}/SolutionsEnum.h.pamphlet
+	@echo 9 making ${OUT}/SolutionsEnum.h from ${IN}/SolutionsEnum.h.pamphlet
+	@${DOCUMENT} src SolutionsEnum.h ${OUT}
+
+@
+<<SolutionsEnum.h.dvi (DOC from IN)>>=
+${DOC}/SolutionsEnum.h.dvi: ${IN}/SolutionsEnum.h.pamphlet ${DOC}/axiom.sty
+	@echo 10 making ${DOC}/SolutionsEnum.h.dvi from ${IN}/SolutionsEnum.h.pamphlet 
+	@${DOCUMENT} dvi SolutionsEnum.h ${DOC} SolutionsEnum.h ${NOISE}
+
+@
+\section{TupleEnumerator}
+<<TupleEnumerator.h (OUT from IN)>>=
+${OUT}/TupleEnumerator.h: ${IN}/TupleEnumerator.h.pamphlet
+	@echo 11 making ${OUT}/TupleEnumerator.h from ${IN}/TupleEnumerator.h.pamphlet
+	@${DOCUMENT} src TupleEnumerator.h ${OUT}
+
+@
+<<TupleEnumerator.h.dvi (DOC from IN)>>=
+${DOC}/TupleEnumerator.h.dvi: ${IN}/TupleEnumerator.h.pamphlet ${DOC}/axiom.sty
+	@echo 12 making ${DOC}/TupleEnumerator.h.dvi from ${IN}/TupleEnumerator.h.pamphlet 
+	@${DOCUMENT} dvi TupleEnumerator.h ${DOC} TupleEnumerator.h ${NOISE}
+
+@
+\section{VectorPtr}
+<<VectorPtr.h (OUT from IN)>>=
+${OUT}/VectorPtr.h: ${IN}/VectorPtr.h.pamphlet
+	@echo 13 making ${OUT}/VectorPtr.h from ${IN}/VectorPtr.h.pamphlet
+	@${DOCUMENT} src VectorPtr.h ${OUT}
+
+@
+<<VectorPtr.h.dvi (DOC from IN)>>=
+${DOC}/VectorPtr.h.dvi: ${IN}/VectorPtr.h.pamphlet ${DOC}/axiom.sty
+	@echo 14 making ${DOC}/VectorPtr.h.dvi from ${IN}/VectorPtr.h.pamphlet 
+	@${DOCUMENT} dvi VectorPtr.h ${DOC} VectorPtr.h ${NOISE}
+
+@
+\section{VertexInfo}
+<<VertexInfo.h (OUT from IN)>>=
+${OUT}/VertexInfo.h: ${IN}/VertexInfo.h.pamphlet
+	@echo 15 making ${OUT}/VertexInfo.h from ${IN}/VertexInfo.h.pamphlet
+	@${DOCUMENT} src VertexInfo.h ${OUT}
+
+@
+<<VertexInfo.h.dvi (DOC from IN)>>=
+${DOC}/VertexInfo.h.dvi: ${IN}/VertexInfo.h.pamphlet ${DOC}/axiom.sty
+	@echo 16 making ${DOC}/VertexInfo.h.dvi from ${IN}/VertexInfo.h.pamphlet 
+	@${DOCUMENT} dvi VertexInfo.h ${DOC} VertexInfo.h ${NOISE}
+
+@
+<<axiom.sty (DOC from IN)>>=
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 17 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@${DOCUMENT} chunk "axiom.sty" ${SRC}/doc/axiom.sty ${DOC} axiom.sty
+ 
+@
+<<*>>=
+<<environment>>
+
+FILES= ${OUT}/DGESolver.h ${OUT}/NielsenTransformations.h \
+       ${OUT}/QEqnSolutions.h ${OUT}/Queue.h \
+       ${OUT}/SolutionsEnum.h ${OUT}/TupleEnumerator.h \
+       ${OUT}/VectorPtr.h ${OUT}/VertexInfo.h
+
+DOCFILES= ${DOC}/DGESolver.h.dvi ${DOC}/NielsenTransformations.h.dvi \
+          ${DOC}/QEqnSolutions.h.dvi ${DOC}/Queue.h.dvi \
+          ${DOC}/SolutionsEnum.h.dvi ${DOC}/TupleEnumerator.h.dvi \
+          ${DOC}/VectorPtr.h.dvi ${DOC}/VertexInfo.h.dvi
+
+all: ${FILES} ${DOCFILES}
+	@echo 18 finished ${IN}
+
+<<DGESolver.h (OUT from IN)>>
+<<DGESolver.h.dvi (DOC from IN)>>
+
+<<NielsenTransformations.h (OUT from IN)>>
+<<NielsenTransformations.h.dvi (DOC from IN)>>
+
+<<QEqnSolutions.h (OUT from IN)>>
+<<QEqnSolutions.h.dvi (DOC from IN)>>
+
+<<Queue.h (OUT from IN)>>
+<<Queue.h.dvi (DOC from IN)>>
+
+<<SolutionsEnum.h (OUT from IN)>>
+<<SolutionsEnum.h.dvi (DOC from IN)>>
+
+<<TupleEnumerator.h (OUT from IN)>>
+<<TupleEnumerator.h.dvi (DOC from IN)>>
+
+<<VectorPtr.h (OUT from IN)>>
+<<VectorPtr.h.dvi (DOC from IN)>>
+
+<<VertexInfo.h (OUT from IN)>>
+<<VertexInfo.h.dvi (DOC from IN)>>
+
+<<axiom.sty (DOC from IN)>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

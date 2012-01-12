@@ -1,0 +1,25 @@
+1. from @am: It's difficult to suspend a problem with yellow light on it.
+
+2. from @gb:
+
+Magnus cannot construct an am. product if 
+
+F1 = <a,b>,
+F2 = <c,d>,
+S1 = { [a,b], [a^2,b], a[a^3,b], b[a^4,b] }
+S2 = { d[c^2,d], c[c^2,d], [c^3,d], [c^4,d] }
+
+3. from @am:
+
+Deleting a working conjugacy problem object for a FP group will crash
+the system.
+
+>@db:
+
+The current implementation has to be changed because
+
+1. It can crash.
+2. It MSC CM cannot help the problem will stop anyway.
+
+
+

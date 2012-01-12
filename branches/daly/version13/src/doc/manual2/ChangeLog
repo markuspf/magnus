@@ -1,0 +1,181 @@
+Change Log 01/11/2002
+
+=====================================================================
+	
+Version 4.1.1 beta (01/11/2002) Major Changes:
+
+- Database added. Now it is possible to store examples of groups and
+  their descriptions in the Database as well as save and rstore objects
+  in the Workspace.
+
+- Package Mechanism. MAGNUS' Package Mechanism was developed to provide 
+  a simple and convenient way of integrating second party software into 
+  MAGNUS' graphical user interface. See doc/PackagesManual.ps for more
+  details.
+
+- MAGNUS' menus were changed
+
+- Random definitions when cheking in objects are available. 
+
+- George Havas' version of Todd-Coxeter procedure is incorporated.
+
+- Lots of new procedures for almost every type of groups are added.
+
+- lots of bugs fixed.
+
+=====================================================================
+
+Version 3.2.1 pre-release(11/24/99) Major Changes:
+
+ - Source code is compliant with the recent version of C++ draft and
+can be compiled by egcs-1.1.2 - the version of GNU compiler included
+in Linux 6.0 and 6.1 disrtibutions.
+
+ -  Class templates implementation is simplified, so that it is easier
+to compile Magnus under different platforms.
+
+ - New genetic algorithms for:
+       *  Whitehead reduction for tuples of words in a free group.
+       *  Andrews-Curtis reduction for tuples  of words in a free group.
+       *  Solving equations in a free group.
+
+ -  New version of Todd-Coxeter procedure.
+ -  New word problem sover for free nilpotent groups (using power series).
+ -  Lots of bugs fixed.
+
+======================================================================
+
+Version 3.0.0 pre-release(10/14/98) Changes and Enhancements:
+
+
+- Fixed bug in Subgroup List Algorithm.
+
+=====================================================================
+
+Version 2.9.8 pre-release(09/19/98) Changes and Enhancements:
+
+- New algorithms for free groups:
+       * For group F and word W:
+
+- Genetic algorithm for solving problem "Is word part of a basis?".
+
+- Genetic algorithm for solving product of two commutators problem.
+
+- For group F and a tuple T of words:
+       * Genetic algorithm to carry out Andrews-Curtis reduction.
+
+- For group F, subgroup H and word W in H:
+       * Express an element of a subgroup in terms of the subgroup 
+         generators(details will be provided by a link to a file).
+
+- New algorithms for one relator groups:
+       * For one relator group G and word W:
+       * Word problem(details will be provided by a link to a file).
+       * "Express word in conjugates of relators?".
+
+- Dehn's algorithm for metric small cancellation groups:
+       *A link has been added to show details of the computation.
+
+- For all but nilpotent and abelian groups, two new algorithms have been added :
+       * "Re-write word as a product of commutators".
+       * "Rewrite word as a product of squares".
+
+- For a finitely presented group G and a subgroup H of finite index,
+  there is a new algorithm:
+       * "Rewrite W in terms of Schrier generators of H".
+
+======================================================================
+
+Version 2.9.0 pre-release(04/18/98) Changes and Enhancements:
+
+- New genetic algorithms for finitely presented groups:
+    For group G:
+       * Is G trivial?
+       * Is G abelian?
+
+    For words w, w1, w2:
+       * Is w central?
+       * Is w1 = w2?
+
+    For subgroup H:
+       * Is H trivial?
+       * Is H abelian?
+       * Is H central?
+
+    For map m:
+       * Does m extend to a homomorphism?
+
+- Many reported bugs are now fixed.
+- New kinds of objects  "Enumerators" and "Lists" were added:
+       * Word enumerator.
+       * Relator enumerator.
+       * Automorphisms enumerator for free groups.
+       * Relator enumerator for a subgroup.
+       * Make a list of words from an enumerator.
+
+- Tools for lists:
+      * Find a word in a list.
+      * Extract all words from the defined  length range.
+
+==========================================================================
+
+Version 2.8.4 pre-release(02/13/98) Changes and Enhancements:
+ 
+- Magnus menus now change dynamically to reflect the information found
+about objects. For example, if a group is found to be abelian then the
+menu for it will change, so that new "abelian" algorithms are
+accessible.
+- Existing genetic algorithms for finitely presented  groups (word problem,
+triviality problem, "is a group abelian ?" problem) and for solving equations
+in a free group were modified to show better performance.
+- Many message misprints were corrected.
+- New pages were added to the magnus manual. Many broken links were
+fixed.
+- The description of the format used for a finite state automaton is now
+available.
+- Magnus manual and workspace manual work on every supported system now.
+- As of now, Linux 5.0 and Tcl/Tk 8.0 are fully supported. Magnus
+compiles and runs cleanly.
+- For now, "Is Finite" and "Order" problems for FP groups
+are identical.  This  means that both use all related fast checks and
+algorithms to solve the problem. This situation will change.
+- One may now compute the conjugate of one word by another.
+- One may now compute the length of a word in freely reduced form.
+- One may now compute the commutator of two words.
+
+=============================================================================
+
+Version 2.8.0 pre-release(01/08/98) Changes and Enhancements:
+
+- The genetic algorithm for solving the word problem in a finitely presented 
+group has been optimized.
+- Computational details for the Nielsen basis for a subgroup of a free group 
+have been added.
+- Some bugs have been fixed in the algorithm for solving quadratic equations 
+over a free group.
+- For one-relator groups found to have torsion, we have added the following 
+  algorithms:
+         * A word which is trivial in the given group is re-expressed as a 
+           product of conjugates of the defining relator (and its inverse).
+         * A word which represents an element of finite order is re-expressed 
+           as a conjugate of a power of r, where here r^n is the given defining 
+           relator.
+         * A process which enumerates all consequences of the given defining 
+           relator.
+
+- A process which enumerates all of the relations that are satisfied by the given
+ generators of a finitely generated subgroup of a finitely presented roup.
+
+==============================================================================
+
+Version 2.7.8 pre-release(12/04/97) Changes and Enhancements:
+
+- Genetic algorithm for the word problem.
+- Genetic algorithm for the triviality problem.
+- Genetic algorithm for the abelian problem.
+- Genetic algorithm for solving equations over a free group.
+- Find a permutation representation of G on the cosets of H in G.
+- Compute the Schreier representative of an element of G.
+- Compute a Schreier transversal of H in G.
+- Changed file viewer to eliminate delay in viewing large files in the User Interface.       
+

@@ -1,0 +1,1377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>FullRegressionAnalysisLong</TITLE>
+<META NAME="description" CONTENT="FullRegressionAnalysisLong">
+<META NAME="keywords" CONTENT="FullRegressionAnalysisLong">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="FullRegressionAnalysisLong.css">
+
+</HEAD>
+
+<BODY >
+
+
+<P>
+<DIV ALIGN="CENTER">
+<B>THE FULL REGRESSION ANALYSIS TOOL</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>REGRESSION MODELS</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+An important type of statistical question arises when we
+have two non-independent populations and what is of interest is the relationship between
+the two.  This is the subject of <B>regression analysis</B> and <B>correlation analysis</B>.
+
+<P>
+Theoretically we consider the case of two variables <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> and <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$">. We wish to find the
+relationship between them.  For example <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> might be the tempertaure at which a chemical
+reaction is run and <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> is the yield; or <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> might be the blood pressure of a patient and
+<IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> is the estimated chance of a stroke; or <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$">,<IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> might be the height and weight
+respectively of an individual.  If the goal of the analysis is to determine <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> given <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$">,
+and <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> can be measured essentially without error, then it is part of <B>regression
+analysis</B>.  The example given above of temperature and yield would fit this type of situation.  On
+the other hand if both <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> and <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> are varying statistically and what is of interest is
+the relationship between them, then this is part of <B>correlation analysis</B>.  We consider
+regression analysis and regression models first.
+
+<P>
+We consider the situation where we have a variable (or population) <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> called a <B>response variable</B> and a second variable (or set of variables) <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> called a <B>predictor variable</B> or <B>predictor variables</B>.  As the names suggest, the ulitmate goal is to
+predict <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> given <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$">.  In the chemical example above, <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$">, the yield of the reaction, would be the
+response variable, while <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$">, the temperature, would be the predictor variable.  Mathematically we
+wish to determine the function which has <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> as the dependent variable and <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> as the
+independent variable:
+<!-- MATH
+ \begin{displaymath}
+Y = f(X) \tag 1
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="82" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$\displaystyle Y = f(X) \tag 1$">
+</DIV><P></P>
+
+<P>
+If <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> is completeky determined by <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$">, the resulting function is called a <B>deterministic model</B>.  For example, if <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> were the distance covered by a car moving at
+constant speed and <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> were the time it would be completely determined and we would have such a
+deterministic model.  However most situations are not completely determined. We could run
+a chemical reaction several times at the same temperature <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> and each time get a
+different yield <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$">.  Therefore rather the a deterministic model, more generally we have a model of
+the form
+<!-- MATH
+ \begin{displaymath}
+Y = f(X) + \text{ random variation }. \tag 2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="87" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$\displaystyle Y = f(X) +$">&nbsp; &nbsp; random variation <IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$\displaystyle . \tag 2$">
+</DIV><P></P>
+
+<P>
+A model such as this is called a <B>statistical model</B> or <B>regression model</B>.  We usually
+write the random variation as <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ \epsilon$"> and then have
+<!-- MATH
+ \begin{displaymath}
+Y = f(X) + \epsilon.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="105" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$\displaystyle Y = f(X) + \epsilon.$">
+</DIV><P></P>
+
+<P>
+The function <IMG
+ WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ f(X)$"> is called the <B>regression equation</B> or <B>regression function</B> and
+represents the <B>average value of the response </B> <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \bold Y$"> <B>for the given </B> <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \bold X$">,
+(sometimes written as <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \mu_{Y/X}$">).  The term <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ \epsilon$"> represents the random variation which for
+each <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> is a random variable which has a mean of 0.  <IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ \epsilon$"> is called the <B>residual</B>.  
+
+<P>
+If <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> consists of a single variable we have a <B>simple regression model</B> while if <!-- MATH
+ $X =
+(X_1,X_2,...,X_n)$
+ -->
+<IMG
+ WIDTH="149" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$ X =
+(X_1,X_2,...,X_n)$"> consists of a set of variables we have a <B>multiple regression model</B>.  
+
+<P>
+We start with simple regression.  Statistically the data we collect is <B>paired data</B>,
+<!-- MATH
+ \begin{displaymath}
+(x_1,y_1),(x_2,y_2),...,(x_n,y_n)
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="194" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.gif"
+ ALT="$\displaystyle (x_1,y_1),(x_2,y_2),...,(x_n,y_n)$">
+</DIV><P></P>
+where <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ x_i$"> for <IMG
+ WIDTH="76" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ i=1,...,n$"> is a particular value of the predictor variable <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> and <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ y_i$"> is the
+value  of the response variable <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> corresponding to <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ x_i$"> .  What we wish to do with this sample
+information is to determine the function <IMG
+ WIDTH="35" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ f(x)$"> which <B>fits the data</B> and then use this <B>fitted model</B> to <B>predict</B> or <B>forecast</B> <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> given <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$">.  
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+SIMPLE LINEAR REGRESSION AND LEAST SQUARES ESTIMATORS</DIV>
+
+<P>
+
+<P>
+We start by considering <B>simple linear regression models</B>.  Here the average response <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> is
+linear in <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> so that the model has the form
+<!-- MATH
+ \begin{displaymath}
+Y = (\alpha + \beta X) + \epsilon \tag 4
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="138" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.gif"
+ ALT="$\displaystyle Y = (\alpha + \beta X) + \epsilon \tag 4$">
+</DIV><P></P>
+
+<P>
+The line given by <!-- MATH
+ $y = \alpha + \beta x$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$ y = \alpha + \beta x$"> is called the <B>regression line</B> while <!-- MATH
+ $\alpha,\beta$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ \alpha,\beta$">
+are the <B>regression parameters</B>.  <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ \alpha$"> is the <B>regression intercept</B> and represents the
+average response when <IMG
+ WIDTH="48" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$ X = 0$">, while <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \beta$"> is the <B>regression slope</B>.  Recall that the slope
+of a line gives the change in <IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="$ y$"> per unit change in <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ x$">.  Therefore the regression slope represents
+the <B>average change in response per unit change in predictor</B>.
+
+<P>
+Suppose that now, assuming this model, we generate <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ n$"> data points
+<!-- MATH
+ \begin{displaymath}
+(x_1,y_1),(x_2,y_2),...,(x_n,y_n)
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="194" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.gif"
+ ALT="$\displaystyle (x_1,y_1),(x_2,y_2),...,(x_n,y_n)$">
+</DIV><P></P>
+where as explained each <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ x_i$"> for <IMG
+ WIDTH="76" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ i=1,...,n$"> is a particular value of the predictor variable <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> and
+<IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ y_i$"> is the corresponding value of the response variable <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$">.
+
+<P>
+As a first step we graph these data points to form a <B>scatter diagram</B> as in Figure 1. 
+The estimate for the regression line <!-- MATH
+ $Y = \alpha + \beta X$
+ -->
+<IMG
+ WIDTH="92" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$ Y = \alpha + \beta X$"> would be the "best" fitted line <!-- MATH
+ $Y = a
++ bX$
+ -->
+<IMG
+ WIDTH="87" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.gif"
+ ALT="$ Y = a
++ bX$"> to these sampled points. 
+
+<P>
+
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="336" HEIGHT="195" ALIGN="MIDDLE" BORDER="0"
+ SRC="fullRegression1.gif"
+>
+</DIV><P></P>
+
+<DIV ALIGN="CENTER">
+ Figure 1 Scatter Diagram</DIV>
+
+<P><P>
+<BR>
+
+<P>
+The value <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ a$"> would be an estimate for <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ \alpha$"> and the value <IMG
+ WIDTH="11" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ b$"> would be an estimate for <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \beta$">. 
+We need criteria in order to determine thsis "best fitted" line.  
+
+<P>
+For each <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ x_i$">, if <IMG
+ WIDTH="77" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="$ y = a+bx$"> is any fitted line, the value
+<!-- MATH
+ \begin{displaymath}
+y_{pred_i} = a+bx_i
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="113" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.gif"
+ ALT="$\displaystyle y_{pred_i} = a+bx_i$">
+</DIV><P></P>
+would be the best predicted value for <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ y_i$"> given that line.  The difference
+<!-- MATH
+ \begin{displaymath}
+e_i = y_i - y_{pred_i}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="110" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.gif"
+ ALT="$\displaystyle e_i = y_i - y_{pred_i}$">
+</DIV><P></P>
+is called the <B>ith sample residual</B> and is an estimate for <!-- MATH
+ $\epsilon_i$
+ -->
+<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \epsilon_i$"> the random variation at
+<IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ x_i$">. The best fitted line would have the <B>smallest total sample residuals</B>.  We form the
+expression <!-- MATH
+ \begin{displaymath}
+\text{SSE} = \sum_{i=1}^n (y_i - (a+bx_i))^2 = \sum_{i=1}^n e_i^2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+&nbsp; &nbsp;SSE<IMG
+ WIDTH="219" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.gif"
+ ALT="$\displaystyle = \sum_{i=1}^n (y_i - (a+bx_i))^2 = \sum_{i=1}^n e_i^2$">
+</DIV><P></P>
+
+<P>
+which is called the <B>sum of squares for error</B>. The best fitted line would be the lione
+which minimizes this expression.  The squares arise for the same reason that expressions are squared
+in the standard deviation, an individual <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.gif"
+ ALT="$ e_i$"> can either be positive or negative.  The values <IMG
+ WIDTH="26" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$ a,b$">
+which minimize SSE are called the <B>least squares estimators</B> for <!-- MATH
+ $\alpha,\beta$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ \alpha,\beta$"> and the fitted
+line <!-- MATH
+ $y = \alpha + \beta x$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$ y = \alpha + \beta x$"> is the <B>least squares line</B> or <B>estimated regression line</B>. 
+
+<P>
+To determine the values of <IMG
+ WIDTH="26" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$ a,b$"> the methods of calculus are used to minimize the expression for SSE
+as a function of <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ a$"> and <IMG
+ WIDTH="11" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ b$">.  In order to present  the solution we intrioduce the following
+quantities:
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+S_{xx} = \sum_{i=1}^n (x_i - \overline{x})^2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="136" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.gif"
+ ALT="$\displaystyle S_{xx} = \sum_{i=1}^n (x_i - \overline{x})^2$">
+</DIV><P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+S_{yy} = \sum_{i=1}^n (y_i - \overline{y})^2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="133" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.gif"
+ ALT="$\displaystyle S_{yy} = \sum_{i=1}^n (y_i - \overline{y})^2$">
+</DIV><P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+S_{xy} = \sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="182" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.gif"
+ ALT="$\displaystyle S_{xy} = \sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})$">
+</DIV><P></P>
+
+<P>
+All computations in simple linear regression will involve these expressions.  Notice that <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.gif"
+ ALT="$ S_{xx}$">
+is the variance of the <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ x$"> data without the denominator.  Similarly <IMG
+ WIDTH="28" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.gif"
+ ALT="$ S_{yy}$">
+is the variance of the <IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="$ y$"> data without the denominator and represents the <B>total variation in
+response</B>.  This will be used later on in this chapter to measure how strong the linear
+relationship is.  <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$ S_{xy}$"> is the <B>covariance</B> of <IMG
+ WIDTH="29" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.gif"
+ ALT="$ x,y$"> without the denominator and measures how
+<IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> and <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> vary together.  Notice that <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.gif"
+ ALT="$ S_{xx}$"> and <IMG
+ WIDTH="28" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.gif"
+ ALT="$ S_{yy}$"> are always positive while <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$ S_{xy}$">
+will be positive if on average <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> increases when <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> increases and <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$ S_{xy}$"> will be negative if on
+average <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> decreases when <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> increases.  
+
+<P>
+Using the calculus techniques it can be shown that the least squares estimators <IMG
+ WIDTH="26" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$ a,b$"> for
+<!-- MATH
+ $\alpha,\beta$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ \alpha,\beta$"> are given by 
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+b =  \be =  \frac{S_{xy}}{S_{xx}} \tag 5
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="81" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.gif"
+ ALT="$\displaystyle b = \be = \frac{S_{xy}}{S_{xx}} \tag 5$">
+</DIV><P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+a =  \a = \overline{Y} - b\overline{X} \tag 6
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="149" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img47.gif"
+ ALT="$\displaystyle a = \a = \overline{Y} - b\overline{X} \tag 6 $">
+</DIV><P></P> 
+
+<P>
+
+<P></P>
+
+<P>
+We now give an example of determining the least squares line and its use in making a simple
+forecast.
+
+<P>
+EXAMPLE 1 
+
+<P>
+Consider the following data
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+X \hphantom{xx} 1\hphantom{xx} 2\hphantom{xx} 3\hphantom{xx} 4\hphantom{xx} 5
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="142" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.gif"
+ ALT="$\displaystyle X \hphantom{xx} 1\hphantom{xx} 2\hphantom{xx} 3\hphantom{xx} 4\hphantom{xx} 5$">
+</DIV><P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+Y \hphantom{x} 16\hphantom{x} 21\hphantom{x} 23\hphantom{x} 27\hphantom{x} 33
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="60" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.gif"
+ ALT="$\displaystyle Y \hphantom{x} 16\hphantom{x} 21\hphantom{x} 23\hphantom{x} 27\hphantom{x} 33$">
+</DIV><P></P>
+
+<P>
+Determine the least squares line and forecast the average value of response <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> for <IMG
+ WIDTH="48" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.gif"
+ ALT="$ X = 4.5$">
+
+<P></P>
+
+<P>
+Here <!-- MATH
+ $\overline{X} = 3$
+ -->
+<IMG
+ WIDTH="54" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img51.gif"
+ ALT="$ \overline{X} = 3$"> and <!-- MATH
+ $\overline{Y} = 24$
+ -->
+<IMG
+ WIDTH="938" HEIGHT="36" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.gif"
+ ALT="$ \overline{Y} = 24$">.  The table below gives the computations.
+<!-- MATH
+ \begin{displaymath}
+\matrix X&Y&(X-\overline X)&(X-\overline X)^2&(Y-\overline Y)&(Y-\overline Y)^2&(X-\overline
+X)(Y-\overline
+Y)\\1&16&-2&4&-8&64&16\\2&21&-1&1&-3&9&3\\3&23&0&0&-1&1&0\\4&27&1&1&3&9&3\\5&33&2&4&9&81&18
+\\\hphantom{*}&\hphantom{*}&\hphantom{*}&10&\hphantom{*}&163&40
+\endmatrix
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="143" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.gif"
+ ALT="$\displaystyle \matrix X&amp;Y&amp;(X-\overline X)&amp;(X-\overline X)^2&amp;(Y-\overline Y)&amp;(Y-...
+...18
+\\ \hphantom{*}&amp;\hphantom{*}&amp;\hphantom{*}&amp;10&amp;\hphantom{*}&amp;163&amp;40
+\endmatrix $">
+</DIV><P></P>
+
+<P>
+Hence we
+find that <!-- MATH
+ $S_{xx} = 10,S_{yy} = 164$
+ -->
+<IMG
+ WIDTH="66" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.gif"
+ ALT="$ S_{xx} = 10,S_{yy} = 164$"> and <!-- MATH
+ $S_{xy} = 40$
+ -->
+<IMG
+ WIDTH="131" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.gif"
+ ALT="$ S_{xy} = 40$">.  Therefore
+<!-- MATH
+ \begin{displaymath}
+b = \frac{S_{xy}}{S_{xx}} = \frac{40}{10} = 4 \text{ and } a = \overline{Y} - b\overline{X} =
+24 - (4)(3) = 12
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="222" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img56.gif"
+ ALT="$\displaystyle b = \frac{S_{xy}}{S_{xx}} = \frac{40}{10} = 4$">&nbsp; &nbsp; and <IMG
+ WIDTH="99" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img57.gif"
+ ALT="$\displaystyle a = \overline{Y} - b\overline{X} =
+24 - (4)(3) = 12$">
+</DIV><P></P>
+The estimated regression line is then given by
+<!-- MATH
+ \begin{displaymath}
+Y = 12 + 4X.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="151" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img58.gif"
+ ALT="$\displaystyle Y = 12 + 4X.$">
+</DIV><P></P>
+Plugging in a particular <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$"> value will give a predicted <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> value. For example the predicted <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$">
+value for <IMG
+ WIDTH="48" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.gif"
+ ALT="$ X = 4.5$"> would be
+<!-- MATH
+ \begin{displaymath}
+Y = 12 + 4(4.5) = 30
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="73" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.gif"
+ ALT="$\displaystyle Y = 12 + 4(4.5) = 30$">
+</DIV><P></P>.
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>REGRESSION ANALYSIS</B></DIV>
+
+<P>
+In order to assign statistical values to the predictions from <IMG
+ WIDTH="87" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.gif"
+ ALT="$ Y = a
++ bX$">,
+assumptions must be made on the distribution of the random component.   The most common assumption
+is called the <B>normal linear model</B>.  This model consists of the following assumptions
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttt}$
+ -->
+<IMG
+ WIDTH="90" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.gif"
+ ALT="$ \hphantom{tttttttttttt}$"> (1) For each <!-- MATH
+ $Y_i, i = 1,...n$
+ -->
+<IMG
+ WIDTH="135" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.gif"
+ ALT="$ Y_i, i = 1,...n$"> we have 
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+Y_i = (\alpha + \beta   X_i  +  \epsilon_i
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="21" HEIGHT="17" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.gif"
+ ALT="$\displaystyle Y_i = (\alpha + \beta X_i + \epsilon_i$">
+</DIV><P></P> 
+
+<P>
+where <!-- MATH
+ $\epsilon_i$
+ -->
+<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \epsilon_i$"> (called the <B>residual</B>).  
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttt}$
+ -->
+<IMG
+ WIDTH="90" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.gif"
+ ALT="$ \hphantom{tttttttttttt}$"> (2) Each residual <!-- MATH
+ $\epsilon_i$
+ -->
+<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \epsilon_i$"> has a normal distribution with mean zero
+and common variance <IMG
+ WIDTH="19" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img63.gif"
+ ALT="$ \sigma^2$">.  
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttt}$
+ -->
+<IMG
+ WIDTH="90" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.gif"
+ ALT="$ \hphantom{tttttttttttt}$"> (3)Tthe <IMG
+ WIDTH="62" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.gif"
+ ALT="$ Y_i$"> and hence the <!-- MATH
+ $\epsilon_i$
+ -->
+<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \epsilon_i$"> are independent.  
+
+<P>
+
+<P></P>
+
+<P>
+These assumptions mean that each <IMG
+ WIDTH="62" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.gif"
+ ALT="$ Y_i$"> has a mean
+of <!-- MATH
+ $\alpha + \beta X_i$
+ -->
+<IMG
+ WIDTH="55" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img65.gif"
+ ALT="$ \alpha + \beta X_i$"> and its distribution is normal and further for each <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ x_i$"> point the
+variance is the same.  Pictorially this is
+
+<P>
+
+<P><P>
+<BR>
+4.53truein by 2.26truein (NLM scaled 850)
+
+<P><P>
+<BR>
+
+<P>
+
+<P></P>
+
+<P>
+The normal linear model then has three parameters
+<!-- MATH
+ $\alpha,\beta,\sigma^2$
+ -->
+<IMG
+ WIDTH="119" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img66.gif"
+ ALT="$ \alpha,\beta,\sigma^2$"> and several questions are essential in a regression analysis.  These are
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="43" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img67.gif"
+ ALT="$ \hphantom{tttttttttttttttttttt}$"> [1] How are estimates and hypothesis tests done on the
+parameters <!-- MATH
+ $\alpha,\beta,\sigma^2$
+ -->
+<IMG
+ WIDTH="119" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img66.gif"
+ ALT="$ \alpha,\beta,\sigma^2$">.  Here testing the regression slope <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \beta$"> is the most
+important since if <IMG
+ WIDTH="153" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img68.gif"
+ ALT="$ \beta = 0$"> there is no linear relationship.
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="43" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img67.gif"
+ ALT="$ \hphantom{tttttttttttttttttttt}$"> [2] How are estimates developed for the mean response <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> for a
+given value of <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$">
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="43" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img67.gif"
+ ALT="$ \hphantom{tttttttttttttttttttt}$"> [3] How are estimates developed for the actual response <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ Y$"> for a
+given value of <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ X$">
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+The basic results concerning the parameters are given in the following theorems and corollaries
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="43" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img67.gif"
+ ALT="$ \hphantom{tttttttttttttttttttt}$"> [1] <B>Theorem</B> <!-- MATH
+ $s_e^2 = \frac{\text{SSE}}{n-2} =
+\frac{S_{yy} - bS_{xy}}{n-2}$
+ -->
+<IMG
+ WIDTH="110" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img69.gif"
+ ALT="$ s_e^2 = \frac{\text{SSE}}{n-2} =
+\frac{S_{yy} - bS_{xy}}{n-2}$"> is an estimator of the model variance <IMG
+ WIDTH="19" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img63.gif"
+ ALT="$ \sigma^2$">.  Further 
+<!-- MATH
+ \begin{displaymath}
+\chi^2 = \frac{(n-2)s_e^2}{\sigma^2}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img70.gif"
+ ALT="$\displaystyle \chi^2 = \frac{(n-2)s_e^2}{\sigma^2}$">
+</DIV><P></P>
+has a chi-squared distribution with <IMG
+ WIDTH="51" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$ n-2$"> degrees of freedom.
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="43" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img67.gif"
+ ALT="$ \hphantom{tttttttttttttttttttt}$"> [2] <B>Theorem</B> The distribution of <IMG
+ WIDTH="11" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ b$"> the least squares
+estimator for <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \beta$"> follows a normal distribution with
+<!-- MATH
+ \begin{displaymath}
+\mu_b = \beta \text{ and } \sigma_b = \frac{\sigma}{\sqrt{S_{xx}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="83" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.gif"
+ ALT="$\displaystyle \mu_b = \beta$">&nbsp; &nbsp; and <IMG
+ WIDTH="75" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img73.gif"
+ ALT="$\displaystyle \sigma_b = \frac{\sigma}{\sqrt{S_{xx}}}$">
+</DIV><P></P>
+If we let <!-- MATH
+ $s_b = \frac{s_e}{\sqrt{S_{xx}}}$
+ -->
+<IMG
+ WIDTH="71" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img74.gif"
+ ALT="$ s_b = \frac{s_e}{\sqrt{S_{xx}}}$"> then
+<!-- MATH
+ \begin{displaymath}
+t = \frac{b - \beta}{s_b}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="142" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img75.gif"
+ ALT="$\displaystyle t = \frac{b - \beta}{s_b}$">
+</DIV><P></P>
+follows a t-distribution with <IMG
+ WIDTH="51" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$ n-2$"> degrees of freedom.
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="25" HEIGHT="31" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ \hphantom{tttttttttttttttttttttttt}$"> [a] <B>Corollary</B> A <IMG
+ WIDTH="163" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img77.gif"
+ ALT="$ p\%$"> confidence interval for the
+regression slope <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \beta$"> is given by
+<!-- MATH
+ \begin{displaymath}
+b - t_ps_b \le \beta \le b + t_ps_b
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img78.gif"
+ ALT="$\displaystyle b - t_ps_b \le \beta \le b + t_ps_b$">
+</DIV><P></P>
+where <IMG
+ WIDTH="53" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ t_p$"> is an appropriate t-coefficient based on <IMG
+ WIDTH="85" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ (n-2)$"> d.f.
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="25" HEIGHT="31" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ \hphantom{tttttttttttttttttttttttt}$"> [b] <B>Corollary</B> Tests of null hypotheses of the form
+<!-- MATH
+ \begin{displaymath}
+H_0: \beta = \beta_0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="53" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img81.gif"
+ ALT="$\displaystyle H_0: \beta = \beta_0$">
+</DIV><P></P>
+are based on the test statistic
+<!-- MATH
+ \begin{displaymath}
+t = \frac{b - \beta}{s_b}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="142" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img75.gif"
+ ALT="$\displaystyle t = \frac{b - \beta}{s_b}$">
+</DIV><P></P>
+which follows a t-distribution with <IMG
+ WIDTH="51" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$ n-2$"> degrees of freedom.
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="43" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img67.gif"
+ ALT="$ \hphantom{tttttttttttttttttttt}$"> [3] <B>Theorem</B> The distribution of <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ a$"> the least squares
+estimator for <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ \alpha$"> follows a normal distribution with
+<!-- MATH
+ \begin{displaymath}
+\mu_a = \alpha \text{ and } \sigma_a = \sigma \sqrt{\frac{1}{n} +
+\frac{\overline{X}^2}{S_{xx}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="129" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img82.gif"
+ ALT="$\displaystyle \mu_a = \alpha$">&nbsp; &nbsp; and <IMG
+ WIDTH="127" HEIGHT="50" ALIGN="MIDDLE" BORDER="0"
+ SRC="img83.gif"
+ ALT="$\displaystyle \sigma_a = \sigma \sqrt{\frac{1}{n} +
+\frac{\overline{X}^2}{S_{xx}}}$">
+</DIV><P></P>
+If we let <!-- MATH
+ $s_a = s_e \sqrt{\frac{1}{n} +
+\frac{\overline{X}^2}{S_{xx}}}$
+ -->
+<IMG
+ WIDTH="73" HEIGHT="47" ALIGN="MIDDLE" BORDER="0"
+ SRC="img84.gif"
+ ALT="$ s_a = s_e \sqrt{\frac{1}{n} +
+\frac{\overline{X}^2}{S_{xx}}}$"> then
+<!-- MATH
+ \begin{displaymath}
+t = \frac{a - \alpha}{s_a}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="169" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img85.gif"
+ ALT="$\displaystyle t = \frac{a - \alpha}{s_a}$">
+</DIV><P></P>
+follows a t-distribution with <IMG
+ WIDTH="51" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$ n-2$"> degrees of freedom.
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="25" HEIGHT="31" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ \hphantom{tttttttttttttttttttttttt}$"> [a] <B>Corollary</B> A <IMG
+ WIDTH="163" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img77.gif"
+ ALT="$ p\%$"> confidence interval for the
+regression intercept <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ \alpha$"> is given by
+<!-- MATH
+ \begin{displaymath}
+a - t_ps_a \le \alpha \le a + t_ps_a
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="86" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img86.gif"
+ ALT="$\displaystyle a - t_ps_a \le \alpha \le a + t_ps_a$">
+</DIV><P></P>
+where <IMG
+ WIDTH="53" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ t_p$"> is an appropriate t-coefficient based on <IMG
+ WIDTH="85" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ (n-2)$"> d.f.
+
+<P>
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{tttttttttttttttttttttttt}$
+ -->
+<IMG
+ WIDTH="25" HEIGHT="31" ALIGN="BOTTOM" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ \hphantom{tttttttttttttttttttttttt}$"> [b] <B>Corollary</B> Tests of null hypotheses of the form
+<!-- MATH
+ \begin{displaymath}
+H_0: \alpha = \alpha_0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+
+</DIV><P></P>
+are based on the test statistic
+<!-- MATH
+ \begin{displaymath}
+t = \frac{a - \alpha}{s_a}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="169" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img85.gif"
+ ALT="$\displaystyle t = \frac{a - \alpha}{s_a}$">
+</DIV><P></P>
+which follows a t-distribution with <IMG
+ WIDTH="51" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$ n-2$"> degrees of freedom.
+
+<P>
+
+<P><P>
+<BR>
+
+<BR><HR>
+
+</BODY>
+</HTML>

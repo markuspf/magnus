@@ -1,0 +1,274 @@
+%% This is AMSLaTeX source, included by plan.tex.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Implementation}
+
+%%--------------------------------------------------------------------
+\section{Areas Needing Work}\update{08/09/95}
+
+%%....................................................................
+\subsection{General}
+
+The type system ({\tt Type.h}) should be reconsidered. We have been
+sliding into the use of dynamic typing. This can be very powerful, but
+it throws away a principal advantage of a language like {\tt C++},
+namely, that when the compiler can determine the type of a variable,
+it can also check its usage.  With dynamic typing, one says to the
+compiler: ``I know what I'm doing. I don't need your help.'' \magnus\
+is already 145,000 lines. I think we need the compiler's help.
+
+
+%%....................................................................
+\subsection{Classes in {\tt general/}}
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Class {\tt AssociationsOf}}
+
+To make lookup faster than $O(n)$, this could use either or both of
+hashing and binary search. But the linear method must be retained too,
+since not every {\tt Key} class can supply the hash or order function
+needed. Some points to consider:
+
+\begin{itemize}
+
+\item
+How will this effect the current usage of AssociationsOf?
+
+\item
+Should we use stl, or C library functions, or write the low-level code
+ourselves?
+
+\item
+Should the new functionality be reflected in subclasses?
+
+\end{itemize}
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Class {\tt BlackBox}}
+
+The main requirement is that execution and polling of input be
+asynchronous.
+
+The external binary will be invoked by either a {\tt system} call or
+{\tt fork/exec}. The latter is preferable, so a {\tt kill} signal can
+be sent to subprocesses which may not ask for input for some time (if
+ever).
+
+Input from the spawned process can be made non-blocking (this requires
+constructing the {\tt ifstream} from a file descriptor, so the {\tt
+BlackBox} can get its hands on low-level stuff first).  There must be
+a special convention (such as returning EOF) to indicate that a read
+request failed because there is nothing to read yet.
+
+Thus it is not desirable to return the actual {\tt ifstream} to
+callers, since a reference to it may be erroneously stored. The input
+might be buffered in an {\tt istrstream}.
+
+Even with a process id, unix appears to provide no way to tell whether
+the spawned process started successfully. Perhaps the first request
+for input could be flagged, and timed out. Any subsequent crash might
+be detected by the pipe closing. Hangs are undetectable by their very
+nature.
+
+A {\tt BlackBox} could use {\tt getpid} to get better control over its
+temporary file names.
+
+A {\tt BlackBox} might look in several directories, such as {\tt
+/tmp}, {\tt /usr/tmp}, and {\tt \$HOME/tmp}, and use {\tt statfs} to see if
+there is a reasonable amount of space (10MB?).  It could warn the end
+user if not enough is available.
+
+We will have to redirect both {\tt stdout} and {\tt stderr} to the
+{\tt BlackBox}'s input channel.
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Class {\tt ListOf<T>}}
+
+This might override {\tt new} and {\tt delete} for more efficient
+allocation of its {\tt Cells}.
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Class {\tt VectorOf<T>}}
+
+A vector is the most obvious data structure for many things. The
+current interface and semantics of {\tt VectorOf} place us squarely
+between Scylla and Charybdis: one the one hand, everyone has used {\tt
+VectorOf} for a wide variety of purposes, so if we change it at all we
+will have to deal with a large cascade of changes throughout \magnus.
+On the other hand, {\tt VectorOf} is clearly inadequate for many
+purposes.
+
+One of the most common uses is as an automatic variable in a function.
+For this we might want a variant which does not protect the data with
+reference counting, but still does bounds checking and cleans up after
+itself. This would be more dangerous to use, but if its use is kept
+local by convention, the danger is acceptable.
+
+Before starting on any such variant, we will need a reasonably
+complete list of the desired functionality (i.e., should the new
+vectors be resizable? Do we want to catenate them? Etc.)
+
+We will have to think about some problems with {\tt VectorOf} we have
+observed:
+
+\begin{itemize}
+
+\item
+It requires class {\tt T} to have a default constructor. Possibly
+derive a subclass {\tt VectorOfPtr<T*>} to make the danger of
+uninitialized data explicit?
+
+\item
+Entries returned by {\tt operator [ ]} cannot invoke member functions,
+since the conversion from {\tt VectorItemRef} is not allowed. The
+current workaround is the two new members:
+
+  {\tt T val( int i ) const \{ return look()->val(i); \}}
+
+  {\tt T\& ref( int i ) \{ return change()->ref(i); \}}
+
+which will probably have to be permanent. If we had a vector class
+which did not protect its data, this problem would not arise. In
+particular, {\tt operator [ ]} could always return a reference to a
+{\tt T}, thus not requiring {\tt T} to have efficient copying.
+
+
+\end{itemize}
+
+%%....................................................................
+\subsection{Higher level structures}
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Class {\tt Map}}
+
+This needs a complete overhaul, mostly to hew out nonsense.
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Class {\tt Word}}
+
+\begin{enumerate}
+
+\ckitem{\notick}{@rn}{}{
+Merge functionality of {\tt isProperPower} and {\tt maximalRoot} in class
+{\tt Word}
+}
+
+\ckitem{\notick}{@rn}{}{
+Sort out {\tt Word::replaceGenerators}
+}
+
+\ckitem{\notick}{@rn}{}{
+Improve {\tt int Word::agreementLength(const Word\&) const}
+}
+
+\end{enumerate}
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{The {\tt Group} hierarchy}
+
+\begin{enumerate}
+
+\ckitem{\notick}{@rn}{}{
+Remove almost all `intelligence' from this hierarchy, making it
+contain only such things as presentations and generator names.
+}
+
+\ckitem{\notick}{@rn}{}{
+Excise {\tt Chars FGGroup::nameOfGenerator(int i) const}.
+}
+
+\ckitem{\notick}{@rn}{}{
+Replace {\tt FPGroupRep::shortenByRelators(const Word\&)}.
+
+Perhaps the Dehn's algorithm code (which uses {\tt SymmetricRelators})
+belongs here, since we want to use it even if we do not know that it
+solves the word problem.  }
+
+\end{enumerate}
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Class {\tt Subgroup}}
+
+This should be almost nothing more than a container class for the
+generators and their names. Thus it can still derive from {\tt
+FGGroup}.
+
+
+
+%%--------------------------------------------------------------------
+\section{Details Checklist}\update{08/09/95}
+
+
+\begin{enumerate}
+
+\ckitem{\notick}{@rn}{}{
+The manual is now almost useless. Redo it.
+}
+
+\ckitem{\notick}{}{}{
+Derive {\tt class Stack<T>} and {\tt class Queue<T>}
+from {\tt class ListOf<T>}.
+}
+
+\ckitem{\notick}{@rn}{}{
+Make something like a global file unlinker with signal handlers.
+}
+
+\ckitem{\notick}{@sl}{}{An intrusive list iterator.}
+
+\ckitem{\notick}{@rn}{}{
+Make {\tt Trichotomy} a class, with conversion from, {\em but not to},
+{\tt bool}.
+
+This will be a problem if you have done things like:
+
+{\tt Trichotomy done; ...}
+
+{\tt if ( done ) \{...\}}
+
+(there should not be a conversion to {\tt bool}, since {\tt done ==
+dontknow} triggers a run-time error).
+}
+
+\ckitem{\notick}{@rn}{}{
+See about yanking {\tt Bool, YES, NO, DONTKNOW}. This will be a
+problem if anyone has illicitly used these as integers, but that is
+all the more reason to banish them.
+}
+
+\ckitem{\notick}{@rn}{}{
+See to {\tt istream::eof()} problem in {\tt WordParser}.
+}
+
+\ckitem{\notick}{}{}{
+Do more conversions between container classes.
+}
+
+\ckitem{\notick}{@rn}{}{
+Put free-reducing version of
+{\tt EltRep* WordRep::operator* (const EltRep\&) const} in {\tt FreeGroup}?
+}
+
+\ckitem{\notick}{@rn}{}{
+Consider use of {\tt long} in {\tt RefCounter} and {\tt PureRep}.
+}
+
+\ckitem{\tick}{@rn}{6/95}{
+Overhaul class {\tt Chars} as a function of time and necessity.
+}
+
+\ckitem{\tick}{@rn}{6/95}{
+Excise GNU random stuff
+}
+
+\ckitem{\tick}{@sr}{12/94}{
+Remove all dependence on the {\tt Group} hierarchy in
+{\tt FSA} and {\tt RKBP}.
+}
+
+\end{enumerate}

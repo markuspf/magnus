@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>User class AssociationsOf&lt;Key,Val&gt;</TITLE>
+<META NAME="description" CONTENT="User class AssociationsOf&lt;Key,Val&gt;">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00312100000000000000">
+User class <TT>AssociationsOf&lt;Key,Val&gt;</TT></A>
+</H3>
+
+<P>
+<BR>
+<BR><EM>What and Where
+<BR>
+<BR></EM>
+
+<P>
+The class
+<BR><TT>template &lt;class Key, class Val&gt; class AssociationsOf :
+<BR>
+public ObjectOf&lt; AssociationsRep&lt;Key,Val&gt; &gt;</TT>
+<BR>
+is defined in <TT>magnus/back_end/general/include/Associations.h</TT>.
+<BR>
+It implements simple association lists.
+
+<P>
+<BR>
+<BR><EM>Special Notes
+<BR>
+<BR></EM>
+
+<P>
+Class <TT>Key</TT> must have an <TT>==</TT> operator.
+<BR>
+Class <TT>Val</TT> must have an assignment operator.
+<BR>
+Both must have copy constructors and destructors.
+<BR>
+There must be an
+<BR><TT>ostream&amp; operator &#171; ( ostream&amp;, const Type&amp; )</TT>
+<BR>
+and a conversion of <TT>Key</TT> to <TT>Type</TT>.
+
+<P>
+Note that if <TT>Key</TT> or <TT>Val</TT> is not a user class then
+<TT>AssociationsOf&lt;Key,Val&gt;</TT> will perform inefficient copying operations.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

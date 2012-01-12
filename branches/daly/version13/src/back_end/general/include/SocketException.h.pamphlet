@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/ServerException.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "config.h"
+#ifdef LINUX
+#include <string>
+#endif
+
+@
+\section{class SocketException}
+<<class SocketException>>=
+class SocketException
+{
+ public:
+#ifdef LINUX
+
+  SocketException ( std::string s ) : m_s ( s ) {};
+  ~SocketException (){};
+
+  std::string description() { return m_s; }
+
+ private:
+
+  std::string m_s;
+#endif
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/ServerException.h
+#ifndef SocketException_class
+#define SocketException_class
+
+<<license>>
+<<include>>
+<<class SocketException>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

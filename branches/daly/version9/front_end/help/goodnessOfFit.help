@@ -1,0 +1,7 @@
+
+@@How Goodness Of Fit Works
+
+The Goodness of Fit Tool will conduct a test to determine whether a one variable data set fits a given theoretical distribution with a presecribed level of significance. The user can choose the level of signficance and test the one variable data set against a normal distirbution, an exponential distribution or a uniform distribution. The test for the normal distribution uses Geary's Test for Normality while the tests for the exponential and uniform uses standard chi-square goodness of fit methods. 
+
+
+        @For more information click here@html/goodnessFit/index.html::Goodness of Fit Help@

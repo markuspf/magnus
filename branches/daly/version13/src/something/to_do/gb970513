@@ -1,0 +1,6 @@
+Free groups are automatic. If X freely generates the finitely
+generated free group F, then (A,L) is a rational structure
+for F, where here A is the union of X and the set of all inverses
+of elements of X and L is the set of all reduced X-words.
+
+Status: done

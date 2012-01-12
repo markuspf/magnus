@@ -1,0 +1,167 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/objectsmith.pamphlet}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Includes}
+<<include.h>>=
+#include "Menu.h"
+
+@
+<<include.c>>=
+#include "ObjectSmith.h"
+
+@
+\section{class ObjectSmith}
+\subsection{ObjectSmith Constructor}
+<<ObjectSmith Constructor.h>>=
+  ObjectSmith( );
+@
+\subsection{private registerCallBack}
+<<registerCallBack.h>>=
+  static int registerCallBack(Ctor* ctor);
+@
+<<registerCallBack.c>>=
+int ObjectSmith::registerCallBack(Ctor* ctor)
+{
+  if ( freeCallBack - theCallBacks >= theCallBacksLen ) {
+	 Ctor** temp = new (Ctor*)[theCallBacksLen + jumpSize];
+	 for( int i = 0; i < theCallBacksLen; ++i )
+		temp[i] = theCallBacks[i];
+	 delete [] theCallBacks;
+	 theCallBacks = temp;
+	 freeCallBack = theCallBacks + theCallBacksLen;
+	 theCallBacksLen += jumpSize;
+  }
+  *freeCallBack = ctor;
+  return freeCallBack++ - theCallBacks;
+}
+
+@
+\subsection{ObjectSmith::readMessage}
+Used by class SessionManager.
+<<readMessage.h>>=
+  static void readMessage(istream& istr);
+@
+<<readMessage.c>>=
+void ObjectSmith::readMessage(istream& istr)
+{
+  int i;
+  istr >> i;
+  if ( i >= 0 && i < theCallBacksLen )
+	 theCallBacks[i]->readFrom(istr);
+
+  //@rn else perhaps warn
+}
+
+@
+\subsection{Static Initializations}
+\subsubsection{theCallBacksLen}
+<<theCallBacksLen.h>>=
+  static int theCallBacksLen;
+@
+<<theCallBacksLen.c>>=
+int ObjectSmith::theCallBacksLen = 0;
+@
+\subsubsection{theCallBacks}
+<<theCallBacks.h>>=
+  static Ctor** theCallBacks;
+@
+<<theCallBacks.c>>=
+Ctor** ObjectSmith::theCallBacks = 0;
+@
+\subsubsection{freeCallBack}
+<<freeCallBack.h>>=
+  static Ctor** freeCallBack;
+@
+<<freeCallBack.c>>=
+Ctor** ObjectSmith::freeCallBack = 0;
+@
+\subsubsection{jumpSize}
+<<jumpSize.h>>=
+  static const int jumpSize = 64;
+@
+\subsection{menus}
+These four methods create the menus shown by the front end.
+They are implemented in the menudefns pamphlet file.
+\subsubsection{ObjectSmith::outputCheckinMenuDefns}
+<<ObjectSmith::outputCheckinMenuDefns.h>>=
+  static void outputCheckinMenuDefns(ostream& ostr);
+@
+\subsubsection{ObjectSmith::outputToolsMenuDefns}
+<<ObjectSmith::outputToolsMenuDefns.h>>=
+  static void outputToolsMenuDefns(ostream& ostr);
+@
+\subsubsection{ObjectSmith::outputMakeMenuDefns}
+<<ObjectSmith::outputMakeMenuDefns.h>>=
+  static void outputMakeMenuDefns(ostream& ostr);
+@
+\subsubsection{ObjectSmith::outputTestingMenuDefns}
+<<ObjectSmith::outputTestingMenuDefns.h>>=
+  static void outputTestingMenuDefns(ostream& ostr);
+@
+<<menus>>=
+<<ObjectSmith::outputCheckinMenuDefns.h>>
+<<ObjectSmith::outputToolsMenuDefns.h>>
+<<ObjectSmith::outputMakeMenuDefns.h>>
+<<ObjectSmith::outputTestingMenuDefns.h>>
+@
+\subsection{ObjectSmith::outputPackagesMenuDefns.h}
+<<ObjectSmith::outputPackagesMenuDefns.h>>=
+  static void outputPackagesMenuDefns(ostream& ostr);
+@
+\subsection{class ObjectSmith}
+<<class ObjectSmith>>=
+class ObjectSmith : protected Menu
+{
+public:
+<<ObjectSmith::outputPackagesMenuDefns.h>>
+private:
+<<ObjectSmith Constructor.h>>
+  // No ctors for this static class; not to be implemented.
+  friend class SessionManager;
+  friend class Menu;     //@rn Hackery, so it can call registerCallBack.
+<<menus>>
+<<readMessage.h>>
+<<registerCallBack.h>>
+<<theCallBacksLen.h>>
+<<theCallBacks.h>>
+<<freeCallBack.h>>
+<<jumpSize.h>>
+};
+
+@
+\section{license}
+Copyright (C) 1994-2004 The New York Group Theory Cooperative
+See license/NYGTC for the full notice
+\section{Include File}
+<<ObjectSmith.h>>=
+// src/objectsmith.pamphlet
+#ifndef _OBJECTSMITH_H_
+#define _OBJECTSMITH_H_
+
+<<include.h>>
+<<class ObjectSmith>>
+#endif
+@
+\section{Code}
+<<*>>=
+// src/objectsmith.pamphlet
+<<include.c>>
+<<registerCallBack.c>>
+<<readMessage.c>>
+<<theCallBacksLen.c>>
+<<theCallBacks.c>>
+<<freeCallBack.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

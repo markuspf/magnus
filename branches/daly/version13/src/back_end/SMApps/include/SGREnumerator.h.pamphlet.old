@@ -1,0 +1,124 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/SGREnumerator.h}
+\author{Roger Needham, Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SMSubgroup.h"
+#include "SMEnumerator.h"
+#include "File.h"
+
+@
+\section{class SGRelatorEnumeratorARCer}
+<<class SGRelatorEnumeratorARCer>>=
+class SGRelatorEnumeratorARCer : public EnumeratorARCer
+{
+public:
+  SGRelatorEnumeratorARCer( ComputationManager& boss ) 
+    : EnumeratorARCer( boss ),
+      firstStart(true),
+      counter( 1 ),
+      numberOfAll( 100 ){ } 
+  
+  void setArguments( const class SMFPGroup* group,
+		     const class SMSubgroup* subgroup );
+
+  Chars getFileName() const {return file.getFileName();}
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void setNumberOfAll( int n ) { numberOfAll = n; }
+  bool ORisTrivial(const Word&  theTestWord);
+
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+protected:
+  void enumerate();
+  
+private:
+  const class SMSubgroup* theSMSubgroup;
+  const class SMFPGroup* theGroup;
+  File file;
+  Word possibleRelator;
+  bool firstStart;
+  int counter;
+  int numberOfAll;
+};
+
+@
+\section{class SGRelatorEnumerator}
+Definition of class RelatorEnumerator, an enumerator with
+an integrated general word problem.
+It allows the end user to guide the search for a general
+solution of the word problem. If and when one is found,
+it enumerates relators for a given subgroup, making some
+attempt to filter out redundant ones.
+<<class SGRelatorEnumerator>>=
+class SGRelatorEnumerator : public  EnumeratorProblem< NoType >
+{
+public:
+  SGRelatorEnumerator( SMSubgroup&);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  class SMSubgroup& getSubgroup() const { return theSMSubgroup;}
+  void takeControl( );         // overrides ComputationManager
+  Chars getDataFileName() const { return arcer.getFileName(); }
+
+  void start( ) {       // overrides ComputationManager
+    int totalNum = getParameters().getValue("numberOfAll");
+    arcer.setNumberOfAll( totalNum );
+  }       
+  
+  void terminate( ) { }       // overrides ComputationManager
+
+  void resume() {
+    resumed = true;
+    arcer.submitSignal();
+    
+    int totalNum = getParameters().getValue("numberOfAll");
+    arcer.setNumberOfAll( totalNum );
+
+  }
+
+private:
+  SMSubgroup& theSMSubgroup;
+  SGRelatorEnumeratorARCer arcer;
+  class GIC& theGIC;
+  bool started;
+  bool firstStart;  
+  bool resumed;
+  bool useORwordProblem;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/SGREnumerator.h
+#ifndef _RELATORENUMERATOR_H_
+#define _RELATORENUMERATOR_H_
+
+<<license>>
+<<include>>
+<<class SGRelatorEnumeratorARCer>>
+<<class SGRelatorEnumerator>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

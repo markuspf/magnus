@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/error.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{error}
+<<error>>=
+#ifdef __GNUG__
+//@jml This tells g++ that error does not return.
+inline volatile void error(const char *msg) {
+#else
+inline void error(const char* msg) {
+#endif
+
+  cout << "fatal_error_ {" << msg << '}' << endl << flush;
+  // Try to shove the message directly out to the front end
+  cerr << endl << "Fatal error: " << msg << endl;
+  while ( 1 );
+  // So we can get a stack backtrace when debugging
+}
+
+@
+\section{warn}
+<<warn>>=
+inline void warn(const char* msg) {
+  cerr << endl << "Warning: " << msg << endl;
+}
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/error.h
+#ifndef _ERROR_H_
+#define _ERROR_H_
+
+<<license>>
+<<error>>
+<<warn>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

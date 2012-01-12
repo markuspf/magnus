@@ -1,0 +1,43 @@
+From gilbert@rio Wed Feb 21 16:46:19 1996
+Date: Wed, 21 Feb 1996 16:46:20 -0500
+From: gilbert@rio ( Gilbert Baumslag)
+To: bormotov@jolly2
+Content-Length: 1148
+
+Found the cyclic decomposition of A1:  Z^3.  
+
+The cyclic decomposition allows one to solve a number of algorithmic problems, for example the word problem, the order problem and so on.
+
+___________________________________________________
+
+A1 is not trivial:  this follows from the cyclic decomposition of A1.
+
+--------------------------------------------------
+
+A1 is infinite:  this follows from the cyclic decomposition of A1.
+
+--------------------------------------------------
+
+Is A1 free abelian?
+
+________________________________________________
+
+A1 is free abelian: this follows from the cyclic decomposition of A1.
+
+_________________________________________________
+
+The order of A1 is infinite: this follows from the cyclic decomposition of A1.
+
+The torsion-free rank of A1 is 3: this follows from the cyclic decomposition of A1.
+
+w2 is not trivial in A2 : this follows from the canonical decomposition.
+
+
+The order of w2 is infinite: this follows from the canonical decomposition.
+
+H1 is not equal to A2: this follows by computing 
+the abelian invariants of A2/H1.
+
+
+A2 is infinite: this follows by computing the torsion-free rank of A2.
+

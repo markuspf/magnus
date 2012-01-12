@@ -1,0 +1,756 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/smenumerator.pamphlet}
+\author{Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "AlgebraicObject.h"
+#include "SMFPGroup.h"
+#include "Word.h"
+#include "Associations.h"
+#include "Subgroup.h"
+
+@
+<<include.c>>=
+#include "SMEnumerator.h"
+#include "SMSubgroup.h"
+#include "Subgroup.h"
+#include "Timer.h"
+#include "AutoEnumerator.h"
+#include "MagnusHome.h"
+#include "SMListIterator.h"
+#include <unistd.h>
+#include <signal.h>
+#include <sys/wait.h>
+
+@
+\section{class NoType}
+\subsection{class NoType}
+<<class NoType>>=
+class NoType {
+ public:
+  static Type type( ) { return theNoType; }
+ private:
+  static const Type theNoType;
+
+};
+
+@
+\section{class SMListData}
+\subsection{SMListData Constructor}
+<<SMListData Constructor.h.1>>=
+  SMListData( );
+@
+This used to read:
+\begin{verbatim}
+  char* tmpFileName = tempnam(MagnusTmp::magnusTmp(),NULL);
+\end{verbatim}
+but tempnam is deprecated. We use mkstemp instead.
+<<SMListData Constructor.c.1>>=
+SMListData::SMListData( ): number_of_elements(0), mode( ios::in ) 
+{ 
+  // get name for the data file
+  static char sml[] = "smlXXXXXX";
+  char *tmpFileName;
+  tmpFileName = (char *)(malloc(10));
+  strncpy(tmpFileName,sml,10);
+  FILE *f = NULL;
+  if ((f=(FILE *)mkstemp(tmpFileName))==0){
+    fprintf(stderr,"Error: cannot open file %s\n",tmpFileName);
+    exit(1);
+  }
+  else fclose(f);
+  dataFileName = Chars( tmpFileName );
+  free(tmpFileName);
+  // makes an empty color file for front end maybe needs to be changed
+  //const char* destColor = Chars( dataFileName ) + Chars(".color");
+  Chars destColor = Chars( tmpFileName ) + Chars(".color");
+  ofstream outColor( destColor );
+  outColor << "#0000000%000@" << flush;
+  outColor.close();
+  free(tmpFileName);
+  static char smr[] = "smrXXXXXX";
+  tmpFileName = (char *)(malloc(10));
+  strncpy(tmpFileName,smr,10);
+  if ((f=(FILE *)mkstemp(tmpFileName))==0){
+    fprintf(stderr,"Error: cannot open file %s\n",tmpFileName);
+    exit(1);
+  }
+  else fclose(f);
+  refFileName = Chars( tmpFileName );
+  free(tmpFileName);
+}
+
+@
+<<SMListData Constructor.h.2>>=
+  SMListData( const SMListData& sd );
+@
+<<SMListData Constructor.c.2>>=
+SMListData::SMListData( const SMListData& sd ):
+  number_of_elements( sd.number_of_elements ), 
+  mode( ios::in ),
+  dataFileName( sd.dataFileName ),
+  refFileName( sd.refFileName )
+{
+  
+}
+
+@
+\subsection{SMListData operator output}
+operator for adding elements
+<<SMListData operator output.h.1>>=
+  SMListData& operator << (const class WriteEnumeratorElement& e);
+@
+This used to read:
+\begin{verbatim}
+  sprintf(e_size, "%.5d",dataFile.tellg() - beg_pos );
+\end{verbatim}
+but the compiler is unhappy with passing non-POD information
+thru "...", whatever that means. Thus we rewrite it into two lines:
+<<nonpod>>=
+  int esize = dataFile.tellg() - beg_pos;
+  sprintf(e_size, "%.5d",esize);
+@
+<<SMListData operator output.c.1>>=
+SMListData& SMListData::operator << (const WriteEnumeratorElement& e)
+{
+#if SAFETY > 0
+  if ( mode != ios::out )
+    error("SMListData& operator << (const WriteEnumeratorElement& e) :"
+	  " was not opened for read acces.");
+#endif    
+  number_of_elements++;
+  dataFile << number_of_elements << ": ";
+  // save begining position of an element
+  char f_pos[10];
+  long beg_pos = dataFile.tellg();
+  sprintf( f_pos, "%.10d",beg_pos );
+  refFile << f_pos << flush;
+  // write element
+  dataFile << e;
+  // save element length
+  char e_size[5];
+<<nonpod>>
+  refFile << e_size << flush;
+  dataFile << flush;
+  return *this;
+}
+
+@
+operator for all other information
+<<SMListData operator output.h.2>>=
+  SMListData& operator << (const Chars& c);
+@
+<<SMListData operator output.c.2>>=
+SMListData&  SMListData::operator << (const Chars& c)
+{
+#if SAFETY > 0
+  if ( mode != ios::out )
+    error("SMListData& operator << (const Chars& c) :"
+	  " was not opened for read acces.");
+#endif    
+  dataFile << c;
+  return *this;
+}
+
+@
+\subsection{SMListData::getElementOf}
+returns i-th element as a character. 
+Iterator must parse it to the corresponding data type
+<<SMListData::getElementOf.h>>=
+  Chars getElementOf( int i );
+@
+<<SMListData::getElementOf.c>>=
+Chars SMListData::getElementOf( int i )
+{
+  int beg_pos = getBegPosOf( i );
+  int size = getLengthOf( i );
+  Chars ret;
+  char* el = new char[size + 1];
+  dataFile.seekg( beg_pos );
+  dataFile.read( el, size );
+  el[size] = '\0';
+  ret = Chars( el );
+  delete [] el;
+  return ret;   
+}
+
+@
+\subsection{SMListData::append}
+<<SMListData::append.h>>=
+  // appends a list to the end 
+  void append( SMListData& sd );
+@
+This used to read:
+\begin{verbatim}
+  sprintf(e_size, "%.5d",dataFile.tellg() - beg_pos );
+\end{verbatim}
+but the compiler is unhappy with passing non-POD information
+thru "...", whatever that means. Thus we rewrite it into two lines:
+<<nonpod1>>=
+   int esize = dataFile.tellg() - beg_pos;
+   sprintf(e_size, "%.5d",esize);
+@
+<<SMListData::append.c>>=
+  // appends a list to the end 
+void SMListData::append( SMListData& sd )
+{
+#if SAFETY > 0
+  if ( mode != ios::out )
+    error( "SMListData::append( ... ) : "
+	   " was not opened for write access." );  
+#endif   
+  int n = sd.numberOfElements();
+  for (int i = 0;i < n; i++ ){
+    number_of_elements++;
+    dataFile << number_of_elements << ": ";
+    // save begining position of an element
+    char f_pos[10];
+    long beg_pos = dataFile.tellg();
+    sprintf( f_pos, "%.10d",beg_pos );
+    refFile << f_pos << flush;
+    // write element
+    dataFile << sd.getElementOf( i );
+    // save element length
+    char e_size[5];
+<<nonpod1>>
+    refFile << e_size << flush;
+
+  }
+}
+
+@
+\subsection{SMListData::openFiles}
+This used to read:
+\begin{verbatim}
+  void openFiles( int );
+\end{verbatim}
+The [[int]] in this signature is used as a mode for opening the
+file. This is no longer correct and must be an [[ios_openmode]].
+<<SMListData::openFiles.h>>=
+  void openFiles( std::_Ios_Openmode );
+@
+<<SMListData::openFiles.c>>=
+void SMListData::openFiles( std::_Ios_Openmode m )
+{
+  mode = m;
+  dataFile.open(dataFileName,mode);
+#if SAFETY > 0
+  if( !dataFile )
+      error( "SMListData::openFiles( int ) : "
+	     "Cannot open the data file." );
+#endif    
+  refFile.open(refFileName,mode);
+#if SAFETY > 0
+  if( !refFile )
+      error( "SMListData::openFiles( int ) : "
+	     "Cannot open the referencies file." );
+#endif 
+}
+
+@
+\subsection{SMListData::setWriteMode}
+<<SMListData::setWriteMode.h>>=
+  void setWriteMode();
+@
+<<SMListData::setWriteMode.c>>=
+void SMListData::setWriteMode()
+{
+  closeCurrentMode();
+  openFiles( ios::out );
+}
+
+@
+\subsection{SMListData::setReadMode}
+<<SMListData::setReadMode.h>>=
+  void setReadMode();
+@
+<<SMListData::setReadMode.c>>=
+void SMListData::setReadMode()
+{
+  closeCurrentMode();
+  openFiles( ios::in );  
+}
+
+@
+\subsection{SMListData::closeCurrentMode}
+<<SMListData::closeCurrentMode.h>>=
+  void closeCurrentMode();
+@
+This used to read:
+\begin{verbatim}
+  mode = -1;
+\end{verbatim}
+but assigning an [[int]] to a [[std::_Ios_Openmode]] is invalid.
+<<SMListData::closeCurrentMode.c>>=
+void SMListData::closeCurrentMode()
+{
+  dataFile.close();
+  refFile.close();
+  mode = ios::in;
+}
+
+@
+\subsection{SMListData::doHardCopy}
+<<SMListData::doHardCopy.h>>=
+  void doHardCopy( const SMListData& );
+  ~SMListData() {
+    closeCurrentMode();
+  }
+@
+This used to read:
+\begin{verbatim}
+  char* tmpFileName = tempnam(MagnusTmp::magnusTmp(),NULL);
+\end{verbatim}
+but tempnam is deprecated. We use mkstemp instead.
+<<SMListData::doHardCopy.c>>=
+void SMListData::doHardCopy( const SMListData& sd )
+{
+  closeCurrentMode();
+  number_of_elements = sd.number_of_elements;
+  // copy the file with enumerations
+  static char smd[] = "smdXXXXXX";
+  char *tmpFileName;
+  tmpFileName = (char *)(malloc(10));
+  strncpy(tmpFileName,smd,10);
+  FILE *f = NULL;
+  if ((f=(FILE *)mkstemp(tmpFileName))==0){
+    fprintf(stderr,"Error: cannot open file %s\n",tmpFileName);
+    exit(1);
+  }
+  else fclose(f);
+  Chars fName = sd.dataFileName;
+  const char* tmpStr = fName;
+  int pid;
+  if ( ( pid = fork() ) == 0 ) {
+    setpgid(0,0);
+    if ( execlp( "cp", "",tmpStr ,tmpFileName, NULL) == -1 )
+      error("SMListData( const SMListData& sd, int m = ios::in ):"
+	    " can't create a copy of the data file.");
+    _exit(0);
+  }
+  while( kill(pid, 0) == 0 ) {
+    sleep(100); 
+  }
+#ifdef BSD    
+  int status;
+  wait(&status);
+#endif
+  // make an empty color file
+  //const char* destColor = Chars( tmpFileName ) + Chars(".color");
+  Chars destColor = Chars( tmpFileName ) + Chars(".color");
+  ofstream outColor( destColor );
+  outColor << "#0000000%000@" << flush;
+  outColor.close();
+  // save the name of the data file
+  dataFileName = Chars( tmpFileName );
+  free( tmpFileName );
+  // Copy references file
+  /* 20031017000 tpd change tmpnam to mkstemp */
+  static char smp[] = "smpXXXXXX";
+  tmpFileName = (char *)(malloc(10));
+  strncpy(tmpFileName,smp,10);
+  if ((f=(FILE *)mkstemp(tmpFileName))==0){
+    fprintf(stderr,"Error: cannot open file %s\n",tmpFileName);
+    exit(1);
+  }
+  else fclose(f);
+  fName = sd.refFileName;
+  tmpStr = fName;
+  if ( ( pid = fork() ) == 0 ) {
+    setpgid(0,0);
+    if ( execlp( "cp", "",tmpStr ,tmpFileName, NULL) == -1 )
+      error("SMListData( const SMListData& sd, int m = ios::in ):"
+	    " can't create a copy of the offset file.");
+    
+    _exit(0);
+  }
+  while( kill(pid, 0) == 0 ) { sleep(10); }
+#ifdef BSD    
+  status;
+  wait(&status);
+#endif
+  // save the name of the offset file
+  refFileName = Chars( tmpFileName );
+  free( tmpFileName );
+}
+
+@ 
+\subsection{SMListData::getBegPosOf}
+gives offset of the i-th element 
+<<SMListData::getBegPosOf.h>>=
+  // gives offset of the i-th element 
+  int getBegPosOf( int i);
+@
+<<SMListData::getBegPosOf.c>>=
+int SMListData::getBegPosOf( int i)
+{
+#if SAFETY > 0
+  if ( mode != ios::in )
+    error( "SMListData::getBegPosOf( int ) : "
+	   " was not opened for read access." );      
+  if( i < 0 || i >= number_of_elements )
+    error( "SMListData::getBegPosOf( int ) : "
+	   " wrong index." );
+#endif    
+  refFile.seekg( i*10 + i*5 );
+  char str_pos[11]; 
+  refFile.read( str_pos, 10 );
+  str_pos[10] = '\0';
+  int f_pos = atoi( str_pos );
+  return f_pos;
+}
+
+@
+\subsection{SMListData::getLengthOf}
+returns the length of an i-th element
+<<SMListData::getLengthOf.h>>=
+  int getLengthOf( int i);
+@
+<<SMListData::getLengthOf.c>>=
+int SMListData::getLengthOf( int i)
+{
+#if SAFETY > 0
+  if ( mode != ios::in )
+    error( "SMListData::getLengthOf( int ) : "
+	   " was not opened for read access." );      
+  if( i < 0 || i >= number_of_elements )
+    error( "SMListData::getLengthOf( int ) : "
+	   " wrong index." );
+#endif    
+  refFile.seekg( i*10 + i*5 + 10 );
+  char str_pos[6];  
+  refFile.read( str_pos, 5 );
+  str_pos[5] = '\0';
+  int size = atoi( str_pos );
+  return size;
+}
+
+@
+\subsection{SMListData::numberOfElements}
+<<SMListData::numberOfElements.h>>=
+  // number of elements in the list
+  int numberOfElements() const { return number_of_elements; }
+@
+\subsection{SMListData::getDataFileName}
+for front end only
+<<SMListData::getDataFileName.h>>=
+  Chars getDataFileName() const { return dataFileName; }
+@
+\subsection{SMListData::getMode}
+returns current mode: ios::out, ios::in or -1 if 
+no one of those was set
+<<SMListData::getMode.h>>=
+  int getMode() const { return mode; }
+@
+\subsection{SMListData operator less than}
+<<SMListData operator less than.h>>=
+  // IPC tools needed to obtain the number of elements in the list
+  friend ostream& operator < ( ostream& ostr, const SMListData& s )
+  {
+    ostr < s.dataFileName < s.refFileName;
+    ostr < s.number_of_elements;
+    return ostr;
+  }
+  
+@
+\subsection{SMListData operator greater than}
+<<SMListData operator greater than.h>>=
+  friend istream& operator > ( istream& istr, SMListData& s )
+  {
+    Chars dF, rF;
+    istr > dF > rF;
+    if ( dF != s.dataFileName || rF != s.refFileName )
+      error("friend istream& operator > ( istream& istr, SMListData& s ) :"
+	    " data files are seem to be different");
+    istr >  s.number_of_elements;
+    return istr;
+  }
+
+@
+\subsection{class SMListData}
+This used to read:
+\begin{verbatim}
+  int mode;  // current mode
+\end{verbatim}
+but the mode must be [[std::_Ios_Openmode]] not [[int]].
+<<class SMListData>>=
+class SMListData
+{
+public:
+<<SMListData Constructor.h.1>>
+<<SMListData Constructor.h.2>>
+<<SMListData::doHardCopy.h>>
+<<SMListData operator output.h.1>>
+<<SMListData operator output.h.2>>
+<<SMListData::append.h>>
+<<SMListData::setWriteMode.h>>
+<<SMListData::setReadMode.h>>
+<<SMListData::closeCurrentMode.h>>
+<<SMListData::getElementOf.h>>
+<<SMListData::numberOfElements.h>>
+<<SMListData::getDataFileName.h>>
+<<SMListData::getMode.h>>
+<<SMListData operator less than.h>>
+<<SMListData operator greater than.h>>
+private:
+<<SMListData::openFiles.h>>
+<<SMListData::getBegPosOf.h>>
+<<SMListData::getLengthOf.h>>
+  fstream dataFile;   // file with elements
+  fstream refFile;    // file with offsets of lements in dataFile 
+  Chars dataFileName;
+  Chars refFileName;  // file names
+  int number_of_elements;   // number of elements
+  std::_Ios_Openmode mode;  // current mode
+};
+
+@
+\section{class EnumeratorARCer}
+\subsection{EnumeratorARCer Constructor}
+<<EnumeratorARCer Constructor.h.1>>=
+  EnumeratorARCer( ComputationManager& boss, SMListData& d ) 
+    : ARCer( boss ), theData( d ) { } 
+@
+\subsection{EnumeratorARCer::runComputation}
+<<EnumeratorARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<EnumeratorARCer::runComputation.c>>=
+void EnumeratorARCer::runComputation( )
+{
+  SUSPEND_SIGNAL_RECEIVED = false;
+  if (signal( SIGUSR1, suspend_signal_handler) == SIG_ERR)
+    error("void EnumeratorARCer::runComputation( ) :"
+	  "Can`t catch signal");
+  enumerate();
+}
+
+@
+\subsection{EnumeratorARCer::submitSignalRecieved}
+<<EnumeratorARCer::submitSignalRecieved.h>>=
+  bool submitSignalRecieved()const;
+@
+<<EnumeratorARCer::submitSignalRecieved.c>>=
+bool EnumeratorARCer::submitSignalRecieved()const
+{
+  return  SUSPEND_SIGNAL_RECEIVED;
+}
+
+@
+\subsection{EnumeratorARCer::submitSignal}
+<<EnumeratorARCer::submitSignal.h>>=
+  void submitSignal( );
+@
+<<EnumeratorARCer::submitSignal.c>>=
+void EnumeratorARCer::submitSignal( )
+{
+  if( pid < 0 ) return;
+  if (bInterrupted == true)
+    kill(-pid, SIGCONT);
+  kill(-pid, SIGUSR1);
+
+}
+
+@
+\subsection{class EnumeratorARCer}
+<<class EnumeratorARCer>>=
+class EnumeratorARCer : public ARCer
+{
+public:
+<<EnumeratorARCer Constructor.h.1>>
+<<EnumeratorARCer::submitSignal.h>>
+<<EnumeratorARCer::runComputation.h>>
+protected:
+<<EnumeratorARCer::submitSignalRecieved.h>>
+  virtual void enumerate() = 0;
+  SMListData& theData;
+};
+
+@
+\section{class EnProbType}
+\subsection{class EnProbType}
+<<class EnProbType>>=
+template <class T>  class EnProbType {
+public:
+  EnProbType() {
+    ostrstream ostr;
+    ostr << "EnumeratorProblem" << T::type() << '\0' << flush;
+    strcpy(s, ostr.str());
+    ostr.freeze(0);
+  }
+private:
+  friend class EnumeratorProblem<T>;
+  char s[100];
+};
+
+@
+\section{class EnumeratorProblem}
+\subsection{class EnumeratorProblem}
+<<class EnumeratorProblem>>=
+template <class T> class EnumeratorProblem  : public Supervisor
+{
+public:
+
+  EnumeratorProblem( AlgebraicObject& b ): 
+    Supervisor(true),
+    theParent(b) 
+   {
+      theData.setWriteMode();
+    }
+  
+  ~EnumeratorProblem() {
+   theData.closeCurrentMode();
+  }
+  
+  AlgebraicObject& getParentObject() const { return theParent; }
+  
+  const IconID iconID( ) const {
+    return IconID::enumerator_problem;
+  }
+
+  const char* typeID( ) const {
+    return type( );
+  }
+  
+  static const char* type( )  { return theType.s; }
+
+  // Access functions
+  
+  SMListData& getData() { return theData;}
+
+protected:
+  SMListData theData;
+
+  Chars theDataFile;
+  static EnProbType<T> theType;
+  AlgebraicObject& theParent;							    
+};
+
+@
+\section{template class SMEnumerator}
+\subsection{template SMEnumerator Constructor}
+<<template SMEnumerator Constructor.h>>=
+template <class T> 
+SMEnumerator<T>::SMEnumerator(AlgebraicObject& P, const Chars heritage)
+  : AlgebraicObject( heritage ),
+    theParent( P )
+
+{ }
+
+@
+\subsection{template SMEnumerator Destructor}
+<<template SMEnumerator Destructor.h>>=
+template <class T> 
+SMEnumerator<T>::~SMEnumerator() 
+{
+}
+
+@
+\subsection{template SMEnumerator::printProperties}
+<<template SMEnumerator::printProperties.h>>=
+template <class T> 
+void SMEnumerator<T>::printProperties(ostream& ostr) const
+{
+  ostr << DataPair( Parent( oid() ), Object( theParent ) );
+}
+
+@
+\subsection{template SMEnumerator::viewStructure}
+<<template SMEnumerator::viewStructure.h>>=
+template <class T> 
+void SMEnumerator<T>::viewStructure(ostream& ostr) const
+{
+  ostr
+    << "viewBuilder objectView viewParameters {viewID "
+    << oid()
+    << " heritage {"
+    << heritage()
+    << "}}";
+}
+
+@
+\subsection{template SMEnumerator::printDefinition}
+<<template SMEnumerator::printDefinition.h>>=
+template <class T> 
+void SMEnumerator<T>::printDefinition(ostream& ostr) const
+{
+
+}
+
+@
+\section{SMEnumerator.h}
+<<SMEnumerator.h>>=
+// src/smenumerator.pamphlet
+#ifndef _SMENUMERATOR_H_
+#define _SMENUMERATOR_H_
+
+<<include.h>>
+
+template <class T> class EnumeratorProblem;
+
+<<class NoType>>
+<<class SMListData>>
+<<class EnumeratorARCer>>
+
+template <class T> class EnumeratorProblem;
+
+<<class EnProbType>>
+<<class EnumeratorProblem>>
+#endif
+@
+\section{license}
+Copyright (C) 1994-2004 The New York Group Theory Cooperative
+See license/NYGTC for the full notice
+\section{SMEnumerator.C}
+<<*>>=
+
+<<include.c>>
+bool SUSPEND_SIGNAL_RECEIVED = false;
+
+#ifdef BSD
+extern "C"
+void suspend_signal_handler(int sig, int code, struct sigcontext* scp,
+			     char* addr)
+#else
+extern "C"
+void suspend_signal_handler(int sig)
+#endif
+{
+  if (sig == SIGUSR1)
+    SUSPEND_SIGNAL_RECEIVED = true;
+}
+
+const Type NoType::theNoType = Type( Type::unique() );
+
+<<SMListData Constructor.c.1>>
+<<SMListData Constructor.c.2>>
+<<SMListData operator output.c.1>>
+<<SMListData operator output.c.2>>
+<<SMListData::getElementOf.c>>
+<<SMListData::append.c>>
+<<SMListData::openFiles.c>>
+<<SMListData::setWriteMode.c>>
+<<SMListData::setReadMode.c>>
+<<SMListData::closeCurrentMode.c>>
+<<SMListData::doHardCopy.c>>
+<<SMListData::getBegPosOf.c>>
+<<SMListData::getLengthOf.c>>
+
+<<EnumeratorARCer::runComputation.c>>
+<<EnumeratorARCer::submitSignalRecieved.c>>
+<<EnumeratorARCer::submitSignal.c>>
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

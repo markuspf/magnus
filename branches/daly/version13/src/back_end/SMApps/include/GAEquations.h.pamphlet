@@ -1,0 +1,188 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/GAEquations.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "GAEquationSolver.h"
+#include "List.h"
+#include "ARCer.h"
+#include "FPGroup.h"
+#include "Map.h"
+#include "File.h"
+#include "SMEquation.h"
+
+@
+\section{class GAEquationArcer}
+<<class GAEquationArcer>>=
+class GAEquationArcer : public ARCer
+{
+public:
+  GAEquationArcer( ComputationManager& boss ) 
+    : ARCer( boss ), retValue(dontknow) 
+  { } 
+
+  void setArguments( FreeGroup, int, Word );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  Trichotomy haveSolution() const { return retValue; }
+  Map getSolution( ) const;
+  Chars getFileName() const { return file.getFileName(); }
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  Trichotomy retValue;
+  Map solution;
+  File file;
+  FreeGroup theGroup;
+  int numOfVars;
+  Word theWord;
+};
+
+@
+\section{class GAEquationCM}
+<<class GAEquationCM>>=
+class GAEquationCM : public ComputationManager
+{
+public:
+  GAEquationCM( class GAEquationProblem& PO );
+  Chars getFileName() const { return arcer.getFileName(); }
+  Trichotomy haveSolution() const { return theAnswer; }
+  Map getSolution( ) const;
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  SMEquation2& theEquation;
+  GAEquationArcer arcer;
+  Trichotomy theAnswer;
+  Map solution;
+  Chars filename;
+  bool bStarted;
+};
+
+@
+\section{class GAEquationProblem}
+<<class GAEquationProblem>>=
+class GAEquationProblem : public Supervisor
+{
+public:
+  GAEquationProblem( class SMEquation2& );
+  SMEquation2& getEquation() const { return theEquation; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+
+private:
+  SMEquation2& theEquation;
+  bool linkHasBeenSent;
+  Subordinate<GAEquationProblem, GAEquationCM> GA;
+};
+
+@
+\section{class TwoCommArcer}
+<<class TwoCommArcer>>=
+class TwoCommArcer : public ARCer
+{
+public:
+  TwoCommArcer( ComputationManager& boss ) 
+    : ARCer( boss ), retValue(dontknow) 
+  { } 
+
+  void setArguments( FreeGroup, Word );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  Trichotomy haveSolution() const { return retValue; }
+  Chars getFileName() const { return file.getFileName(); }
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  Trichotomy retValue;
+  File file;
+  FreeGroup theGroup;
+  Word theWord;
+};
+
+@
+\section{class TwoCommCM}
+<<class TwoCommCM>>=
+class TwoCommCM : public ComputationManager
+{
+public:
+  TwoCommCM( class TwoCommProblem& PO );
+  Chars getFileName() const { return arcer.getFileName(); }
+  Trichotomy haveSolution() const { return theAnswer; }
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  TwoCommArcer arcer;
+  Trichotomy theAnswer;
+  bool bStarted;
+};
+
+@
+\section{class TwoCommProblem}
+<<class TwoCommProblem>>=
+class TwoCommProblem : public Supervisor
+{
+public:
+  TwoCommProblem( class SMWord& );
+  SMWord& getWord() const { return theWord; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  bool linkHasBeenSent;
+  Subordinate<TwoCommProblem, TwoCommCM> GA;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/GAEquations.h
+#ifndef _GAEquations_h_
+#define _GAEquations_h_
+
+<<license>>
+<<include>>
+<<class GAEquationArcer>>
+<<class GAEquationCM>>
+<<class GAEquationProblem>>
+<<class TwoCommArcer>>
+<<class TwoCommCM>>
+<<class TwoCommProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

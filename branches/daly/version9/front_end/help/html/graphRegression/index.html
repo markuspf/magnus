@@ -1,0 +1,616 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>GraphRegressionLong</TITLE>
+<META NAME="description" CONTENT="GraphRegressionLong">
+<META NAME="keywords" CONTENT="GraphRegressionLong">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="GraphRegressionLong.css">
+
+</HEAD>
+
+<BODY >
+<P>
+<DIV ALIGN="CENTER">
+<B>THE GRAPHICAL ANALYSIS TOOL</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+In a <B>simple linear regression models</B> we consider <B>paired data</B>,
+<!-- MATH
+ \begin{displaymath}
+(x_1,y_1),(x_2,y_2),...,(x_n,y_n)
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="194" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$\displaystyle (x_1,y_1),(x_2,y_2),...,(x_n,y_n)$">
+</DIV><P></P>
+where <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ x_i$"> for <IMG
+ WIDTH="76" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ i=1,...,n$"> is a particular value of a predictor variable <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X$"> and <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ y_i$"> is the
+value  of the response variable <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$"> corresponding to <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ x_i$">.  In the one variable <B>linear model</B>
+the average response <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$"> is linear in <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X$"> so that the model has the form
+<!-- MATH
+ \begin{displaymath}
+Y = (\alpha + \beta X) + \epsilon \tag 1
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="138" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$\displaystyle Y = (\alpha + \beta X) + \epsilon \tag 1$">
+</DIV><P></P>
+
+<P>
+What we wish to do with this sample
+information is to determine the line which <B>fits the data</B> and then use this <B>fitted model</B> to <B>predict</B> or <B>forecast</B> <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$"> given <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X$">.
+
+<P>
+The line given by <!-- MATH
+ $y = \alpha + \beta x$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ y = \alpha + \beta x$"> is called the <B>regression line</B> while <!-- MATH
+ $\alpha,\beta$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \alpha,\beta$">
+are the <B>regression parameters</B>.  <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \alpha$"> is the <B>regression intercept</B> and represents the
+average response when <IMG
+ WIDTH="48" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ X = 0$">, while <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$ \beta$"> is the <B>regression slope</B>.  Recall that the slope
+of a line gives the change in <IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ y$"> per unit change in <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ x$">.  Therefore the regression slope represents
+the <B>average change in response per unit change in predictor</B>.
+
+<P>
+Suppose that now, assuming this model, we generate <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ n$"> data points
+<!-- MATH
+ \begin{displaymath}
+(x_1,y_1),(x_2,y_2),...,(x_n,y_n)
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="194" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$\displaystyle (x_1,y_1),(x_2,y_2),...,(x_n,y_n)$">
+</DIV><P></P>
+where as explained each <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ x_i$"> for <IMG
+ WIDTH="76" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ i=1,...,n$"> is a particular value of the predictor variable <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X$"> and
+<IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ y_i$"> is the corresponding value of the response variable <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$">.
+
+<P>
+As a first step we graph these data points to form a <B>scatter diagram</B> as in Figure 1. 
+The estimate for the regression line <!-- MATH
+ $Y = \alpha + \beta X$
+ -->
+<IMG
+ WIDTH="92" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ Y = \alpha + \beta X$"> would be the "best" fitted line <!-- MATH
+ $Y = a
++ bX$
+ -->
+<IMG
+ WIDTH="87" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ Y = a
++ bX$"> to these sampled points. 
+
+<P>
+
+<P><P>
+<BR>
+
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="336" HEIGHT="195" ALIGN="MIDDLE" BORDER="0"
+ SRC="graphRegression1.gif"
+>
+</DIV><P></P>
+
+<DIV ALIGN="CENTER">
+ Figure 1 Scatter Diagram</DIV>
+
+<P><P>
+<BR>
+
+<P>
+The value <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.gif"
+ ALT="$ a$"> would be an estimate for <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \alpha$"> and the value <IMG
+ WIDTH="11" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.gif"
+ ALT="$ b$"> would be an estimate for <IMG
+ WIDTH="14" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$ \beta$">. 
+We need criteria in order to determine thsis "best fitted" line.  
+
+<P>
+For each <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ x_i$">, if <IMG
+ WIDTH="77" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ y = a+bx$"> is any fitted line, the value
+<!-- MATH
+ \begin{displaymath}
+y_{pred_i} = a+bx_i
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="113" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.gif"
+ ALT="$\displaystyle y_{pred_i} = a+bx_i$">
+</DIV><P></P>
+would be the best predicted value for <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ y_i$"> given that line.  The difference
+<!-- MATH
+ \begin{displaymath}
+e_i = y_i - y_{pred_i}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="110" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.gif"
+ ALT="$\displaystyle e_i = y_i - y_{pred_i}$">
+</DIV><P></P>
+is called the <B>ith sample residual</B> and is an estimate for <!-- MATH
+ $\epsilon_i$
+ -->
+<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \epsilon_i$"> the random variation at
+<IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ x_i$">. The best fitted line would have the <B>smallest total sample residuals</B>.  We form the
+expression <!-- MATH
+ \begin{displaymath}
+\text{SSE} = \sum_{i=1}^n (y_i - (a+bx_i))^2 = \sum_{i=1}^n e_i^2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+&nbsp; &nbsp;SSE<IMG
+ WIDTH="219" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="$\displaystyle = \sum_{i=1}^n (y_i - (a+bx_i))^2 = \sum_{i=1}^n e_i^2$">
+</DIV><P></P>
+which is called the <B>sum of squares for error</B>. The best fitted line would be the line
+which minimizes this expression.  The squares arise for the same reason that expressions are squared
+in the standard deviation, an individual <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ e_i$"> can either be positive or negative.  The values <IMG
+ WIDTH="26" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ a,b$">
+which minimize SSE are called the <B>least squares estimators</B> for <!-- MATH
+ $\alpha,\beta$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \alpha,\beta$"> and the fitted
+line <!-- MATH
+ $y = \alpha + \beta x$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ y = \alpha + \beta x$"> is the <B>least squares line</B> or <B>estimated regression line</B>. 
+
+<P>
+To determine the values of <IMG
+ WIDTH="26" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ a,b$"> the methods of calculus are used to minimize the expression for SSE
+as a function of <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.gif"
+ ALT="$ a$"> and <IMG
+ WIDTH="11" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.gif"
+ ALT="$ b$">.  In order to present  the solution we introduce the following
+quantities:
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+S_{xx} = \sum_{i=1}^n (x_i - \overline{x})^2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="136" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$\displaystyle S_{xx} = \sum_{i=1}^n (x_i - \overline{x})^2$">
+</DIV><P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+S_{yy} = \sum_{i=1}^n (y_i - \overline{y})^2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="133" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.gif"
+ ALT="$\displaystyle S_{yy} = \sum_{i=1}^n (y_i - \overline{y})^2$">
+</DIV><P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+S_{xy} = \sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="182" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.gif"
+ ALT="$\displaystyle S_{xy} = \sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})$">
+</DIV><P></P>
+
+<P>
+All computations in simple linear regression will involve these expressions.  Notice that <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ S_{xx}$">
+is the variance of the <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ x$"> data without the denominator.  Similarly <IMG
+ WIDTH="28" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="$ S_{yy}$">
+is the variance of the <IMG
+ WIDTH="12" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ y$"> data without the denominator and represents the <B>total variation in
+response</B>.  This will be used later on in this chapter to measure how strong the linear
+relationship is.  <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.gif"
+ ALT="$ S_{xy}$"> is the <B>covariance</B> of <IMG
+ WIDTH="29" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ x,y$"> without the denominator and measures how
+<IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X$"> and <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$"> vary together.  Notice that <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ S_{xx}$"> and <IMG
+ WIDTH="28" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="$ S_{yy}$"> are always positive while <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.gif"
+ ALT="$ S_{xy}$">
+will be positive if on average <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$"> increases when <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X$"> increases and <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.gif"
+ ALT="$ S_{xy}$"> will be negative if on
+average <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$"> decreases when <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X$"> increases.  
+
+<P>
+Using the calculus techniques it can be shown that the least squares estimators <IMG
+ WIDTH="26" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ a,b$"> for
+<!-- MATH
+ $\alpha,\beta$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \alpha,\beta$"> are given by 
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+b =  \be =  \frac{S_{xy}}{S_{xx}} \tag 2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="81" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.gif"
+ ALT="$\displaystyle b = \be = \frac{S_{xy}}{S_{xx}} \tag 2$">
+</DIV><P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+a =  \a = \overline{Y} - b\overline{X} \tag 3
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="149" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.gif"
+ ALT="$\displaystyle a = \a = \overline{Y} - b\overline{X} \tag 3 $">
+</DIV><P></P> 
+
+<P>
+
+<P></P>
+
+<P>
+We now give an example of determining the least squares line and its use in making a simple
+forecast.
+
+<P>
+EXAMPLE 1 
+
+<P>
+Consider the following data
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+X \hphantom{xx} 1\hphantom{xx} 2\hphantom{xx} 3\hphantom{xx} 4\hphantom{xx} 5
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="142" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.gif"
+ ALT="$\displaystyle X \hphantom{xx} 1\hphantom{xx} 2\hphantom{xx} 3\hphantom{xx} 4\hphantom{xx} 5$">
+</DIV><P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+Y \hphantom{x} 16\hphantom{x} 21\hphantom{x} 23\hphantom{x} 27\hphantom{x} 33
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="60" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$\displaystyle Y \hphantom{x} 16\hphantom{x} 21\hphantom{x} 23\hphantom{x} 27\hphantom{x} 33$">
+</DIV><P></P>
+
+<P>
+Determine the least squares line and forecast the average value of response <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$"> for <IMG
+ WIDTH="48" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.gif"
+ ALT="$ X = 4.5$">
+
+<P></P>
+
+<P>
+Here <!-- MATH
+ $\overline{X} = 3$
+ -->
+<IMG
+ WIDTH="54" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \overline{X} = 3$"> and <!-- MATH
+ $\overline{Y} = 24$
+ -->
+<IMG
+ WIDTH="938" HEIGHT="36" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.gif"
+ ALT="$ \overline{Y} = 24$">.  The table below gives the computations.
+<!-- MATH
+ \begin{displaymath}
+\matrix X&Y&(X-\overline X)&(X-\overline X)^2&(Y-\overline Y)&(Y-\overline Y)^2&(X-\overline
+X)(Y-\overline
+Y)\\1&16&-2&4&-8&64&16\\2&21&-1&1&-3&9&3\\3&23&0&0&-1&1&0\\4&27&1&1&3&9&3\\5&33&2&4&9&81&18
+\\\hphantom{*}&\hphantom{*}&\hphantom{*}&10&\hphantom{*}&163&40
+\endmatrix
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="143" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.gif"
+ ALT="$\displaystyle \matrix X&amp;Y&amp;(X-\overline X)&amp;(X-\overline X)^2&amp;(Y-\overline Y)&amp;(Y-...
+...18
+\\ \hphantom{*}&amp;\hphantom{*}&amp;\hphantom{*}&amp;10&amp;\hphantom{*}&amp;163&amp;40
+\endmatrix $">
+</DIV><P></P>
+
+<P>
+Hence we
+find that <!-- MATH
+ $S_{xx} = 10,S_{yy} = 164$
+ -->
+<IMG
+ WIDTH="66" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.gif"
+ ALT="$ S_{xx} = 10,S_{yy} = 164$"> and <!-- MATH
+ $S_{xy} = 40$
+ -->
+<IMG
+ WIDTH="131" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$ S_{xy} = 40$">.  Therefore
+<!-- MATH
+ \begin{displaymath}
+b = \frac{S_{xy}}{S_{xx}} = \frac{40}{10} = 4 \text{ and } a = \overline{Y} - b\overline{X} =
+24 - (4)(3) = 12
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="222" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.gif"
+ ALT="$\displaystyle b = \frac{S_{xy}}{S_{xx}} = \frac{40}{10} = 4$">&nbsp; &nbsp; and <IMG
+ WIDTH="99" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.gif"
+ ALT="$\displaystyle a = \overline{Y} - b\overline{X} =
+24 - (4)(3) = 12$">
+</DIV><P></P>
+The estimated regression line is then given by
+<!-- MATH
+ \begin{displaymath}
+Y = 12 + 4X.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="151" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.gif"
+ ALT="$\displaystyle Y = 12 + 4X.$">
+</DIV><P></P>
+Plugging in a particular <IMG
+ WIDTH="19" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X$"> value will give a predicted <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$"> value. For example the predicted <IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ Y$">
+value for <IMG
+ WIDTH="48" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.gif"
+ ALT="$ X = 4.5$"> would be
+<!-- MATH
+ \begin{displaymath}
+Y = 12 + 4(4.5) = 30
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+
+</DIV><P></P>.
+
+<BR><HR>
+
+</BODY>
+</HTML>

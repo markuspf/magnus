@@ -1,0 +1,388 @@
+%% This is AMSLaTeX source, included by plan.tex.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Analysis}
+
+
+%%--------------------------------------------------------------------
+\section{The Front End}
+
+%%....................................................................
+\subsection{Introduction}
+
+The purpose of the front end is to
+
+\begin{itemize}
+
+\item
+allow for the end user to define persistent algebraic objects, and
+delete existing ones;
+
+\item
+present the currently existing objects in a comprehendible way;
+
+\item
+display all information known about a given object;
+
+\item
+facilitate the initiation of queries about collections of existing
+objects;
+
+\item
+provide a means of controlling the strategy and execution of those
+queries which are not known to terminate in small time and space.
+
+\end{itemize}
+
+
+Queries will generate information in the form of new algebraic
+objects, along with free-format text, such as
+\begin{verbatim}
+Let w = a b^-1 a b^-1
+\end{verbatim}
+\begin{verbatim}
+The word w = v^2, where v = a b^-1
+\end{verbatim}
+etc. This information is divided into three categories: primary, which
+is what was explicitly asked for; secondary, which was not asked for
+directly, but is related and likely to be of interest; tertiary, which
+is of little interest to most people, but of great interest to some.
+
+
+The three persistent components of the front end are
+
+\begin{enumerate}
+
+\item
+{\em A greeting window.}\\
+The function of this window is to anchor global menus, and to display
+a greeting which gives the end user a clue as to how to proceed.
+
+\item
+{\em A session log.}\\
+This is a global transcript of all transactions between the end user
+and the system.
+
+\item
+{\em A graphical workspace.}\\
+This contains icons representing all algebraic objects which
+currently exist in the session, and all artificial objects which,
+e.g., control an expensive query.
+
+\end{enumerate}
+
+
+%%....................................................................
+\subsection{The Greeting Window}
+
+This anchors the standard {\tt File} and {\tt Edit} menus, and a {\tt
+Help} menu.
+
+
+%%....................................................................
+\subsection{The Session Log}
+
+This is a window of editable, scrollable text, comprising a global
+transcript of the current session. The text is selectable, so that
+algebraic objects defined therein can be copied and pasted into
+an object definition dialog.
+
+The types of information which might be written to the log are:
+
+\begin{itemize}
+
+\item
+An acknowledgement of the creation of an end user object.
+
+\item
+The result of a query, along with any secondary information.
+
+\end{itemize}
+
+A log entry might include the date and time at which it was posted.
+
+
+%%....................................................................
+\subsection{The Workspace}\label{The_Workspace}
+
+The workspace is a scrollable window which contains only icons
+representing algebraic and artificial objects. Other graphical
+artifacts may be added later, such as arrows indicating relationships
+between the objects. The underlying plane over which the window
+scrolls expands automatically to make room for new icons.
+
+The workspace supports precisely four end user events:
+
+\begin{enumerate}
+
+\item
+{\em Select zero or more objects.}\\
+This is supported by the standard mouse protocol.
+
+\item
+{\em Drag an object to a new position.}\\
+This is supported by the standard mouse protocol.
+
+\item
+{\em Display information about the object represented by a given
+icon.}\\
+This is supported by the standard mouse protocol for de-iconifying an
+icon.  It may bring up a top-level window which contains the
+information.
+
+\item
+{\em Initiate an action on the currently selected objects.}\\
+The action may be a group-theoretic query, or a synthetic action such
+as creating an object, or deleting the selected ones.  The workspace
+has menus, the contents of which change as the selection changes, to
+reflect which actions are appropriate on the selection. When the
+ordering on the selection is ambiguous, all possibilites are listed.
+
+It is evident from the name of an action whether its purpose is
+primarily to return an object. If so, the object goes into the
+workspace. If not, any object constructed as a byproduct of the action
+is secondary.
+
+\end{enumerate}
+
+Attached to the workspace, possibly at the bottom, is a minilog
+containing the last session log entry posted. Its purpose is
+reminiscent of the emacs minibuffer, or an X console.
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Artificial Objects}\label{Artificial_Objects}
+
+We currently envisage two classes of artificial objects in the
+workspace: those which allow for the initialization and control of
+expensive computations, such as the word problem, and report their
+current status; and those which enumerate things.
+
+
+\subsubsubsection{Problem Objects}
+
+
+A problem object contains standard components:
+
+\begin{itemize}
+
+\item
+A description of the group-theoretic parameters of the problem.
+
+\item
+A list of component computations, along with a means of specifying
+{\em Abstract Resource Credits} (ARCs).  An ARC is a unit of
+computation which takes, very roughly, on the order of seconds, rather
+than milliseconds or hours. Implementors will strive to break lengthy
+computations into natural steps, so that each step can reasonably be
+expected to execute within this range of time, but there will be wide
+variations.
+
+It is not anticipated for the first release, but parameters for the
+component computations may also be specified.
+
+\item
+A panel of control buttons, with these behaviors and semantics:
+
+\begin{enumerate}
+
+\item
+{\em Start}: Active initially, permanently inactive after starting.
+The problem does not {\em run} (consume ARCs) until it is started.
+
+\item
+{\em Suspend}: Active only when the problem is running. ARCs may be
+changed only before starting, and when the problem is suspended.
+
+\item
+{\em Resume}: Active only when the problem is suspended.
+
+\item
+{\em Terminate}: Active after the problem starts. Halts all activities
+of the problem, and frees any resources used by it directly.
+
+\item
+{\em Cancel}: Always active. Reverts any editing, and closes.
+
+\item
+{\em Close}: Always active. Enter any editing, and iconify.
+
+\end{enumerate}
+
+
+\item
+A log for all primary, secondary, and tertiary data generated by the
+computation.
+
+\end{itemize}
+
+
+
+\subsubsubsection{Enumerators}
+
+The examples we have in mind come in two flavors: those which make new
+workspace objects one at a time, such as a random small-cancellation
+group generator, and those which enumerate large amounts of data which
+the end user must be able to browse in some sensible way, such as a
+normal closure enumerator.
+
+Generally speaking, there will be many parameters for such
+objects. The parameters will be used both for initialization, and for
+`changing direction' on-the-fly.
+
+As these are closely related to ideal objects (below), their
+properties are still nebulous.
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Algebraic Objects}
+
+The kinds of algebraic objects which can exist in the workspace
+are: groups, subgroups, morphisms, elements, and sets of elements or
+morphisms, as well as {\em ideal} objects, discussed in the next
+section.
+
+The view window for such objects contains certain standard
+components: the name of the object, its textual definition
+(scrollable), a description of its heritage, and a log which contains
+all primary and secondary information discovered about the object.
+
+Subgroups, morphisms, elements, and sets of elements or morphisms are
+clearly understood by the system to `belong' to higher level
+structures (a word belongs to a group), and possibly to depend on
+other objects (a morphism belongs to a hom set, and depends on one or
+two groups). The user may perceive this at present only from the
+heritage information for each object.
+
+Some end user conventions on words:
+
+\begin{itemize}
+
+\item
+Words use 1 based indexing.
+
+\item
+Words are not freely reduced on input, but stored as given.
+
+\item
+Functions which return words which are understood to be the best
+element representative that can be (efficiently) found are free to
+alter (e.g., freely reduce) the word. Some functions are understood to
+manipulate words syntactically, so they do not reduce the result.
+
+\end{itemize}
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Ideal Objects}
+
+By {\em ideal sets} we mean sets which may be infinite, but are at
+least recursively enumerable. We try to get a handle on them by
+approximating them with finite sets. It is not clear yet whether an
+ideal set is comprised of, e.g., all approximations computed so far,
+or just the current `best', etc.
+
+We plan to support at least ideal subsets of groups, subgroups, and
+sets such as $Hom(G,H)$. They may or may not be endowed with
+group-theoretic structure. We don't know yet, but ideal sets may look
+to the end user more like ongoing computations rather than static
+objects.
+
+We have not as yet identified any properties of ideal sets which would
+appear to the end user to be common properties of all ideal sets.
+
+
+%%--------------------------------------------------------------------
+\section{Functionality}
+
+The following sections list the desired end user functionality for
+various classes of groups. The functionality is in the form of
+functions or queries which the end user can invoke.  The inputs are
+understood to be workspace objects, except integers, for which the end
+user must be prompted.  All functions which return objects are
+understood to return workspace objects.
+
+As these are end user queries, there is no need for a unique return
+type. For example, the end user can ask whether an element of a group
+$G$ is in a term of the lower central series for $G$. If the answer is
+yes, the user gets secondary information: in this case, the term of
+the series to which the element belongs.
+
+There is an important paradigm for representing computations which are
+either lengthy or possibly non-terminating. We associate with the
+computation a persistent workspace object, through which the end user
+can: allocate ARCs to, guide the strategy of, monitor the progress of,
+and receive results from, the computation. The computation returns a
+result in the usual sense only when it can answer the question or
+produce the desired object; otherwise, it consumes all of its
+allocated ARCs, and becomes idle until given more ARCs or explicitly
+terminated (see \S\ref{Artificial_Objects}).
+
+
+
+\input{include/free_incl}
+\input{include/fp_incl}
+
+
+
+%%--------------------------------------------------------------------
+\section{Reanalysis, July 1995}
+
+%%....................................................................
+\subsection{The Front End}\update{08/08/95}
+
+Some possible additional features of the front have been suggested:
+
+\begin{itemize}
+
+\item
+The more sophisticated end users will need a way to navigate among the
+extant computations, and add new ones below the top level. Figures~\ref{WPview}
+and \ref{NQview} suggest some possibilities.
+
+\begin{figure}[hbtp]
+\epsfbox{ps/WPview.ps}
+\caption{A toplevel problem manager view.}\label{WPview}
+\end{figure}
+
+\begin{figure}[hbtp]
+\epsfbox{ps/NQview.ps}
+\caption{A submanager view: nilpotent quotients.}\label{NQview}
+\end{figure}
+
+\item
+An object view might display two logs, to keep tertiary output
+separate from primary and secondary.
+
+\item
+It can be difficult to tell what functionality is available without
+entering every possible kind of object, and looking at the menus. We
+need an overall synopsis.
+
+\item
+A definition dialog might allow toplevel name substitution, e.g.,
+words which are already in the workspace could be entered by name as
+relators for a group.
+
+\item
+The end user must be able to force a computation which is not actually
+needed (because a solution already exists by other means). Such
+`redundant' computations could be systematically used to cross-check
+results.
+
+\item
+We need an (optional) syntax for naming subgroup generators, e.g.,
+{\tt \{~a~=~[x,y],~b~=~z~y~x~\}}
+
+\end{itemize}
+
+
+%%....................................................................
+\subsection{Revised Basic Functionality}\update{08/08/95}
+
+This section describes the current capabilities of \magnus\ (checked
+box), capabilities which are near completion (unchecked box), and
+those desired in the near future (heart).
+
+\input{include/basic_func_incl}

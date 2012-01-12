@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/WhiteheadMinimal.h}
+\author{Alexei Miasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "GAIsPartOfBasis.h"
+#include "SMVectorOfWords.h"
+
+@
+\section{class GAFindWhiteheadMinimalArcer}
+<<class GAFindWhiteheadMinimalArcer>>=
+class GAFindWhiteheadMinimalArcer : public ARCer
+{
+public:
+  GAFindWhiteheadMinimalArcer( ComputationManager& );
+  ~GAFindWhiteheadMinimalArcer( ) { }
+  void setArguments( FreeGroup f, const VectorOf<Word>& v );
+  Chars getComputationFileName() const { return compFile.getFileName();}
+  Chars getResultFileName() const { return resultFile.getFileName();}
+  const VectorOf<Word>& getAutomorphism() const { return theAuto;}
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  VectorOf<Word> theTuple;
+  FreeGroup theGroup;
+  File compFile;
+  File resultFile;
+  VectorOf<Word> theAuto;
+};
+
+@
+\section{class FindWhiteheadMinimalProblem}
+<<class FindWhiteheadMinimalProblem>>=
+class FindWhiteheadMinimalProblem : public Supervisor
+{
+public:
+  FindWhiteheadMinimalProblem(const class SMVectorOfWords& );
+  //  const class SMWord& getWord( ) const { return theWord; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( );      // overrides ComputationManager
+
+private:
+  const SMVectorOfWords& theTuple;
+  bool linkHasBeenSent;
+  GAFindWhiteheadMinimalArcer arcer;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/WhiteheadMinimal.h
+#ifndef _WHITEHEAD_MINIMAL_H_
+#define _WHITEHEAD_MINIMAL_H_
+
+<<license>>
+<<include>>
+<<class GAFindWhiteheadMinimalArcer>>
+<<class FindWhiteheadMinimalProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

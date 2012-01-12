@@ -1,0 +1,231 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/QuadEquationSolver.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SMEquation.h"
+#include "File.h"
+#include "LogWatcher.h"
+#include "fastProblems.h"
+
+@
+\section{class EquationSolverARCer}
+<<class EquationSolverARCer>>=
+class EquationSolverARCer : public ARCer
+{
+public:
+  EquationSolverARCer( ComputationManager& boss ) : ARCer( boss ) { } 
+
+  void setArguments( class SMEquation& eq, 
+		     const Chars& aBasicFileName, const Chars& aStabFileName,
+		     bool workOnBasicSolutions, bool workOnStabilizer);
+
+
+  int numberOfBasicSolutions( ) const;
+  int numberOfRegStabGenerators( ) const;
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  // Overrides ARCer::runComputation().
+  void writeResults( ostream& ostr );
+  void readResults( istream& istr );
+
+private:
+  // class QEqnSolutionsInFreeGroup *solver;
+  FreeGroup F;
+  Word word;
+  int numberOfVariables;
+  bool workOnBasicSolutions;
+  bool workOnStabilizer;
+  Chars basicFileName;
+  Chars stabFileName;
+  int numOfBasicSolutions;
+  int numOfRegStabGenerators;
+};
+
+@
+\section{class EquationSolver}
+<<class EquationSolver>>=
+class EquationSolver : public ComputationManager
+{
+public:
+  EquationSolver( class EquationProblem& equationProblem );
+  EquationSolver( class QuickEquationProblem& equationProblem );
+  //  SMEquation& equation( ) { return theEquation; }
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+  
+private:
+  void updateBasicSolutions( );
+  void updateRegStabGenerators( );
+  SMEquation& equation;
+  Chars basicFileName;
+  Chars stabFileName;
+  LogFileWatcher watchBasicSolutions;
+  LogFileWatcher watchRegStabGenerators;
+  bool workOnBasicSolutions;
+  bool workOnStabilizer;
+  ListOf<Endomorphism> foundBasicSolutions;
+  ListOf<Automorphism> foundRegStabGenerators;
+  EquationSolverARCer arcer;
+};
+
+@
+\section{class EquationRandomSolutionARCer}
+<<class EquationRandomSolutionARCer>>=
+class EquationRandomSolutionARCer : public ARCer
+{
+public:
+  EquationRandomSolutionARCer( ComputationManager& boss ) : 
+     ARCer( boss ), equation(0) { } 
+
+  void setArguments( class SMEquation& eq, const Chars& aRandomFileName,
+		     const Chars& aBasicFileName, const Chars& aStabFileName );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  void runComputation( );
+  // Overrides ARCer::runComputation().
+
+  void writeResults( ostream& ostr ) { ostr < ' '; }
+  void readResults( istream& istr ) { }
+
+private:
+  class SMEquation *equation;
+  Chars randomFileName; // output file.
+  Chars basicFileName;  // input file from another process.
+  Chars stabFileName;   // input file from another process.
+};
+
+
+@
+\section{class EquationRandomSolutions}
+<<class EquationRandomSolutions>>=
+class EquationRandomSolutions : public ComputationManager
+{
+public:
+  EquationRandomSolutions( class EquationProblem& ep );
+  // SMEquation& equation( ) { return theEquation; }
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+  
+private:
+  EquationRandomSolutionARCer arcer;
+};
+
+@
+\section{class EquationProblem}
+<<class EquationProblem>>=
+class EquationProblem : public Supervisor
+{
+public:
+  EquationProblem( class SMEquation& w );
+  SMEquation& getEquation() const { return equation; }
+  Chars getBasicSolutionsFileName( ) const { return basicSolutionsFileName; }
+  Chars getRegStabGeneratorsFileName( ) const 
+    { return regStabGeneratorsFileName; }
+  Chars getRandomSolutionsFileName( ) const { return randomSolutionsFileName; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMEquation& equation;
+  bool linksSent;
+  Chars basicSolutionsFileName;
+  Chars regStabGeneratorsFileName;
+  Chars randomSolutionsFileName;
+  Subordinate<EquationProblem, EquationSolver> basicSubordinate;
+  Subordinate<EquationProblem, EquationRandomSolutions> randomSubordinate;
+};
+
+@
+\section{class QuickEquationProblem}
+<<class QuickEquationProblem>>=
+class QuickEquationProblem : public Supervisor
+{
+public:
+  QuickEquationProblem( class SMEquation& w );
+  SMEquation& getEquation() const { return equation; }
+  Chars getBasicSolutionsFileName( ) const { return basicSolutionsFileName; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMEquation& equation;
+  bool linkSent;
+  Chars basicSolutionsFileName;
+  Subordinate<QuickEquationProblem, EquationSolver> basicSubordinate;
+};
+
+@
+\section{class QEquationInFreeBasicSolutions}
+<<class QEquationInFreeBasicSolutions>>=
+class QEquationInFreeBasicSolutions : public FastComputation
+{
+public:
+  QEquationInFreeBasicSolutions(const class SMEquation& e) : equation( e ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMEquation& equation;
+};
+
+@
+\section{class QEquationInFreeRegStabGenerators}
+<<class QEquationInFreeRegStabGenerators>>=
+class QEquationInFreeRegStabGenerators : public FastComputation
+{
+public:
+  QEquationInFreeRegStabGenerators(const class SMEquation& e) : 
+    equation( e ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMEquation& equation;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/QuadEquationSolver.h
+#ifndef _QuadEquationSolver_h_
+#define _QuadEquationSolver_h_
+
+<<license>>
+<<include>>
+<<class EquationSolverARCer>>
+<<class EquationSolver>>
+<<class EquationRandomSolutionARCer>>
+<<class EquationRandomSolutions>>
+<<class EquationProblem>>
+<<class QuickEquationProblem>>
+<<class QEquationInFreeBasicSolutions>>
+<<class QEquationInFreeRegStabGenerators>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,207 @@
+Repeat (y/n)? y
+Enter a word: 
+a b c a,
+Trying to define, is it primitive or not...
+
+It is  primitive.
+
+Automorphism: 
+{ a -> a b c a, b -> a b a, c -> a }
+
+Repeat (y/n)? y
+Enter a word: 
+a^20,
+Trying to define, is it primitive or not...
+
+Arc 0
+Arc 1
+Arc 2
+Arc 3
+Arc 4
+Arc 5
+Arc 6
+Arc 7
+Arc 8
+It is not primitive.
+
+Repeat (y/n)? y
+Enter a word: 
+(a b c)^20,
+Trying to define, is it primitive or not...
+
+Arc 0
+Arc 1
+Arc 2
+Arc 3
+Arc 4
+Arc 5
+Arc 6
+Arc 7
+Arc 8
+Arc 9
+Arc 10
+It is not primitive.
+
+Repeat (y/n)? y
+Enter a word: 
+a^10 b a^20,
+Trying to define, is it primitive or not...
+
+Arc 0
+It is  primitive.
+
+Automorphism: 
+{ a -> a^10 b a^20, b -> a, c -> a^-20 c a^20 }
+
+Repeat (y/n)? y
+Enter a word: 
+c^5 a^10 b a^20 C^5,
+Trying to define, is it primitive or not...
+
+Arc 0
+It is  primitive.
+
+Automorphism: 
+{ a -> c^5 a^10 b a^20 c^-5, b -> c^5 a c^-5, c -> c^5 a^-20 c a^20 c^-5 }
+
+Repeat (y/n)? n
+/home/users/bormotov/magnus/back_end/Group/test/bin% 
+
+/home/users/bormotov/magnus/back_end/Group/test/bin% !!
+^L
+
+/home/users/bormotov/magnus/back_end/Group/test/bin% !.
+./debug-W*
+Enter a free group presentation: 
+
+< x, y, z>
+
+You entered: 
+
+< x, y, z >
+
+Enter a word: 
+x^2 [x,y] x^3 y z^-1 x^5 y^7
+,
+Trying to define, is it primitive or not...
+
+Arc 0
+Arc 1
+Arc 2
+Arc 3
+Arc 4
+It is  primitive.
+
+Automorphism: 
+{ x -> z y^-1 x^-3 y^-1 x^-1 y x^-1 y^-7 x^-5, y -> x^5 y^7 x y^-1 x y x^3 y z^-1 x^5 y x^-5 z y^-1 x^-3 y^-1 x^-1 y x^-1 y^-7 x^-5, z -> x^5 y^7 x y^-1 x y x^3 y z^-1 x^5 y x^-6 z y^-1 x^-3 y^-1 x^-1 y x^-1 y^-7 x^-5 }
+
+Repeat (y/n)? y
+Enter a word: 
+x y^-1 x y x^3 y z^-1 x^5 y^7,
+Trying to define, is it primitive or not...
+
+Arc 0
+Arc 1
+Arc 2
+Arc 3
+Arc 4
+It is  primitive.
+
+Automorphism: 
+{ x -> z y^-1 x^-3 y^-1 x^-1 y x^-1 y^-7 x^-5, y -> x^5 y^7 x y^-1 x y x^3 y z^-1 x^5 y x^-5 z y^-1 x^-3 y^-1 x^-1 y x^-1 y^-7 x^-5, z -> x^5 y^7 x y^-1 x y x^3 y z^-1 x^5 y x^-6 z y^-1 x^-3 y^-1 x^-1 y x^-1 y^-7 x^-5 }
+
+Repeat (y/n)? y
+Enter a word: 
+x^2 y^2 z x y
+,
+Trying to define, is it primitive or not...
+
+It is  primitive.
+
+Automorphism: 
+{ x -> y z x y x^2 y, y -> x^2 y, z -> y^-1 x^-2 y^-1 x y x^2 y }
+
+Repeat (y/n)? y
+Enter a word: 
+y x y,
+Trying to define, is it primitive or not...
+
+It is  primitive.
+
+Automorphism: 
+{ x -> y x y, y -> y x, z -> z }
+
+Repeat (y/n)? y
+Enter a word: 
+y z y
+,
+Trying to define, is it primitive or not...
+
+It is  primitive.
+
+Automorphism: 
+{ x -> y z y, y -> y, z -> y^-1 x y }
+
+Repeat (y/n)? y
+Enter a word: 
+x^2 y^2 z y,
+Trying to define, is it primitive or not...
+
+It is  primitive.
+
+Automorphism: 
+{ x -> y z y x^2 y, y -> x^2 y, z -> y^-1 x^-2 y^-1 x y x^2 y }
+
+Repeat (y/n)? y
+Enter a word: 
+x^2 y^2,
+Trying to define, is it primitive or not...
+
+It is not primitive.
+
+Repeat (y/n)? y
+Enter a word: 
+[x,y^20],
+Trying to define, is it primitive or not...
+
+Arc 0
+Arc 1
+Arc 2
+Arc 3
+Arc 4
+Arc 5
+Arc 6
+Arc 7
+It is not primitive.
+
+Repeat (y/n)? y
+Enter a word: 
+x^2 y^2 z,
+Trying to define, is it primitive or not...
+
+It is  primitive.
+
+Automorphism: 
+{ x -> x^2 y^2 z, y -> x^2 y x^-2, z -> x }
+
+Repeat (y/n)? y
+Enter a word: 
+x^2 y z y,
+Trying to define, is it primitive or not...
+
+It is  primitive.
+
+Automorphism: 
+{ x -> y z y x^2, y -> y x^2, z -> x^-2 y^-1 x y x^2 }
+
+Repeat (y/n)? y
+Enter a word: 
+x y z y,
+Trying to define, is it primitive or not...
+
+It is  primitive.
+
+Automorphism: 
+{ x -> z y x y, y -> x y, z -> y^-1 x^-1 y^-1 x y x y }
+
+Repeat (y/n)? n

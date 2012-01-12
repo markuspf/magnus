@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/Stack.h}
+\author{Sergey Lyutikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Stack.h}
+Special Notes:
+
+To instantiate StackOf<T>, class T must have an assignment
+operator, a copy constructor, an == operator, and destructor.
+
+Alternative implementation of StackOf class, uses ListRep as
+the DataRep.
+
+\section{include}
+<<include>>=
+#ifndef _STACK_H_
+#define _STACK_H_
+
+#include "RefCounter.h"
+#include "ObjectOf.h"
+#include "List.h"
+#include "Cell.h"
+
+@
+\section{class StackOf}
+<<class StackOf>>=
+template < class T > class StackOf : public ObjectOf< ListRep<T> > {
+public:
+  // Constructors:
+
+  StackOf( ) : ObjectOf< ListRep<T> >( new ListRep<T>() ) { }
+  // Default constructor makes empty stack.
+
+  StackOf( const T& t ) : ObjectOf< ListRep<T> >( new ListRep<T>(t) ) { }
+  // Cast constructor T -> StackOf<T>
+
+  // copy constructor, operator=, and destructor supplied by compiler.
+
+  void push( const T& t ) { change()->insert( t, 0 ); }
+
+  T pop( ) { 
+    T res = look()->element( 0 ); 
+    change()->removeElementOfIndex( 0 ); 
+    return res;
+  }
+
+  void popAll( ) { 
+    while ( look()->length() ) change()->removeElementOfIndex( 0 ); 
+  }
+
+  Bool isEmpty( ) const { return !look()->length(); }
+  Bool isntEmpty( ) const { return look()->length(); }
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/Stack.h
+<<license>>
+<<include>>
+<<class StackOf>>
+#endif  // _STACK_H_
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

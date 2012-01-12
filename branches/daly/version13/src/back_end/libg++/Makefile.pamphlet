@@ -1,0 +1,216 @@
+\documentclass{article}
+\usepackage{../../../mnt/linux/bin/axiom}
+\begin{document}
+\title{src/backend/libg++/Makefile}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Environment}
+<<environment>>=
+IN=${SRC}/backend/libg++
+MID=${INT}/backend/libg++
+OUT=${OBJ}/${SYS}/backend/libg++
+DOC=${MNT}/${SYS}/doc/src/backend/libg++
+
+@
+\section{Code}
+\subsection{error}
+<<error.C (MID from IN)>>=
+${MID}/error.C: ${IN}/error.C.pamphlet
+	@echo 1 making ${MID}/error.C from ${IN}/error.C.pamphlet
+	@${DOCUMENT} src error.C ${MID}
+
+@
+<<error.o (OUT from MID)>>=
+${OUT}/error.o: ${MID}/error.C 
+	@echo 2 making ${OUT}/error.o from ${MID}/error.C 
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/error.o ${MID}/error.C 
+
+@
+<<error.C.dvi (DOC from IN)>>=
+${DOC}/error.C.dvi: ${IN}/error.C.pamphlet ${DOC}/axiom.sty
+	@echo 3 making ${DOC}/error.C.dvi from ${IN}/error.C.pamphlet
+	@${DOCUMENT} dvi error.C ${DOC} error.C ${NOISE}
+
+@
+\subsection{fmtq}
+<<fmtq.C (MID from IN)>>=
+${MID}/fmtq.C: ${IN}/fmtq.C.pamphlet
+	@echo 4 making ${MID}/fmtq.C from ${IN}/fmtq.C.pamphlet
+	@${DOCUMENT} src fmtq.C ${MID} 
+
+@
+<<fmtq.o (OUT from MID)>>=
+${OUT}/fmtq.o: ${MID}/fmtq.C 
+	@echo 5 making ${OUT}/fmtq.o from ${MID}/fmtq.C 
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/fmtq.o ${MID}/fmtq.C 
+
+@
+<<fmtq.C.dvi (DOC from IN)>>=
+${DOC}/fmtq.C.dvi: ${IN}/fmtq.C.pamphlet ${DOC}/axiom.sty
+	@echo 6 making ${DOC}/fmtq.C.dvi from ${IN}/fmtq.C.pamphlet
+	@${DOCUMENT} dvi fmtq.C ${DOC} fmtq.C ${NOISE}
+
+@
+\subsection{Intdouble}
+<<Intdouble.C (MID from IN)>>=
+${MID}/Intdouble.C: ${IN}/Intdouble.C.pamphlet
+	@echo 7 making ${MID}/Intdouble.C from ${IN}/Intdouble.C.pamphlet
+	@${DOCUMENT} src Intdouble.C ${MID}
+
+@
+<<Intdouble.o (OUT from MID)>>=
+${OUT}/Intdouble.o: ${MID}/Intdouble.C 
+	@echo 8 making ${OUT}/Intdouble.o from ${MID}/Intdouble.C 
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/Intdouble.o ${MID}/Intdouble.C 
+
+@
+<<Intdouble.C.dvi (DOC from IN)>>=
+${DOC}/Intdouble.C.dvi: ${IN}/Intdouble.C.pamphlet ${DOC}/axiom.sty
+	@echo 9 making ${DOC}/Intdouble.C.dvi from ${IN}/Intdouble.C.pamphlet
+	@${DOCUMENT} dvi Intdouble.C ${DOC} Intdouble.C ${NOISE}
+
+@
+\subsection{Integer}
+<<Integer.C (MID from IN)>>=
+${MID}/Integer.C: ${IN}/Integer.C.pamphlet
+	@echo 10 making ${MID}/Integer.C from ${IN}/Integer.C.pamphlet
+	@${DOCUMENT} src Integer.C ${MID}
+
+@
+<<Integer.o (OUT from MID)>>=
+${OUT}/Integer.o: ${MID}/Integer.C 
+	@echo 11 making ${OUT}/Integer.o from ${MID}/Integer.C 
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/Integer.o ${MID}/Integer.C 
+
+@
+<<Integer.C.dvi (DOC from IN)>>=
+${DOC}/Integer.C.dvi: ${IN}/Integer.C.pamphlet ${DOC}/axiom.sty
+	@echo 12 making ${DOC}/Integer.C.dvi from ${IN}/Integer.C.pamphlet
+	@${DOCUMENT} dvi Integer.C ${DOC} Integer.C ${NOISE}
+
+@
+\subsection{lg}
+<<lg.C (MID from IN)>>=
+${MID}/lg.C: ${IN}/lg.C.pamphlet
+	@echo 13 making ${MID}/lg.C from ${IN}/lg.C.pamphlet
+	@${DOCUMENT} src lg.C ${MID}
+
+@
+<<lg.o (OUT from MID)>>=
+${OUT}/lg.o: ${MID}/lg.C 
+	@echo 14 making ${OUT}/lg.o from ${MID}/lg.C 
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/lg.o ${MID}/lg.C 
+
+@
+<<lg.C.dvi (DOC from IN)>>=
+${DOC}/lg.C.dvi: ${IN}/lg.C.pamphlet ${DOC}/axiom.sty
+	@echo 15 making ${DOC}/lg.C.dvi from ${IN}/lg.C.pamphlet
+	@${DOCUMENT} dvi lg.C ${DOC} lg.C ${NOISE}
+
+@
+\subsection{Rational}
+<<Rational.C (MID from IN)>>=
+${MID}/Rational.C: ${IN}/Rational.C.pamphlet
+	@echo 16 making ${MID}/Rational.C from ${IN}/Rational.C.pamphlet
+	@${DOCUMENT} src Rational.C ${MID}
+
+@
+<<Rational.o (OUT from MID)>>=
+${OUT}/Rational.o: ${MID}/Rational.C 
+	@echo 17 making ${OUT}/Rational.o from ${MID}/Rational.C 
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/Rational.o ${MID}/Rational.C 
+
+@
+<<Rational.C.dvi (DOC from IN)>>=
+${DOC}/Rational.C.dvi: ${IN}/Rational.C.pamphlet ${DOC}/axiom.sty
+	@echo 18 making ${DOC}/Rational.C.dvi from ${IN}/Rational.C.pamphlet
+	@${DOCUMENT} dvi Rational.C ${DOC} Rational.C ${NOISE}
+
+@
+\subsection{String.C}
+<<String.C (MID from IN)>>=
+${MID}/String.C: ${IN}/String.C.pamphlet
+	@echo 19 making ${MID}/String.C from ${IN}/String.C.pamphlet
+	@${DOCUMENT} src String.C ${MID}
+
+@
+<<String.o (OUT from MID)>>=
+${OUT}/String.o: ${MID}/String.C 
+	@echo 20 making ${OUT}/String.o from ${MID}/String.C 
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/String.o ${MID}/String.C 
+
+@
+<<String.C.dvi (DOC from IN)>>=
+${DOC}/String.C.dvi: ${IN}/String.C.pamphlet ${DOC}/axiom.sty
+	@echo 21 making ${DOC}/String.C.dvi from ${IN}/String.C.pamphlet
+	@${DOCUMENT} dvi String.C ${DOC} String.C ${NOISE}
+
+@
+\section{axiom.sty}
+<<axiom.sty (DOC from IN)>>=
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 22 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@${DOCUMENT} chunk "axiom.sty" ${SRC}/doc/axiom.sty ${DOC} axiom.sty
+ 
+@
+<<*>>=
+<<environment>>
+
+ENV= MAG=${MAG} SYS=${SYS} SRC=${SRC} INC=${MID} INT=${INT} OBJ=${OBJ} \
+     TMP=${TMP} BIN=${BIN} MNT=${MNT} ZIPS=${ZIPS} \
+     CCFLAGS='${CCFLAGS}' INCLUDE='${INCLUDE}' NOISE=${NOISE} \
+     DOCUMENT=${DOCUMENT} TANGLE=${TANGLE} WEAVE=${WEAVE} 
+
+
+FILES=${OUT}/error.o     ${OUT}/fmtq.o ${OUT}/Intdouble.o \
+      ${OUT}/Integer.o   ${OUT}/lg.o   ${OUT}/Rational.o  \
+      ${OUT}/String.o
+
+DOCFILES=${DOC}/error.C.dvi   ${DOC}/fmtq.C.dvi ${DOC}/Intdouble.C.dvi \
+         ${DOC}/Integer.C.dvi ${DOC}/lg.C.dvi   ${DOC}/Rational.C.dvi  \
+         ${DOC}/String.C.dvi
+
+all: ${FILES} ${DOCFILES}
+	@echo 23 finished ${SRC}/backend/libg++
+
+<<error.C (MID from IN)>>
+<<error.o (OUT from MID)>>
+<<error.C.dvi (DOC from IN)>>
+
+<<fmtq.C (MID from IN)>>
+<<fmtq.o (OUT from MID)>>
+<<fmtq.C.dvi (DOC from IN)>>
+
+<<Intdouble.C (MID from IN)>>
+<<Intdouble.o (OUT from MID)>>
+<<Intdouble.C.dvi (DOC from IN)>>
+
+<<Integer.C (MID from IN)>>
+<<Integer.o (OUT from MID)>>
+<<Integer.C.dvi (DOC from IN)>>
+
+<<lg.C (MID from IN)>>
+<<lg.o (OUT from MID)>>
+<<lg.C.dvi (DOC from IN)>>
+
+<<Rational.C (MID from IN)>>
+<<Rational.o (OUT from MID)>>
+<<Rational.C.dvi (DOC from IN)>>
+
+<<String.C (MID from IN)>>
+<<String.o (OUT from MID)>>
+<<String.C.dvi (DOC from IN)>>
+
+<<axiom.sty (DOC from IN)>>
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

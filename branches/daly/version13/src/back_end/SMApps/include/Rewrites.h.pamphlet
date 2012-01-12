@@ -1,0 +1,120 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/Rewrites.h}
+\author{Denis Serbin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "FPGroup.h"
+#include "ComputationManager.h"
+#include "SMWord.h"
+#include "Word.h"
+#include "OutMessages.h"
+#include "ARCer.h"
+
+@
+\section{class RewritesARCer}
+<<class RewritesARCer>>=
+class RewritesARCer : public ARCer
+{
+public:
+  RewritesARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+      retValue(),
+      theWord(),
+      G(),
+      order(0),
+      file()
+    { } 
+  
+  void setArguments(const FPGroup&,const Word&,int ord);
+  
+  ~RewritesARCer()
+    {
+      file << end;
+    }
+
+  Chars getRetValue() const
+    { return retValue; }
+  
+  Chars getFileName() const
+    { return file.getFileName(); }
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+ 
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  Chars retValue;
+  Word theWord;
+  int order;
+  FPGroup G;
+  File file;
+};
+
+@
+\section{class CommutatorRewriteProblem}
+<<class CommutatorRewriteProblem>>=
+class CommutatorRewriteProblem : public ComputationManager
+{
+public:
+  CommutatorRewriteProblem(SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  RewritesARCer arcer;
+};
+
+@
+\section{class SquareRewriteProblem}
+<<class SquareRewriteProblem>>=
+class SquareRewriteProblem : public ComputationManager
+{
+public:
+  SquareRewriteProblem(SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  RewritesARCer arcer;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/Rewrites.h
+#ifndef _Rewrites_h_
+#define _Rewrites_h_
+
+<<license>>
+<<include>>
+<<class RewritesARCer>>
+<<class CommutatorRewriteProblem>>
+<<class SquareRewriteProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

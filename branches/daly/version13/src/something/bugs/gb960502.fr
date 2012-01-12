@@ -1,0 +1,4 @@
+1. Homology for FP Group should answer immediately if the group is one
+relator.
+
+2. Automatic Structure and Integral Homology can overflow the memory.

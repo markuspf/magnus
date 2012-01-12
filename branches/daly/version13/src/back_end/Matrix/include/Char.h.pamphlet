@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Matrix/include/AbelianGroup.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "global.h"
+
+@
+\section{class Char}
+Temporary implemenation for debugging.
+<<class Char>>=
+class Char {
+public:
+  Char( char c = ' ') : ch( c ) { }
+
+  int compare( const Char& c ) const
+  {
+    if( ch == c.ch )
+      return 0;
+    else
+      if( ch < c.ch )
+	return -1;
+      else
+	return 1;
+  }
+
+  friend ostream& operator << ( ostream& ostr, const Char& c )
+  {
+    ostr << c.ch;
+    return ostr;
+  }
+
+private:
+  char ch;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Matrix/include/AbelianGroup.h
+#ifndef _CHAR_H_
+#define _CHAR_H_
+
+<<license>>
+<<include>>
+<<class Char>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

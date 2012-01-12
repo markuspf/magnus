@@ -1,0 +1,38 @@
+\documentclass[12pt]{slides} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+%\maketitle
+\pagestyle{empty}
+
+\vspace{5mm}
+\begin{center} \Large\textbf{Experiment 4} \end{center}
+\vspace{12mm}
+
+It is possible to implement a direct(deterministic) algorithm for the
+nine equations of the theorem which takes into account the special
+form of the equations and thereby cuts the enumeration
+dramatically. Though is took 10 times more time to implement it, the
+GA still outperforms it on average.
+
+\vspace{8mm}
+\begin{tabular}{|c|c|c|} \hline
+Eq num & Genetic algorithm & Direct algorithm \\ \hline
+2 & 32.5003 & 427.094 \\ \hline
+3 & 88.0291 & 87.2012 \\ \hline
+6 & 129.897 & 416.294 \\ \hline
+8 & 160.607 & 250.337 \\ \hline
+9 & 79.6172 & 74.6276 \\ \hline
+\end{tabular}
+\vspace{3mm}
+
+\end{document}
+
+
+
+
+
+
+

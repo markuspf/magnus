@@ -1,0 +1,46 @@
+\documentclass{slides} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+%\maketitle
+\pagestyle{empty}
+
+\begin{center} \Large\textbf{Experiment 3} \end{center}
+%\vspace{3mm}
+
+In the example produced by D. Spellman 
+
+$x_1 = a,$ \\
+$x_2 = B a b,$ \\
+$x_3 = a a B a a b b A A B A A b A A,$ \\
+$x_4 = a a B a a b a a B a a B A A b A A B A A b A A$
+
+Then $x_1^2 x_2^2 x_3^2 x_4^2 = 1$ \\ 
+and $C = x_1 x_2 x_3 x_4$ is not a commutator.
+
+Performing the substitution will give us 
+\begin{eqnarray*}
+C = a b^{-1} a b a^2 b^{-1} a^2 b^2 a^{-2} b^{-1} a^{-2} b a^{-2} \\ a^2 b^{-1}
+ a^2 b a^2 b^{-1} a^2 b^{-1} a^{-2} b a^{-2} b^{-1} a^{-2} b a^{-2}
+\end{eqnarray*}
+As computed by the genetic algorithm it can be expressed as a product
+of two commutators:
+\begin{eqnarray*}
+& [a^3 b^{-1} a^2 b a^2 b^{-1} a b a^{-1}, \\
+& a^3 b^{-1} a^2 b a^2 b^{-1} a^{-1} b a^{-2} b^{-1} a^{-2} b a^{-3}] 
+\end{eqnarray*}
+and
+\[
+[a^{-1}, a b a^{-2} b^{-1} a^{-2} b a^{-2}]
+\]
+
+\end{document}
+
+
+
+
+
+
+

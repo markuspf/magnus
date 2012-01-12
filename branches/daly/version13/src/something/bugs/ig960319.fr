@@ -1,0 +1,10 @@
+1. Automatic structure in case of nilpotent groups probably was
+computed only for relators which a user entered, commutators wasn't
+considered.
+
+Status: to discuss
+
+Probably we should throw out this item, because this algorithm works
+too long, when the group has lots of relators.
+
+2.

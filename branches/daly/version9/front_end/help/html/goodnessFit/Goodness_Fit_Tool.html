@@ -1,0 +1,679 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Goodness_Fit_Tool</TITLE>
+<META NAME="description" CONTENT="Goodness_Fit_Tool">
+<META NAME="keywords" CONTENT="Goodness_Fit_Tool">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="Goodness_Fit_Tool.css">
+
+</HEAD>
+
+<BODY >
+<DIV ALIGN="CENTER">
+<B>THE GOODNESS OF FIT  TOOL</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+The <B>Goodness of Fit Tool</B> will conduct a test to determine whether a one variable
+data set fits a given theoretical distribution with a presecribed level of significance.  The
+user can choose the level and signficance and test the one variable data set against a <B>normal distirbution</B>, an <B>exponential distribution</B> or a <B>uniform distribution</B>.  The
+test for the normal distribution uses <B>Geary's Test for Normality</B> while the tests for the
+exponential and uniform uses standard chi-square goodness of fit methods.     
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B> GOODNESS OF FIT</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+Suppose that we have a set of one variable data.  An important question is whether this data <B>fits</B> a given theoretical distribution.  The meaning off <B>fit</B> is statistical one, that is to
+determione whether the data has a prescribed probability of either coming from a given
+theoretical distribution or not.  A test which determines this is called a <B>goodness of fit
+test</B> and is a special type of hypothesis test ( see hypothesis testing). 
+
+<P>
+We suppose that we have a set of data and wish to test whether it fits a given theoretical
+distribution.  Suppose further that assumed distribution has a distribution function <IMG
+ WIDTH="38" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ F(x)$">. Our
+data has  <B>observed frequencies</B> <!-- MATH
+ $O_1,O_2,...,O_n$
+ -->
+<IMG
+ WIDTH="98" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ O_1,O_2,...,O_n$"> supposedly from this distribution. 
+We wish to test how well the proposed distribution actually <B>fits the data</B>. 
+<P></P>
+
+<P>
+Statistically we wish to test the null hypothesis that the data fits the distribution against the
+alternative that it doesn't fit.  Hence we have
+ <!-- MATH
+ \begin{displaymath}
+H_O: \text{ The data fits the distribuiton}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="37" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$\displaystyle H_O:$">&nbsp; &nbsp; The data fits the distribuiton
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \text{ The data doesn't fit the distribution}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="33" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$\displaystyle H_1:$">&nbsp; &nbsp; The data doesn't fit the distribution
+</DIV><P></P>
+ 
+<P></P>
+
+<P>
+Our data now is given by n cells with respective values <!-- MATH
+ $O_1,...,O_n$
+ -->
+<IMG
+ WIDTH="72" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ O_1,...,O_n$"> where <IMG
+ WIDTH="21" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ O_i$"> is the observed
+frequency in that cell.  For each of these cells let <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ e_i$"> be the <B>expected frequency</B> in that
+cell based on the theoretical distribution. This value would be given by the expected probability of
+being in the range given by the cell multiplied by the total frequency. If the data fits the
+theoretical distribution the difference <IMG
+ WIDTH="54" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ O_i - e_i$"> should be relatively small compared to <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ e_i$">. 
+If it doesn't fit the difference should be relatively large. Since <IMG
+ WIDTH="54" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ O_i - e_i$"> can either be
+positive or negative a more appropriate measure would be <!-- MATH
+ $\frac{(O_i - e_i)^2}{e_i}$
+ -->
+<IMG
+ WIDTH="60" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \frac{(O_i - e_i)^2}{e_i}$"> summed over
+all the cells.  This will provide a test statistic for the above null hypothesis.   
+
+<P>
+As per the above discussion an appropriate statistic for the
+goodness of fit null hypothesis is then <!-- MATH
+ \begin{displaymath}
+\chi^2 = \sum_{i=1}^n \frac{(O_i - e_i)^2}{e_i}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="145" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$\displaystyle \chi^2 = \sum_{i=1}^n \frac{(O_i - e_i)^2}{e_i}.$">
+</DIV><P></P>
+It can
+be proved that this statistic has a chi-square distribution with <IMG
+ WIDTH="69" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ n - k - 1$"> degrees of freedom,
+where <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.gif"
+ ALT="$ k$"> is the number of parameters in the theoretical distribution that had to be estimated from
+the data in order to compute the <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ e_i$">.  Theoretically this test depends on the central limit
+theorem which requires a large sample size.  In practice we must have at least 5 observations in
+each cell.  If not we must combine cells.
+
+<P>
+We give two examples.
+
+<P>
+
+<P><P>
+<BR>
+<B>EXAMPLE</B> The following frequency distribution represents sulfur oxide emissions at a chemical
+plant. We do a goodness of it test to determine at a 5% level whether this fits a normal
+distribution. 
+<P><P>
+<BR>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Classes<!-- MATH
+ $\hphantom{xxxxxxx}$
+ -->
+<IMG
+ WIDTH="68" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ \hphantom{xxxxxxx}$">Frequency
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="113" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxx}$">5.0- 8.9<!-- MATH
+ $\hphantom{xxxxxxxhhhx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ \hphantom{xxxxxxxhhhx}$">3
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="113" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxx}$">9.0-12.9<!-- MATH
+ $\hphantom{xxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ \hphantom{xxxxxxxxxx}$">10
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">13.0-16.9<!-- MATH
+ $\hphantom{xxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ \hphantom{xxxxxxxxxx}$">14
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">17.0-20.9<!-- MATH
+ $\hphantom{xxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ \hphantom{xxxxxxxxxx}$">25
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">21.0-24.9<!-- MATH
+ $\hphantom{xxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ \hphantom{xxxxxxxxxx}$">17
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">25.0-28.9<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">9
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">29.0-32.9<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">2
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+First of all a normal distribution depends on its mean and standard deviation.  Therefore in order
+to figure out the expected frequencies we must first estimate the mean and standard deviation. Do
+the calculations from the above frequency distribution or using the full data analysis tool we
+find that
+<!-- MATH
+ \begin{displaymath}
+\overline{X} = 18.9
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="68" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.gif"
+ ALT="$\displaystyle \overline{X} = 18.9$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+S = 5.55
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="64" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$\displaystyle S = 5.55$">
+</DIV><P></P>
+Therefore we estimate the mean as <!-- MATH
+ $\mu = 18.9$
+ -->
+<IMG
+ WIDTH="63" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ \mu = 18.9$"> and the standard deviation as <!-- MATH
+ $\sigma = 5.55$
+ -->
+<IMG
+ WIDTH="63" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ \sigma = 5.55$">. Next
+we notice that both the first cell and the last cell have fewer than 5 so we must combine cells. 
+We then get the new distribution:
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\matrix\text{Classes}&\text{Frequency}\\
+\text{below }13.0&13\\13.0-16.9&14\\17.0-20.9&25
+\\21.0-24.9\\25.0\text{ and above }&11 \endmatrix
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="4" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$\displaystyle \matrix$">Classes<IMG
+ WIDTH="9" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle &amp;$">Frequency<IMG
+ WIDTH="337" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="$\displaystyle \ $">&nbsp; &nbsp;below <IMG
+ WIDTH="20" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.gif"
+ ALT="$\displaystyle 13.0&amp;13\\ 13.0-16.9&amp;14\\ 17.0-20.9&amp;25
+\\ 21.0-24.9\\ 25.0$"> and above <IMG
+ WIDTH="96" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.gif"
+ ALT="$\displaystyle &amp;11 \endmatrix $">
+</DIV><P></P>
+
+<P>
+Notice that now there only 2 degrees of freedom.  There are 5 cells and we estimated two
+parameters: therefore <IMG
+ WIDTH="99" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$ 5-2-1 = 2$"> degrees of freedom.  At a 5% level the critical chi-square
+value is then
+<!-- MATH
+ \begin{displaymath}
+\chi^2_{.05,2} = 5.991
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="20" HEIGHT="14" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.gif"
+ ALT="$\displaystyle \chi^2_{.05,2} = 5.991$">
+</DIV><P></P>
+
+<P>
+Based on the normal distribution we compute the expected probabilities in each cell and
+multiplying by the total frequency of <IMG
+ WIDTH="673" HEIGHT="29" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ 80$"> we get the expected frequencies.
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\matrix\text{Classes}&\text{Frequency}&\text{Expected Probability}&\text{Expected Frequency}\\
+\text{below}13.0&13&.1446&11.568\\13.0-17.0&14&.2223&17.784\\17.0-21.0&25&.2811&22.488
+\\21.0-25.0&17&.2141&17.128\\25.0\text{ and above }&11&.1379&11.032 \endmatrix
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="4" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$\displaystyle \matrix$">Classes<IMG
+ WIDTH="9" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle &amp;$">Frequency<IMG
+ WIDTH="9" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle &amp;$">Expected Probability<IMG
+ WIDTH="9" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle &amp;$">Expected Frequency<IMG
+ WIDTH="337" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="$\displaystyle \ $">&nbsp; &nbsp;below<IMG
+ WIDTH="100" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.gif"
+ ALT="$\displaystyle 13.0&amp;13&amp;.1446&amp;11.568\\ 13.0-17.0&amp;14&amp;.2223&amp;17.784\\ 17.0-21.0&amp;25&amp;.2811&amp;22.488
+\\ 21.0-25.0&amp;17&amp;.2141&amp;17.128\\ 25.0$"> and above <IMG
+ WIDTH="682" HEIGHT="56" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="$\displaystyle &amp;11&amp;.1379&amp;11.032 \endmatrix $">
+</DIV><P></P>
+
+<P>
+Notice that we smoothed out the cell boundaries since the normal distribution is a continuous
+distribution.  
+
+<P>
+We now compute the expected chi-square value
+<!-- MATH
+ \begin{displaymath}
+\chi^2 = \frac{(13-11.568)^2}{11.568} + \frac{(14-17.784)^2}{17.784} +
+\frac{(25-22.488)^2}{22.488} + \frac{(17-17.128)^2}{17.128} + \frac{(11-11.032)^2}{11.032} = 1.27
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="55" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.gif"
+ ALT="$\displaystyle \chi^2 = \frac{(13-11.568)^2}{11.568} + \frac{(14-17.784)^2}{17.7...
+...2}{22.488} + \frac{(17-17.128)^2}{17.128} + \frac{(11-11.032)^2}{11.032} = 1.27$">
+</DIV><P></P>
+This sample value is below the critical chi-square value of 5.991.  Therefore the results are not
+significant and we conclude that at a 5% level the data does fit a normal distribution.
+
+<P>
+
+<P><P>
+<BR>
+<B>EXAMPLE</B> A printer makes errors on a page. The data is given in the chart below.  Does this fit
+a Poisson with <!-- MATH
+ $\lambda = 3.0$
+ -->
+<IMG
+ WIDTH="195" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ \lambda = 3.0$">.  
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\matrix\text{Number of Errors}&\text{Observed Frequency}\\0&18\\1&53\\2&103\\3&107\\4&82\\5&46
+\\6&18\\7\text { and above }& 13 \endmatrix
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="4" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$\displaystyle \matrix$">Number of Errors<IMG
+ WIDTH="9" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle &amp;$">Observed Frequency<IMG
+ WIDTH="85" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.gif"
+ ALT="$\displaystyle \\ 0&amp;18\\ 1&amp;53\\ 2&amp;103\\ 3&amp;107\\ 4&amp;82\\ 5&amp;46
+\\ 6&amp;18\\ 7$"><IMG
+ WIDTH="206" HEIGHT="56" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.gif"
+ ALT="$\displaystyle \text { and above }&amp; 13 \endmatrix $">
+</DIV><P></P>
+
+<P>
+The above data indicates that in an observed sample of this printer's work there were 0 errors on
+18 pages while 53 pages had exactly one error. There were a total of 440 pages observed.
+
+<P>
+In order to  calculate the expected frequencies we must now the theoretical form of the Poisson
+distribution. For a Poisson distribution the
+appropriate mass function is <!-- MATH
+ \begin{displaymath}
+p(x) = \frac{e^{-\lambda}\lambda^x}{x!}, x = 0,1,2,.....
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="646" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.gif"
+ ALT="$\displaystyle p(x) = \frac{e^{-\lambda}\lambda^x}{x!}, x = 0,1,2,.....$">
+</DIV><P></P>
+
+<P>
+We then get
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\matrix\text{Number of Errors}&\text{Observed
+Frequency}&\text{Expected Probability}&\text{Expected
+Frequency}\\0&18&.0498&21.9\\1&53&.1494&65.7\\2&103&.2240&98.6\\3&107&.2240&98.6
+\\4&82&.1680&73.9\\5&46&.1008&44.0 \\6&18&.0504&22.2\\7\text {
+and above }& 13&.0324&14.3\\\hphantom{x}&440&1.0&440 \endmatrix
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="4" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$\displaystyle \matrix$">Number of Errors<IMG
+ WIDTH="9" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle &amp;$">Observed
+Frequency<IMG
+ WIDTH="9" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle &amp;$">Expected Probability<IMG
+ WIDTH="9" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle &amp;$">Expected
+Frequency<IMG
+ WIDTH="227" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$\displaystyle \\ 0&amp;18&amp;.0498&amp;21.9\\ 1&amp;53&amp;.1494&amp;65.7\\ 2&amp;103&amp;.2240&amp;98.6\\ 3&amp;107&amp;.2240&amp;98.6
+\\ 4&amp;82&amp;.1680&amp;73.9\\ 5&amp;46&amp;.1008&amp;44.0 \\ 6&amp;18&amp;.0504&amp;22.2\\ 7$"><IMG
+ WIDTH="335" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.gif"
+ ALT="$\displaystyle \text {
+and above }&amp; 13&amp;.0324&amp;14.3\\ \hphantom{x}&amp;440&amp;1.0&amp;440 \endmatrix $">
+</DIV><P></P>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+In order to  calculate the expected frequencies we must now the theoretical form of the Poisson
+distribution. For a Poisson distribution the
+appropriate mass function is <!-- MATH
+ \begin{displaymath}
+p(x) = \frac{e^{-\lambda}\lambda^x}{x!}, x = 0,1,2,.....
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="646" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.gif"
+ ALT="$\displaystyle p(x) = \frac{e^{-\lambda}\lambda^x}{x!}, x = 0,1,2,.....$">
+</DIV><P></P>
+
+<P>
+Then
+<!-- MATH
+ \begin{displaymath}
+\chi^2 = \frac{(18-21.9)^2}{21.9} + ..... + \frac{(13-14.3)^2}{14.3} = 5.927
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="107" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.gif"
+ ALT="$\displaystyle \chi^2 = \frac{(18-21.9)^2}{21.9} + ..... + \frac{(13-14.3)^2}{14.3} = 5.927$">
+</DIV><P></P>
+This has 6 degrees of freedom.  We have from the chisquare table <!-- MATH
+ $\chi^2_{.05,6} = 12.592$
+ -->
+<IMG
+ WIDTH="13" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.gif"
+ ALT="$ \chi^2_{.05,6} = 12.592$">.  Hence
+this is not significant and therefore there is evidence that it <B>does fit</B> a Poisson with
+<!-- MATH
+ $\lambda = 3.0$
+ -->
+<IMG
+ WIDTH="195" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ \lambda = 3.0$">.
+
+<P>
+Note if the value of <IMG
+ WIDTH="66" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.gif"
+ ALT="$ \lambda$"> had to be estimated from the data then there would have been 5
+degrees of freedom.
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+The chi-square goodness of fit test outlined above is an all-pupose test which handles any
+theoretical distribution.  For specific distirbutions in many cases other tests tailored to the
+properties of that distribution and more powerful than the chi-square test can be found.  In
+MagnusStat such a test is used for testing goodness of fit against a normal distribution.  It is
+called <B>Geary's test for Normality</B> and is based on the relationship in a normal distribution
+between the mean deviaiton and the standard deviation.  For a set of data <!-- MATH
+ $x_1,...,x_n$
+ -->
+<IMG
+ WIDTH="154" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.gif"
+ ALT="$ x_1,...,x_n$"> let
+<!-- MATH
+ \begin{displaymath}
+U = \frac{\sqrt{\pi/2}\frac{\sum_{i=1}^n |x_i - \x|}{n}}{\sqrt{\frac{\sum_{i=1}^n
+(x_i-\x)^2}{n}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="17" HEIGHT="15" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$\displaystyle U = \frac{\sqrt{\pi/2}\frac{\sum_{i=1}^n \vert x_i - \x\vert}{n}}{\sqrt{\frac{\sum_{i=1}^n
+(x_i-\x)^2}{n}}}$">
+</DIV><P></P>
+When the underlying population is normal then both the numerator and the denominator in <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img45.gif"
+ ALT="$ U$">
+estimate <IMG
+ WIDTH="51" HEIGHT="28" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.gif"
+ ALT="$ \sigma$"> the population standard deviation.  When <IMG
+ WIDTH="108" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.gif"
+ ALT="$ n \ge 20$"> the test statistic
+<!-- MATH
+ \begin{displaymath}
+Z = \frac{U - 1}{.2661/\sqrt{n}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+
+</DIV><P></P>;''follows an approprixamate standard normal distribution.
+<BR><HR>
+
+</BODY>
+</HTML>

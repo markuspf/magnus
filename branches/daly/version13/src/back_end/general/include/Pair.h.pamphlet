@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/Pair.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Pair.h}
+\section{include}
+<<include>>=
+#include <iostream.h>
+#include "IPC.h"
+
+@
+\section{struct Pair}
+<<struct Pair>>=
+struct Pair
+{
+  Pair(int x, int y) : a(x), b(y) { }
+  Pair( ) { }
+
+  bool operator == (const Pair& p) const 
+    { return a == p.a && b == p.b; }
+
+  friend ostream& operator << ( ostream& out, const Pair& p ) {
+    out << " (" << p.a << "," << p.b << ")";
+  }
+
+  friend ostream& operator < ( ostream& ostr, const Pair& ) { return ostr; }
+  friend istream& operator > ( istream& istr, Pair& ) { return istr; }
+  int hash() const { return a;}
+  int a,b;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/Pair.h
+#ifndef _PAIR_H_
+#define _PAIR_H_
+
+<<license>>
+<<include>>
+<<struct Pair>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

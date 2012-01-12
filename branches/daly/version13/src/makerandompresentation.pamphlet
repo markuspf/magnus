@@ -1,0 +1,241 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/makerandompresentation.pamphlet}
+\author{Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "CosetEnumerator.h"
+#include "File.h"
+@
+<<include.c>>=
+#include "MakeRandomPresentation.h"
+#include "OutMessages.h"
+#include "GCM.h"
+#include "SMFPGroup.h"
+#include "viewStructure.h"
+#include "NormalRandomWord.h"
+#include "FPGroup.h"
+
+@
+\section{class RandomPresentationARCer}
+\subsection{RandomPresentationARCer Constructor}
+<<RandomPresentationARCer Constructor.h>>=
+  RandomPresentationARCer( ComputationManager& boss ) 
+    : ARCer( boss ), maxGens(10),  maxRels(10), averageRels(20) { } 
+  void setArguments(int maxG,int maxR,int averR){
+    maxGens = maxG;
+    maxRels = maxR;
+    averageRels = averR;
+  }
+@
+\subsection{RandomPresentationARCer::getRetValue}
+<<RandomPresentationARCer::getRetValue.h>>=
+  FPGroup getRetValue() const{ return theGroup; }
+@
+\subsection{RandomPresentationARCer::runComputation}
+<<RandomPresentationARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<RandomPresentationARCer::runComputation.c>>=
+void RandomPresentationARCer::runComputation( )
+{
+  // @am generate a random presentation
+  UniformRandom ur;
+  int nOfGens = ur.rand(2,maxGens);
+  int nOfRels = ur.rand(2,maxRels);
+  VectorOf<Chars> genNames(nOfGens);
+  SetOf<Word> relts(nOfRels);
+  for (int i=0;i<nOfGens;i++)
+    genNames[i] = Chars("x") + Chars(i+1);
+  for (int i=0;i<nOfRels;i++){
+    NormalRandomWord nw(nOfGens, averageRels, ur.rand(0,averageRels/5),
+			ur.rand(10,100000),ur.rand(10,100000));
+    relts |= nw.word();
+  }
+  theGroup = FPGroup(genNames,relts);
+}
+
+@
+\subsection{RandomPresentationARCer::writeResults}
+<<RandomPresentationARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<RandomPresentationARCer::writeResults.c>>=
+void RandomPresentationARCer::writeResults( ostream& out ) 
+{
+  out < theGroup;
+}
+
+@
+\subsection{RandomPresentationARCer::readResults}
+<<RandomPresentationARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<RandomPresentationARCer::readResults.c>>=
+void RandomPresentationARCer::readResults( istream& in )
+{
+  in > theGroup;
+}
+
+@
+\subsection{class RandomPresentationARCer}
+<<class RandomPresentationARCer>>=
+class RandomPresentationARCer : public ARCer
+{
+public:
+<<RandomPresentationARCer Constructor.h>>
+<<RandomPresentationARCer::getRetValue.h>>
+<<RandomPresentationARCer::runComputation.h>>
+<<RandomPresentationARCer::writeResults.h>>
+<<RandomPresentationARCer::readResults.h>>
+private:
+  FPGroup theGroup;
+  int maxGens;
+  int maxRels;
+  int averageRels;
+};
+
+@
+\section{class MakeRandomPresentation}
+\subsection{MakeRandomPresentation Constructor}
+<<MakeRandomPresentation Constructor.h>>=
+  MakeRandomPresentation( /*SMFPGroup&*/ );
+@
+<<MakeRandomPresentation Constructor.c>>=
+MakeRandomPresentation::MakeRandomPresentation(/*SMFPGroup& G*/)
+  : Supervisor( true ),
+    arcer( *this ),
+    arcerStarted( false ),
+    nOfPresentations( 1 )
+  //theGroup( G )
+{
+}
+
+@
+\subsection{MakeRandomPresentation::takeControl}
+<<MakeRandomPresentation::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<MakeRandomPresentation::takeControl.c>>=
+void MakeRandomPresentation::takeControl( )
+{
+  if( freeARCs() ) {
+    if ( !arcerStarted ){
+      //   arcer.setArguments( getPermutations(), theTestWords[checkedWord] );
+      arcerStarted = true;
+    }
+    if( arcer.takeControl() ) {
+      SMFPGroup* smo
+	= new SMFPGroup( arcer.getRetValue(),
+			 Text("Random presentation"),
+			 SMFPGroup::FP
+			 );
+      ListOf<OID> dependencies;
+      CheckinMessage( *smo, "", dependencies ).send();
+      if ((--nOfPresentations) == 0){
+	adminTerminate();
+	return;
+      }
+    }
+    usedOneARC();
+  } 
+}
+
+@
+\subsection{MakeRandomPresentation::start}
+<<MakeRandomPresentation::start.h>>=
+  void start( );              // overrides ComputationManager
+@
+<<MakeRandomPresentation::start.c>>=
+void MakeRandomPresentation::start(){
+  nOfPresentations = getParameters().getValue("N");
+  int maxG = getParameters().getValue("maxG");
+  int maxR = getParameters().getValue("maxR");
+  int averR = getParameters().getValue("averR");
+  arcer.setArguments(maxG,maxR,averR);
+}
+
+@
+\subsection{MakeRandomPresentation::viewStructure}
+<<MakeRandomPresentation::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<MakeRandomPresentation::viewStructure.c>>=
+void MakeRandomPresentation::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Make a random presentation",
+			     Text("Make a random presentation" ) ,
+			     "MakeRandomPresentation",
+			     Text("Rand pres")
+			     );
+  pv.addParameter(
+   EditInteger("N","Number of presentations ",0,1,1,10));
+  pv.addParameter(
+   EditInteger("maxG","Maximal number of generators ",0,2,1,100));
+  pv.addParameter(
+   EditInteger("maxR","Maximal number of relators ",0,2,1,100));
+  pv.addParameter(
+   EditInteger("averR","Average length of relators ",0,10,1,100));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+		    "Generate random presentation",100));
+  submit(ostr, pv);
+}
+
+@
+\subsection{MakeRandomPresentation::terminate}
+<<MakeRandomPresentation::terminate.h>>=
+  void terminate( ) { }          // overrides ComputationManager
+@
+\subsection{class MakeRandomPresentation}
+<<class MakeRandomPresentation>>=
+class MakeRandomPresentation : public Supervisor
+{
+public:
+<<MakeRandomPresentation Constructor.h>>
+<<MakeRandomPresentation::viewStructure.h>>
+<<MakeRandomPresentation::takeControl.h>>
+<<MakeRandomPresentation::start.h>>
+<<MakeRandomPresentation::terminate.h>>
+private:
+  //class SMFPGroup& theGroup;
+  RandomPresentationARCer arcer;
+  bool arcerStarted;
+  int nOfPresentations;
+};
+
+@
+\section{MakeRandomPresentation.h}
+<<MakeRandomPresentation.h>>=
+#ifndef _MAKE_RANDOM_PRESENTATION_H_
+#define _MAKE_RANDOM_PRESENTATION_H_
+
+<<include.h>>
+<<class RandomPresentationARCer>>
+<<class MakeRandomPresentation>>
+#endif
+@
+\section{MakeRandomPresentation.C}
+<<*>>=
+
+<<include.c>>
+<<RandomPresentationARCer::runComputation.c>>
+<<RandomPresentationARCer::readResults.c>>
+
+<<MakeRandomPresentation Constructor.c>>
+<<MakeRandomPresentation::takeControl.c>>
+<<MakeRandomPresentation::start.c>>
+<<MakeRandomPresentation::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

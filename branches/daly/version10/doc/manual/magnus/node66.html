@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Geometry Management</TITLE>
+<META NAME="description" CONTENT="Geometry Management">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00334000000000000000">
+Geometry Management</A>
+</H2>
+
+<P>
+In almost all of the examples in Ousterhout's book, widget paths are
+cluttered by the demands of the packer. For example, in order to
+ensure that a button is drawn correctly in a window, you might make an
+enclosing frame which serves no purpose other than to manage the
+geometry of the button. Thus:
+
+<P>
+<PRE>
+  frame .d9.frame6
+  button .d9.frame6.ok -text OK; button .d9.frame6.cancel -text Cancel
+  pack .d9.frame6.ok .d9.frame6.cancel -side left
+  pack .d9.frame6 -side top
+</PRE>
+
+<P>
+It is certainly tedious to build all of these frames and pack the
+widgets into them `by hand'. But much worse is the fact that sometimes
+you can not avoid hard-wiring a widget path in a procedure other than
+the one which made the widget; the procedure might not even be in the
+same file.  This means that whenever you change the geometry of a
+window, you must track down all references to its widgets and change
+them too.
+
+<P>
+But there is a simple solution. Every widget except <TT>.</TT> has a <EM>parent</EM>, and, if it is packed, a <EM>master</EM> which manages its
+geometry. These need not be the same. Above, <TT>.d9.frame6</TT> is both
+the parent and master of <TT>ok</TT>, but we can make <TT>.d9</TT> the
+parent of <TT>ok</TT> instead, and pack <TT>.d9.ok</TT> in <TT>.d9.frame6</TT>.
+That way, all (or at least the `exported') widgets have a canonical
+path, while allowing transparent changes to their masters. The above
+example becomes:
+
+<P>
+<PRE>
+  frame .d9.frame6
+  button .d9.ok -text OK; button .d9.cancel -text Cancel
+  pack .d9.ok .d9.cancel -side left -in .d9.frame6
+  pack .d9.frame6 -side top
+</PRE>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html1014"
+  HREF="node67.html"><TT>proc framer</TT></A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+
+</BODY>
+</HTML>

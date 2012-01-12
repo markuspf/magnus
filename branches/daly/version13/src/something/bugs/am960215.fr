@@ -1,0 +1,39 @@
+From alexei Thu Feb 15 18:03:17 1996
+From: alexei (Alexei Myasnikov)
+Subject: bags in nilpotent groups
+To: bormotov (Dmitry Bormotov)
+Date: Thu, 15 Feb 96 18:03:17 EST
+Cc: alexei (Alexei Myasnikov)
+X-Mailer: ELM [version 2.3 PL11]
+Content-Length: 701
+
+Nilpotent groups:
+
+
+
+
+1. " If G1 trivial":
+	problem was finished but the circle in the problem icon flashed green 
+       forever.
+
+2. Fix free for nilpotent : G1 is not free if abelianization of G is not free
+	MAKE IT GRAY:and the wording should be "Is G1 free nilpotent?"
+
+
+4. We need new menu items :
+
+ Compute a Malcev basis for G1
+
+Compute the Malcev basis for the relation subgroup of G1.
+
+5. Remove the item "Compute the nilpotent structure of G!
+
+6. I was able to put the icon of G1 somewhere out of screen and could not get 
+   it back.
+
+
+Checked in a word w1 of G1;
+
+item says Compute the centralizers of w1 must be: Compute the centralizer of w1
+(without s). The same in the problem window
+

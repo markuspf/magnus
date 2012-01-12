@@ -1,0 +1,1874 @@
+BABYL OPTIONS: -*- rmail -*-
+Version: 5
+Labels:
+Note:   This is the header of an rmail file.
+Note:   If you are seeing it in rmail,
+Note:    it means the file has no messages in it.
+
+1,,
+X-Coding-System: undecided-unix
+Mail-from: From cfm@localhost.localdomain  Mon Oct 25 14:47:06 2004
+Return-Path: <cfm@localhost.localdomain>
+Received: from localhost.localdomain (g1 [127.0.0.1])
+	by localhost.localdomain (8.12.10/8.12.10) with ESMTP id i9PIl6pG020203
+	for <daly@localhost.localdomain>; Mon, 25 Oct 2004 14:47:06 -0400
+Received: (from cfm@localhost)
+	by localhost.localdomain (8.12.10/8.12.10/Submit) id i9PIl69Y020201
+	for daly; Mon, 25 Oct 2004 14:47:06 -0400
+Date: Mon, 25 Oct 2004 14:47:06 -0400
+From: cfmiller <cfm@localhost.localdomain>
+Message-Id: <200410251847.i9PIl69Y020201@localhost.localdomain>
+To: daly@localhost.localdomain
+
+*** EOOH ***
+Date: Mon, 25 Oct 2004 14:47:06 -0400
+From: cfmiller <cfm@localhost.localdomain>
+To: daly@localhost.localdomain
+
+\documentclass[12pt]{article}
+
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{epsfig}
+
+\parindent=0pt
+\parskip=8pt
+\def\magnus{MAGNUS }
+\def\nsmagnus{MAGNUS}
+
+%\textheight=23cm
+
+\begin{document}
+
+
+\section{Adding packages}
+
+\nsmagnus' Package Mechanism was developed to provide a simple and
+convenient way of integrating third party software into \nsmagnus'
+graphical user interface.
+Integrated packages communicate with \magnus by writing simple
+messages to  the standard output and reading messages from the
+standard input.
+
+Packages are required to  understand simplified
+descriptions (representations) of algebraic  objects accepted in
+\magnus software package. The formats existing in \magnus were
+slightly changed in order to simplify parsing of the descriptions
+of objects sent to a package from \nsmagnus.
+For example, many kinds of brackets are eliminated when sent to a
+package so that one can read definitions symbol by symbol.
+
+The following is a description of conventions used to represent
+different objects in \magnus and in messages as well:
+
+\textbf{ Algebraic objects:}
+\begin{enumerate}
+\item \textbf{Word}:
+There are a number of conventions concerning word notation.
+Generator names can be any letter, such as
+\verb+a, b, ..., x, y, z+
+or any letter followed by a sequence of digits such as
+\verb+a1, b23 +
+and so on. In putting generators together to form words, there
+must be white space between them unless other punctuation is
+used. The \verb+^+ is used to denote exponentiation. By default, the
+exponents are integers only.
+
+Example: \verb+a b^2 c c d^-4 a^3+
+
+{\em Note}: When sending a word definition to \magnus the
+following additional conventions are accepted: we allow \verb+a (b c)+
+in place of \verb+ a b c+. We sometimes use capital letters to denote
+inverses of generators. So the inverses of \verb+a, b, c11, ..+ are
+denoted by \verb+A, B, C11,...+ and also by \verb+a^-1, b^-1, c11^-1 +and so
+on.  The exponents are allowed to be group elements as well as
+integers, with \verb+a^b+ is defined to be the conjugate \verb+B a b+ of
+\verb+a+ by \verb+b+.
+Thus \verb+ a^b = B a b = b^-1 a b+.
+
+Our convention is that \verb+^+ is left-associative. So
+\verb+ a^b^2 = (a^b)^2+.
+
+We use square brackets to denote commutators:\\
+\verb+    [a,b]= a^-1 b^-1 a b = A B a b+.\\
+We then define, for $n > 2$, \\
+\verb+    [a1,a2,...,an]= [[a1,a2],a3,...,an]+.\\
+Thus multiple commutators are "left-normed".
+
+\item \textbf{Tuple} :
+Words in a tuple are separated  with
+commas and the list is enclosed in \{\}'s. For
+example:
+
+\verb+{a, a, a^2, b^a, a, b^2}+.
+
+
+\item \textbf{Subgroup} :
+A subgroups is described by listing its generators, each such
+generator given by a word in the generators of the supergroup. We
+separate these words by commas. For example, the subgroup of a
+group with generators \verb+a+ and \verb+b+ generated
+by \verb+a^2 b+ and \verb+[a,b]+ is
+described by
+
+\verb+    { a^2 b, a^-1 b^-1 a b }+
+
+
+\item \textbf{ Map}:
+To define a map from the generators
+\verb+{ x, y, ... }+
+of a group G to a group H with generators
+\verb+{ a, b, ... }+
+assign to each of \verb+x, y, ...+ its image as a word in the generators
+of $H$, enclosing the description by \verb+{}+'s. For example:
+\begin{verbatim}
+{
+    x -> a^b,
+    y -> b^-1
+}
+\end{verbatim}
+If you omit the image of a generator, \magnus assigns its image to
+be the identity.
+
+\item \textbf{Group} :
+We use customary notation in describing a group by means of a
+presentation : $< x_1, ..., x_n ; r_1, ..., r_n>$, where $x_i$ -
+generators of a group ant $r_i$ - relators.
+
+In case of a free group, symbol ``;'' is ommited. Presentation of
+a nilpotent group starts with a nilpotency class, followed by a
+presentation in the form described above.
+
+Here are some examples of how to enter a presentation:
+
+\begin{verbatim}
+< x, y; x^2  y^3, x y x y >
+
+<a,b; a^-1 b^-1 a b >
+
+< b, t ; t b^2 t^-1 = b b b >
+
+< a,b,c,d,e>
+
+4 <a,b; a b c >
+\end{verbatim}
+\end{enumerate}
+
+
+Detailed description of the messages' format together with
+examples of their use are given below.
+
+\textbf{How to add a package}
+
+When \magnus is started, you will see ``Packages" item in the main
+menu. It has two sub-items: ``Add a package" and ``Edit the list of packages".
+
+When ``Add a package" menu is selected a Dialog Window (Figure
+\ref{fig:addwin}) will pop-up. This is the window where all
+information required to add a package is entered. There are 5
+fields that must be filled in:
+
+
+\begin{figure}[htbp]
+%\centerline{\epsfig{file=addwindow.eps}}
+\caption{``Add a new  package''  dialog window.}
+\label{fig:addwin}
+\end{figure}
+
+
+\begin{enumerate}
+\item {\em Enter project name}: enter a name of the package. This
+string will appear as an item in the menu. There is a limit of
+20 characters.
+\item {\em Command line}: enter the command which will invoke
+the package. You can type it in the text window or select an
+executable from the ``Open File" dialog window by clicking
+``Browse" button. This field is limited to 128 characters.
+\item {\em Select checkin type}: select the type of a group
+your package will work with. Together with selected algebraic
+objects, this field defines conditions for packages menu item to
+appear (see below for details).
+\item {\em Select object}: select algebraic objects
+that your package will be applied to. When you  highlight
+selected in this field objects which also belong to a group of the
+type selected in the previous field the menu item for you package
+will appear in the ``Packages" menu. Then you can run the package
+by selecting corresponding menu item.
+\item {\em Parameters}: You can define a list of parameters that
+can be edited and sent to the package before it is started. Press
+``Parameters" button for the ``List of parameters" dialog window. It is
+empty at the beginning. You can add a new parameter by pressing
+``Add" button. Two fields have to be filled: the {\em name} of the parameter
+which will appear as a parameter description in the package's
+problem window, and the parameter {\em type} (integer, text or boolean).
+\end{enumerate}
+
+
+The example in Figure \ref{fig:addwin} shows package named
+\verb+Coset Enumerator (PEACE)+
+which is invoked with \verb+peace -h+ command (here we assume that
+\verb+peace+ lies in the search path and so that the full path name is not
+needed).
+This package is applied to a ``Finitely Presented" group
+
+
+\textbf{Messages description}:
+Usually communication between \magnus and an integrated package
+starts by sending a description of selected objects and values
+of parameters (if necessary )  from \magnus to the package.
+After that, the package sends its output to \magnus using messages as
+specified below. Notice that if no special command precedes the output
+string, it will be shown in the linked file and its link is automatically
+called ``Click here to see the details from {\em package\_name}''.
+
+
+The following is a list of messages currently available for
+interchange between external packages and \magnus together with examples of
+their use.
+
+\textbf{From \magnus to a package}:
+
+The following describes messages \magnus can send to a package.
+All messages of this type are of the following format:
+\begin{quote}\em
+object\_description ( oid\_number )
+\end{quote}
+where {\em object\_description} is a string which describes the
+object (group presentation, word definition and so on ) as
+described above. {\em oid\_number} is a unique integer
+identifier, automatically assigned to each object created in the
+\magnus workspace. One can use {\em oid\_number} to
+refer to a particular object, when sending messages to \magnus
+session manager (see below).
+
+\begin{enumerate}
+\item \textbf{Group}: \magnus sends a presentation of a group which
+the package should read: \\
+   {\em  group\_presentation ( oid ) }.\\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+\end{verbatim}
+\item \textbf{Nilpotent Group}: \\
+{\em  nilpotency\_class group\_presentation   ( oid ) } \\
+Example:
+\begin{verbatim}
+5 <a,b,c,d ; a^2, b c > (3)
+\end{verbatim}
+\item \textbf{Word}:  \\
+   {\em  group\_presentation ( oid ) } \\
+{\em   word ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+a^-1 b^-1 a b; (12)
+\end{verbatim}
+\item \textbf{Subgroup} : \\
+   {\em  group\_presentation ( oid ) } \\
+{\em   subgroup\_generators ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+{a^-1 b^-1 a b, a^2 c^2}; (12)
+\end{verbatim}
+\item \textbf{Tuple} : \\
+   {\em  group\_presentation ( oid ) } \\
+{\em   words\_in\_tuple ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+{a^-1 b^-1 a b, a^2 c^2}; (12)
+\end{verbatim}
+\item \textbf{Map} : \\
+   {\em  domain\_group\_presentation ( oid ) } \\
+   {\em  range\_group\_presentation ( oid ) } \\
+{\em   map  ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+<a,b,c,d ; a^2, b c > (3)
+{ a->b, b->c, c->d, d->a } (15)
+\end{verbatim}
+\item \textbf{Homomorphism} : \\
+   {\em  domain\_group\_presentation ( oid ) } \\
+   {\em  range\_group\_presentation ( oid ) } \\
+{\em   homomorphism ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c > (0)
+<x,y,z > (3)
+{ a->x, b->y, c->z } (15)
+\end{verbatim}
+\item \textbf{Two words (w1,w2)} :  \\
+   {\em  group\_presentation ( oid ) } \\
+{\em   word\_w1 ; ( oid ) } \\
+{\em   word\_w2 ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+a^-1 b^-1 a b; (12)
+a^-1; (11)
+\end{verbatim}
+\item \textbf{Two subgroups (H1,H2)} :  \\
+   {\em  group\_presentation ( oid ) } \\
+{\em   subgroup\_H1 ; ( oid ) } \\
+{\em   subgroup\_H2 ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+{a^-1 b^-1,  a b }; (12)
+{a^-1, b}; (11)
+\end{verbatim}
+\item \textbf{Word and Subgroup (w,H)} :  \\
+   {\em  group\_presentation ( oid ) } \\
+{\em   subgroup\_H ; ( oid ) } \\
+{\em   word\_w ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+{a^-1 b^-1,  a b }; (12)
+a^-1 (11)
+\end{verbatim}
+\item \textbf{Parameters} : \\
+{\em Integer ( name ) (value) } \\
+{\em String ( name ) (value) } \\
+{\em Boolean ( name ) (value) } \\
+Example:
+\begin{verbatim}
+Integer (Maximal number of elements) (1000)
+Boolean (Enumerate all) (1)
+\end{verbatim}
+\end{enumerate}
+
+\textbf{ From Package to \magnus }
+\begin{enumerate}
+\item Output text into session log : \\
+{\em Text \{ text \} } \\
+Example:
+\begin{verbatim}
+. . .
+printf(``Text { Package has started its work } \n'');
+. . .
+\end{verbatim}
+
+\item Create a link to a file : \\
+{\em Link \{ link\_name , file\_name \} } \\
+Example:
+\begin{verbatim}
+. . .
+printf(``Link { Click to see some details , /tmp/detail_file } \n'');
+. . .
+\end{verbatim}
+\item Create a group object in the Workspace : \\
+{\em Create Group \{ group\_presentation \} } \\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Group { <a,b,c,d ; a^2, b^3 c a > } \n'');
+. . .
+\end{verbatim}
+\item Create a word object for a group in the Workspace : \\
+{\em Create Word \{ word $|$ group\_oid \} } \\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Word { a B c b | 3 } \n'');
+. . .
+\end{verbatim}
+\item Create a subgroup in the Workspace : \\
+{\em Create Subgroup \{ list\_of\_subgroup\_generators $|$ group\_oid \} }\\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Subgroup { a b, b c , a d, c^7 | 5 } \n'');
+. . .
+\end{verbatim}
+\item Create a tuple in the Workspace : \\
+{\em Create Tuple \{ words\_in\_tuple $|$ group\_oid \} }\\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Tuple { a b, b c , a d, c^7 | 5 } \n'');
+. . .
+\end{verbatim}
+\item Create a map : \\
+{\em Create Map \{ map $|$ domain\_group\_oid $|$ range\_group\_oid \} }\\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Map { a - > x, b->y^2 | 8 | 14 } \n'');
+. . .
+\end{verbatim}
+\end{enumerate}
+
+
+Here is an example of a simple package which is written in Perl.
+It takes a word from \magnus and returns its $n$-th power where
+$n$ is a parameter to be specified.
+
+First the package is added to the ``Packages" menu in \nsmagnus. The name,
+command to invoke the package, the type and the fact that an integer
+parameter is required are all entered via a dialog window.
+
+To use the package, check-in a finitely presented group and a word.
+With the word highlighted, select the package from the menu. Enter
+the power as a parameter via the menu in the ``Start" dialog window
+that appears.
+
+Here is the Perl script which returns the appropriate results:
+
+\begin{verbatim}
+#!/usr/bin/perl
+
+#
+#  Expect 3 lines on STDIN as follows:
+#
+# <a, b, c ; a^2, b^3 c^-4 >  (5)       # presentation and its oid
+# a^-1 b^-1 a^2 b^3;  (12)              # word with its oid
+# Integer (power) (17)                  # power to be raised
+#
+
+$lineone = <STDIN>;
+@parts = split(/\D+/, $lineone);        # split line into numbers
+$groupoid = $parts[$#parts];            # oid = the last number
+
+$linetwo = <STDIN>;
+@parts = split(/;/,$linetwo);           # split line at semi-colon ;
+$theword = $parts[0];                   # initial part is the word
+
+$linethree = <STDIN>;
+@parts = split(/\D+/,$linethree);       # split line into numbers
+$power = $parts[$#parts];               # power = the last number
+
+print "Text {About to compute the ${power}-th power of $theword } \n";
+
+$powerstr = "";
+
+for ( $i = 0; $i < $power; $i++ ){
+     $powerstr = $powerstr." $theword";
+}
+
+print "Create Word {$powerstr | $groupoid } \n";
+\end{verbatim}
+
+
+
+
+\section{Adding new algorithms to \magnus}
+
+
+\magnus consists of two major parts: the front end (FE) and  the back end (BE).
+The FE is implemented in Tcl/Tk . It is responsible for representing
+information
+(obtained from the BE) on the screen and transferring the input from
+the user to the BE.
+Almost all transactions of the front end are controlled by a back end process
+called the session manager. Developers  that are not involved in changing of
+\nsmagnus' GUI design
+usually do not have to work with the front end. A more detailed
+description of the
+communications between the front end and the back end can be found in \magnus
+Reference Manual 1. In this section we describe the steps that are
+needed to add new  algorithms into \nsmagnus.
+
+Adding a new algorithm to \magnus involves adding code to the back end
+class structure  which  is implemented  in standard C++.
+Source code for the \nsmagnus' back end is located in
+the {\tt magnus/back\_end/} directory
+which consists of directories containing descriptions of the various classes.
+
+
+
+Usually the directory names indicate where to look for a particular
+class or a group of classes. Each directory has the following structure:
+\begin{itemize}
+\item include/ - directory containing the definition files;
+\item src/ - contains implementation files;
+\item test/ -  source code for the local executables which, after the
+compilation,
+usually can be found in test/bin.
+\item Makefile - makefile for the current directory.
+\end{itemize}
+
+\subsection{Communicating with the front end}
+The \magnus session manager can require information from
+the front end, for example the names of the selected objects, their relations,
+and so on.  In addition the \magnus front end must be able to
+reflect the state
+of the session manager.  So a small number of events are pre-defined
+in response to
+which the front end is to take some action which reflects the session manager's
+state. The session manager describes to the front end what to do in each event,
+via a simple message  protocol.
+Most of such events  are for static properties of algebraic objects which
+are needed to determine whether a menu item, etc., should be posted.
+
+The following is a list  of classes which implement interaction events
+available from the EData objects:
+\begin{enumerate}
+\item  {\tt struct Text}. Used in session manager to deliver a text message
+to the front end.
+\item {\tt  struct CheckinType}. Correspond to a ``type'' of the group in the
+front end.
+Usually used to set up conditions in the front end. For example:
+\footnotesize
+\begin{verbatim}
+M.startItemGroup( CheckinType( 1 ) == SMFPGroup::ABELIAN );
+\end{verbatim}
+\normalsize
+Here {\tt   CheckinType( 1 ) == SMFPGroup::ABELIAN} is true in the
+front end if
+the
+``type'' of the first selected in the Workspace ``group'' object is Abelian.
+\item {\tt  struct IsHomo}. True in the front end if the  parameter
+object is a
+homomorphism.
+\item {\tt  struct IsIso}. True in the front end if the  parameter
+object is an
+isomorphism.
+\item {\tt  struct IsAuto}. True in the front end if the  parameter object is
+an
+automorphism.
+\item {\tt  struct Parent}. Detects the parent for a given object.
+\item {\tt  struct Domain}. Gives the domain group of a given object.
+\item {\tt struct Range}. Gives the range group of a given object.
+\item {\tt struct Oid}. Gives  unique object ID for a given object.
+\item {\tt  struct Name}. Gives a name in the Workspace for corresponding
+object.
+\item {\tt struct Link}. A special kind of a text message. Allows to create a
+link to the specified file in  the Workspace logs.
+\end{enumerate}
+
+Events are sent by means of a simple messages. Most of the messages are derived
+from the ostream. To send a message a special method {\tt void send()} has to
+be called.  The following are most useful for the user messages available
+in session manager:
+\begin{enumerate}
+\item {\tt class LogMessage : public OutMessage, protected FEData, public
+ostrstream}.
+Sends a message to the specified log window in the front end.
+This is the most commonly used type of the messages. All reports, links to the
+files and so on are delivered by means of this message.
+
+\item {\tt class Warning : public OutMessage, protected FEData, public
+ostrstream}.
+Creates a warning window with the specified text.
+
+\item {\tt class Message : public OutMessage, protected FEData, public
+ostrstream}. Posts
+a message in the separate dialog window.
+\end{enumerate}
+
+Example:
+
+\footnotesize
+\begin{verbatim}
+LogMessage msg( *this, theWord );
+msg << Name( theWord ) << " is not trivial.";
+msg.send();
+// Print in the main log window and the log window corresponding
+// to ``theWord''  the following message: ``w1 is not trivial.''
+
+LogMessage msg1(*this,theGroup);
+msg1 << Link(Chars( "Click here to see the canonical decomposition of ")+
+                  Text(Name( theGroup )),
+                 "CyclicDecomposition",
+                 ``can_decomp.txt'' );
+msg1.send();
+// Create a link to the file can_decomp.txt in the main log window
+// and the log window for ``theGroup''
+// Text of the link: ``Click here to see the canonical decomposition of G1''
+
+\end{verbatim}
+\normalsize
+
+\subsection{Generalities about menus} Menus in \magnus are contextual
+in the sense that their contents depend on which items are selected
+in the Workspace window.  If no icons are selected, then only the Check-in
+menu for new objects and a few default items are available. If one or more
+items are selected, then a variety of relevant tools become available.
+For instance if a subgroup H1 and a word w1 are selected, the tools menu
+will contain a number of algorithms for answer questions about their
+relationship, for instance ``Is w1 an delement of H1?".
+
+
+In most cases one can predict the running time of a problem in advance.
+We say that a problem is ``fast''  if it runs approximately less than a
+second on a modern computer. Usually these problems are those that
+can be run in constant time or linear time where upper bound on the
+input size is known. When we cannot assure fast execution of the algorithm,
+we must create a {\em problem window} with a list of {\em
+computation managers} (see below) which are used to distribute
+the machine resources.
+
+
+\subsection{Creating a menu item}
+Even though  fast and slow problems  involve different methods of
+executing the algorithms, the corresponding menu items are created in the
+uniform fashion.
+
+There is a group of template classes which are used to create menus.
+Menu itself is described by one of the classes inherited from {\tt class Menu}
+which can be
+found in
+{\tt magnus/back\_end/SessionManager/include/Menu.C}.
+Here is a short description of its methods:
+\begin{itemize}
+\item {\tt  enum MenuKind \{CHECKIN, TOOLS, MAKE, PACKAGES,\\ 
+DATABASE, TESTING\}} - Main menu items' types.
+
+\item {\tt   void startItemGroup( ) } - Start an item group with no condition.
+
+
+\item {\tt  void startItemGroup(const Expression\& condition)} - Start an item 
+group with condition. Every item in the menu that has been added in this item group 
+will appear in the menu only if ``condition" is true
+
+
+\item {\tt  void startCascade(const Text\& text)} - Start cascade menu
+
+\item {\tt   void closeCascade( ) }- Close cascade menu
+
+\item {\tt  void addDisabled(const Text\& text)} - Add a disabled
+(grayed) menu
+item
+
+\item {\tt   void separator( ) } -  Add a separator in the menu
+
+\item {\tt   void done( )} - Close current item group
+\end{itemize}
+
+  From  {\tt Menu} we derive classes of the form:
+\begin{center}
+{\tt template $<$ list of classes $>$ class Menu\textbf{N} : public Menu}
+\end{center}
+where {\bf N} is the number of objects selected in the Workspace when this
+menu is activated and  {\tt list of classes} is a list of parameter classes
+which correspond to the selected objects in the Workspace.
+
+In addition to the inherited methods, all {\tt Menu\textbf{N}} classes
+have
+\begin{center}
+{\tt void add(const CtorArgs\textbf{N} $<$list of classes$>$\& c, const Text\&
+t, const Action \&a ) }
+\end{center}
+which actually adds an item to the menu and associates menu with a class
+which will execute the corresponding action. Here, {\tt t} is a text 
+in the menu,
+{\tt a} some additional action, usually left as default and {\tt c} 
+is an instance of
+one of the  special classes {\tt Ctor\textbf{N}} - a
+{\em constructor wrapper}, that is, an appropriate derivative of class Ctor.
+These arrange, in cooperation with class ObjectSmith, for a callback
+when the menu item is selected.
+
+The definition of {\tt Ctor\textbf{N} } is similar to one for
+{\tt Menu\textbf{N} }:
+\begin{center}
+{\tt template $<$ T, list of object classes $>$ class Ctor\textbf{N} : public
+CtorArgs\textbf{N}
+$<$list of object classes$>$}.
+\end{center}
+Here, again, {\bf N} is the number of objects
+selected in the Workspace, {\tt list of classes} specifies the types 
+of corresponding
+objects and {\tt T}  is a class (usually derived from {\em supervisor} or
+{\em computation manager} classes) which actually defines the action (see
+below).
+
+
+Examples of defining menu items are shown below:
+\footnotesize
+\begin{verbatim}
+{
+    Menu1<SMFPGroup> M( Menu::TOOLS );
+    // Create a menu object which correspond to one
+    // selected ``group'' object in the Workspace and
+    // ``Tools'' item of the main menu
+
+
+    M.startItemGroup( CheckinType( 1 ) == SMFPGroup::ABELIAN );
+    // Start group for Abelian groups only
+
+    M.startCascade( Text("Is") + Name(1) + Text("...") );
+    // Start a cascade menu ``Is A1 ...''
+
+    M.add( Ctor1<IsTrivialProblem, SMFPGroup>(),
+          Text("Is") + Name(1) + Text("trivial ?")
+          );
+    // Insert item ``Is A1 trivial?'' and assign IsTrivialProblem class
+    // to perform an action when this menu item is selected
+
+    M.add( Ctor1<IsFiniteProblem, SMFPGroup>(),
+          Text("Is") + Name(1) + Text("finite ?")
+          );
+    // Insert item ``Is A1 finite?'' and assign IsFiniteProblem class
+    // to perform an action when this menu item is selected
+
+    M.closeCascade();
+    // We done with current cascade menu
+
+    M.startCascade( Text("Compute ...") );
+    // Start a new cascade menu ``Compute ...''
+
+    M.add( Ctor1<AbelianOrderProblem, SMFPGroup>(),
+          Text("Compute the order of") + Name(1) );
+    // Insert item ``Compute the order of A1?'' and assign
+    // AbelianOrderProblem class
+    // to perform an action when this menu item is selected
+
+    .   .   .
+
+    M.closeCascade();
+
+    M.done()
+    // Done with the  menu object
+}
+
+{
+   Menu2<SMWord,SMWord> M( Menu::TOOLS );
+   // Create a menu object which correspond to two
+   // selected ``word objects in the Workspace and
+   // ``Tools'' item of the main menu
+
+    M.startItemGroup( Parent( 1 ) == Parent( 2 ) &&
+                     CheckinType( Parent(1) ) == SMFPGroup::ABELIAN
+                     );
+    // Condition - both words correspond to the same ``group'' object
+    // and this group is abelian
+
+    M.add( Ctor2<ProductInAbelianForm, SMWord, SMWord>(),
+          Text("Compute the product") + Name(1) + Name(2)
+          + Text(", in abelian form")
+          );
+    // Insert item ``Compute the product w1w2 in the abelian form?''
+    // and assign ProductInAbelianForm class
+    // to compute the product
+
+    ...
+
+    M.startItemGroup( Parent( 1 ) == Parent( 2 ) &&
+                     CheckinType( Parent(1) ) != SMFPGroup::ABELIAN
+                     );
+
+    // Condition - both words correspond to the same ``group'' object
+    // and this group is NOT abelian
+
+    M.add( Ctor2<FormalProductOfWords,SMWord,SMWord>(),
+          Text("Compute the product") + Name(1) + " * " + Name(2)
+          );
+
+    M.separator();
+    // Put a separator line in the menu
+    ...
+
+    M.done()
+}
+
+\end{verbatim}
+\normalsize
+
+\subsection{ Adding fast problems to a \magnus menu}
+The above explains how to modify menus and add items.
+The next step is to code the algorithms or actions
+invoked from the menu. We start with the simplest case when the action
+is almost instantaneous (so called ``fast problem'').
+
+All ``fast problems'' classes are derived from the {\em FastComputation} class
+which is derived from {\em ComputationManager}.
+We must provide a constructor, which  receives
+the object to which an action is applied, and override a special function
+{\tt  void takeControl( )} in which we actually implement the desired action.
+This function is called by the session manager every time the corresponding
+menu item is selected.
+
+After a derived class is implemented we need to add a corresponding menu
+item by changing {\tt magnus/back\_end/SMApps/src/menuDefns.C}.
+First, find the proper Menu object and call {\tt add()} method to
+add the problem as was described above.
+
+The example below shows the source code for adding an item
+to solve the word problem in a free group.  Another more complete example is
+provided in the next section.
+
+\footnotesize
+\begin{verbatim}
+
+// --------------------- menuDefns.C -------------------------- //
+// the following text occurs in the menuDefns.C:
+M.add( Ctor1<WordProblemInFree,SMWord>(),
+          Text("Is") + Name(1) + "trivial ?"
+          );
+
+//Part of  fastProblems.h corresponding to the word problem in a free group
+// --------------------- WordProblemInFree -------------------- //
+
+// the following class implements an action invoked by
+// selecting ``Is w1 trivial?'' menu item for a free group, i.e.
+// our action is to receive a word and solve word problem for
+// this word in the parent free group
+
+class WordProblemInFree : public FastComputation
+{
+public:
+
+// Receive the reference to the  word and save it
+WordProblemInFree(const class SMWord& w) : theWord( w ) { }
+
+// implement the action
+void takeControl( ) //overrides ComputationManager
+{
+       Word u, v;
+
+       // get the parent free group
+       FreeGroup F = theWord.getParent().getFreePreimage();
+
+       // Create log message
+       LogMessage msg( theWord );
+       msg << Name( theWord );
+
+       // if given word is trivial
+       if ( F.wordProblem( theWord.getWord() ) ) {
+          msg << " is trivial";
+       } else {
+          msg << " is not trivial";
+       }
+
+       // finish and send the message
+       msg << " in " << Name( Parent( theWord ) ) << ".";
+       msg.send();
+}
+
+private:
+
+const class SMWord& theWord;
+};
+\end{verbatim}
+\normalsize
+
+\subsection{An example of adding a fast problem} Here is a fairly
+complete example of adding a ``fast problem" algorithm together with
+its menu item.
+
+Let $H$ be a subgroup and $w$ be a word in some free group $F$.
+Suppose we want to make a subgroup $H_C$ which is $H$ conjugated by $w$.
+Let's add this problem to \nsmagnus. If $H$ is generated by elements
+$<h_1, h_2, ..., h_n>$ then $H_C$ will be generated by $<h_1^w,
+h_2^w, ..., h_n^w>$.
+
+First we need to find a place where to put the algorithm itself.
+Probably the most sensible way is to add it as a property of
+the subgroup of a free group. In {\tt magnus/back\_end/Subgroup} we can find
+definition and implementation files for subgroups of free groups.
+Subgroups are implemented using a representation template and therefore
+implementation
+of the algorithm will go into the Rep class which is located in
+{\tt SGofFreeGroup.C}.
+
+We add the following procedure to {\tt SGofFreeGroupRep} class:
+
+\footnotesize
+\begin{verbatim}
+SGofFreeGroupRep* SGofFreeGroupRep::conjugateBy(const Word& w ) const
+{
+
+    VectorOf<Word> result(theGenerators.length());
+
+    // conjugate each generator by the word
+    for( int i = 0; i < theGenerators.length(); ++i )
+      result[i] = Word( Word(theGenerators[i]).conjugateBy(w) ).freelyReduce();
+
+    // return representation for the new subgroup
+    return new SGofFreeGroupRep(theParentGroup,result);
+}
+\end{verbatim}
+\normalsize
+
+Now we have to add this algorithm to the interface class {\tt SGofFreeGroup}
+by introducing a new method:
+
+\footnotesize
+\begin{verbatim}
+SGofFreeGroup SGofFreeGroup::conjugateBy(const Word& w) {
+      // create SGofFreeGroup from the representation object
+      // returned by (SGofFreeGroupRep*)look()->conjugateBy(w)
+      return SGofFreeGroup(look()->conjugateBy(w));
+}
+\end{verbatim}
+\normalsize
+
+The second step is to add the implemented algorithm to the \magnus menu.
+We know that conjugating a set of elements by a word is very
+fast procedure, therefore we will add it as a fast problem.
+Files that contain classes for fast problems are:
+{\tt magnus/back\_end/SMApps/include/fastProblems.h} and
+{\tt magnus/back\_end/SMApps/src/fastProblems.C}.
+
+We declare {\tt SubgroupConjugateBy} class in {\tt fastProblems.h}:
+\footnotesize
+\begin{verbatim}
+// it is inhereted from FastComputation manager
+class SubgroupConjugateBy : public FastComputation
+{
+public:
+
+    // constructor accepts two parameters: selected subgroup
+    // and selected word by which it will be conjugated
+    SubgroupConjugateBy(const class SMSubgroup& S, const class SMWord& W)
+      : theSubgroup( S ), theWord( W )
+    { }
+
+    void takeControl( );              // overrides ComputationManager
+
+private:
+
+    // saved references to the objects
+    const class SMSubgroup& theSubgroup;
+    const class SMWord& theWord;
+};
+\end{verbatim}
+\normalsize
+
+The segment above is almost the same for all fast problems. The only thing
+that needs to be changed is the name of the class and the objects it will
+act on. The main action occurs in the {\tt takeControl()} method. We implement
+it in the {\tt fastProblems.C} file:
+\footnotesize
+\begin{verbatim}
+void SubgroupConjugateBy::takeControl( )
+{
+    // get subgroup object from the session manager's representation object
+    SGofFreeGroup S = theSubgroup.getSubgroup();
+
+    // create a new session manager's object for the
+    // conjugator of theSubgroup
+    SMObject* smo =
+      new SMSubgroup( theSubgroup.getParent(),
+             theSubgroup.getSubgroup().conjugateBy( theWord.getWord() ),
+             Text(Name( theSubgroup)) + Text(``conjugated by'') +
+             Name( theWord )
+             );
+
+    // adjust dependencies. This will ensure the correspondence
+    // between the new subgroup and it's parent group
+    ListOf<OID> dependencies( theSubgroup.getParent() );
+    CheckinMessage( *smo, "", dependencies ).send();
+}
+\end{verbatim}
+\normalsize
+
+Finally we must tell the front end where and when to execute
+this algorithm. Since we are just creating a new object problem
+should go to the \textbf{Make} menu.
+This is done by adding to {\tt magnus/back\_end/SMApps/src/menuDefns.C}
+the following statements:
+\footnotesize
+\begin{verbatim}
+   {
+     // define a ``Make'' menu for two selected objects
+     // first of type SMSubgroup and second SMWord
+     Menu2<SMSubgroup, SMWord> M( Menu::MAKE );
+
+     // start a new item group
+     // make sure that both objects belong to the same free group
+     // here, numbers correspond to the order of the parameters, i.e.
+     // 1 - for the subgroup and 2 - for the word
+     M.startItemGroup(CheckinType( Parent(1) ) == SMFPGroup::FREE &&
+              Parent( 1 ) == Parent( 2 )
+              );
+
+     // add aour class to the menu.
+     //  Text will say something like ``H1 conjugated by w1''
+     M.add( Ctor2<SubgroupConjugateBy,SMSubgroup,SMWord>(),
+            Text(Name(1)) + Text("conjugated by") + Name(2)
+            );
+
+     // close the menu description
+     M.done();
+   }
+\end{verbatim}
+\normalsize
+
+
+
+
+\subsection{Adding a slow problem to \magnus}
+
+Many problems \magnus deals with are more complicated than
+fast problems. Usually we can't say
+in advance when we'll get the answer (sometimes we can't even say if we'll get
+the answer at all). Some problems could be solved in different ways and it is
+often
+not clear which method is better. All this requires a smarter managing system.
+\magnus
+faces these problems by running algorithms in parallel and allowing the user to
+distribute resources among the algorithms.
+
+Brielfy, a process of solving a problem can be described in the
+following steps. When user selects an item from the menu a corresponding
+Supervisor object (inhereted from the {\tt Supervisor} class) is created and
+a problem window will come up.
+After user clicks ``Start'' button, the {\tt takeControl()} methods of the
+{\tt Supervisor}
+object and computation managers (defined in the
+{\tt viewStructure()} method of
+the {\tt Supervisor}) are  executed one by one. Usually each of them spends one time
+unit (arc) and gives control tho the next computation manager. This process
+continues until the termination conditions are met. These  conditions are:
+either all computation managers (including the {\tt Supervisor}) have been stoped and
+the {\tt adminTerminate()} method was called, or user terminated them by clicking
+``Terminate'' button of the problem window.
+
+
+Let's see what the steps of adding a problem  by following an example (notice
+that the source code was slightly changed to make example easier).
+Consider the problem of computing abelian invariants (cyclic decomposition) for
+an abelian group.  The interface and implementation for the {\tt AbelianGroup} class can be
+found in: {\tt magnus/back\_end/Groups/}.
+There are two files: {\tt include/AbelianGroup.h} and
+{\tt src/AbelianGroup.C}.
+There are many different methods in {\tt AbelianGroup} but we are
+interested in those  which correspond to computing of the cyclic decomposition.
+In {\tt AbelianGroup.h} we will find definitions for   two methods:
+{\tt computeCyclicDecomposition()} and  {\tt invariants()}.
+The first does the actual computations and the second returns the result
+(invariants) as avector of integer numbers.
+The example below shows  a segment of the source code from {\tt AbelianGroup.h}
+
+\footnotesize
+\begin{verbatim}
+// --------------- AbelianGroup --------------- //
+
+class AbelianGroup : public ObjectOf<AbelianGroupRep>
+{
+
+public:
+
+. . .
+
+void computeCyclicDecomposition( ) {
+    change()->computeCyclicDecomposition();
+}
+
+. . .
+
+VectorOf<Integer> invariants( ) const {
+    return look()->invariants();
+}
+
+}
+\end{verbatim}
+\normalsize
+
+
+Now the question is how to make  {\tt computeCyclicDecomposition()}
+available from
+the menu. This would involve writing of a couple of classes which are
+correspond to a
+certain standard and most of them could be created by copying and changing
+lines from similar classes.
+Usually these classes are  defined in files which are located in
+{\tt magnus/back\_end/SMApps} which contains the
+session manager applications. Classes for our problem are defined and implemented
+in
+{\tt magnus/back\_end/SMApps/include/AbelianInvariants.h} and
+{\tt magnus/back\_end/SMApps/src/AbelianInvariants.C}.
+
+The first type of classes to be created are those that inherited from
+the class called ARCer
+located in {\tt magnus/back\_end/SessionManager/...}. Its purpose is
+to control
+the execution of a child process that will do actual computations and to obtain
+the
+result for the corresponding computation manager (see below).
+This is the class that in turn calls the class that implements our algorithm
+{\tt AbelianGroup::computeCyclicDecomposition()}.  The definition of 
+such a class
+from {\tt AbelianInvariants.h} is shown below.
+
+\footnotesize
+\begin{verbatim}
+// ---------------------- AbelianInvariantsARCer --------------------------- //
+
+class AbelianInvariantsARCer : public ARCer
+{
+public:
+////////////////////////////////////////////////////////////////////////
+// Constructors:                                                      //
+////////////////////////////////////////////////////////////////////////
+
+AbelianInvariantsARCer( ComputationManager& boss )
+    : ARCer( boss ), AG( 0 ) { }
+
+~AbelianInvariantsARCer( ) { delete AG; }
+
+/////////////////////////////////////////////////////////////////////////
+// Accessors:                                                          //
+/////////////////////////////////////////////////////////////////////////
+// set parameters. Usually used before calling takeControl()
+void setArguments( const FPGroup&, bool );
+
+// Inherited from ARCer:
+// bool takeControl( );
+// when called for the first time, forks a child process and starts
+computation
+// returns true when  finished with computations, returns false if one
+// unit of time (arc) was used but algortihm has not finished yet.
+
+AbelianGroup getCyclicDecomposition();
+// returns Abelian group with computed decomposition
+
+/////////////////////////////////////////////////////////////////////////
+// IPC interaction members:                                            //
+/////////////////////////////////////////////////////////////////////////
+
+void runComputation( );
+// called from takeControl() after a child process started
+// all time consuming computations should go here
+
+void writeResults( ostream& );
+// write data that should be available for the SessionManager
+//  to a stream. Executed in the child process after  runComputation( )
+// is finished and before the child process quits.
+
+void readResults( istream& );
+// read data from a stream Called from the parent process. Used to
+// read results saved by writeResults(...)
+
+private:
+
+/////////////////////////////////////////////////////////////////////////
+// Data Members:                                                       //
+/////////////////////////////////////////////////////////////////////////
+FPGroup G;
+bool bMakeFile;
+AbelianGroup* AG;
+};
+\end{verbatim}
+\normalsize
+
+The implementation is quite simple and usually follows the same pattern.
+The following is shows the methods for {\tt AbelianInvariantsARCer}.
+The purpose of each method in the class should be clear from the  comments.
+
+
+\footnotesize
+\begin{verbatim}
+// ---------------------- AbelianInvariantsARCer --------------------------- //
+
+void AbelianInvariantsARCer::setArguments( const FPGroup& group,
+bool makeFile
+)
+// set/reset arguments before running the computation
+{
+delete AG;
+AG = new AbelianGroup( group, makeFile );
+}
+
+void AbelianInvariantsARCer::runComputation( )
+// this function will be called from the child process
+{
+#if SAFETY > 0
+if( AG == 0 )
+    error( "void AbelianInvariantsARCer::runComputation( ) : "
+          "Have to initialize the group first");
+#endif
+
+AG->computeCyclicDecomposition(); // do the computations
+}
+
+
+void AbelianInvariantsARCer::writeResults( ostream& out )
+// write the result  from the child's process (here AbelianGroup
+//  with computed invariants) after the  computation is finished
+{
+out < *AG;
+}
+
+
+void AbelianInvariantsARCer::readResults( istream& in )
+// read the result by the parent process after the child process quit
+{
+in > *AG;
+}
+\end{verbatim}
+\normalsize
+
+
+The next type of classes are computation managers. These are
+classes inherited from the
+{\tt ComputationManager} class which  is located in directory
+{\tt magnus/back\_end/SessionManager/}.
+The objects of such classes provide communication between
+the session manager and child
+processes forked from an ARCer object.
+For example, it is the computation manager's responsibility to send
+start, stop, suspend or terminate commands to the corresponding ARCer object.
+The computation manager receives the amount of time (number of arcs) 
+that the child
+process is allowed to work on the problem
+before the control will be given to another computation manager
+(and therefore another child process) and makes sure that the child
+process uses this time
+correctly. The session manager receives information from
+the computation manager to be
+represented on the screen or to be saved in information centers.
+
+
+The code below shows the definition and implementation of
+the main methods of the computation manager for computing abelian invariants.
+The definitions of computation managers are usually very simple
+and do not vary much.
+
+\footnotesize
+\begin{verbatim}
+// Declarations in AbelinaInvariants.h
+// -------------------------- AbelianInvariants ---------------------------- //
+
+class AbelianInvariants : public ComputationManager
+{
+public:
+
+/////////////////////////////////////////////////////////////////////////
+// Constructors:                                                      //
+/////////////////////////////////////////////////////////////////////////
+
+AbelianInvariants(class AbelianInvariantsProb&);
+
+      *    *    *
+
+private:
+
+/////////////////////////////////////////////////////////////////////////
+// Data Members:                                                   //
+/////////////////////////////////////////////////////////////////////////
+
+class AbelianInvariantsProb& theSupervisor; // parent supervisor (see below)
+
+AbelianInvariantsARCer arcer; // ARCer object
+};
+\end{verbatim}
+\normalsize
+
+\scriptsize
+\begin{verbatim}
+// Implementation in AbelinaInvariants.C
+// -------------------------- AbelianInvariants ---------------------------- //
+
+AbelianInvariants::AbelianInvariants(AbelianInvariantsProb& prob):
+    theSupervisor( prob ),
+    arcer( *this )
+{
+// initialize ARCer parameters
+arcer.setArguments( theSupervisor.getSMFPGroup().getFPGroup(), true );
+
+adminStart();  // start computation manager
+}
+
+
+void AbelianInvariants::takeControl( )
+{
+if ( freeARCs() > 0 )    
+    // if there are free arcs (time units) try to do computations
+    //
+    // When called for the first time, arcer.takeControl() forks a child process
+    //  and starts computation, returns true if finished with computations
+    // false if one arc is used but computation has not been finished
+    if( arcer.takeControl() ) {
+
+     // put cyclic decomposition into Group information center
+     theSupervisor.getSMFPGroup().gic.putHaveCyclicDecomposition
+       ( arcer.getCyclicDecomposition() );
+
+     adminTerminate();   // terminate the computation manager
+    }
+    else
+     usedOneARC();  //  tell SessionManager  that one ARC was used
+}
+
+\end{verbatim}
+\normalsize
+
+There is one type of computation manager that needs special attention.
+These are called {\em supervisors}.
+The difference between a supervisor and a regular
+computation manager is that,
+instead of managing directly child processes started from ARCers,
+a supervisor manages a number of other computation managers. In addition
+a supervisor has
+a method called {\tt viewStructure(...)} which defines the corresponding
+{\em problem window} which user actually sees on the screen.
+
+\begin{figure}[h]
+%\centerline{ \epsfig{file=OrderProbWin.eps} }
+\centerline{ Missing EPS file }
+\caption{An example of the problem window.}
+\label{OPWin}
+\end{figure}
+
+Figure \ref{OPWin} shows the problem window for the ``Find the order of a
+group" problem. Regular computation managers correspond to the lines 
+with algorithm
+names and little scroll bars on the right side. The supervisor for this problem
+corresponds to the whole window.
+It is the supervisor's responsibility to distribute free arcs (time units)
+between the computation managers, define the title and text of the 
+window and so
+on.  The implementation of the methods for the abelian invariants problem
+supervisor is given below.
+
+\footnotesize
+\begin{verbatim}
+// ------------------------- AbelInvariantsProb ---------------------------- //
+AbelInvariantsProb::AbelInvariantsProb(SMFPGroup& G): 
+        Supervisor( true ),
+        theGroup( G ),
+        // AbelianInvariants Computation Manager:
+        abelianInvariants( *this )
+{
+// check if group information center has the decomposition
+// already. If it does than set the fast result flag
+if( theGroup.gic.haveCyclicDecomposition() )
+     resultIsFast();
+}
+
+void AbelInvariantsProb::takeControl( )
+{
+// if result is fast just print the decomposition on the screen and terminate
+if( fastResult() ) {
+    LogMessage( theGroup.gic.getCyclicDecompositionMessage() ).send();
+    adminTerminate();
+    return;
+}
+
+// if our computation manager stoped
+if ( theGroup.gcm().abelianInvariants->state() == TERMINATED ) {
+    LogMessage( *this, theGroup.gic.getCyclicDecompositionMessage(), 2 ).send();
+    // put the answer on the screen
+    adminTerminate();
+}
+}
+
+void AbelInvariantsProb::viewStructure(ostream& ostr) const
+{
+char *temp;
+if( theGroup.getCheckinType() == SMFPGroup::ABELIAN )
+    temp = "";
+else
+    temp = " abelianized";
+
+// define the problem window
+ProblemView pv( ostr, oid(),
+                "Compute the canonical decomposition",  
+                //title of the window
+                Text("Compute the canonical decomposition of")
+                //text below the title
+                 + Name( theGroup ) + Text(temp),
+                 helpID( "AbelInvariantsProb", theGroup ), 
+                // help file id
+                 "Can dec" 
+                // text that will appear below the icon in
+                // the workspace which correspond
+                // to this problem window
+               );
+pv.startItemGroup();
+
+// insert computation manager: title-"For the use of this problem"
+// time unit resources ID - abelianInvariants.arcSlotID()
+// default number of arcs - 100
+pv.add("For the use of this problem", abelianInvariants.arcSlotID(), 100);
+pv.done();
+}
+
+\end{verbatim}
+\normalsize
+
+It remains to  make  our algorithm available from the menu.
+As in the case of a fast problem  we need to change
+{\tt magnus/back\_end/SMApps/src/menuDefns.C}.
+First, find the menu which corresponds to the Tools menu for abelian
+groups and provide an {\tt add()} method with a
+proper {\tt Ctor} object as was described above.
+The corresponding part of {\tt menuDefns.C} with comments  is shown below.
+
+\footnotesize
+\begin{verbatim}
+Menu1<SMFPGroup> M( Menu::TOOLS );
+      // create menu object for one selected object of type
+      // SMFPGroup  in the workspace and
+      // with items located in the Tool menu
+
+. . .
+
+   M.startItemGroup( CheckinType( 1 ) == SMFPGroup::ABELIAN );
+     // start group of items which correspond
+     // to abelian groups
+
+. . .
+
+   M.add( Ctor1<AbelInvariantsProb,SMFPGroup>(),
+         Text("Compute the canonical decomposition of") + Name(1) );
+
+     // add an item, called Compute the canonical
+     // decomposition of G, where G is the
+     // name of the group object in the
+     // workspace and create an object of
+     // AbellianInvariantsProb class when
+     // this item selected from the menu
+
+. . .
+
+   M.done();
+\end{verbatim}
+\normalsize
+
+After all these steps and compilation of \nsmagnus' session manager
+the abelian invariants algorithm should be available from the menu.
+
+
+
+
+\subsection{Adding Parameters}
+
+Sometimes it is useful to have additional user defined parameters
+passed to algorithms. It is possible to create a problem window
+with  a predefined set of parameters which can be changed during
+pauses in the execution of the algorithm. 
+Parameters can be changed only in
+an idle state of the problem (that is, before it started or when the
+``Suspend" button  was pressed).
+
+When creating a problem window with parameters, a slightly different
+procedure is used to define the window itself. 
+Such windows are defined by creating
+obects of class {\tt EnumeratorProblemView} instead of usual
+{\tt ProblemView}.
+Similar to the above, we create an object of
+class {\tt EnumeratorProblemView} inside the body of
+{\tt Supervisor::viewStructure(ostream ostr) const}. 
+
+Slidable bars in the window,
+corresponding to computation managers are
+added by calling the method 
+{\tt EnumeratorProblemView::addProblem(const Subproblem)}.
+To add parameters we call
+{\tt EnumeratorProblemView::add\-Parameter(const ViewContent)}.
+Here {\tt ViewContent} is a parent class for all classes which define
+   parameter objects. For now the following classes are available
+for defining parameters in the problem window:
+\begin{itemize}
+\item {\tt class EditInteger}. Creates a field for entering an integer
+number. Constructor:\\
+   {\tt EditInteger( const Chars name,const Chars text,int change =
+0,int def = 0, int minV = 0,int maxV = MAXINT)} \\
+Here {\tt name} is the unique name (ID) of the parameter that will be
+used later for
+referencing , {\tt text} is the text that will appear infront of the
+edit field,{\tt change} is a boolean which 
+if true will alow to change the parameter
+after the problem was started, {\tt def} is the default value,
+   {\tt minV} is the minimal value, and {\tt maxV} is the maximal value.
+\item {\tt class EditBool}. Creates a check box which if checked corespond
+to the truth value of the parameter. Constructor: \\
+{\tt  EditBool( const Chars name,const Chars text,int change = 0,int
+def = 0)} \\
+Again, {\tt name} - unique referencing ID, {\tt text} -
+corresponding text in the
+window, {\tt change} - if true will allow to change parameter after
+the problem has started, {\tt def} - default value (true, false).
+\item {\tt class EditText}. Creates a text edit field. Constructor: \\
+{\tt EditText( const Chars name,const Chars text,int change =
+0,Chars def = "")}\\
+Parameters have the same meanings as above
+\item {\tt class EditWord.} Creates a field where a word in geerators
+of a given free group can be entered. Constructor: \\
+{\tt EditWord( const Chars name,const Chars text,int change =
+0,const FreeGroup f = FreeGroup(), const Word w = Word() )} \\
+{\tt name}, {\tt text} and {\tt change} same as above. Free group {\tt f}
+defines a set of generators (actually their names) used to parse the
+entered word. {\tt w} - default word.
+
+\end{itemize}
+
+Parameters above could be grouped together. There are three  classes
+which allow you to group parameters:
+\begin{itemize}
+\item {\tt class  GroupWindow}. Defines a group
+object. Parameters are added through a sequence of calls of
+{\tt GroupWindow::add(const ViewContent)} method.
+\item {\tt class RadioButton.} Creates a radio buton object in the
+window. Usually used in groups to select something from a number of choices.
+Constructor:\\
+{\tt  RadioButton(const Chars name, const Chars text, int change = 0)} \\
+Class is ihereted form {\tt GroupWindow}.
+Parameters grouped by the object of this
+class wll appear on the screen only when the corresponding
+radio button is selected. If no parameters added to the group then
+object behaves as a regular radio button.
+\item {\tt class  RadioButtonGroup}. This class
+is inhereted from {\tt GroupWindow} and groups a number
+of objects of the {\tt RadioButton} class.
+\end{itemize}
+
+Current values of parameters for a particular window can be obtained
+by executing  {\tt Supervisor::getParameters()} method
+of the corresponding {\tt Supervisor} object.
+It returns a Parameter Structure which keeps all parameters together
+with their current values. Value for  a particular parameter can
+be obtained through {\tt ParameterStructure::getValue(const Char name)}
+method, where {\tt name} is a unique reference ID of the parameter.
+
+
+When a problem window apears on the screen, user can open a  parameter
+window by clicking  on the {\bf Parameters} menu item in the
+problem window.
+
+To read values of the modified parameters, we will usually need to
+overload {\tt start()} and {\tt resume()} virtual methods of the
+{\tt ComputationManager} class. These methods are called right after
+the  {\bf Start} or {\bf Resume} buttons of the problem window
+are selected. This will allow us to check values of
+modified parameters and update problem's settings when the process executing
+the algorithm is idle.
+
+Example of the supervisor which corresponds to the problem window with
+parameters is given below
+
+    \footnotesize
+    \begin{verbatim}
+// ------------------- SupervisorWithParameters ------------------- //
+
+void SupervisorWithParameters::takeControl( )
+{
+     // some code here
+
+       .  .  .
+
+}
+
+
+void SupervisorWithParameters::viewStructure(ostream& ostr) const
+{
+
+     EnumertatorProblemView pv(oid(),"Supervisor with parameters",
+                  Text("Select to define some parameters) ,
+                  helpID("SP",theGroup),
+                   Text("sp")
+                  );
+
+     // add an integer parameter, name ``I1'' with default
+     // value 10. This parameter can be changed after the resume
+     // button is selected
+     pv.addParameter(EditInteger("I1","Integer parameter",1,10,0,100));
+
+     // reate a radio button  object
+     RadioButton RB1("RB1","Radio buttom 1");
+     RadioButton RB2("RB2","Radio button 2");
+
+     // add integer parameters to each radio button above
+     RB1.add(EditInteger("RB1_I1","Integer for radio button 1",0,10,1,10000));
+     RB2.add(EditInteger("RB2_I1","Integer for radio button 2",0,10,1,10000));
+
+     // group radio buttons
+     RadioButtonGroup rbGroup("rbGroup");
+     rbGroup.add(RB1);
+     rbGroup.add(RB2);
+
+     // add group to the parameters
+     pv.addParameter(rbGroup);
+
+
+     // add a computation manager
+     pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+                  "For the use of this problem",40));
+
+
+    // submit configuration to the session manager
+     submit(ostr, pv);
+
+}
+
+// this method is called when the Start button of the
+// corresponding window is pressed but before actual
+// computation is started
+void SupervisorWithParameters::start( ) {
+
+    // Get parameters:
+    // first integer
+    int I1 = getParameters().getValue("I1");
+         .  .  . // do something with it
+
+
+    // get which of the radio buttons was selected
+    Chars t = getParameters().getValue("rbGroup");
+
+     int buttonInteger;
+    // assign to buttonInteger value of the integer
+    // parameter for the selected button
+    if (t == Chars("RB1")){
+         buttonInteger = getParameters().getValue("RB1_I1");
+      } else {
+         buttonInteger = getParameters().getValue("RB2_I1");
+      }
+     .  .  . // do something here
+
+}
+
+void WordEnumeratorProblem::resume( )
+{
+     // only first integer parameter was defined in a such
+     // way that it is possible to change its value after
+     // the Suspend button is pressed.
+
+     int I1 = getParameters().getValue("I1");
+       .  .  .
+}
+
+
+    \end{verbatim}
+    \normalsize
+
+
+
+\subsection{Object's information centers}
+
+There are many  algorithms which compute  information that can also
+be used to solve other problems about a particular algebraic object.
+If these are time consuming computations, then we want to avoid repetition
+and save the computed information (if we can) so it could be used
+later on. 
+This is the purpose of the {\em Information Centers}.
+
+Almost every algebraic object has an associated class  which
+keeps the previously computed information. The definitions of such classes
+could
+be found in {\tt back\_end/SessionManager/include/} and their names
+usually consist
+of three letters. First indicate the object and second two are {\em IC}
+for 
+``Information Center'' (i.e. {\em GIC} for ``Group Information Center'',
+{\em SIC}
+for ``Subgroup Information Center'' and so on).
+
+Data members of the information center classes are   object specific. The
+decision
+whether to put some information into a {\em IC}  is usually 
+ based on how difficult it is to compute such information. 
+ For a given piece of information, there are up to three kinds of
+functions needed:
+\begin{itemize}
+\item The member function through which the information is reported 
+\item The member function via which information's existence is queried 
+\item The member function via which the data is accessed
+\end{itemize}
+
+Functions are named according to the following scheme:
+\begin{itemize}
+\item for Trichotomy the report function name is\\
+{\em putIs$<$property\_name$>$}.
+Existence query - {\em is$<$property\_name$>$}.
+\item for boolean properties the report function name is\\
+{\em putHave$<$property\_name$>$}.
+Existence query - 
+{\em have$<$property\_name$>$}.
+\item properties which contain a special data structures have the
+following associated function names:
+{\em putHave$<$property\_name$>$} - report a
+property; {\em have$<$property\_name$>$} - 
+query the existence; {\em get$<$property\_name$>$} - acquire the property
+data.
+\end{itemize}
+
+
+Below  is an example of how  {\em GIC} is used to access the canonical
+decomposition of an Abelian group.
+\footnotesize	
+\begin{verbatim}
+// the code below waits until the canonical decomposition
+// is computed and computs the order of the given group
+
+
+AbelianOrderProblem::AbelianOrderProblem(SMFPGroup& G)
+    : Supervisor( ),
+      theGroup( G ), // save the group object
+      abelianInvariants( *this )
+{
+  // if gic for our group has computed cyclic decomposition or the order
+  // of the group then result is fast, i.e. no problem window
+  // will appear on the screen 
+  if ( theGroup.gic.haveOrder() ||
+theGroup.gic.haveCyclicDecomposition() )
+    resultIsFast();
+}
+
+
+void AbelianOrderProblem::takeControl( )
+{
+  // takeControl() is called periodically by the Session Manager
+  // if order of the group is availbale from the GIC then print 
+  // it to log and exit
+  if( theGroup.gic.haveOrder() ) {
+    LogMessage( theGroup.gic.getOrderMessage() ).send();
+    adminTerminate();
+    return;
+  }
+
+  // if canonical decomposition is available in GIC, then compute
+  // the order (it is fast if we have invariants), save the order in the
+GIC
+  // report and exit 
+  if( theGroup.gic.haveCyclicDecomposition() ) {
+
+    AbelianGroup& A =
+(AbelianGroup&)(theGroup.gic.getCyclicDecomposition());
+
+    Chars explanation = Text("this follows from the canonical
+decomposition of")
+      + Name(theGroup);
+    theGroup.gic.putHaveOrder(A.order(), explanation);
+    
+    if( !fastResult() )
+      LogMessage(*this, theGroup.gic.getOrderMessage(), 2).send();
+    
+    adminTerminate();
+  }
+}
+
+\end{verbatim}
+\normalsize
+
+
+\subsection{Object's computation managers}
+
+Since Magnus allows one to execute several tasks simultaneously, it can
+happen that the same computation is started for two separate problems.
+For example, both ``Compute the order of an Abelian group'' 
+and ``Compute the order of an element of an Abelian group'' will require
+the canonical decomposition for that group. If we start the two problems
+simultaneously, we will have two instances of the same algorithm which
+is wasting of the  memory  and cpu time. 
+
+To avoid such situations, all
+computation managers (called {\em Subordinate computation Managers} )
+that can be used in different Supervisors (i.e.
+started in several Problem Windows) are assembled in intermediate
+Supervisor
+objects, called ``object's computation managers'' (i.e. {\em GCM} 
+for ``Group computation manager'', {\em SCM} - Subgroup
+computation manager and so on). When Magnus starts there only one instance
+of {\em GCM} ({\em SCM}, {\em WCM} ...) created. 
+
+All supervisors reference
+the same instance of the desired computation manager which assures
+that there is only one instance of the particular algorithm is running at
+the same time. Moreover, if the algorithm was started for one of the
+problems, all the problems started after that will use the same longest
+running computation for their purposes.
+
+The following is the list of computation managers that are common
+for many problems and are contained in  the {\em GCM}:
+
+\footnotesize
+\begin{verbatim}
+//--------------------- GCM-------------------------//
+
+class GCM : public Supervisor
+{
+public:
+
+  GCM( class SMFPGroup& G );
+
+  .  .  .
+
+  // Subordinate Computation Managers:                                  
+
+  Subordinate<GCM,NormalClosure> normalClosure;
+
+  Subordinate<GCM,AbelianInvariants> abelianInvariants;
+
+  Subordinate<GCM,AbelianPrimes> abelianPrimes;
+
+  Subordinate<GCM,AbelianRank> abelianRank;
+
+  Subordinate<GCM,KBSupervisor> kbSupervisor;
+
+  Subordinate<GCM,AGSupervisor> agSupervisor;
+
+  Subordinate<GCM,NilpotentQuotients> nilpotentQuotients;
+
+  Subordinate<GCM,NGcomputeBasis> computeBasis;
+
+  Subordinate<GCM,ToddCoxeter> theToddCoxeter;
+
+  Subordinate<GCM,HToddCoxeter> ghToddCoxeter;
+
+  .  .  .
+
+};
+\end{verbatim}
+\normalsize
+
+The use of subordinate computation managers is almost the same as for
+regular
+computation managers, except that the constructor requires both a
+reference
+to the calling Supervisor object and a reference to the subordinate 
+computation manager in the object's computation managers class.
+
+Example:
+\footnotesize
+\begin{verbatim}
+// definition of the subordinate computation manager in 
+// the Abelian Invariants
+//
+
+class AbelInvariantsProb : public Supervisor
+{
+public:
+  .  .  .
+
+  MirrorSubordinate abelianInvariants;
+
+};
+
+
+// initialization of the subordinate computation manager
+AbelInvariantsProb::AbelInvariantsProb(SMFPGroup& G)
+  : Supervisor( true ),
+	theGroup( G ),
+ 	abelianInvariants( *this, G.gcm().abelianInvariants )
+{
+  if( theGroup.gic.haveCyclicDecomposition() )
+    resultIsFast();
+}
+
+
+// everython else is the same as for regular computation manager
+void AbelInvariantsProb::takeControl( )
+{
+  if( fastResult() ) {
+    LogMessage( theGroup.gic.getCyclicDecompositionMessage() ).send();
+    adminTerminate();
+    return;
+  }
+
+  // if CM abelianInvariants in GCM has stoped then report the
+  // cyclic decomposition
+  if ( theGroup.gcm().abelianInvariants->state() == TERMINATED ) {
+    LogMessage( *this, theGroup.gic.getCyclicDecompositionMessage(), 2
+).send();
+    adminTerminate();
+  }
+}
+
+\end{verbatim}
+\normalsize
+
+
+\end{document}
+
+
+
+\end{document}
+
+

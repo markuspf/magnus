@@ -1,0 +1,279 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/AProducts/include/HNNExtOFORGroup.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Set.h"
+#include "Vector.h"
+#include "VectorPtr.h"
+#include "OneRelatorGroup.h"
+#include "SubgroupOfOneRelatorGroup.h"
+#include "OneRelatorGroupWithTorsion.h"
+
+@
+\section{class HNNExtOfORGroupGeneric}
+<<class HNNExtOfORGroupGeneric>>=
+class HNNExtOfORGroupGeneric
+{
+public:
+
+  enum NumberOfSubgroup { A = 0, B = 1 };
+  enum Pinch { UP, DOWN };
+
+//  Constructors: 
+
+  HNNExtOfORGroupGeneric( const OneRelatorGroup& G, const Chars& stableGenName,
+			  const ORGSubgroup& A, const ORGSubgroup& B);
+  // stable generator has biggest order in constructing group = lastGenOf(G)+1.
+
+  
+  HNNExtOfORGroupGeneric( const HNNExtOfORGroupGeneric& H );
+
+  virtual ~HNNExtOfORGroupGeneric( );
+
+  HNNExtOfORGroupGeneric& operator=( const HNNExtOfORGroupGeneric& H );
+
+
+//  Accessors/modifiers:
+
+  virtual const ORGSubgroup& subgroup(NumberOfSubgroup i) const { 
+    return *subgroups[i]; 
+  }
+
+  const OneRelatorGroup& basisGroup( ) const { return *theBasisGroup; }
+
+  FPGroup getPresentation( ) const;
+
+  Chars nameOfStableGenerator( ) const { return theNameOfStableGenerator; }
+
+//  Methods which deal with group elements:
+
+  virtual Trichotomy wordProblem( const Word& w ) const = 0;
+
+  int lengthOf( const Word& w ) const;
+  int lengthOf( const VectorOf<Word>& deco ) const;
+
+  VectorOf<Word> decompositionOf( const Word& w ) const;
+  VectorOf<Word> reducedDecompositionOf( const Word& w ) const;
+  VectorOf<Word> normalDecompositionOf( const Word& w ) const;
+
+  VectorOf<Word> cyclicallyReducedDecompositionOf( const Word& w, Word& conj )
+    const;
+  // It returns a decomposition w1 of w and a conjugator `conj' such that
+  // w1 = w ^ conj.
+
+  //  static Word compose( const VectorOf<Word>& deco );
+
+  Word mappingFromSubgroup( NumberOfSubgroup subgrp, const Word& w ) const;
+
+  ProductOfRelatorConjugates mappingDecompositionOf( 
+    const NumberOfSubgroup& S, const Word& w, const Word& wInSBasis, 
+    const Word& tail ) const;
+
+  Generator stableLetter( ) const {
+    return theBasisGroup->numberOfGenerators() + 1;
+  }
+
+
+//  Standard comparison operators:  
+
+  virtual bool operator == ( const HNNExtOfORGroupGeneric& G ) const;
+
+  friend inline ostream& operator << ( ostream& ostr, 
+				       const HNNExtOfORGroupGeneric& H ) 
+  {
+    H.printOn( ostr );
+    return ostr;
+  }
+
+
+protected:
+
+  struct PinchStruct {
+    Pinch type;
+    int number;
+    Word word;
+  };
+
+  void printOn( ostream& ostr ) const;
+
+  void printDecomposition( ostream& ostr, const VectorOf<Word>& deco ) const;
+
+  //  virtual HNNExtOfORGroupGeneric* readFrom( istream& istr, 
+  //                                            Chars& errMesg ) const;
+
+  virtual void debugPrint( ostream& ostr ) const;
+  virtual void write( ostream& ostr ) const;
+  virtual void read( istream& istr );
+
+  int powerOfStableGen(int component, const VectorOf<Word>& deco ) const;
+
+  bool suspectPinch(int component, const VectorOf<Word>& deco ) const;
+
+  bool abelianizationTest( const PinchStruct& pinch, 
+			   const VectorOf<int>& powersOfGens,
+			   const VectorOf<bool>& subgroupGens ) const;
+
+  PinchStruct formPinch(int component, const VectorOf<Word>& deco) const;
+
+  int unusedGenerators( const Word& test, VectorOf<Word>& toNewGens,
+			VectorOf<Word>& toOldGens ) const;
+
+  void init( const HNNExtOfORGroupGeneric& H );
+
+  // Data members:
+
+  OneRelatorGroup *theBasisGroup;
+  Chars theNameOfStableGenerator;
+  ORGSubgroup *subgroups[2];
+};
+
+@
+\section{class HNNExtOfORGroup}
+<<class HNNExtOfORGroup>>=
+class HNNExtOfORGroup : public HNNExtOfORGroupGeneric
+{
+
+public:
+  HNNExtOfORGroup( const OneRelatorGroup& G,
+		   const Chars& stableGenName,
+		   const SubgroupOfOneRelatorGroup& A,
+		   const SubgroupOfOneRelatorGroup& B);
+  // stable generator has biggest order in constructing group = lastGenOf(G)+1.
+
+  Trichotomy wordProblem( const Word& test ) const;
+
+  Trichotomy wordProblem( const Word& test, bool keepDetails,
+    ProductOfRelatorConjugates& productOfRelatorConjugates ) const;
+
+  VectorOf<Word> reducedDecompositionOf( const Word& w, bool keepDetails,
+    ProductOfRelatorConjugates& productOfRelatorConjugates ) const;
+
+protected:
+  int unusedGenerators( const Word& test, VectorOf<Word>& toNewGens,
+			VectorOf<Word>& toOldGens ) const;
+
+};
+
+@
+\section{class HNNExtOfORGroupWithTorsion}
+<<class HNNExtOfORGroupWithTorsion>>=
+class HNNExtOfORGroupWithTorsion : public HNNExtOfORGroupGeneric
+{
+public:
+
+//  Constructors: 
+
+  HNNExtOfORGroupWithTorsion( const OneRelatorGroupWithTorsion& G,
+			      const Chars& stableGenName,
+			      const SubgroupOfORGroupWithTorsion& A,
+			      const SubgroupOfORGroupWithTorsion& B );
+  // stable generator has biggest order in constructing group = lastGenOf(G)+1.
+
+  Trichotomy wordProblem( const Word& test ) const;
+
+  Trichotomy conjugacyProblem( const Word& u, const Word& v, 
+			       Word& conjugator ) const;
+  Trichotomy maximalRoot( const Word& w, Word& root, int& power ) const;
+
+protected:
+  Trichotomy conjugacyProblem_cyclicallyReduced( const VectorOf<Word>& uDeco, 
+    const VectorOf<Word>& vDeco, Word& conjugator ) const;
+
+<<class MaximalRootProblem>>
+};
+
+@
+\subsection{class MaximalRootProblem}
+<<class MaximalRootProblem>>=
+  class MaximalRootProblem
+  {
+  public:
+    MaximalRootProblem( const Word& w );
+
+    void solve( const HNNExtOfORGroupWithTorsion& group );
+
+    Word root( ) const { return theRoot; }
+
+    int power( ) const { return thePower; }
+
+    Trichotomy answer( ) const { return theAnswer; }
+
+  private:
+
+    bool lexCheckOfStableLetters( const VectorOf<Word>& wDeco, 
+				  const int rootLen ) const;
+
+    void lengthN( const HNNExtOfORGroupWithTorsion& H, 
+		  const VectorOf<Word>& wDeco );
+
+    void setAnswer( const Word& maxRoot, const int maxPower );
+
+    void adjustRoot( );
+
+    // data members:
+    const Word theWord;
+    Trichotomy theAnswer;
+    Word theRoot;
+    int thePower;
+    bool isSolved;
+  };
+
+@
+\section{class HNNDoubleCoset}
+<<class HNNDoubleCoset>>=
+class HNNDoubleCoset
+{
+public:
+  HNNDoubleCoset( const SubgroupOfORGroupWithTorsion& Sa,
+		  const SubgroupOfORGroupWithTorsion& Sbw );
+
+  Trichotomy solve( const Word& f, Word& a, const Word& g, Word& b ) const;
+
+private:
+
+  Trichotomy oneRelatorWithTorsionSolution( 
+    const Word& f, Word& a, const Word& g, Word& b ) const;
+
+  Word minimalSpecialForm( const Word& w, 
+			   const SubgroupOfORGroupWithTorsion S ) const;
+
+  // data members:
+
+  SubgroupOfORGroupWithTorsion A;
+  SubgroupOfORGroupWithTorsion B;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/AProducts/include/HNNExtOFORGroup.h
+#ifndef __HNN_EXTENSION_OF_ORGROUP_H_
+#define __HNN_EXTENSION_OF_ORGROUP_H_
+
+<<license>>
+<<include>>
+<<class HNNExtOfORGroupGeneric>>
+<<class HNNExtOfORGroup>>
+<<class HNNExtOfORGroupWithTorsion>>
+<<class HNNDoubleCoset>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

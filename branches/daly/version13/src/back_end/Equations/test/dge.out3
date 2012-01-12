@@ -1,0 +1,33 @@
+./debug-DGE
+Enter a free group: <a,b>
+
+Enter a graphic equation: [x1,x2][y1,y2],
+
+Enter a word in F: a^-4 b a^2 b a b^2 a^4 b a^2 b a b^2 a^-8 b^-2 a^-1 b^-1 a^-2 b^-3 a^-1 b^-1 a^-2 b^-1 a^-4 b^-2 a^-1 b^-1 a^-2 b^-1 a^4 b a^2 b a b^2 a^4 b^-2 a^-1 b^-1 a^-2 b^-1 a^-4 b a^2 b a b^2 a^8,
+
+The group: < a, b >
+The variables: <x1,x2,y1,y2>
+Equation: x1^-1 x2^-1 x1 x2 y1^-1 y2^-1 y1 y2
+Constant of length 88: b a^2 b a b^2 a^4 b a^2 b a b^2 a^-8 b^-2 a^-1 b^-1 a^-2 b^-3 a^-1 b^-1 a^-2 b^-1 a^-4 b^-2 a^-1 b^-1 a^-2 b^-1 a^4 b a^2 b a b^2 a^4 b^-2 a^-1 b^-1 a^-2 b^-1 a^-4 b a^2 b a b^2 a^4
+0: 
+The equation has no solutions
+1: 
+The equation has no solutions
+2: 
+The equation has no solutions
+3: 
+The equation has no solutions
+4: 
+The equation has no solutions
+5: 
+The equation has no solutions
+6: 
+The equation has no solutions
+7: 
+The solution is: 
+x1 = a b^-2 a^-1 b^-1 a^-2 b^-1 a^-4
+x2 = a^4 b^-2 a^-1 b^-1 a^-2 b^-1 a^-4
+y1 = a^-4 b^-2 a^-1 b^-1 a^-2 b^-1
+y2 = b^-2 a^-1 b^-1 a^-2 b^-1 a^-4 b^-2 a^-1 b^-1 a^-2 b^-1 a^4 b a^2 b a b^2
+
+Time elapsed: 892.617

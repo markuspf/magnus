@@ -1,0 +1,14 @@
+@@Using CAISS-STAT
+
+It will be helpful to first read @What is CAISS-STAT?@aboutMagnus::About CAISS-STAT@
+ before reading this description as to how to use CAISS-STAT. A
+few preliminary comments will facillitate the tutorial, which
+comprises an actual session with CAISS_STAT, that follows.
+
+In order to start using CAISS-STAT, the user has to first check a dataset
+into the Workspace. This is done by choosing "Check-in", i.e.,
+clicking with the left mouse button on Check-in. A menu then appears
+in the Workspace, listing a number of items (those which are not
+bold-faced have yet to be implemented).
+
+********************************************************************

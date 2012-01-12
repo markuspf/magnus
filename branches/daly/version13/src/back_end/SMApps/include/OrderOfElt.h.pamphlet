@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/OrderOfElt.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SetOfWordsChecker.h"
+#include "NilpotentProblems.h"
+
+@
+\section{class OrderOfEltInQuotients}
+<<class OrderOfEltInQuotients>>=
+class OrderOfEltInQuotients : public ComputationManager
+{
+public:
+  OrderOfEltInQuotients(class OrderOfElt& sup);
+  void takeControl( );         // overrides ComputationManager
+  void start( ){ };              // overrides ComputationManager
+  void terminate( ) { };          // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+  const SMFPGroup& theGroup;
+  int currentClass;
+  // Class of quotient in which the word problem is solving.
+  int upperBound;
+  // Upper class for quotients. For nilpotent groups - nilpotency class-1,
+  // for others - 10.
+  NGOrderOfEltProblemARCer arcer;
+  bool isStarted;
+};
+
+@
+\section{class OrderOfEltARCer}
+<<class OrderOfEltARCer>>=
+class OrderOfEltARCer : public ARCer
+{
+public:
+  OrderOfEltARCer( ComputationManager& boss, 
+		   const class SMFPGroup& group, 
+		   const Word& word );
+
+  int getRetValue() { return retValue; }
+  int getCurrentPower() const{ return power; }
+  void setCurrentPower(const int& p) { power = p; }
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  const class SMFPGroup& theGroup;
+  Word theWord;
+  Word current;
+  int retValue;
+  int power;
+};
+
+@
+\section{class OrderOfElt}
+<<class OrderOfElt>>=
+class OrderOfElt : public Supervisor
+{
+public:
+  OrderOfElt( class SMWord& );
+  SMWord& getWord() {return theWord;}
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  int getOrder( );
+  SMWord& theWord;
+  OrderOfEltARCer theArcer;
+  bool triedAbelianization;
+  Chars explanation;
+  MirrorSubordinate normalClosure;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate nilpotentQuotients;
+  Subordinate<OrderOfElt,OrderOfEltInQuotients> orderOfEltInQuotients;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/OrderOfElt.h
+#ifndef _OrderOfElt_h_
+#define _OrderOfElt_h_
+
+<<license>>
+<<include>>
+<<class OrderOfEltInQuotients>>
+<<class OrderOfEltARCer>>
+<<class OrderOfElt>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

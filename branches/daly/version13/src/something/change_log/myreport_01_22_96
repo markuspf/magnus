@@ -1,0 +1,93 @@
+
+1. When I started to work with general problem objects, suddenly
+   I found many strange things (bugs) which was happening in
+   Word Problem Window for Finitely Presented Groups. Sometimes
+   I wasn't be able to suspend, resume and even terminate the
+   computation. Preventing the appearence such problems in my
+   future problem classes (IsTrivial, IsAbelian, etc.) I decided
+   to spend some time and make some investigation the nature of
+   these bugs. And I found the reason. These are not Front End bugs, 
+   not Session Manager bugs, they aren't our bugs at all ! They
+   are TCL bugs ! Now I know it exactly. I fixed some these bugs
+   ( fixed means that I avoided them), but not all, and not
+   completely. Some of them requires long ivnestigation and
+   thoroughly peering into documentation, and I'm not sure that
+   it will be enough. Roger K. told me recently that our version  
+   of TCL/Tk contains a lot of terrible bugs, and there are new
+   version of this products without them, maybe they are the
+   same bugs which I found ? I'm going to speak with Roger about
+   this on Monday, maybe the changing of TCL version will solve
+   all our problems. It also can eat some time (I don't know how
+   much ? ), because now under new version Magnus crashes 
+   immediately.
+
+2. MSC Group. New menu items are implemened:
+
+   Find the order of G1.
+   Is G1 trivial ?
+   Is G1 finite ?
+   Is G1 abelian ?
+
+3. One Relator Group. New menu items are implemened:
+
+   Is G1 trivial ?
+
+4. Abelian Rank Problem using matrix over rational numbers was
+   included into Order Problem Object.
+
+5. I found a bug in PO (problem object) "WordProblem": it tried to put
+   answer when you terminated the calculation and the answer wasn't
+   ready yet. The bug is fixed.
+
+6. New IPC (Interporcess Communication) design was done ( It was
+   necessary for long time working algoritms). Headers IPC.h,
+   ExtendedIPC.h provide all necessary IPc tools for C-types. Also I
+   provided such tools for most useable classes: Generator, Word,
+   Vector, Set, etc. Other tools I will do when they'll be needed,
+   i.e. when some Front End Problem Object will asc me about this.
+   Now the IPC interface is completely clear and convienent, after I
+   will made the new version of Magnus, everyone will be able to
+   provide such tools for one's classes very swiftly and easyly.
+	
+   Unfortunately, this work was very difficult, because gcc 2.6.3
+   template bugs really object to do it. I've spend half of day
+   again only to avoid them. O my god ! When I will have time to
+   change the version of this stupid compiler ! 
+   
+7. I implemented general problem object "Is Trivial ?" for groups,
+   it contains these computation managers:
+
+   Abelian:
+
+     "Compute abelian invariants of A1"
+
+   Nilpotent:
+   
+     "Is abelianization of G1 trivial ?"
+
+   FP: 
+   
+     "Is abelianization of G1 trivial ?"
+     "Enumerate normal closure of relations"
+     "Seek a rewriting system for G1"	
+     "Seek a ShortLex automatic structure for G1"
+
+   Small Cancelation: fast checking
+   One Relator: fast checking
+
+   
+   For each kind of group I provided Fast Preliminary Checkings(FPC):
+	
+   a) FPS which get information from the GIC: 
+
+        Is the group small cancelation ?
+        Is the group one relator ?
+        
+   a) FPS which compute information themselves and often report it 
+      to the GIC: 
+
+        Is the group small cancelation ?
+	Is the number of relators < the number of generators ?
+        
+
+8. I made Magnus version 1.0.1 beta.

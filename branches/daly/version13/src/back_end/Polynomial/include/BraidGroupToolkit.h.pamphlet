@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Polynomial/include/BraidGroupToolkit.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Polynomial.h"
+
+@
+\section{class BraidGroupToolkit}
+<<class BraidGroupToolkit>>=
+template <class R> class BraidGroupToolkit
+{
+public:
+  BraidGroupToolkit( ) { }
+  Polynomial<R> FoxDerivative( Word w, int var );
+  // variable 'var' could be 1,2,3 and so on
+
+private:
+  Monomial<R> wordToMonomial( Word w );
+  // simple replaces each generator by variable
+
+#ifdef DEBUG
+//  friend int main( );
+#endif
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Polynomial/include/BraidGroupToolkit.h
+#ifndef _BraidGroupToolkit_H_
+#define _BraidGroupToolkit_H_
+
+<<license>>
+<<include>>
+<<class BraidGroupToolkit>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+

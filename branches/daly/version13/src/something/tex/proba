@@ -1,0 +1,3 @@
+cd ~/inventory/FP/word_word/tex
+dvips ComputeProduct
+dvips EqualityProblem

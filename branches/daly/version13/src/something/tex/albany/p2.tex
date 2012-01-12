@@ -1,0 +1,91 @@
+\documentclass[12pt]{slides} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+%\maketitle
+\pagestyle{empty}
+
+%\vspace{5mm}
+\begin{center} \Large\textbf{Population} \end{center}
+\vspace{5mm}
+
+Since we are looking for a solution for a given equation, it is
+natural to work with a population of candidate solutions,
+i.e. population consisting of a finite number of substitutions for the
+variables of the equation. The algorithm uses population of 50 tuples
+of words. Each tuple has the same number of elements as the number of
+variables and thereby represent one possible substitution for the
+variables.
+
+\vspace{5mm}
+\begin{center} \Large\textbf{Fitness function} \end{center}
+\vspace{5mm}
+
+The fitness function has to measure how close a potential solution is
+to a real solution, i.e. if the substitution is performed, how close
+the image of a given equation is to a trivial word. In this case one
+of the simple choices is to use the length of the substituted image as
+a fitness function with zero as as optimum value. 
+
+
+\newpage
+
+\begin{center} \Large\textbf{Selection} \end{center}
+\vspace{5mm}
+
+Survival of the fittest is implemented by {\em fitness proportional
+selection} or {\em roulette wheel selection}.  The probability
+$Pr(s_i)$ of selecting solution $s_i$ for reproduction is given by
+\[
+	Pr(s_i) = \frac{Fitness(s_i)}{\sum_{j=1}^p Fitness(s_j)},
+\]
+where $p$ is the population size. This process of selecting population
+members for reproduction is called {\em selection}. Then we perform
+reproduction by selecting $p$ pairs $(s_1,s_2)$ according to the
+distribution of $Pr(s_i)$ and applying the {\em Crossover} and
+{\em Mutation} operators. 
+
+\newpage
+
+\begin{center} \Large\textbf{Crossover} \end{center}
+\vspace{5mm}
+
+{\bf Crossover} between two tuples of words is done by coordinates,
+i.e. the first variable of the first tuple crosses over with the first
+variable of the second tuple, the second variable of the first tuple
+crosses over with the second variable of the second tuple and so
+on. Therefore we need to define a crossover on words. In this case the
+classic one-point crossover can be used. In other words, we take a
+random initial segment of the first word and concatenate it with a
+random terminal segment of the second word.
+
+\newpage
+
+\begin{center} \Large\textbf{Mutation} \end{center}
+\vspace{5mm}
+
+{\bf Mutation} on tuples can again be defined through a mutation on
+their components - words. A mutation is random change in a word, and
+requires us to replace or one or more generators in a word. The
+following three mutations were used in the algorithm:
+
+%\vspace{3mm}
+Insert a new letter in a randomly chosen position - 10\% chance
+
+%\vspace{3mm}
+Delete one randomly chosen letter(generator) from the word -  10\% chance
+
+%\vspace{3mm}
+Replace one randomly chosen letter by a different one -  80\% chance
+\vspace{3mm}
+
+\end{document}
+
+
+
+
+
+
+

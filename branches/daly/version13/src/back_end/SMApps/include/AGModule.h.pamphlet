@@ -1,0 +1,105 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/AGModule.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "KBmagPackage.h"
+#include "List.h"
+#include "ARCer.h"
+#include "FPGroup.h"
+
+@
+\section{class AutGroupARCer}
+<<class AutGroupARCer>>=
+class AutGroupARCer : public ARCer
+{
+public:
+  AutGroupARCer( ComputationManager& boss ) 
+    : ARCer( boss ), retValue(dontknow) 
+  { } 
+
+  void setArguments( const FPGroup );
+  // Inherited from ARCer:
+  // bool takeControl( );
+  Trichotomy isAutomatic() { return retValue; }
+  DiffMachine getDiffMachine1( );
+  DiffMachine getDiffMachine2( );
+  GroupDFSA getWordAcceptor( );
+  GenMult getGeneralMultiplier( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  FPGroup G;
+  Trichotomy retValue;
+  DiffMachine DM1, DM2;
+  GroupDFSA WA;
+  GenMult GM;
+  KBmagPackage* KBM;
+};
+
+@
+\section{class AGSupervisor}
+<<class AGSupervisor>>=
+class AGSupervisor : public ComputationManager
+{
+public:
+  AGSupervisor( class GCM& gcm );
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  AutGroupARCer arcer;
+};
+
+@
+\section{class AGProblem}
+<<class AGProblem>>=
+class AGProblem : public Supervisor
+{
+public:
+  AGProblem(class SMFPGroup& G);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate agSupervisor;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/AGModule.h
+#ifndef _AGMODULE_H_
+#define _AGMODULE_H_
+
+<<license>>
+<<include>>
+<<class AutGroupARCer>>
+<<class AGSupervisor>>
+<<class AGProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

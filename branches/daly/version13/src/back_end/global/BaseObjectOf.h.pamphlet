@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/BaseObjectOf.h}
+\author{Stephane Collart}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "PureRep.h"
+#include "ObjectOf.h"
+
+@
+\section{template<class Rep> class BaseObjectOf}
+<<template<class Rep> class BaseObjectOf>>=
+template<class Rep> class BaseObjectOf : private ObjectOf<Rep>
+{
+// This assumes that Rep is derived from PureRep
+public:
+  // copy constructor provided by compiler
+  // destructor provided by compiler
+  // assignment operator provided by compiler
+
+protected:
+  // Inherited from base; adjust access:
+  ObjectOf<Rep>::look;
+  ObjectOf<Rep>::change;
+  ObjectOf<Rep>::enhance;
+  ObjectOf<Rep>::acquireRep;
+  BaseObjectOf( Rep* newrep ) : ObjectOf<Rep>( newrep) { }
+
+private:
+	// Dummy Forcing Member:
+	void force_derivation( ) { const PureRep* rc = look(); }
+	// With this member PureRep is forced to be 
+        // an accessible base class of Rep
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/BaseObjectOf.h
+#ifndef _BASE_OBJECT_OF_H_
+#define _BASE_OBJECT_OF_H_
+
+<<license>>
+<<include>>
+<<template<class Rep> class BaseObjectOf>>
+#endif
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

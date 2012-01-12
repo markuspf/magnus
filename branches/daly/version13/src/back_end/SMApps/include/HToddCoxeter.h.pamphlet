@@ -1,0 +1,119 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/HToddCoxeter.h}
+\author{Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "HavasTC.h"
+#include "File.h"
+
+@
+\section{class HToddCoxeterARCer}
+<<class HToddCoxeterARCer>>=
+class HToddCoxeterARCer : public ARCer
+{
+public:
+  HToddCoxeterARCer( ComputationManager& boss,const FPGroup& group ) : 
+    ARCer( boss ),
+    tc(group),
+    theGroup(group),
+    theIndex( 0 ),
+    success( false ){ } 
+  
+  HToddCoxeterARCer( ComputationManager& boss,const FPGroup& group,
+		     const VectorOf<Word>& subgroup) : 
+    ARCer( boss ),
+    tc(group,subgroup), 
+    theGroup(group), 
+    theIndex( 0 ),
+    success( false ){ } 
+  
+  int getIndex() const{ return theIndex; }
+  bool isSuccessful() const {return success;}
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  HavasTC tc;
+  FPGroup theGroup;
+  int theIndex;
+  bool success;
+};
+
+@
+\section{class HToddCoxeter}
+<<class HToddCoxeter>>=
+class HToddCoxeter : public ComputationManager
+{
+public:
+  HToddCoxeter(class GCM& boss);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class GCM& theBoss;
+  class SMFPGroup& theGroup;
+  HToddCoxeterARCer* arcer;
+};
+
+@
+\section{class HSGIndexToddCoxeter}
+<<class HSGIndexToddCoxeter>>=
+class HSGIndexToddCoxeter : public ComputationManager
+{
+public:
+  HSGIndexToddCoxeter(class SCM& scm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class SCM& theSCM;
+  class SMSubgroup& theSubgroup;
+  HToddCoxeterARCer arcer;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/HToddCoxeter.h
+#ifndef _H_TODD_COXETER_H_
+#define _H_TODD_COXETER_H_
+
+<<license>>
+<<include>>
+<<class HToddCoxeterARCer>>
+<<class HToddCoxeter>>
+<<class HSGIndexToddCoxeter>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+
+
+
+
+
+
+

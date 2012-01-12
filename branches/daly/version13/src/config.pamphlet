@@ -1,0 +1,231 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/config.pamphlet}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "global.h"
+
+@
+<<include.c>>=
+#include "Chars.h"
+#include "Config.h"
+
+@
+\section{class GHNConfig}
+\subsection{GHNConfig Constructor}
+<<GHNConfig Constructor.h>>=
+  GHNConfig( int pop = 50, int gen = -1, int cross = 100, 
+	     int mut = 100, int elit = 1, bool fit = true );
+@
+<<GHNConfig Constructor.c>>=
+/*
+GHNConfig::GHNConfig( )
+  : population( 0 ),
+    generations( 0 ),
+    crossover( 0 ),
+    mutation( 0 ),
+    elitistSelection( 0 ),
+    bFitnessScaling( false )
+{ }
+*/
+
+GHNConfig::GHNConfig( int pop, int gen, int cross, 
+		      int mut, int elit, bool fit ) 
+  : population( pop ),
+    generations( gen ),
+    crossover( cross ),
+    mutation( mut ),
+    elitistSelection( elit ),
+    bFitnessScaling( fit )
+{ }
+  
+@
+\subsection{GHNConfig::readFrom}
+<<GHNConfig::readFrom.h>>=
+  void readFrom( istream& istr );
+@
+<<GHNConfig::readFrom.c>>=
+void GHNConfig::readFrom( istream& istr )
+{
+  while( !istr.eof() ) {
+    char s[500],c;
+    istr.get(s,499,'\n');
+    istr.get(c);
+    if( strlen(s) == 0 || s[0] == '#' ) continue;
+    istrstream in(s);
+    char var[100];
+    int value;
+    in.get(var,99,':');
+    in.get(c);
+    in >> value;
+    setVariable(var,value);
+  }
+}
+
+@
+\subsection{GHNConfig::setVariable}
+<<GHNConfig::setVariable.h>>=
+  void setVariable( const char*, int );
+  // used by readFrom() to set variables
+@
+<<GHNConfig::setVariable.c>>=
+void GHNConfig::setVariable( const char* varName, int value )
+{
+  // get rid of all spaces
+  char s[100];
+  int vnLen = strlen(varName), j = 0;
+  for( int i = 0; i < vnLen; ++i )
+    if( varName[i] != ' ' )
+      s[j++] = varName[i];
+  s[j] = 0;
+  Chars name(s);
+  if( name == Chars("Population") )
+    population = value;
+  else if( name == Chars("Generations") )
+    generations = value;
+  else if( name == Chars("Crossover") )
+    crossover = value;
+  else if( name == Chars("Mutation") )
+    mutation = value;
+  else if( name == Chars("ElitistSelection") )
+    elitistSelection = value;
+  else if( name == Chars("FitnessScaling") )
+    bFitnessScaling = value ? true : false;
+  else
+    error(Chars("void GHNConfig::setVariable( const char*, int ) : ") +
+	  "unknown variable" + varName + ".");
+}
+
+@
+\subsection{GHNConfig::printOn}
+<<GHNConfig::printOn.h>>=
+  void printOn( ostream& ostr ) const;
+@
+<<GHNConfig::printOn.c>>=
+void GHNConfig::printOn( ostream& ostr ) const
+{
+  ostr << "# Population size" << endl
+       << "Population : " << population << endl << endl
+       << "# Number of generations" << endl
+       << "Generations : ";
+  if( generations < 0 )
+    ostr << "unlimited";
+  else
+    ostr << generations;
+  ostr << endl << endl
+       << "# Chance of crossover" << endl
+       << "Crossover : " << crossover << endl << endl
+       << "# Chance of mutation " << endl
+       << "Mutation : " << mutation << endl << endl
+       << "# Type of elitist selection" << endl
+       << "ElitistSelection : " << elitistSelection << endl << endl
+       << "# Have fitness scaling" << endl
+       << "FitnessScaling : " << (bFitnessScaling ? 1 : 0) << endl << endl;
+}
+
+@
+\subsection{GHNConfig::populationSize}
+<<GHNConfig::populationSize.h>>=
+  int populationSize( ) const { return population; }
+@
+\subsection{GHNConfig::numOfGenerations}
+<<GHNConfig::numOfGenerations.h>>=
+  int numOfGenerations( ) const { return generations; }
+@
+\subsection{GHNConfig::chanceOfCrossover}
+returns value betweeen 0 and 1
+<<GHNConfig::chanceOfCrossover.h>>=
+  double chanceOfCrossover( ) const { return double(crossover)/100; }
+@
+\subsection{GHNConfig::chanceOfMutation}
+returns value betweeen 0 and 1
+<<GHNConfig::chanceOfMutation.h>>=
+  double chanceOfMutation( ) const { return double(mutation)/100; }
+@
+\subsection{GHNConfig::haveElitistSelection}
+<<GHNConfig::haveElitistSelection.h>>=
+  bool haveElitistSelection( ) const { return elitistSelection == 1; }
+@
+\subsection{GHNConfig::haveStrongElitistSelection}
+<<GHNConfig::haveStrongElitistSelection.h>>=
+  bool haveStrongElitistSelection( ) const { return elitistSelection == 2; }
+@
+\subsection{GHNConfig::haveFitnessScaling}
+<<GHNConfig::haveFitnessScaling.h>>=
+  bool haveFitnessScaling( ) const { return bFitnessScaling; }
+@
+\subsection{GHNConfig operator output}
+<<GHNConfig operator output>>=
+  friend ostream& operator << ( ostream& ostr, const GHNConfig& C )
+  {
+    C.printOn(ostr);
+    return ostr;
+  }
+@
+\subsection{GHNConfig operator input}
+<<GHNConfig operator input>>=
+  friend istream& operator >> ( istream& istr, GHNConfig& C )
+  {
+    C.readFrom(istr);
+    return istr;
+  }
+@
+\subsection{class GHNConfig}
+<<class GHNConfig>>=
+class GHNConfig
+{
+public:
+<<GHNConfig Constructor.h>>
+<<GHNConfig::populationSize.h>>
+<<GHNConfig::numOfGenerations.h>>
+<<GHNConfig::chanceOfCrossover.h>>
+<<GHNConfig::chanceOfMutation.h>>
+<<GHNConfig::haveElitistSelection.h>>
+<<GHNConfig::haveStrongElitistSelection.h>>
+<<GHNConfig::haveFitnessScaling.h>>
+<<GHNConfig operator output>>
+<<GHNConfig operator input>>
+private:
+<<GHNConfig::readFrom.h>>
+<<GHNConfig::printOn.h>>
+<<GHNConfig::setVariable.h>>
+  int population;
+  int generations;
+  int crossover;
+  int mutation;
+  int elitistSelection;
+  bool bFitnessScaling;
+};
+
+@
+\section{Config.h}
+<<Config.h>>=
+#ifndef _GHNConfig_H_
+#define _GHNConfig_H_
+
+<<include.h>>
+<<class GHNConfig>>
+#endif
+@
+\section{Config.C}
+<<*>>=
+
+<<include.c>>
+<<GHNConfig Constructor.c>>
+<<GHNConfig::readFrom.c>>
+<<GHNConfig::setVariable.c>>
+<<GHNConfig::printOn.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

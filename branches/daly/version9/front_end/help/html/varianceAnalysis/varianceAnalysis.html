@@ -1,0 +1,755 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>varianceAnalysis</TITLE>
+<META NAME="description" CONTENT="varianceAnalysis">
+<META NAME="keywords" CONTENT="varianceAnalysis">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="varianceAnalysis.css">
+
+</HEAD>
+
+<BODY >
+<DIV ALIGN="CENTER">
+<B>THE VARIANCE AND STANDARD DEVIATION OF A</B></DIV>
+<DIV ALIGN="CENTER">
+<B>ONE VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+The <B>variance </B> and its squareroot the <B>standard deviation</B> are the fundamental measures
+of variation for a continuous data set. These measures can either be computed for a
+population or for a sample.  The <B>sample standard deviation</B> is denoted <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ S$"> while the
+population standard deviation is denoted <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$">. <IMG
+ WIDTH="22" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ S^2$"> and <IMG
+ WIDTH="21" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \sigma^2$"> respectively are the
+sample variance and population variance.  For a given set of data <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ S$"> should be
+considered as an estimate for the corresponding <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$">.  
+
+<P>
+The <B>sample standard deviation</B> <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ S$"> is defined by the following formula:
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+S = \sqrt{\frac{\sum_{i=1}^n (X_i - \overline{X})^2}{n-1}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="166" HEIGHT="72" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$\displaystyle S = \sqrt{\frac{\sum_{i=1}^n (X_i - \overline{X})^2}{n-1}} $">
+</DIV><P></P>
+
+<P><P>
+<BR>
+
+<P>
+In the formula, <!-- MATH
+ $X_1,....,X_n$
+ -->
+<IMG
+ WIDTH="78" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ X_1,....,X_n$"> are the sample data and <!-- MATH
+ $\overline{X}$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ \overline{X}$"> is the sample mean. The
+standard deviation is a type of average of squared deviations from the mean and therefore measures
+dispersion about the mean.
+
+<P>
+If <!-- MATH
+ $X_1,....,X_n$
+ -->
+<IMG
+ WIDTH="78" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ X_1,....,X_n$"> are all the measurements in a population and <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ \mu$"> is the population
+mean then the population standard deviation <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> is 
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\sigma = \sqrt{\frac{\sum_{i=1}^n (X_i - \mu)^2}{n}} .
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="164" HEIGHT="63" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$\displaystyle \sigma = \sqrt{\frac{\sum_{i=1}^n (X_i - \mu)^2}{n}} .$">
+</DIV><P></P>
+
+<P><P>
+<BR>
+
+<P>
+Why we divide by <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ n-1$"> rather than <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ n$"> can be explained as follows. Generally <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ S$"> is used to
+estimate <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> just as <!-- MATH
+ $\overline{X}$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ \overline{X}$"> is used to estimate the population mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ \mu$">. The fact
+that <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ S$"> is used to estimate <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \sigma$"> is the reason why we divide by <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ n-1$"> rather than <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ n$"> in the
+formula.  Technically this is to make the sample variance <IMG
+ WIDTH="22" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ S^2$"> an unbiased estimator for the
+population variance, that is so that <IMG
+ WIDTH="22" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ S^2$"> will average out over all possible samples to the
+population variance.  Non-technically the reason why we divide by <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ n-1$"> can be explained in the
+following manner.  If the data <!-- MATH
+ $X_1,...,X_n$
+ -->
+<IMG
+ WIDTH="74" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$ X_1,...,X_n$"> consisted of the whole population we would divide by
+<IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ n$">. Generally, however,there will be more variation in a whole population
+than in a sample. If we divide by <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ n$"> with sample data we will generally underestimate the
+population variation.  Dividing by <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ n-1$"> makes the estimate larger, and in fact just large enough
+so that it will average out to the population variation.     
+
+<P>
+The standard deviation measures how closely a set of data clusters about its mean.  However it can
+be used to give even more information.  Using the standard deviation we can actually predict what
+percentages of the total data or population will fall into prescribed intervals about the mean.  
+
+<P>
+There are two results which allow us to do this type of percentage prediction.  The first of these
+is known as <B>Chebyshev's Rule</B>  or <B>Chebyshev's Theorem</B> after the Russain mathematician
+P.Chebyshev who first discovered it.  It is a mathematical theorem and therefore is true for any
+set of data and for any population.  The rule is as follows:
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom {xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \hphantom {xxxx}$"> <B>CHEBYSHEV'S RULE:</B>
+
+<P>
+If <IMG
+ WIDTH="42" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$ k &gt; 1$"> then at least <!-- MATH
+ $1 - \frac{1}{k^2}$
+ -->
+<IMG
+ WIDTH="49" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ 1 - \frac{1}{k^2}$"> of the total data fall within <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ k$"> standard deviations
+of the mean.
+
+<P><P>
+<BR>
+
+<P>
+In the above statement, <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ k$"> is a number and the rule leads to a fraction <!-- MATH
+ $1-\frac{1}{k^2}$
+ -->
+<IMG
+ WIDTH="49" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ 1 - \frac{1}{k^2}$">.  This
+fraction indicates a guaranteed fraction of the data which will be found within the interval given
+by the mean minus <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ k$"> standard deviations to the mean plus <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ k$"> standard deviations. Chebyshev's
+Theorem is true for both samples and populations.  For <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ k = 2$"> the corresponding fraction is
+<!-- MATH
+ $\frac{3}{4}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.gif"
+ ALT="$ \frac{3}{4}$"> and hence within two standard deviations of the mean there are always at least
+<!-- MATH
+ $\frac{3}{4}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.gif"
+ ALT="$ \frac{3}{4}$"> of all the data.  For <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.gif"
+ ALT="$ k = 3$"> the corresponding fraction is <!-- MATH
+ $\frac{8}{9}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ \frac{8}{9}$"> and hence
+within three standard deviations of the mean there are always at least <!-- MATH
+ $\frac{8}{9}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ \frac{8}{9}$"> of all the
+data.  We picture this below.
+
+<P>
+
+<P></P>
+<DIV ALIGN="CENTER">
+ <IMG
+   WIDTH="385" HEIGHT="163" ALIGN="BOTTOM" BORDER="0"
+   SRC="imgApp1.gif"> 
+</DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+Chebyshev's Rule for <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ k = 2$"> and <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.gif"
+ ALT="$ k = 3$"></DIV>
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 
+
+<P>
+Suppose a medical study has an average weight of <IMG
+ WIDTH="32" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ 14.2$"> grams with a
+process standard deviation of 1.6 grams for certain tissue samples.  If <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ k = 2$"> then two standard
+deviations would be <!-- MATH
+ $(2)(1.6) = 3.2$
+ -->
+<IMG
+ WIDTH="99" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.gif"
+ ALT="$ (2)(1.6) = 3.2$"> grams.  Therefore a two standard deviation interval about the
+mean would be <!-- MATH
+ $14.2 \pm 3.2$
+ -->
+<IMG
+ WIDTH="72" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ 14.2 \pm 3.2$"> grams or equivalently <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.gif"
+ ALT="$ 11.0$"> grams to <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ 17.4$"> grams.  Using Chebyshev's
+rule with <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ k = 2$"> it would then be predicted that at least 
+<!-- MATH
+ $1 - \frac{1}{2^2} =   1-\frac{1}{4} = \frac{3}{4}$
+ -->
+<IMG
+ WIDTH="138" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ 1 - \frac{1}{2^2} = 1-\frac{1}{4} = \frac{3}{4}$"> of all the tissue samples would fall within
+this interval.   Therefore at least 75% of the tissue samples would be between <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.gif"
+ ALT="$ 11.0$"> grams and
+<IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ 17.4$"> grams.  Similarly if <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.gif"
+ ALT="$ k = 3$"> then three standard deviations would be <!-- MATH
+ $(3)(1.6) = 4.8$
+ -->
+<IMG
+ WIDTH="99" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$ (3)(1.6) = 4.8$">
+grams.  The corresponding three standard deviation interval about the mean would then be <IMG
+ WIDTH="24" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.gif"
+ ALT="$ 9.4$">
+grams to <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ 19.0$"> grams.  The corresponding fraction from Chebyshev's rule is <!-- MATH
+ $1 - \frac{1}{3^2} =
+\frac{8}{9}$
+ -->
+<IMG
+ WIDTH="79" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ 1 - \frac{1}{3^2} =
+\frac{8}{9}$">.  Therefore <!-- MATH
+ $\frac{8}{9}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ \frac{8}{9}$"> or 89% of the tissue samples would weigh in the interval
+<IMG
+ WIDTH="24" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.gif"
+ ALT="$ 9.4$"> grams to <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ 19.0$"> grams.  This is pictured graphically below
+
+<P>
+
+<P></P>
+<DIV ALIGN="CENTER">
+ <IMG
+   WIDTH="394" HEIGHT="179" ALIGN="BOTTOM" BORDER="0"
+   SRC="imgApp2.gif"> 
+</DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+Chebyshev's Rule for Tissue Samples</DIV>
+
+<P><P>
+<BR>
+
+<P>
+Usually, Chebyshev's rule underpredicts the percentage within a given interval.  That is the
+actual percentage is higher than what is predicted by the rule.  For example by Chebyshev's rule
+we would predict that at least 75% of all the data fall within a two standard deviation interval
+about the mean.  In practice, however, for most cases there will be closer to 96% in a two
+standard deviation interval.  Looking at the data below which again comes from the collection of
+pediatric weights this underprediction shows up very clearly.
+
+<P>
+EXAMPLE 
+
+<P>
+For the data on pediatric weights given in Example 2.2.1 the mean was computed to be
+<!-- MATH
+ $\overline{X} = 151.17$
+ -->
+<IMG
+ WIDTH="84" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.gif"
+ ALT="$ \overline{X} = 151.17$"> while the sample standard deviation was <IMG
+ WIDTH="72" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.gif"
+ ALT="$ S = 17.81$">.  The table below lists
+various intervals about the mean in terms of the sample standard deviation and then a comparison
+of what would be predicted by Chebyshev's rule (which must be true) together with the actual
+observed percentage.
+
+<P>
+
+<P></P>
+<!-- MATH
+ $\hphantom{xxxxxx}k\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ \hphantom{xxxxxx}k\hphantom{xxx}$">Interval<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">Chebyshev<!-- MATH
+ $\hphantom{xxxxx}$
+ -->
+<IMG
+ WIDTH="50" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.gif"
+ ALT="$ \hphantom{xxxxx}$">Actual   
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxx}$
+ -->
+<IMG
+ WIDTH="59" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.gif"
+ ALT="$ \hphantom{xxxxxx}$">2<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">115.6-186.8<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">at least 75%<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">98%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxx}$
+ -->
+<IMG
+ WIDTH="59" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.gif"
+ ALT="$ \hphantom{xxxxxx}$">3<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">97.7-204.6<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">at least 89%<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">100%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxx}$
+ -->
+<IMG
+ WIDTH="59" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.gif"
+ ALT="$ \hphantom{xxxxxx}$">4<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">79.9-222.4<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">at least 94%<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ \hphantom{xxx}$">100%
+
+<P><P>
+<BR>
+
+<P>
+A more accurate percentage prediction can be obtained from what is known as the <B>Empirical
+Rule</B>.  This is a rule which has been observed experimentally and is based theoretically on the
+<B>normal distribution</B> which will be discussed fully in Chapter Four.  The drawback to using
+this rule is that it can only be applied with confidence if there is a "large" number of
+measurements and these measurements are "fairly" symmetrical.  What is meant by "large" is that
+the predictions based on the empirical rule become more accurate as the number of measurements
+increases.  Thus our confidence in predictions made using the empirical rule increases with the
+number of observed measurements.  The empirical rule is as follows:
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.gif"
+ ALT="$ \hphantom{xx}$"> <B>EMPIRICAL RULE:</B>
+
+<P>
+In a "large" set of fairly symmetrical measurements approximately 68% fall within one standard
+deviation of the mean, 96% fall within two standard deviations of the mean and over 99% fall
+within three.
+
+<P><P>
+<BR>
+
+<P>
+If the data is completely symmetrical we obtain a finer percentage breakdown as pictured below:
+
+<P>
+
+<P></P>
+<DIV ALIGN="CENTER">
+ <IMG
+   WIDTH="460" HEIGHT="92" ALIGN="BOTTOM" BORDER="0"
+   SRC="imgApp3.gif"> 
+</DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+ Empirical Rule</DIV>
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 
+
+In the previous example there was a tissue sample average weight of <IMG
+ WIDTH="32" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ 14.2$">
+grams with a  standard deviation of <IMG
+ WIDTH="24" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.gif"
+ ALT="$ 1.6$"> grams.  A predicted statistical breakdown of tissue
+sample weights based on the empirical rule would be given as below.
+
+<P>
+
+<P></P>
+<DIV ALIGN="CENTER">
+ <IMG
+   WIDTH="460" HEIGHT="74" ALIGN="BOTTOM" BORDER="0"
+   SRC="imgApp4.gif"> 
+</DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+Figure 2.6.4 Empirical Rule for Tissue Samples</DIV>
+
+<P><P>
+<BR>
+
+<P>
+That is 34% of all the tissue sample should weigh between <IMG
+ WIDTH="32" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ 14.2$"> grams and <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ 15.8$"> grams, 14%
+between <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ 15.8$"> grams and <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ 17.4$"> grams and so on.  In using the empirical rule in this case we
+would have to assume that tissue sample weight is symmetrical.  This is usually the case with most
+biological data.  
+
+<P>
+From the empirical rule we have that 96% of a set of measurements fall within two standard
+deviations of the mean while 99% will fall within three.  Therefore in the first case 96% of the
+data will fall within a range of four standard deviations  (two on either side of the mean) while
+in the second 99% will fall within a range of six standard deviations (three on either side of the
+mean).  It follows that for most large sets of data the range <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.gif"
+ ALT="$ R$"> of this data will be between <IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.gif"
+ ALT="$ 4$">
+and <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.gif"
+ ALT="$ 6$"> times the magnitude of the standard deviation. This relationship can be used to give a
+rough estimate of the standard deviation.  <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ S$"> would be estimated as being between <!-- MATH
+ $\frac{R}{6}$
+ -->
+<IMG
+ WIDTH="18" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$ \frac{R}{6}$">
+and <!-- MATH
+ $\frac{R}{4}$
+ -->
+<IMG
+ WIDTH="18" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.gif"
+ ALT="$ \frac{R}{4}$"> where <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.gif"
+ ALT="$ R$"> is the range. 
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\frac{R}{6} \le S \le \frac{R}{4} \text { for most large data sets}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="89" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.gif"
+ ALT="$\displaystyle \frac{R}{6} \le S \le \frac{R}{4}$">
+
+</DIV><P></P>
+for most large data sets
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 
+
+<P>
+A sample of <IMG
+ WIDTH="28" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.gif"
+ ALT="$ 300$"> ball bearings had a range of <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.gif"
+ ALT="$ 0.13$"> cm in measuring the diameter.  Estimate the
+standard deviation. 
+
+<P>
+From the discussion above <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ S$"> would be estimated to be between <!-- MATH
+ $\frac{0.13}{6} = .0217$
+ -->
+<IMG
+ WIDTH="88" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.gif"
+ ALT="$ \frac{0.13}{6} = .0217$"> and
+<!-- MATH
+ $\frac{0.13}{4} = .0325$
+ -->
+<IMG
+ WIDTH="88" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.gif"
+ ALT="$ \frac{0.13}{4} = .0325$">. 
+
+<P><P>
+<BR>
+
+<P>
+</BODY>
+</HTML>

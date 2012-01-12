@@ -1,0 +1,125 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/RankOfSubgroup.h}
+\author{Alexander Ushakov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "TurnerProperSubgroupEnumerator.h"
+#include "Supervisor.h"
+#include "SMWord.h"
+#include "File.h"
+//#include "SGofFreeGroup.h"
+//#include "SMSetOfWords.h"
+//#include "FreeGroup.h"
+
+@
+\section{class RankOfSubgroupARCer}
+<<class RankOfSubgroupARCer>>=
+class RankOfSubgroupARCer : public ARCer
+{
+public:
+  RankOfSubgroupARCer( ComputationManager& boss, 
+		  const class SMFPGroup& group, 
+		  const SGofFreeGroup& sg );
+
+  ~RankOfSubgroupARCer();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  Chars getFileName( ) const { return PSE->getFileName(); }
+  Trichotomy getAnswer() const { return answer;}
+
+private:
+  bool isAFreeFactorIn( SGofFreeGroup& g ) const;
+
+  const class SMFPGroup& theGroup;
+  // given free group
+  const SGofFreeGroup theSubgroup;
+  // given subgroup
+
+  ProperSubgroupEnumerator* PSE;
+  // Subgroup enumerator 
+
+  Trichotomy answer;
+
+  void lookingup();
+  // enumerate subgroup
+  void printSG( ostream& file, const SGofFreeGroup& subgroup );
+};
+
+@
+\section{class RankOfSubgroup}
+<<class RankOfSubgroup>>=
+class RankOfSubgroup : public ComputationManager
+{
+public:
+  RankOfSubgroup(class RankOfSubgroupProblem& problemObject );
+  ~RankOfSubgroup( );
+
+  Trichotomy getAnswer() const { 
+       return theARCer.getAnswer();
+  }
+
+  Chars getFileName( ) { return theARCer.getFileName(); }
+  // Returns name of the file with computation details
+
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };              // overrides ComputationManager
+  void terminate( ) { };          // overrides ComputationManager
+
+private:
+  const class SMSubgroup& theSubgroup;
+  FreeGroup theGroup;
+  RankOfSubgroupARCer theARCer;
+};
+
+@
+\section{class RankOfSubgroupProblem}
+<<class RankOfSubgroupProblem>>=
+class RankOfSubgroupProblem : public Supervisor
+{
+public:
+  RankOfSubgroupProblem(const class SMSubgroup& sg);
+  const class SMSubgroup& getSubgroup( ) const;
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const SMSubgroup& theSubgroup;
+  bool linkHasBeenSent;
+  Subordinate<RankOfSubgroupProblem, RankOfSubgroup> rankOfSubgroup;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/RankOfSubgroup.h
+#ifndef _RANKOFSUBGROUP_H_
+#define _RANKOFSUBGROUP_H_
+
+<<license>>
+<<include>>
+<<class RankOfSubgroupARCer>>
+<<class RankOfSubgroup>>
+<<class RankOfSubgroupProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

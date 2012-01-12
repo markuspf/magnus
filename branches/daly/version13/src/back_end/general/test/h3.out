@@ -1,0 +1,48 @@
+The running time for the insert: 
+d - arity of the heap, 
+time is in seconds, 
+the array contained 1 million numbers in reversed order, 
+namely 999999, 999998, ..., 0,
+insert has been called 100000 times
+( it is clear that time is decreasing when d is increasing, i.e.,
+it is faster to insert in a tree of a smaller height) :
+
+d = 2    time elapsed: 0.841216
+d = 3    time elapsed: 0.567076
+d = 4    time elapsed: 0.437768
+d = 5    time elapsed: 0.393771
+d = 6    time elapsed: 0.353044
+d = 7    time elapsed: 0.352789
+d = 8    time elapsed: 0.31
+d = 9    time elapsed: 0.311143
+d = 10   time elapsed: 0.271853
+d = 11   time elapsed: 0.269494
+d = 12   time elapsed: 0.269279
+d = 13   time elapsed: 0.269267
+d = 14   time elapsed: 0.269219
+d = 15   time elapsed: 0.269333
+d = 16   time elapsed: 0.228821
+d = 17   time elapsed: 0.226305
+d = 18   time elapsed: 0.226283
+d = 19   time elapsed: 0.226225
+d = 20   time elapsed: 0.226231
+d = 21   time elapsed: 0.226841
+d = 22   time elapsed: 0.226217
+d = 23   time elapsed: 0.226273
+d = 24   time elapsed: 0.226225
+d = 25   time elapsed: 0.226215
+d = 26   time elapsed: 0.226217
+d = 27   time elapsed: 0.226194
+d = 28   time elapsed: 0.226203
+d = 29   time elapsed: 0.226258
+d = 30   time elapsed: 0.22626
+d = 31   time elapsed: 0.22856
+d = 32   time elapsed: 0.188425
+d = 33   time elapsed: 0.181488
+d = 34   time elapsed: 0.181417
+d = 35   time elapsed: 0.18008
+d = 36   time elapsed: 0.181704
+d = 37   time elapsed: 0.18142
+d = 38   time elapsed: 0.181416
+d = 39   time elapsed: 0.181611
+d = 40   time elapsed: 0.180434

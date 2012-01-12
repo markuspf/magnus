@@ -1,0 +1,63 @@
+\documentclass[12pt]{slides} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+%\maketitle
+\pagestyle{empty}
+
+\vspace{5mm}
+\begin{center} \Large\textbf{Experiment 1} \end{center}
+%\vspace{3mm}
+
+Let us consider a simple experiment where equations are of the form
+\[
+a^N x \: b^N = 1
+\]
+where $x$ is a variable, $a$ and $b$ are generators of a free group,
+$N$ is a positive integer. 
+
+Though solutions are obvious in this case,
+the general algorithm does not know that and therefore, the experiment
+is sound. 
+
+Given a simple equation like this we can control the length
+of the minimal solution for each $N$ and estimate the growth of time
+needed for different lengths. 
+
+
+\newpage
+
+\noindent
+\begin{tabular}{|c|c|c|c|} \hline
+Len & Av \# of gen & Av time per gen & Av time \\ 
+\hline
+10 & 13 & 0.00810277 & 0.105336 \\ \hline
+20 & 38.7 & 0.00878626 & 0.340028 \\ \hline
+30 & 175.3 & 0.0107125 & 1.8779 \\ \hline
+40 & 194.7 & 0.0133946 & 2.60792 \\ \hline
+50 & 215.3 & 0.0152716 & 3.28797 \\ \hline
+60 & 412.7 & 0.0168407 & 6.95016 \\ \hline
+100 & 899.5 & 0.026206 & 23.5723 \\ \hline
+200 & 2013 & 0.0473142 & 95.2434 \\ \hline
+\end{tabular}
+%\vspace{3mm}
+
+As can be seen from the description of the algorithm and as confirmed
+by the table above, the average time per generation is growing
+linearly with the length of the equation. The number of generations
+can also be bound by a linear function, and therefore the average
+time can be bounded by a quadratic polynomial. Though a more thorough
+analysis is needed, the experiment has already shown dramatic
+improvement over exponential (at least) algorithm discussed above.
+
+
+\end{document}
+
+
+
+
+
+
+

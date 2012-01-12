@@ -1,0 +1,65 @@
+Weekly report for period 11/24/97 - 11/30/97
+
+1. Name: Put genetic algorithm for equations into master copy
+   Status: Completed, could not do before Holidays due to linker problems
+   Date assigned: 11/26/97
+   Date of completion: 12/01/97
+
+2. Name: Improve on existing genetic algorithms for word, triviality,
+	abelian problems in accordance with discussion to be held on
+	11/20/97
+   Status: Need more time to complete
+   Date assigned: 12/01/97
+   Projected date of completion: 12/03/97
+
+3. Name: Help Alex with designing abstract enumerator class and the
+	derived class for enumerating relations - see my email to Alex
+   Status: Ongoing
+   Date assigned: Ongoin for you
+   Projected date of completion: Ongoing
+
+4. Name: Design abstract menu class which should make it possible to
+	have dynamic menus and work out derived class for one-relator
+	groups and perhaps one-relator groups with torsion. Discuss
+	with Alex.
+   Status: Desperately need discussion
+   Date assigned: 12/08/97
+   Projected date of completion: Cannot estimate until it is discussed
+
+5. Name: Code and then put genetic algorithms for the conjugacy problem
+	for finitely presented groups into master copy.
+   Status: Need to discuss
+   Date assigned: Now ongoing
+   Projected date of completion: Ongoing
+
+6. Name: Make available Pechkin's new code for testing - the status of
+	his code is unclear to me at this time. Please clarify, if
+	possible.
+   Status: Received a version on 11/27, had to wait until 12/01 because
+	of the holidays. Completed. 
+   Date assigned: 11/26/97
+   Date of completion: 12/01/97
+
+7. Name: Think about new design
+   Status: In progress
+   Date assigned: Ongoing
+   Projected date of completion: Ongoing
+
+8. Name: Make sure that versions of Magnus are made available to Roger
+	on the first Monday of each month and otherwise as they become
+	available.
+   Status: In progress
+   Date assigned: Ongoing
+   Next projected date of completion: 12/01/97
+
+9. Name: Think about genetic algorithms for the isomorphism problem
+	for finitely presented groups.
+   Status: Need to discuss
+   Date assigned: Ongoing
+   Projected date of completion: Ongoing
+
+10. Name: Review all new code as it arrives and inform the group about
+	it as it becomes available.
+    Status: Ongoing
+    Date assigned: Ongoing
+    Projected date of completion: Ongoing

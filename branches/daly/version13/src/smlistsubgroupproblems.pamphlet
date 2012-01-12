@@ -1,0 +1,1215 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/smlistsubgroupproblems.pamphlet}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "SMEnumerator.h"
+#include "SMList.h"
+#include "File.h"
+#include "Word.h"
+#include "SMFPGroup.h"
+#include "OutMessages.h"
+#include "RandomNumbers.h"
+#include "ListProblems.h"
+#include "SMListIterator.h"
+
+@
+<<include.c>>=
+#include "SMListSubgroupProblems.h"
+#include "OutMessages.h"
+#include "SMFPGroup.h"
+#include "viewStructure.h"
+#include "SetOfWordsChecker.h"
+#include "SMList.h"
+#include "SMListIterator.h"
+
+@
+\section{class SMListSGTrivialARCer}
+\subsection{SMListSGTrivialARCer Constructor}
+<<SMListSGTrivialARCer Constructor.h>>=
+  SMListSGTrivialARCer( ComputationManager& boss );
+@
+<<SMListSGTrivialARCer Constructor.c>>=
+SMListSGTrivialARCer::SMListSGTrivialARCer( ComputationManager& boss )
+  : ARCer( boss ), theList( NULL ), theIterator( NULL ), 
+    tCounter( 1 ), ntCounter( 1 )
+{ } 
+
+@
+\subsection{SMListSGTrivialARCer::setArguments}
+<<SMListSGTrivialARCer::setArguments.h>>=
+  void setArguments( SMList<Subgroup>*);
+@
+<<SMListSGTrivialARCer::setArguments.c>>=
+void SMListSGTrivialARCer::setArguments( SMList<Subgroup>* l )
+{
+  if ( theIterator )
+    delete theIterator;
+  theIterator  =  new SMListIterator<Subgroup>(*l);
+  theList = l;
+}
+
+@
+\subsection{SMListSGTrivialARCer::runComputation}
+<<SMListSGTrivialARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListSGTrivialARCer::runComputation.c>>=
+void SMListSGTrivialARCer::runComputation( ) 
+{
+  int bLength = theList->lic().numberOfElements();
+  trivialData.setWriteMode();
+  for ( int counter = 0; counter < bLength; counter ++ ){
+    if ( theList->lic().getTrivialStatus(counter) == dontknow ){
+      VectorOf<Word> gens = theIterator->getData().generators();
+      FPGroup fpGroup = theList->getGroup().getFPGroup();
+      SetOfWordsChecker theChecker( gens,
+				    theList->getGroup() );
+      Trichotomy isTrivial = theChecker.isTrivial();
+      theList->lic().setTrivialStatus( counter, isTrivial,
+				       theChecker.getAlgorithm() );
+      if ( isTrivial == yes ) {
+	trivialData   << EnumWriteVectorOfWords( gens,
+						 fpGroup )
+		      << theChecker.getExplanation() 
+		      << Chars("\n\n\n");
+	tCounter++;
+      } 
+      if ( isTrivial == no ) {
+	fileOfNonTrivial << ntCounter << ": " 
+			 << EnumWriteVectorOfWords( gens,
+						    fpGroup )
+			 << theChecker.getExplanation() 
+			 << endl << endl <<endl;
+	ntCounter++;
+      }
+    }
+    theIterator->nextCell();
+  }
+  trivialData.closeCurrentMode(); 
+}
+
+@
+\subsection{SMListSGTrivialARCer::writeResults}
+<<SMListSGTrivialARCer::writeResults.h>>=
+  void writeResults(ostream& o) { o < tCounter; o < ntCounter; o<trivialData;};
+@
+\subsection{SMListSGTrivialARCer::readResults}
+<<SMListSGTrivialARCer::readResults.h>>=
+  void readResults( istream& i) { i > tCounter; i > ntCounter; i>trivialData;};
+@
+\subsection{SMListSGTrivialARCer::getFileOfNonTrivial}
+<<SMListSGTrivialARCer::getFileOfNonTrivial.h>>=
+  Chars getFileOfNonTrivial() const { return fileOfNonTrivial.getFileName(); }
+@
+\subsection{SMListSGTrivialARCer::getTrivialData}
+<<SMListSGTrivialARCer::getTrivialData.h>>=
+  const SMListData& getTrivialData() const { return trivialData; }
+@
+\subsection{class SMListSGTrivialARCer}
+<<class SMListSGTrivialARCer>>=
+class SMListSGTrivialARCer : public ARCer
+{
+public:
+<<SMListSGTrivialARCer Constructor.h>>
+<<SMListSGTrivialARCer::setArguments.h>>
+<<SMListSGTrivialARCer::runComputation.h>>
+<<SMListSGTrivialARCer::writeResults.h>>
+<<SMListSGTrivialARCer::readResults.h>>
+<<SMListSGTrivialARCer::getFileOfNonTrivial.h>>
+<<SMListSGTrivialARCer::getTrivialData.h>>
+private:
+  SMListIterator<Subgroup>* theIterator;
+  const class SMFPGroup* theGroup;
+  class SMList<Subgroup>* theList;
+  int tCounter;
+  int ntCounter;
+  File fileOfNonTrivial;
+  SMListData trivialData;
+};
+
+@
+\section{class SMListSGTrivialComputation}
+\subsection{SMListSGTrivialComputation Constructor}
+<<SMListSGTrivialComputation Constructor.h>>=
+  SMListSGTrivialComputation( class SMListExtractTrivialSubgroups& );
+@
+<<SMListSGTrivialComputation Constructor.c>>=
+SMListSGTrivialComputation::
+SMListSGTrivialComputation( SMListExtractTrivialSubgroups& sms )
+  : theList( sms.getList() ),
+    arcer( *this ),
+    started( false )
+{ 
+  adminStart();
+}
+
+@
+\subsection{SMListSGTrivialComputation Destructor}
+<<SMListSGTrivialComputation Destructor.h>>=
+  ~SMListSGTrivialComputation(); 
+@
+<<SMListSGTrivialComputation Destructor.c>>=
+SMListSGTrivialComputation::~SMListSGTrivialComputation() {}
+
+@
+\subsection{SMListSGTrivialComputation::getFileOfNonTrivial}
+<<SMListSGTrivialComputation::getFileOfNonTrivial.h>>=
+  Chars getFileOfNonTrivial() const { return arcer.getFileOfNonTrivial(); }
+@
+\subsection{SMListSGTrivialComputation::getTrivialData}
+<<SMListSGTrivialComputation::getTrivialData.h>>=
+  const SMListData& getTrivialData() const { return arcer.getTrivialData(); }
+@
+\subsection{SMListSGTrivialComputation::takeControl}
+<<SMListSGTrivialComputation::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListSGTrivialComputation::takeControl.c>>=
+void SMListSGTrivialComputation::takeControl( )
+{
+  if (freeARCs() > 0){
+    if ( ! started ){
+      arcer.setArguments( &theList );
+      started = true;
+    }
+    if ( arcer.takeControl() ){
+      //    arcer.runComputation();
+      started = false;
+      if ( theList.lic().IsTrivialChecked() ) {
+	theList.lic().putIsTrivialFiles( 
+           arcer.getTrivialData().getDataFileName(),
+	   arcer.getFileOfNonTrivial() );
+	adminTerminate();
+	return;
+      }
+    }else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListSGTrivialComputation::start}
+<<SMListSGTrivialComputation::start.h>>=
+  void start( ) { }
+@
+\subsection{SMListSGTrivialComputation::terminate}
+<<SMListSGTrivialComputation::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListSGTrivialComputation}
+<<class SMListSGTrivialComputation>>=
+class SMListSGTrivialComputation  : public ComputationManager
+{
+public:
+<<SMListSGTrivialComputation Constructor.h>>
+<<SMListSGTrivialComputation Destructor.h>>
+<<SMListSGTrivialComputation::getFileOfNonTrivial.h>>
+<<SMListSGTrivialComputation::getTrivialData.h>>
+<<SMListSGTrivialComputation::takeControl.h>>
+<<SMListSGTrivialComputation::start.h>>
+<<SMListSGTrivialComputation::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  bool started;
+  SMListSGTrivialARCer arcer;
+};
+
+@
+\section{class SMListExtractTrivialSubgroups}
+\subsection{SMListExtractTrivialSubgroups Constructor}
+<<SMListExtractTrivialSubgroups Constructor.h>>=
+  SMListExtractTrivialSubgroups( SMList<Subgroup>& );
+@
+<<SMListExtractTrivialSubgroups Constructor.c>>=
+SMListExtractTrivialSubgroups::SMListExtractTrivialSubgroups(SMList<Subgroup>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    abelianInvariants( *this, sml.getGroup().gcm().abelianInvariants ),
+    checker( *this ),
+    normalClosure( *this, sml.getGroup().gcm().normalClosure ),
+    kbSupervisor( *this, sml.getGroup().gcm().kbSupervisor ),
+    agSupervisor( *this, sml.getGroup().gcm().agSupervisor )
+{ 
+ if ( sml.lic().IsTrivialChecked() )
+    resultIsFast();
+}
+
+@
+\subsection{SMListExtractTrivialSubgroups Destructor}
+<<SMListExtractTrivialSubgroups Destructor.h>>=
+  ~SMListExtractTrivialSubgroups() {}
+@
+\subsection{SMListSGTrivialComputation::viewStructure}
+<<SMListExtractTrivialSubgroups::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SMListExtractTrivialSubgroups::viewStructure.c>>=
+void SMListExtractTrivialSubgroups::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract trivial subgroups from a list",
+			    Text("Extract trivial subgroups from ") +
+			    Name( theList ) ,
+			    helpID("SMListExtractTrivialSubgroups",
+				   theList.getGroup()),
+			    Text("trivial sgs")
+			    );
+  //  RadioButton rRB1("ToFile","Extract to a file");
+  //  RadioButton rRB2("ToList","Extract to another list");
+  //  RadioButtonGroup extractRBG("ExtractTo");
+  //  extractRBG.add(rRB1);
+  //  extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  if (theList.getGroup().getCheckinType() == SMFPGroup::FP ) {
+    if ( ! theList.getGroup().gic.haveCyclicDecomposition() ) 
+      pv.addProblem(Subproblem("SpA",abelianInvariants.arcSlotID(),
+			       Text("Compute abelian invariants of") + 
+			       Name( Parent( theList ) ),
+			       15)
+		    );
+    if ( ! theList.getGroup().gic.haveFastWordProblem() ) {
+      pv.addProblem( Subproblem("Sp2",normalClosure.arcSlotID(),
+				Text("Enumerate normal closure of relators"),
+				50));
+      pv.addProblem( Subproblem("Sp2",kbSupervisor.arcSlotID(),
+				Text("Seek a rewriting system for") +
+				Name( theList.getGroup() ),
+				50));
+      pv.addProblem( Subproblem("Sp2",agSupervisor.arcSlotID(),
+			Text("Seek a ShortLex automatic structure for") +
+				Name( theList.getGroup() ),
+				50));
+    }
+  }
+  if ( !theList.lic().IsTrivialChecked() ) 
+    pv.addProblem( Subproblem("Sp1",checker.arcSlotID(),
+			      "Extract trivial subgroups",40));
+  submit(ostr, pv);
+}
+
+@
+\subsection{SMListExtractTrivialSubgroups::takeControl}
+<<SMListExtractTrivialSubgroups::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListExtractTrivialSubgroups::takeControl.c>>=
+void SMListExtractTrivialSubgroups::takeControl( )
+{
+  if ( fastResult() ) {
+    LogMessage msg( *this, theList );
+    msg << Link(Chars( "Click here to see trivial subgroups in ")+
+		Text( Name( theList ) ),
+		"SGEnumerator",
+		theList.lic().getListOfTrivial() );
+    msg.send();
+    LogMessage msg1( *this, theList );
+    msg1 << Link(Chars( "Click here to see non-trivial subgroups in ")+
+		 Text( Name( theList ) ),
+		 "SGEnumerator",
+		 theList.lic().getListOfNonTrivial() );
+    msg1.send();   
+  } else {
+    if ( theList.lic().IsTrivialChecked() ) {
+      SMList<Subgroup>* smo = 
+	new  SMList<Subgroup>(theList.getGroup(),
+			  checker->getTrivialData(),
+			  Text("Trivial subgroups from") + Name(theList) 
+			  ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "SGEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    }
+  }
+}
+
+@
+\subsection{SMListExtractTrivialSubgroups::getList}
+<<SMListExtractTrivialSubgroups::getList.h>>=
+  SMList<Subgroup>& getList() { return theList; }
+@
+\subsection{SMListExtractTrivialSubgroups::start}
+<<SMListExtractTrivialSubgroups::start.h>>=
+  void start( ); 
+@
+<<SMListExtractTrivialSubgroups::start.c>>=
+void SMListExtractTrivialSubgroups::start( )
+{
+  if ( !fastResult() ) {
+    LogMessage msg( *this, theList );
+    msg << Link(Chars( "Click here to see trivial subgroups in ")+
+		Text( Name( theList ) ),
+		"SGEnumerator",
+		checker->getTrivialData().getDataFileName(),true );
+    msg.send();
+    
+    LogMessage msg1( *this, theList );
+    msg1 << Link(Chars( "Click here to see non-trivial subgroups in ")+
+		 Text( Name( theList ) ),
+		 "SGEnumerator",
+		 checker->getFileOfNonTrivial(),true );
+    msg1.send();
+  }
+}
+
+@
+\subsection{SMListExtractTrivialSubgroups::terminate}
+<<SMListExtractTrivialSubgroups::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListExtractTrivialSubgroups}
+<<class SMListExtractTrivialSubgroups>>=
+class SMListExtractTrivialSubgroups  : public Supervisor
+{
+public:
+<<SMListExtractTrivialSubgroups Constructor.h>>
+<<SMListExtractTrivialSubgroups Destructor.h>>
+<<SMListExtractTrivialSubgroups::viewStructure.h>>
+<<SMListExtractTrivialSubgroups::takeControl.h>>
+<<SMListExtractTrivialSubgroups::getList.h>>
+<<SMListExtractTrivialSubgroups::start.h>>
+<<SMListExtractTrivialSubgroups::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate normalClosure;
+  Subordinate<SMListExtractTrivialSubgroups,SMListSGTrivialComputation> 
+    checker;
+};
+
+@
+\section{class SMListSGAbelianARCer}
+\subsection{SMListSGAbelianARCer Constructor}
+<<SMListSGAbelianARCer Constructor.h>>=
+  SMListSGAbelianARCer( ComputationManager& boss );
+@
+<<SMListSGAbelianARCer Constructor.c>>=
+SMListSGAbelianARCer::SMListSGAbelianARCer( ComputationManager& boss )
+  : ARCer( boss ), theList( NULL ), theIterator( NULL ), 
+  tCounter( 1 ), ntCounter( 1 )
+{ } 
+
+@
+\subsection{SMListSGAbelianARCer::setArguments}
+<<SMListSGAbelianARCer::setArguments.h>>=
+  void setArguments( SMList<Subgroup>*);
+@
+<<SMListSGAbelianARCer::setArguments.c>>=
+void SMListSGAbelianARCer::setArguments( SMList<Subgroup>* l )
+{
+  if ( theIterator )
+    delete theIterator;
+  theIterator  =  new SMListIterator<Subgroup>(*l);
+  theList = l;
+}
+
+@
+\subsection{SMListSGAbelianARCer::runComputation}
+<<SMListSGAbelianARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListSGAbelianARCer::runComputation.c>>=
+void SMListSGAbelianARCer::runComputation( ) 
+{
+  int bLength = theList->lic().numberOfElements();
+  abelianData.setWriteMode();
+  for ( int counter = 0; counter < bLength; counter ++ ){
+    if ( theList->lic().getAbelianStatus(counter) == dontknow ){
+      // Make all commutators and check are they trivial or not 
+      SetOf<Word> comms;
+      VectorOf<Word> gens = theIterator->getData().generators();
+      int gensLen = gens.length();
+      FPGroup fpGroup = theList->getGroup().getFPGroup(); 
+      for( int i = 0; i < gensLen-1; ++i ) 
+	for( int j = i+1; j < gensLen; ++j ) {
+	  Word w1 = gens[i];
+	  Word w2 = gens[j];
+	  comms |= (w1.inverse() * w2.inverse() * w1 * w2).freelyReduce();
+	}
+      SetOfWordsChecker theChecker( comms, theList->getGroup() );
+      Trichotomy isTrivial = theChecker.isTrivial();
+      theList->lic().setAbelianStatus( counter, isTrivial,
+				       theChecker.getAlgorithm() );
+      if ( isTrivial == yes ) {
+	abelianData   << EnumWriteVectorOfWords( gens,
+						 fpGroup )
+		      << theChecker.getExplanation() 
+		      << Chars("\n\n\n");
+	tCounter++;
+      } 
+      if ( isTrivial == no ) {
+	fileOfNonAbelian << ntCounter << ": " 
+			 << EnumWriteVectorOfWords( gens,
+						    fpGroup )
+			 << theChecker.getExplanation() 
+			 << endl << endl <<endl;
+	ntCounter++;
+      }
+    }
+    theIterator->nextCell();
+  }
+  abelianData.closeCurrentMode(); 
+}
+
+@
+\subsection{SMListSGAbelianARCer::writeResults}
+<<SMListSGAbelianARCer::writeResults.h>>=
+  void writeResults( ostream& o ) { o < tCounter; o < ntCounter;};
+@
+\subsection{SMListSGAbelianARCer::readResults}
+<<SMListSGAbelianARCer::readResults.h>>=
+  void readResults( istream& i ) { i > tCounter; i > ntCounter;};
+@
+\subsection{SMListSGAbelianARCer::getFileOfNonAbelian}
+<<SMListSGAbelianARCer::getFileOfNonAbelian.h>>=
+  Chars getFileOfNonAbelian() const { return fileOfNonAbelian.getFileName(); }
+@
+\subsection{SMListSGAbelianARCer::getAbelianData}
+<<SMListSGAbelianARCer::getAbelianData.h>>=
+  const SMListData& getAbelianData() const { return abelianData; }
+@
+\subsection{class SMListSGAbelianARCer}
+<<class SMListSGAbelianARCer>>=
+class SMListSGAbelianARCer : public ARCer
+{
+public:
+<<SMListSGAbelianARCer Constructor.h>>
+<<SMListSGAbelianARCer::setArguments.h>>
+<<SMListSGAbelianARCer::runComputation.h>>
+<<SMListSGAbelianARCer::writeResults.h>>
+<<SMListSGAbelianARCer::readResults.h>>
+<<SMListSGAbelianARCer::getFileOfNonAbelian.h>>
+<<SMListSGAbelianARCer::getAbelianData.h>>
+private:
+  SMListIterator<Subgroup>* theIterator;
+  const class SMFPGroup* theGroup;
+  class SMList<Subgroup>* theList;
+  File fileOfNonAbelian;
+  SMListData abelianData;
+  int tCounter;
+  int ntCounter;
+};
+
+@
+\section{class SMListSGAbelianComputation}
+\subsection{SMListSGAbelianComputation Constructor}
+<<SMListSGAbelianComputation Constructor.h>>=
+  SMListSGAbelianComputation( class SMListExtractAbelianSubgroups& );
+@
+<<SMListSGAbelianComputation Constructor.c>>=
+SMListSGAbelianComputation::
+SMListSGAbelianComputation( SMListExtractAbelianSubgroups& sms )
+  : theList( sms.getList() ),
+    arcer( *this ),
+    started( false )
+{ 
+  adminStart();
+}
+
+@
+\subsection{SMListSGAbelianComputation Destructor}
+<<SMListSGAbelianComputation Destructor.h>>=
+  ~SMListSGAbelianComputation(); 
+@
+<<SMListSGAbelianComputation Destructor.c>>=
+SMListSGAbelianComputation::~SMListSGAbelianComputation() {}
+
+@
+\subsection{SMListSGAbelianComputation::getFileOfNonAbelian}
+<<SMListSGAbelianComputation::getFileOfNonAbelian.h>>=
+  Chars getFileOfNonAbelian() const { return arcer.getFileOfNonAbelian(); }
+@
+\subsection{SMListSGAbelianComputation::getAbelianData}
+<<SMListSGAbelianComputation::getAbelianData.h>>=
+  const SMListData& getAbelianData() const { return arcer.getAbelianData(); }
+@
+\subsection{SMListSGAbelianComputation::takeControl}
+<<SMListSGAbelianComputation::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListSGAbelianComputation::takeControl.c>>=
+void SMListSGAbelianComputation::takeControl( )
+{
+  if (freeARCs() > 0){
+    if ( ! started ){
+      arcer.setArguments( &theList );
+      started = true;
+    }
+    
+    if ( arcer.takeControl() ){
+      //    arcer.runComputation();
+      started = false;
+      if ( theList.lic().IsAbelianChecked() ) {
+	theList.lic().putAbelianFiles( 
+             arcer.getAbelianData().getDataFileName(),
+	     arcer.getFileOfNonAbelian() );
+	adminTerminate();
+	return;
+      }
+    }else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListSGAbelianComputation::start}
+<<SMListSGAbelianComputation::start.h>>=
+  void start( ) { }
+@
+\subsection{SMListSGAbelianComputation::terminate}
+<<SMListSGAbelianComputation::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListSGAbelianComputation}
+<<class SMListSGAbelianComputation>>=
+class SMListSGAbelianComputation  : public ComputationManager
+{
+public:
+<<SMListSGAbelianComputation Constructor.h>>
+<<SMListSGAbelianComputation Destructor.h>>
+<<SMListSGAbelianComputation::getFileOfNonAbelian.h>>
+<<SMListSGAbelianComputation::getAbelianData.h>>
+<<SMListSGAbelianComputation::takeControl.h>>
+<<SMListSGAbelianComputation::start.h>>
+<<SMListSGAbelianComputation::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  bool started;
+  SMListSGAbelianARCer arcer;
+};
+
+@
+\section{class SMListExtractAbelianSubgroups}
+\subsection{SMListExtractAbelianSubgroups Constructor}
+<<SMListExtractAbelianSubgroups Constructor.h>>=
+  SMListExtractAbelianSubgroups( SMList<Subgroup>& );
+@
+<<SMListExtractAbelianSubgroups Constructor.c>>=
+SMListExtractAbelianSubgroups::SMListExtractAbelianSubgroups(SMList<Subgroup>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    abelianInvariants( *this, sml.getGroup().gcm().abelianInvariants ),
+    checker( *this ),
+    normalClosure( *this, sml.getGroup().gcm().normalClosure ),
+    kbSupervisor( *this, sml.getGroup().gcm().kbSupervisor ),
+    agSupervisor( *this, sml.getGroup().gcm().agSupervisor )
+{ 
+  if ( sml.lic().IsAbelianChecked() )
+    resultIsFast();
+}
+
+@
+\subsection{SMListExtractAbelianSubgroups Destructor}
+<<SMListExtractAbelianSubgroups Destructor.h>>=
+  ~SMListExtractAbelianSubgroups() {}
+@
+\subsection{SMListExtractAbelianSubgroups::viewStructure}
+<<SMListExtractAbelianSubgroups::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SMListExtractAbelianSubgroups::viewStructure.c>>=
+void SMListExtractAbelianSubgroups::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract abelian subgroups from a list",
+			    Text("Extract abelian subgroups from ") +
+			    Name( theList ) ,
+			    helpID("SMListExtractAbelianSubgroups",
+				   theList.getGroup()),
+			    Text("abel sgs")
+			    );
+  //  RadioButton rRB1("ToFile","Extract to a file");
+  //  RadioButton rRB2("ToList","Extract to another list");
+  //  RadioButtonGroup extractRBG("ExtractTo");
+  //  extractRBG.add(rRB1);
+  //  extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  if (theList.getGroup().getCheckinType() == SMFPGroup::FP ) {
+    if ( ! theList.getGroup().gic.haveCyclicDecomposition() ) 
+      pv.addProblem(Subproblem("SpA",abelianInvariants.arcSlotID(),
+			       Text("Compute abelian invariants of") + 
+			       Name( Parent( theList ) ),
+			       15)
+		    );
+    if ( ! theList.getGroup().gic.haveFastWordProblem() ) {
+      pv.addProblem( Subproblem("Sp2",normalClosure.arcSlotID(),
+				Text("Enumerate normal closure of relators"),
+				50));
+      pv.addProblem( Subproblem("Sp2",kbSupervisor.arcSlotID(),
+				Text("Seek a rewriting system for") +
+				Name( theList.getGroup() ),
+				50));
+      pv.addProblem( Subproblem("Sp2",agSupervisor.arcSlotID(),
+			Text("Seek a ShortLex automatic structure for") +
+				Name( theList.getGroup() ),
+				50));
+    }
+  }
+  if ( ! theList.lic().IsAbelianChecked() )
+    pv.addProblem( Subproblem("Sp1",checker.arcSlotID(),
+			      "Extract abelian subgroups",40));
+  submit(ostr, pv);
+}
+
+@
+\subsection{SMListExtractAbelianSubgroups::takeControl}
+<<SMListExtractAbelianSubgroups::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListExtractAbelianSubgroups::takeControl.c>>=
+void SMListExtractAbelianSubgroups::takeControl( )
+{
+  if ( fastResult() ) {
+
+    LogMessage msg( *this, theList );
+    msg << Link(Chars( "Click here to see abelian subgroups in ")+
+		Text( Name( theList ) ),
+		"SGEnumerator",
+		theList.lic().getListOfAbelian() );
+    msg.send();
+    LogMessage msg1( *this, theList );
+    msg1 << Link(Chars( "Click here to see non-abelian subgroups in ")+
+		 Text( Name( theList ) ),
+		 "SGEnumerator",
+		theList.lic().getListOfNonAbelian() );
+    msg1.send();   
+
+  } else {
+    if ( theList.lic().IsAbelianChecked() ) {
+      SMList<Subgroup>* smo = 
+	new  SMList<Subgroup>(theList.getGroup(),
+			  checker->getAbelianData(),
+			  Text("Abelian subgroups from") + Name(theList) 
+			  ); 
+      
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "SGEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    }
+  }
+}
+
+@
+\subsection{SMListExtractAbelianSubgroups::getList}
+<<SMListExtractAbelianSubgroups::getList.h>>=
+  SMList<Subgroup>& getList() { return theList; }
+@
+\subsection{SMListExtractAbelianSubgroups::start}
+<<SMListExtractAbelianSubgroups::start.h>>=
+  void start( ); 
+@
+<<SMListExtractAbelianSubgroups::start.c>>=
+void SMListExtractAbelianSubgroups::start( )
+{
+
+  if ( !fastResult() ) {
+    LogMessage msg( *this, theList );
+    msg << Link(Chars( "Click here to see abelian subgroups in ")+
+		Text( Name( theList ) ),
+		"SGEnumerator",
+		checker->getAbelianData().getDataFileName(),true );
+    msg.send();
+    LogMessage msg1( *this, theList );
+    msg1 << Link(Chars( "Click here to see non-abelian subgroup in ")+
+		 Text( Name( theList ) ),
+		 "SGEnumerator",
+		 checker->getFileOfNonAbelian(),true );
+    msg1.send();
+  }
+}
+
+@
+\subsection{SMListExtractAbelianSubgroups::terminate}
+<<SMListExtractAbelianSubgroups::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListExtractAbelianSubgroups}
+<<class SMListExtractAbelianSubgroups>>=
+class SMListExtractAbelianSubgroups  : public Supervisor
+{
+public:
+<<SMListExtractAbelianSubgroups Constructor.h>>
+<<SMListExtractAbelianSubgroups Destructor.h>>
+<<SMListExtractAbelianSubgroups::viewStructure.h>>
+<<SMListExtractAbelianSubgroups::takeControl.h>>
+<<SMListExtractAbelianSubgroups::getList.h>>
+<<SMListExtractAbelianSubgroups::start.h>>
+<<SMListExtractAbelianSubgroups::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate normalClosure;
+  Subordinate<SMListExtractAbelianSubgroups,SMListSGAbelianComputation> 
+    checker;
+};
+
+@
+\section{class SMListSGCentralARCer}
+\subsection{SMListSGCentralARCer Constructor}
+<<SMListSGCentralARCer Constructor.h>>=
+  SMListSGCentralARCer( ComputationManager& boss );
+@
+<<SMListSGCentralARCer Constructor.c>>=
+SMListSGCentralARCer::SMListSGCentralARCer( ComputationManager& boss )
+  : ARCer( boss ), theList( NULL ), theIterator( NULL ), 
+  tCounter( 1 ), ntCounter( 1 )
+{ } 
+
+@
+\subsection{SMListSGCentralARCer::setArguments}
+<<SMListSGCentralARCer::setArguments.h>>=
+  void setArguments( SMList<Subgroup>*);
+@
+<<SMListSGCentralARCer::setArguments.c>>=
+void SMListSGCentralARCer::setArguments( SMList<Subgroup>* l )
+{
+  if ( theIterator )
+    delete theIterator;
+  theIterator  =  new SMListIterator<Subgroup>(*l);
+  theList = l;
+}
+
+@
+\subsection{SMListSGCentralARCer::runComputation}
+<<SMListSGCentralARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListSGCentralARCer::runComputation.c>>=
+void SMListSGCentralARCer::runComputation( ) 
+{
+
+  centralData.setWriteMode();
+  int bLength = theList->lic().numberOfElements();
+  
+  for ( int counter = 0; counter < bLength; counter ++ ){
+    if ( theList->lic().getIsCentralStatus(counter) == dontknow ){
+      
+      // Make all commutators and check are they trivial or not 
+      SetOf<Word> comms;
+      VectorOf<Word> gens = theIterator->getData().generators();
+      int gensLen = gens.length();
+      FPGroup fpGroup = theList->getGroup().getFPGroup(); 
+      int numOfGens = fpGroup.numberOfGenerators();
+
+      for( int i = 0; i < gensLen; ++i ) 
+	for( int j = 0; j < numOfGens; ++j ) {
+	  Word w1 = gens[i];
+	  Word w2 = Word(Generator(j+1));
+	  comms |= (w1.inverse() * w2.inverse() * w1 * w2).freelyReduce();
+	}
+      
+      SetOfWordsChecker theChecker( comms, theList->getGroup() );
+      
+      Trichotomy isTrivial = theChecker.isTrivial();
+      
+      theList->lic().setIsCentralStatus( counter, isTrivial,
+					 theChecker.getAlgorithm() );
+      if ( isTrivial == yes ) {
+	centralData   << EnumWriteVectorOfWords( gens,
+						 fpGroup )
+		      << theChecker.getExplanation() 
+		      << Chars("\n\n\n");
+	tCounter++;
+      } 
+      if ( isTrivial == no ) {
+	fileOfNonCentral << ntCounter << ": " 
+			 << EnumWriteVectorOfWords( gens,
+						    fpGroup )
+			 << theChecker.getExplanation() 
+			 << endl << endl <<endl;
+	ntCounter++;
+      }
+    }
+    theIterator->nextCell();
+  }
+  centralData.closeCurrentMode(); 
+}
+
+@
+\subsection{SMListSGCentralARCer::writeResults}
+<<SMListSGCentralARCer::writeResults.h>>=
+  void writeResults( ostream& o ) { o < tCounter; o < ntCounter;};
+@
+\subsection{SMListSGCentralARCer::readResults}
+<<SMListSGCentralARCer::readResults.h>>=
+  void readResults( istream& i ) { i > tCounter; i > ntCounter;};
+@
+\subsection{SMListSGCentralARCer::getFileOfNonCentral}
+<<SMListSGCentralARCer::getFileOfNonCentral.h>>=
+  Chars getFileOfNonCentral() const { return fileOfNonCentral.getFileName(); }
+@
+\subsection{SMListSGCentralARCer::getCentralData}
+<<SMListSGCentralARCer::getCentralData.h>>=
+  const SMListData& getCentralData() const { return centralData; }
+@
+\subsection{class SMListSGCentralARCer}
+<<class SMListSGCentralARCer>>=
+class SMListSGCentralARCer : public ARCer
+{
+public:
+<<SMListSGCentralARCer Constructor.h>>
+<<SMListSGCentralARCer::setArguments.h>>
+<<SMListSGCentralARCer::runComputation.h>>
+<<SMListSGCentralARCer::writeResults.h>>
+<<SMListSGCentralARCer::readResults.h>>
+<<SMListSGCentralARCer::getFileOfNonCentral.h>>
+<<SMListSGCentralARCer::getCentralData.h>>
+private:
+  SMListIterator<Subgroup>* theIterator;
+  const class SMFPGroup* theGroup;
+  class SMList<Subgroup>* theList;
+  File fileOfNonCentral;
+  SMListData centralData;
+  int tCounter;
+  int ntCounter;
+};
+
+@
+\section{class SMListSGCentralComputation}
+\subsection{SMListSGCentralComputation Constructor}
+<<SMListSGCentralComputation Constructor.h>>=
+  SMListSGCentralComputation( class SMListExtractCentralSubgroups& );
+@
+<<SMListSGCentralComputation Constructor.c>>=
+SMListSGCentralComputation::
+SMListSGCentralComputation( SMListExtractCentralSubgroups& sms )
+  : theList( sms.getList() ),
+    arcer( *this ),
+    started( false )
+{ 
+  adminStart();
+}
+
+@
+\subsection{SMListSGCentralComputation Destructor}
+<<SMListSGCentralComputation Destructor.h>>=
+  ~SMListSGCentralComputation(); 
+@
+<<SMListSGCentralComputation Destructor.c>>=
+SMListSGCentralComputation::~SMListSGCentralComputation() {}
+
+@
+\subsection{SMListSGCentralComputation::getFileOfNonCentral}
+<<SMListSGCentralComputation::getFileOfNonCentral.h>>=
+  Chars getFileOfNonCentral() const { return arcer.getFileOfNonCentral(); }
+@
+\subsection{SMListSGCentralComputation::getCentralData}
+<<SMListSGCentralComputation::getCentralData.h>>=
+  const SMListData& getCentralData() const { return arcer.getCentralData(); }
+@
+\subsection{SMListSGCentralComputation::takeControl}
+<<SMListSGCentralComputation::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListSGCentralComputation::takeControl.c>>=
+void SMListSGCentralComputation::takeControl( )
+{
+  if (freeARCs() > 0){
+    if ( ! started ){
+      arcer.setArguments( &theList );
+      started = true;
+    }
+    
+    if ( arcer.takeControl() ){
+      //    arcer.runComputation();
+      started = false;
+      if ( theList.lic().IsCentralChecked() ) {
+	theList.lic().putIsCentralFiles( 
+             arcer.getCentralData().getDataFileName(),
+             arcer.getFileOfNonCentral() );
+	adminTerminate();
+	return;
+      }
+    }else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListSGCentralComputation::start}
+<<SMListSGCentralComputation::start.h>>=
+  void start( ) { }
+@
+\subsection{SMListSGCentralComputation::terminate}
+<<SMListSGCentralComputation::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListSGCentralComputation}
+<<class SMListSGCentralComputation>>=
+class SMListSGCentralComputation  : public ComputationManager
+{
+public:
+<<SMListSGCentralComputation Constructor.h>>
+<<SMListSGCentralComputation Destructor.h>>
+<<SMListSGCentralComputation::getFileOfNonCentral.h>>
+<<SMListSGCentralComputation::getCentralData.h>>
+<<SMListSGCentralComputation::takeControl.h>>
+<<SMListSGCentralComputation::start.h>>
+<<SMListSGCentralComputation::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  bool started;
+  SMListSGCentralARCer arcer;
+};
+
+@
+\section{class SMListExtractCentralSubgroups}
+\subsection{SMListExtractCentralSubgroups Constructor}
+<<SMListExtractCentralSubgroups Constructor.h>>=
+  SMListExtractCentralSubgroups( SMList<Subgroup>& );
+@
+<<SMListExtractCentralSubgroups Constructor.c>>=
+SMListExtractCentralSubgroups::SMListExtractCentralSubgroups(SMList<Subgroup>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    abelianInvariants( *this, sml.getGroup().gcm().abelianInvariants ),
+    checker( *this ),
+    normalClosure( *this, sml.getGroup().gcm().normalClosure ),
+    kbSupervisor( *this, sml.getGroup().gcm().kbSupervisor ),
+    agSupervisor( *this, sml.getGroup().gcm().agSupervisor )
+{ 
+  if ( sml.lic().IsCentralChecked() )
+    resultIsFast();
+}
+
+@
+\subsection{SMListExtractCentralSubgroups Destructor}
+<<SMListExtractCentralSubgroups Destructor.h>>=
+  ~SMListExtractCentralSubgroups() {}
+@
+\subsection{SMListExtractCentralSubgroups::viewStructure}
+<<SMListExtractCentralSubgroups::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SMListExtractCentralSubgroups::viewStructure.c>>=
+void SMListExtractCentralSubgroups::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract central subgroups from a list",
+			    Text("Extract central subgroups from ") +
+			    Name( theList ) ,
+			    helpID("SMListExtractCentralSubgroups",
+				   theList.getGroup()),
+			    Text("cent sgs")
+			    );
+  if (theList.getGroup().getCheckinType() == SMFPGroup::FP ) {
+    
+    if ( ! theList.getGroup().gic.haveCyclicDecomposition() ) 
+      pv.addProblem(Subproblem("SpA",abelianInvariants.arcSlotID(),
+			       Text("Compute abelian invariants of") + 
+			       Name( Parent( theList ) ),
+			       15)
+		    );
+    if ( ! theList.getGroup().gic.haveFastWordProblem() ) {
+      pv.addProblem( Subproblem("Sp2",normalClosure.arcSlotID(),
+				Text("Enumerate normal closure of relators"),
+				50));
+      pv.addProblem( Subproblem("Sp2",kbSupervisor.arcSlotID(),
+				Text("Seek a rewriting system for") +
+				Name( theList.getGroup() ),
+				50));
+      pv.addProblem( Subproblem("Sp2",agSupervisor.arcSlotID(),
+			Text("Seek a ShortLex automatic structure for") +
+			Name( theList.getGroup() ),
+			50));
+    }
+  }
+  if ( ! theList.lic().IsCentralChecked() )
+    pv.addProblem( Subproblem("Sp1",checker.arcSlotID(),
+			      "Extract central subgroups",40));
+  submit(ostr, pv);
+}
+
+@
+\subsection{SMListExtractCentralSubgroups::takeControl}
+<<SMListExtractCentralSubgroups::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListExtractCentralSubgroups::takeControl.c>>=
+void SMListExtractCentralSubgroups::takeControl( )
+{
+  if ( fastResult() ) {
+    LogMessage msg( *this, theList );
+    msg << Link(Chars( "Click here to see central subgroups in ")+
+		Text( Name( theList ) ),
+		"SGEnumerator",
+		theList.lic().getListOfCentral() );
+    msg.send();
+    LogMessage msg1( *this, theList );
+    msg1 << Link(Chars( "Click here to see non-central subgroups in ")+
+		 Text( Name( theList ) ),
+		 "SGEnumerator",
+		theList.lic().getListOfNonCentral() );
+    msg1.send();   
+  } else {
+    if ( theList.lic().IsCentralChecked() ) {
+      SMList<Subgroup>* smo = 
+	new  SMList<Subgroup>(theList.getGroup(),
+			  checker->getCentralData(),
+			  Text("Central subgroups from") + Name(theList) 
+			  ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "WEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    }
+  }
+}
+
+@
+\subsection{SMListExtractCentralSubgroups::getList}
+<<SMListExtractCentralSubgroups::getList.h>>=
+  SMList<Subgroup>& getList() { return theList; }
+@
+\subsection{SMListExtractCentralSubgroups::start}
+<<SMListExtractCentralSubgroups::start.h>>=
+  void start( ); 
+@
+<<SMListExtractCentralSubgroups::start.c>>=
+void SMListExtractCentralSubgroups::start( )
+{
+  if ( !fastResult() ) {
+    LogMessage msg( *this, theList );
+    msg << Link(Chars( "Click here to see central subgroups in ")+
+		Text( Name( theList ) ),
+		"SGEnumerator",
+		checker->getCentralData().getDataFileName(),true );
+    msg.send();
+    LogMessage msg1( *this, theList );
+    msg1 << Link(Chars( "Click here to see non-central subgroup in ")+
+		 Text( Name( theList ) ),
+		 "SGEnumerator",
+		 checker->getFileOfNonCentral(),true );
+    msg1.send();
+  }
+}
+
+@
+\subsection{SMListExtractCentralSubgroups::terminate}
+<<SMListExtractCentralSubgroups::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListExtractCentralSubgroups}
+<<class SMListExtractCentralSubgroups>>=
+class SMListExtractCentralSubgroups  : public Supervisor
+{
+public:
+<<SMListExtractCentralSubgroups Constructor.h>>
+<<SMListExtractCentralSubgroups Destructor.h>>
+<<SMListExtractCentralSubgroups::viewStructure.h>>
+<<SMListExtractCentralSubgroups::takeControl.h>>
+<<SMListExtractCentralSubgroups::getList.h>>
+<<SMListExtractCentralSubgroups::start.h>>
+<<SMListExtractCentralSubgroups::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate normalClosure;
+  Subordinate<SMListExtractCentralSubgroups,SMListSGCentralComputation> 
+    checker;
+};
+
+@
+\section{SMListSubgroupProblems.h}
+<<SMListSubgroupProblems.h>>=
+#ifndef _SMLIST_SUBGROUP_PROBLEMS_H_
+#define _SMLIST_SUBGROUP_PROBLEMS_H_
+
+<<include.h>>
+<<class SMListSGTrivialARCer>>
+<<class SMListSGTrivialComputation>>
+<<class SMListExtractTrivialSubgroups>>
+<<class SMListSGAbelianARCer>>
+<<class SMListSGAbelianComputation>>
+<<class SMListExtractAbelianSubgroups>>
+<<class SMListSGCentralARCer>>
+<<class SMListSGCentralComputation>>
+<<class SMListExtractCentralSubgroups>>
+#endif
+@
+\section{smlistsubgroupproblems.c}
+<<*>>=
+
+<<include.c>>
+<<SMListSGTrivialARCer Constructor.c>>
+<<SMListSGTrivialARCer::setArguments.c>>
+<<SMListSGTrivialARCer::runComputation.c>>
+
+<<SMListSGTrivialComputation Constructor.c>>
+<<SMListSGTrivialComputation Destructor.c>>
+<<SMListSGTrivialComputation::takeControl.c>>
+
+<<SMListExtractTrivialSubgroups Constructor.c>>
+<<SMListExtractTrivialSubgroups::start.c>>
+<<SMListExtractTrivialSubgroups::takeControl.c>>
+<<SMListExtractTrivialSubgroups::viewStructure.c>>
+
+<<SMListSGAbelianARCer Constructor.c>>
+<<SMListSGAbelianARCer::setArguments.c>>
+<<SMListSGAbelianARCer::runComputation.c>>
+
+<<SMListSGAbelianComputation Constructor.c>>
+<<SMListSGAbelianComputation Destructor.c>>
+<<SMListSGAbelianComputation::takeControl.c>>
+
+<<SMListExtractAbelianSubgroups Constructor.c>>
+<<SMListExtractAbelianSubgroups::start.c>>
+<<SMListExtractAbelianSubgroups::takeControl.c>>
+<<SMListExtractAbelianSubgroups::viewStructure.c>>
+
+<<SMListSGCentralARCer Constructor.c>>
+<<SMListSGCentralARCer::setArguments.c>>
+<<SMListSGCentralARCer::runComputation.c>>
+
+<<SMListSGCentralComputation Constructor.c>>
+<<SMListSGCentralComputation Destructor.c>>
+<<SMListSGCentralComputation::takeControl.c>>
+
+<<SMListExtractCentralSubgroups Constructor.c>>
+<<SMListExtractCentralSubgroups::start.c>>
+<<SMListExtractCentralSubgroups::takeControl.c>>
+<<SMListExtractCentralSubgroups::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

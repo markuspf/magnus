@@ -1,0 +1,14 @@
+@@How Confidence Interval for the Population Variance Works
+
+CONFIDENCE INTERVAL FOR THE POPULATION VARIANCE
+
+  The first procedure is to construct a confidence interval for the population variance from
+the sample standard deviation of the given one variable data set. Finding a confidence interval
+for a population variance is equivalent to finding a confidence interval for the population
+standard deviation and the output box will give confidence intervals for both. If the sample
+size is over 30 a large sample procedure will be used and for a sample size under 30 a small 
+sample procedure will be employed. 
+
+
+        @For more information click here@html/varianceTool/confidence.html::Variance Analysis Help@
+

@@ -1,0 +1,78 @@
+###this is a test file by xuxw(xuxw76@yahoo.com)
+import Magnus
+w1=Magnus.Word()
+w2=Magnus.Word()
+ws=[w1,w2]
+g=Magnus.FPGroup()
+g1=Magnus.Generator(3)
+r=Magnus.RelatorConjugate()
+###
+a=Magnus.OneRelatorGroupWithTorsion( 1, w1);
+x=Magnus.OneRelatorGroupWithTorsionFromVector( ["dsg"],   w1 );
+x=Magnus.OneRelatorGroupWithTorsionFromFPGroup( g);
+x=a.isProperMagnusSubgroup(g1 ) 
+x=a.doesMagnusSubgroupContainElt( g1,    w1, w2 ) 
+x=a.isPowerOfEltInMagnusSubgroup( g1,  w1, w2, 1 ) 
+x=a.wordProblem( w1, [r]) 
+x=a.conjugacyProblem( w1,w2, w1)
+x=a.maximalRoot( w1, w2, 2) 
+x=a.powerOfElt(w1,w2, w1, [r]) 
+x=a.centralizerOfElt(w1 ) 
+###Inherited From OneRelatorGroup
+x=a.relator( )  
+x=a.wordProblem( w1)  
+x=a.wordProblemFromBool( w1,0,[r] )  
+b=Magnus.OneRelatorGroupWithTorsionFromString("dsgdg")
+###fromFGGroup
+x=a.type( );
+x=a.numberOfGenerators( ) 
+x=a.nameOfGenerator(1) 
+x=a.namesOfGeneratorsFromGenerator(g1)  
+x=a.namesOfGeneratorsNoParam( ) 
+x=a.eval(w1 ) 
+x=a.wordProblem(w1 ) 
+x=a.conjugacyProblem( w1, w2) 
+a.closeUnderCyclicPermutations([w1,w2]) 
+x=a.readWord("xxw", "error") 
+x=a.readSetOfWords("xxw", "error") 
+x=a.readVectorOfWords("xxw", "error") 
+a.printGenerator(g1)
+a.printGenerators()
+a.printWord(w1)
+a.printSetOfWords([w1,w2])
+a.printVectorOfWords([w1,w2])
+###fromGroup
+x=a.type( )
+x=a.actualType( )
+x=a.order( )
+x=a.isTrivial( )
+x=a.isFinite( )
+x=a.isInfinite()
+x=a.isAbelian( )
+x=a.makeIdentity( )
+x=a.isSyntacticIdentity( e)
+x=a.isTrivialElt(  e ) 
+x=a.areEqual( e1,  e2) 
+x=a.firstElt( ) 
+x=a.nextElt( e) 
+x=a.multiply( e1,  e2) 
+x=a.inverseOf( e) 
+x=a.raiseToPower( e, 1) 
+x=a.conjugateBy( e1,  e2) 
+x=a.commutator( e1,  e2) 
+x=a.setMultiplyFromSetSet([e1,e2], [e1,e2]) 
+x=a.setMultiplyFromEltSet( e, [e1,e2]) 
+x=a.setMultiplyFromSetElt([e1,e2],  e) 
+x=a.conjugateByFromSetSet([e1,e2], [e1,e2]) 
+x=a.conjugateByFromEltSet( e, [e1,e2]) 
+x=a.conjugateByFromSetElt([e1,e2],  e) 
+a.closeUnderInverses([e2,e1]) 
+a.ReadMeFrom("xxwgfdg")
+#####EnumeratorOfConsequences
+b=Magnus.EnumeratorOfConsequences( a)
+x=b.Magnus.word()  
+###  ProductOfRelatorConjugates tuple()  
+x=b.Magnus.done() 
+b.advance();
+
+

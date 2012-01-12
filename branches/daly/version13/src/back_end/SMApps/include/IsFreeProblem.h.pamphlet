@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/IsFreeProblem.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "SMFPGroup.h"
+#include "ORProblems.h"
+#include "ARCer.h"
+
+@
+\section{class ORIsFreeProblemARCer}
+<<class ORIsFreeProblemARCer>>=
+class ORIsFreeProblemARCer : public ARCer
+{
+public:
+  ORIsFreeProblemARCer( ComputationManager& boss ) : ARCer( boss ) { } 
+  void setArguments(ORProblems* );
+  bool getRetValue() { return retValue; }
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  ORProblems* theORProblems;
+  bool retValue;
+};
+
+@
+\section{class ORIsFreeProblem}
+<<class ORIsFreeProblem>>=
+class ORIsFreeProblem : public ComputationManager
+{
+public:
+  ORIsFreeProblem( class SMFPGroup& );
+  ~ORIsFreeProblem( );
+  void viewStructure( ostream& ) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const SMFPGroup& theGroup;
+  ORProblems* theORProblems;
+  ORIsFreeProblemARCer arcer;
+};
+
+@
+\section{class IsFreeChecker}
+<<class IsFreeChecker>>=
+class IsFreeChecker
+{
+public:
+  IsFreeChecker( class SMFPGroup& );
+  Trichotomy isFree( );
+  Chars getExplanation( ) { return explanation; }
+
+private:
+  class SMFPGroup& theGroup;
+  FPGroup G;
+  class GIC& gic;
+  class GCM& gcm;
+  bool triedAbelianization;
+  Chars explanation;
+};
+
+@
+\section{class IsFreeProblem}
+<<class IsFreeProblem>>=
+class IsFreeProblem : public Supervisor
+{
+public:
+  IsFreeProblem( class SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  const SMFPGroup& theGroup;
+  IsFreeChecker theChecker;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/IsFreeProblem.h
+#ifndef _IS_FREE_PROBLEM_H_
+#define _IS_FREE_PROBLEM_H_
+
+<<license>>
+<<include>>
+<<class ORIsFreeProblemARCer>>
+<<class ORIsFreeProblem>>
+<<class IsFreeChecker>>
+<<class IsFreeProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

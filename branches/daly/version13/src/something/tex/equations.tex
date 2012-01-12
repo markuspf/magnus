@@ -1,0 +1,785 @@
+\documentclass{article} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The research in this paper is an attempt to apply genetic algorithms
+for symbolic computations. Since many problems in groups are
+undecidable or at least exponential, any methods capable of finding at
+least some solutions in real time are in high demand. The genetic
+algorithm has proven to be one of the most powerful of such methods
+due to its excellent performance. This paper contains a description
+and some experimental results of two computer programs where genetic
+approach was used. One is for solving equations in a given free
+group. The other solves equations in a free semigroup. The second
+program was used to get a result for solving an open problem, so
+called ``Genus problem''. All programs described are available as a
+part of the Magnus software project \cite{Magnus}.
+\end{abstract}
+
+\section{Motivation}
+
+Many problems in groups are undecidable. Even decidable problems are
+usually exponential in nature and cannot be approached by modern
+computers now or in the near future. The same is true for many
+polynomial algorithms since the power of the polynomial involved is to
+big for the problem to be completed in real time. While algorithms for
+solvable problems may be optimized and otherwise adapted for the
+computers, the unsolvable ones pose the real problem. Fortunately,
+many interesting problems are recursively enumerable. For example, the
+word problem in a finitely presented group. It easy to write a program
+which would list all words representing trivial elements in a given
+finitely presented group by enumerating all consequences of defining
+relations. So any trivial element will eventually appear on the
+list. The problem is, no matter how short your word is, there is no
+bound for the number of consequences we need to look through in order
+to find it. To simplify the discussion let us consider a particular
+method of enumerating trivial words. Assume that we have an infinite
+amount of memory and therefore can represent any group as a Cayley
+graph. First we choose the origin, say vertex $v$. Then we add every
+relator from a given presentation as a closed path from $v$ to $v$,
+labelling every edge of this path by the corresponding letter of the
+relator. After that we can continue building the graph by adding all
+conjugates of the relators in the way just described. It is clear that
+such a graph represents all trivial elements of the group. Given a
+word one may try to start at $v$ and follow the edges corresponding to
+the letters of the word. If the word was read successfully in the
+graph, and the vertex we end up in is $v$, then the word is trivial.
+The problem is that for an infinite group the corresponding graph is
+infinite. However, we can already use it while it is being
+constructed, in other words we can see if the word is already on the
+trivial list. Given a group with five generators (ten, if counting
+inverses) the graph may contain $10^{10}$ words of length ten in the
+worst case. Well, given a good computer we can enumerate all these
+words. What about words of length 20? No computer can do $10^{20}$,
+not now, not in 10 years. What about 30,40,100? The fact is, we can
+enumerate all paths in the graph in a very small radius only. 
+
+The alternative to full enumeration is the random selection
+method. Just pick a random number of randomly chosen consequences of
+the given relators, freely reduce their product and compare the result
+with your word. The chance that you get a match is as negligible as
+before. The probability of finding the wanted word is $1/10^{30}$,
+$1/10^{40}$, $1/10^{100}$ etc.
+
+The third approach for searching words or any other objects or
+solutions is thought of a ``smart'' search, which will not enumerate
+all solutions or choose them randomly but perform a search of the
+solution space based on the given information. The subject of this
+paper is a genetic search or genetic algorithms for searching a space
+of solutions. It is a parallel beam search which incorporates
+techniques used by biological evolution. 
+
+We started to apply genetic algorithms for solving problems in
+combinatorial group theory just recently. Their incredible performance
+and advantages they had over many other approaches made them an
+important part of Magnus \cite{Magnus} - the software that contains a
+few hundreds algorithms for infinite groups. Magnus is being developed
+in the City College of New York, funded by National Science Foundation
+and freely available for everybody. The excellent idea to try genetic
+algorithms for symbolic computations was first proposed by Gilbert
+Baumslag, director of the Magnus project. At this point I would also
+like to thank Alexei Myasnikov, a professor at City College and member
+of the Magnus team, for his help with stating problems and experiments
+and supervising this work. This paper is a start to a more thorough
+research which eventually become author's dissertation project.
+
+
+\section{Structure of a genetic algorithm}
+
+The following is a very brief introduction into genetic
+algorithms. For more details see \cite{GA1,GA2}. 
+
+Genetic algorithms (GAs) provide a learning method motivated by
+analogy to biological evolution. In the broadest sense, a GA creates a
+set of solutions that reproduce based on their fitness in a given
+environment. The process follows this pattern:
+
+\vspace{3mm}
+\noindent
+1. An initial population of random solutions is created.
+\vspace{3mm}
+
+The classical genetic algorithm operates with population of bit
+strings, hence genetic operators operate with bits too. Of course,
+often it is necessary to represent solutions differently and modify
+operators accordingly. Solutions or population members are initialized
+randomly at first and, if the algorithm stops, one or some of them
+will be real solutions to the problem. Solutions can be words,
+relations, group representation, sets or any other objects.
+
+\vspace{3mm}
+\noindent
+2. Each member of the population is assigned a fitness value based on
+its evaluation against the current problem.
+\vspace{3mm}
+
+Fitness is a very important notion in GAs. Every potential solution is
+constantly evaluated, i.e. assigned a numerical value or a score, and
+like in nature the fittest will survive. It is always difficult to
+chose a fitness function which evaluates every potential solution or
+hypotheses accurately. The more accurate function we give the faster
+algorithm will work. At least we have to assure that the fitness of an
+optimal or real solution has the best fitness value possible.
+
+\vspace{3mm}
+\noindent
+3. Solutions with a higher fitness value are most likely to parent new
+solutions during reproduction.
+\vspace{3mm}
+
+Survival of the fittest is implemented by {\em fitness proportional
+selection} or {\em roulette wheel selection}.  The probability
+$Pr(s_i)$ of selecting solution $s_i$ for reproduction is given by
+\[
+	Pr(s_i) = \frac{Fitness(s_i)}{\sum_{j=1}^p Fitness(s_j)},
+\]
+where $p$ is the population size. This process of selecting population
+members for reproduction is called {\em selection}. Then we perform
+reproduction by selecting $p$ pairs $(s_1,s_2)$ according to the
+distribution of $Pr(s_i)$ and applying the {\em Crossover} operator.
+Corresponding to biological crossover, the software version combines a
+pair of parents by randomly selecting a point at which pieces of the
+parents' bit strings are swapped, i.e. we take a randomly chosen
+initial segment of the first parent and concatenate it with the
+terminal segment of the second parent, thereby producing an
+offspring. Then these offspring are exposed to {\em mutation} - a
+random change in a string, usually mean inverting one or more bits.
+
+\vspace{3mm}
+\noindent
+4. The new solution set replaces the old, a generation is complete,
+and the process continues at step 2.
+\vspace{3mm}
+
+The final step is called {\em replacement}. Here the new offspring
+produced by {\em crossover} and affected by {\em mutation} replace
+the old population and the process continues from step 2. It is
+important to notice that we may want to replace only part of the old
+population by new members. Usually it helps to keep a few members with
+the best fitness values in the population. This process is called {\em
+elitist selection }.
+
+\section{Solving equations in a free group}
+
+  \subsection{Problem statement}
+
+Given a free group $F$ we define an equation in variables
+$x_1,x_2,...,x_n$ over $F$ as formal equation of the form
+\begin{equation}
+g_1 x_{i_1}^{\epsilon_1} g_2 x_{i_2}^{\epsilon_2} ... x_{i_n}^{\epsilon_n} g_{n+1} = 1, \label{eq1}
+\end{equation}
+where $g_i \in F, \epsilon_i = \pm 1$. The problem is to find a
+solution, i.e. a substitution for the variables $x_i$ such that the
+equation becomes identity in $F$. These are the known results.
+
+{\bf Equations with one variable.} Lyndon \cite{Lyndon} described all
+solutions. Appel \cite{Appel} obtained effective upper bounds. They
+are at least exponential.
+
+{\bf Quadratic equations.} Comerford and Edmunds \cite{C&E:Equations2,
+C&E:Equations1} found an algorithm for solving quadratic equations and
+described all solutions. Their algorithm is at least exponential.
+
+{\bf General case} Makanin \cite{Makanin} showed that there exists a
+recursive function $f(u)$ such that an arbitrary equation $S = 1$
+(over a free group $F$) has a solution in $F$ if and only if it has a
+solution of length $ \le f(|S|)$, where $|S|$ is the length of
+equation $S$. Obviously, the complexity of this algorithm is similar
+to the full enumeration described above. 
+
+{\bf Quadratic case is the principal one.} Kharlampovich and Myasnikov
+\cite {K&M} showed that the quadratic case is the principal one for
+equations over free groups, i.e. the problem of solving an arbitrary
+equation over a free group can be reduced to solving a finitely many
+quadratic equations.
+
+  \subsection{The algorithm}
+
+    \subsubsection{Population}
+
+Since we are looking for a solution for a given equation, it is
+natural to work with a population of solutions, i.e. population
+consisting of a finite number of substitutions for the variables of
+the equation. The algorithm uses population of 50 tuples of
+words. Each tuple has the same number of elements as the number of
+variables and thereby represent one possible substitution for the
+variables. At the beginning every substitution for every variable for
+all 50 solutions is generated randomly. Experiments showed that the
+lengths of the random words does not make a significant difference,
+since even when starting with very short words and given a small
+probability for increasing the length, the algorithm was able to adapt
+and found a solution for the equation which had only lengthy
+solutions.
+
+    \subsubsection{Fitness function}
+
+The fitness function has to measure how close a potential solution is
+to a real solution. Here we defined it in the following way. A member
+of the population, say $(w_1,...,w_n)$, defines a substitution for the
+variables of equation (\ref{eq1}): $x_i \rightarrow w_i$. Then 
+the length of the substituted image
+\[
+f(w_1,...,w_n) = | g_1 w_{i_1}^{\epsilon_1} g_2 w_{i_2}^{\epsilon_2} ... w_{i_n}^{\epsilon_n} g_{n+1} |
+\]
+is the fitness value of $(w_1,...,w_n)$. If $(w_1,...,w_n)$ is a real
+solution to the equation (\ref{eq1}), its fitness value is 0. Otherwise
+it is strictly greater than 0. Moreover, the longer the substituted
+image we get the further from 0 is the corresponding fitness value.
+So, the algorithm's goal will be to minimize members' fitness values,
+with 0 as the optimum value.
+
+One might say that such fitness function is not adequate, since for
+example, it assigns a better value to an image of length 1 than to an
+image of length 5, while it might happen than 1 is a local minima, a
+misleading way, and 5 is one step apart from a solution. It may
+happen, of course.  However, in addition to the fitness function, a
+genetic algorithm has powerful operators like crossover, mutation and
+others.  The search performed is much more complicated than a simple
+one-directional search. In such an environment GA is a capable of
+considering a great variety of solutions no matter how limiting the
+fitness function is. And because of the nature of GA, reaching a local
+minima does not pose such a big problem as in many other methods, like
+gradient search in neural networks, for example.
+
+The fact is, a simple function like this performs exceptionally
+well. One might think more and design a more accurate fitness
+function, if it seems possible, therefore helping the algorithm. One
+must remember, however, that more sophisticated function will probably
+take more time to compute, therefore slowing down the algorithm. And
+it is not always clear who is right, our intuition or evolution?
+Remember, that we started to apply genetic algorithms since we
+couldn't solve the problem in the first place. My approach is the
+following. Save your time and use the simplest function possible, the
+one which is naturally adequate. Then, when the algorithm is finished,
+invent and play with other functions, so that there's something to
+compare them with.
+
+In order to simplify the use of roulette wheel selection and to keep
+analogy with biology - the fitter the better - the fitness values are
+changed in the following way. Every fitness value $v$ is assigned the
+value of difference between the maximal fitness value and
+$v$. Therefore the best solution now has the largest value and we are
+maximizing it. In addition, to speed up the evolution, {\em fitness
+scaling} was applied. In this case every fitness value was replaced by
+its square.
+
+    \subsubsection{Crossover}
+
+Crossover between two tuples of words is done coordinate-wise,
+i.e. the first coordinate of the first tuple crosses over with the
+first coordinate of the second tuple, the second coordinate of the
+first tuple crosses over with the second coordinate of the second
+tuple and so on. Therefore we need to define a crossover on words. The
+algorithm uses a counterpart of the classic one-point crossover for
+bit strings. In other words, we take a random initial segment of the
+first word and concatenate it with a random terminal segment of the
+second word.
+
+    \subsubsection{Mutation}
+
+Mutation on tuples can again be defined through a mutation on their
+components - words. A mutation is random change in a bit string or in
+a word, and requires us to invert one or more bits or one or more
+generators in a word. The following three mutations were used in the
+algorithm:
+
+Insert a new letter in a randomly chosen position - 10\% chance
+ 
+Delete one randomly chosen letter(generator) from the word -  10\% chance
+
+Replace one randomly chosen letter by a different one -  80\% chance
+
+\noindent
+It might be a good idea to replace these fixed probabilities to
+variables, values of which are dependent on the length of the mutated
+word.
+
+    \subsubsection{Replacement}
+
+The replacement works almost as usual. All members of the population
+get replaced by new members except the first one, which is always
+replaced by the best representative of the old population. This is a
+simple form of the elitist selection.
+
+  \subsection{Experimental results}
+
+  \subsubsection{Experiment 1}
+
+Let us consider a simple experiment where equations are of the form
+\[
+a^N x \: b^N = 1
+\]
+where $x$ is a variable, $a$ and $b$ are generators of a free group,
+$N$ is a positive integer. Though solutions are obvious in this case,
+the general algorithm does not know that and therefore, the experiment
+is sound. Given a simple equation like this we can control the length
+of the minimal solution for each $N$ and estimate the growth of time
+needed for different lengths. The table below shows the results of
+this experiment for minimal solutions of lengths 10,20,30,40,50,60,100
+and 200. For each length it contains the average number of
+generations, the average time of one generation and the average time
+needed to find the solution. All averages were computed based on 20
+consecutive runs of the algorithm. All time values are in seconds and
+were taken on PentiumII-400MHz machine. 
+
+\vspace{8mm}
+\noindent
+\begin{tabular}{|c|c|c|c|} \hline
+Length & Avg number of generations & Avg time per generation & Avg time \\ 
+\hline
+10 & 13 & 0.00810277 & 0.105336 \\ \hline
+20 & 38.7 & 0.00878626 & 0.340028 \\ \hline
+30 & 175.3 & 0.0107125 & 1.8779 \\ \hline
+40 & 194.7 & 0.0133946 & 2.60792 \\ \hline
+50 & 215.3 & 0.0152716 & 3.28797 \\ \hline
+60 & 412.7 & 0.0168407 & 6.95016 \\ \hline
+100 & 899.5 & 0.026206 & 23.5723 \\ \hline
+200 & 2013 & 0.0473142 & 95.2434 \\ \hline
+\end{tabular}
+\vspace{8mm}
+
+As can be seen from the description of the algorithm and as confirmed
+by the table above, the average time per generation is growing
+linearly with the length of the equation. The number of generations
+can also be bounded by a linear function, and therefore the average
+time can be bounded by a quadratic polynomial. Though a more thorough
+analysis is needed, the experiment has already shown dramatic
+improvement over exponential (at least) algorithm discussed above.
+
+  \subsubsection{Experiment 2}
+
+As experiments have shown, though the genetic algorithm does not use
+the fact that the given equation has a particular form, still it much
+easier to evolve words, pieces of which are of the form $a^N$. Here we
+consider a more difficult for GA equation:
+\[
+w_1 x w_2 = 1
+\]
+where $x$ is a variable, $w_1$ and $w_2$ are randomly generated words
+in the free group with the condition that there is no cancellation
+occurs in the word $w_1^{-1} w_2^{-1}$. This way we still control the
+length of the minimal solution. The results are given in the table in
+the same fashion as above.
+
+\vspace{8mm}
+\noindent
+\begin{tabular}{|c|c|c|c|} \hline
+Length & Avg number of generations & Avg time per generation & Avg time \\ 
+\hline
+10 & 111.2 & 0.00581994 & 0.647177 \\ \hline
+20 & 1298 & 0.00791865 & 10.2784 \\ \hline
+30 & 62214.3 & 0.010184 & 633.589 \\ \hline
+\end{tabular}
+\vspace{8mm}
+
+The genetic algorithm was still capable to find a solution in every
+randomly generated case in a feasible time. It is important to notice
+that the exponential algorithms cannot be used to find solutions for
+length 20 or 30. Also, it is interesting to see the difference in
+amounts of time it takes the program to solve virtually the same
+problem. As an example, the table below shows time measurements for 10
+consecutive runs of the genetic algorithm.
+
+\vspace{8mm}
+\noindent
+\begin{tabular}{|c|c|c|c|} \hline
+Experiment number & Number of generations & Time (in seconds) \\ 
+\hline
+ 1 & 8966 & 109.559 \\ \hline
+ 2 & 184698 & 1904.29 \\ \hline
+ 3 & 217421 & 2159.09 \\ \hline
+ 4 & 46386 & 476.261 \\ \hline
+ 5 & 60479 & 618.543 \\ \hline
+ 6 & 560 & 5.89761 \\ \hline
+ 7 & 39147 & 412.737 \\ \hline
+ 8 & 50516 & 506.43 \\ \hline
+ 9 & 12995 & 132.838 \\ \hline
+10 & 975 & 10.2399 \\ \hline
+\end{tabular}
+\vspace{8mm}
+
+  \subsubsection{Other experiments}
+
+The equations considered above had only one variable. The purpose of
+this was the desire to control the length of the minimal solution
+which is difficult when given many variables. In Magnus we tried
+and were successful to solve equations with five and more
+variables. There is a discussion group on equations on the Magnus
+home page \cite{Magnus} where anyone can suggest an equation to
+solve. The reason for the group is to test GA against the problems
+interested to people and to improve the existing implementation.
+
+
+\section{Equations in a free semigroup. The genus problem}
+
+\subsection{The genus problem}
+
+\subsubsection{Problem statement and known results}
+
+The genus problem is important because of its applications in topology
+and logic. The problem can be stated as follows. Let $f$ be an element
+from the derived subgroup of a free group $F$. Genus of $f$ is the
+minimal number of commutators, say $n$, such that $f$ can be expressed
+as a product of $n$ commutators. Let us consider the quadratic
+equation
+\[
+x_1^2 x_2^2 x_3^2 x_4^2 = 1 
+\]
+where $x_1,x_2,x_3,x_4$ are variables. {\em Genus } of a solution 
+\[
+x_1= u_1, x_2 = u_2, x_3 = u_3, x_4 = u_4 \ \  ( u_i \in F )
+\]
+is the genus of the product $u_1 u_2 u_3 u_4$.  Genus of the equation
+is the supremum of the genuses of all its solutions.  What is the
+genus of the equation?
+
+For a long time, the only known example were ones of genus
+1. J. Comerford and Y. Lee \cite{C&L} were the first to find a
+solution of genus 2 and prove it. D. Spellman came up with a possible
+example of the equation of genus 2. The program described here has
+been used to check this example and confirmed his hypothesis. Until
+now it was very difficult or sometimes impossible to construct or
+check a possible solution of genus 2. Genetic algorithm provided a
+quick and simple (in real time) way to express a given word as a
+product of two commutators, if it can be expressed. There's also a
+direct non-genetic algorithm which is much slower but can say ``no''
+when the word cannot be expressed.
+
+\subsubsection{Reduction to free semigroups}
+
+So we need to solve the equation 
+\[
+[y1,y2][y3,y4] = C,
+\]
+where $C$ has form $x_1 x_2 x_3 x_4$ as discussed above. Since the
+word $C$ can sometimes be very long and in order to speed up further
+tests for solving problems for genus 3,4,etc, it preferable to reduce
+solving the equation in a free group to solving a number of equations
+over a free semigroup. This is possible because of the result obtained
+by J.Comerford, L.Comerford and C.Edmunds \cite{CC&E}:
+
+\vspace{3mm}
+{\bf Theorem} The equation $[y1,y2][y3,y4] = C$ has a solution if and
+only if there is a cancellation-free solution to an equation $W'' =
+C_0$ where $C_0$ is a cyclically reduced conjugate of $C$ and $W''$ is
+one of the following:
+
+\begin{eqnarray}
+t p q r^{-1} p^{-1} s q^{-1} r s^{-1} t^{-1} u x y^{-1} u^{-1} z x^{-1} 
+y z^{-1}, \label{te1} \\
+p q r^{-1} p^{-1} u x y^{-1} u^{-1} t s q^{-1} r s^{-1} z x^{-1} y z^{-1} t^{-1}, \label{te2} \\
+p q r^{-1} p^{-1} u x y^{-1} u^{-1} t z x^{-1} y z^{-1} s q^{-1} r s^{-1} t^{-1}, \label{te3} \\
+p q r^{-1} p^{-1} t y s q^{-1} r s^{-1} z^{-1} x t^{-1} u z y^{-1} x^{-1} u^{-1}, \label{te4} \\
+p q r^{-1} p^{-1} t y z^{-1} x t^{-1} u z s q^{-1} r s^{-1} y^{-1} x^{-1} u^{-1}, \label{te5} \\
+s x y z s^{-1} p t x^{-1} z^{-1} u^{-1} q^{-1} p^{-1} r^{-1} u y^{-1} t^{-1} q r, \label{te6} \\
+s x y z s^{-1} p q u y^{-1} t^{-1} p^{-1} r^{-1} q^{-1} t x^{-1} z^{-1} u^{-1} r, \label{te7} \\
+s x y z s^{-1} r^{-1} u y^{-1} t^{-1} q r p t x^{-1} z^{-1} u^{-1} q^{-1} p^{-1}, \label{te8} \\
+p q r x^{-1} u^{-1} z^{-1} q^{-1} y s^{-1} r^{-1} z t^{-1} y^{-1} p^{-1} x s t u,  \label{te9}
+\end{eqnarray}
+
+At this point in order to try resolving the genus problem one need an
+efficient algorithm for solving equations in a free semigroup. The
+next section addresses this problem.
+
+\subsection{Solving equations in a free semigroup}
+
+Solving equations in a free semigroup is of much interest not only
+because it is useful for solving the genus problem, but is important
+by itself because of the wide applications in computer science. The
+case of a free semigroup (free monoid) G is somewhat simpler than
+solving equations in a free group, since we don't have
+cancellations. There exists very simple algorithm to solve equations
+of the type
+
+\begin{equation}
+g_1 x_{i_1} g_2 x_{i_2} ... x_{i_n} = C, \label{semi_eq}
+\end{equation}
+
+\noindent
+in a free semigroup. Here $x_1,x_2,...,x_n$ are variables, $C$ and $g_i$
+are constants in G. Obviously, the length of each variable is bounded
+by $|C|$. So full enumeration works (in theory!). But again it takes
+exponentially many steps. As before genetic algorithm performs much
+better.
+
+
+  \subsection{The algorithm}
+
+    \subsubsection{Population}
+
+As in the case of equations in a free group, the genetic algorithm for
+solving a ``graphic'' equation works with a population of tuples,
+where each component of each tuple is a word which substitutes one
+variable. The population size is again 50, since this number has found
+to be efficient in many experiments. In the beginning every word
+generated randomly. For the genus problem we know that the length of
+the constant is 28 and we have 9 variables. Therefore, there is no
+need to generate random words longer than $28/9 \approx 3$.
+
+    \subsubsection{Fitness function}
+
+After applying a substitution to the left part of the equation
+(\ref{semi_eq}) the algorithm needs to compare the result with the
+given constant. In general, we have two words which we want to
+compare. And the closer they are to each other, the bigger the
+fitness function should be. Again, keeping in mind the importance of
+simplicity, I chose the Hamming distance to be a fitness function in
+this case. First the shorter word gets extended by appending an unused
+before character, \$ for example. Then both words are compared
+coordinate-wise. The fitness value is initialized to zero and gets
+increased by one for every mismatch between the characters. Therefore,
+fitness is equal to zero when two words are identical and we want to
+minimize the fitness function once again. As before we change it to
+the equivalent maximization task and scale the fitness values.
+
+Often when comparing two words, it is preferable to compute the
+Hamming distance between the first word and all cyclical permutations
+of the second and then choose the least distance as a fitness
+value. For example, the words $a b c d$ and $b c d$ will be different
+in every coordinate and therefore have fitness four. On the other hand
+they are similar, since they have a big common piece $b c d$. The new
+fitness function will notice this similarity and assign a better value
+one, which should speed up the algorithm. For the genus problem we
+must compare any substitution image with every cyclical permutation of
+the given constant. So such a procedure is not only desirable but a
+must do. Putting it into the fitness function kills two birds with one
+stone.
+
+    \subsubsection{Crossover}
+
+Crossover between two tuples of words is done coordinate-wise,
+i.e. the first coordinate of the first tuple crosses over with the
+first coordinate of the second tuple, the second coordinate of the
+first tuple crosses over with the second coordinate of the second
+tuple and so on. Therefore we need to define a crossover on words. The
+algorithm uses a counterpart of the classic one-point crossover for
+bit strings. In other words, we take a random initial segment of the
+first word and concatenate it with a random terminal segment of the
+second word.
+
+Different from the algorithm for the equations in a free group,
+crossover was applied not to all pairs but to 95\% only. This is best
+experimentally found chance of crossover for this task.
+
+    \subsubsection{Mutation}
+
+Mutation on tuples can again be defined through a mutation on their
+components - words. A mutation is random change in a bit string or in
+a word, and requires us to invert one or more bits or one or more
+letters in a word. The following three mutations were used in the
+algorithm:
+
+Insert a new letter in a randomly chosen position - 10\% chance
+ 
+Delete one randomly chosen letter(generator) from the word -  10\% chance
+
+Replace one randomly chosen letter by a different one -  80\% chance
+
+\noindent
+Different from the algorithm for the equations in a free group,
+mutation was applied not to all pairs but to 95\% only. This is best
+experimentally found chance of mutation for this task.
+
+
+    \subsubsection{Replacement}
+
+After a number of experiments the best way to perform replacement was
+the strongest form of elitist selection \cite {Philips} : a member of the new
+population will replace a member of the old population only if it has
+better fitness value. In other words, the population on every
+generation consists only of the best solutions found so far.
+
+
+\subsection{Experimental results}
+
+\subsubsection{An example of genus 2}
+
+This example comes from J. Comerford and Y. Lee \cite{C&L}. Let
+
+\vspace{3mm}
+\noindent
+$x_1 = a B A,$ \\
+$x_2 = a b A A B A b a a B A,$ \\
+$x_3 = a b A B A,$ \\
+$x_4 = a a a b A$
+\vspace{3mm}
+
+\noindent
+Then $x_1^2 x_2^2 x_3^2 x_4^2 = 1$  
+and $C = x_1 x_2 x_3 x_4$ is not a commutator.
+
+\noindent
+Performing the substitution will give us 
+\begin{eqnarray*}
+C = a B A a b A A B A b a a B A a b A B A a a a b A
+\end{eqnarray*}
+As computed by the genetic algorithm it can be expressed as a product
+of two commutators:
+\[
+[ A B a b a B a b a, A B a b A B A b a ] \;  [ A B A b a, A B ]
+\]
+
+The commutators computed by genetic algorithm are different from those
+found by J. Comerford and Y. Lee. In fact, it is important to notice
+that because of the non-deterministic nature of the genetic algorithm
+one may get different solutions each time the algorithm is run. Since
+the constant $C$ above is not very long, the algorithm was able to
+find a solution in about 1 second on a PentiumII machine.
+
+\subsubsection{Another possible example of genus 2}
+
+In the example produced by D. Spellman 
+
+\vspace{3mm}
+\noindent
+$x_1 = a,$ \\
+$x_2 = B a b,$ \\
+$x_3 = a a B a a b b A A B A A b A A,$ \\
+$x_4 = a a B a a b a a B a a B A A b A A B A A b A A$
+\vspace{3mm}
+
+\noindent
+Then $x_1^2 x_2^2 x_3^2 x_4^2 = 1$ 
+and $C = x_1 x_2 x_3 x_4$ is not a commutator.
+
+\noindent
+Performing the substitution will give us 
+\begin{eqnarray*}
+C = a b^{-1} a b a^2 b^{-1} a^2 b^2 a^{-2} b^{-1} a^{-2} b a^{-2}  a^2 b^{-1}
+ a^2 b a^2 b^{-1} a^2 b^{-1} a^{-2} b a^{-2} b^{-1} a^{-2} b a^{-2}
+\end{eqnarray*}
+As computed by the genetic algorithm it can be expressed as a product
+of two commutators:
+\begin{eqnarray*}
+& [a^3 b^{-1} a^2 b a^2 b^{-1} a b a^{-1}, 
+& a^3 b^{-1} a^2 b a^2 b^{-1} a^{-1} b a^{-2} b^{-1} a^{-2} b a^{-3}] 
+\end{eqnarray*}
+and
+\[
+[a^{-1}, a b a^{-2} b^{-1} a^{-2} b a^{-2}]
+\]
+
+There is more than one solution for this example. The genetic
+algorithm needs about 5-7 minutes to produce one of them.
+
+
+\subsubsection{Comparing genetic and direct algorithms}
+
+Though a simple enumeration of all substitutions on variables of a
+given equations is futile, in some special cases it is possible to
+limit the amount of enumeration and hence, speed up the algorithm. For
+example, when considering nine forms for the genus problem (see the
+theorem above) one notices that these equations are quadratic with
+nine variables, each variable occurs exactly twice and they are placed
+in such a way that being substituted they seriously limit
+possibilities for other variables. Therefore a ``smart'' direct
+algorithm can be written, which would takes these into account and cut
+the enumeration dramatically. The table below is the comparison
+between genetic algorithm described in this paper and the best direct
+algorithm I could provide in a reasonable time. The first column
+contains the number of an equation from the theorem. The second and
+the third - the time needed to obtain a solution by genetic and direct
+approach correspondingly. All time values are given in seconds and
+taken on PentiumII-400MHz machine. The average time spent by genetic
+algorithm is 98.13012. The average time spent by direct algorithm is
+251.11076. So, despite all the efforts, the genetic algorithm still
+outperforms on average. It is important to notice that the direct
+algorithm was designed to suit this particular case while the genetic
+algorithm works for every equation. Also, it took about ten times more
+time to implement the direct approach.
+
+\vspace{8mm}
+\noindent
+\begin{tabular}{|c|c|c|} \hline
+Equation number & Genetic algorithm & Direct algorithm \\ \hline
+(\ref{te2}) & 32.5003 & 427.094 \\ \hline
+(\ref{te3}) & 88.0291 & 87.2012 \\ \hline
+(\ref{te6}) & 129.897 & 416.294 \\ \hline
+(\ref{te8}) & 160.607 & 250.337 \\ \hline
+(\ref{te9}) & 79.6172 & 74.6276 \\ \hline
+\end{tabular}
+\vspace{8mm}
+
+\section{Conclusions}
+
+Both software packages for solving equations have proven to be capable
+of finding solutions despite the lengthy input and the fact that the
+complexity of these problems is at least exponential. This is
+important since when given large inputs there are no other known
+methods to deal with the problems. The example of genus problem shows
+that the packages could be used to attack open problems and to obtain
+theoretical results.
+
+One of the shortcomings of the genetic algorithms is their inability
+to respond when a given equation has no solutions. In other words,
+when there is a solution, the algorithms will stop at some point and
+report the found solution, otherwise they work forever. One way to
+help the problem is to estimate statistically the time needed to solve
+the equation and stop when this time limit is reached. More
+interesting approach (if it is possible) would be to design another
+genetic algorithm which tries to prove that there are no solutions.
+
+The problems discussed in this article are not the only ones we tried
+to apply genetic algorithms for. As a part of the Magnus project we
+also have a genetic version of the word problem, algorithms for
+resolving Hanna Neumann and Andrews-Curtis conjectures, Whitehead
+reduction algorithm. More algorithms are coming. Also there are online
+discussion groups on the Magnus home page for the problems addressed
+in this paper \cite{Magnus}. Everybody is welcome to ask questions
+and send problems for genetic algorithms to try.
+
+
+\begin{thebibliography}{99}
+
+\bibitem{Magnus} Magnus home page: http://zebra.sci.ccny.cuny.edu/web/
+
+\bibitem{GA1} T. Mitchell. Machine learning, 249-274. McGraw-Hill
+Companies, Inc. 1997
+
+\bibitem{GA2} M.Mitchell. An introduction to genetic algorithms. The
+MIT Press, Cambridge, MA, 1998.
+
+\bibitem{Philips} L.J.Eshelman, J.D.Schaffer. Preventing premature
+convergence in genetic algorithms by preventing incest. 
+
+\bibitem{Lyndon} R.C.Lyndon. Equations in free groups.
+Trans. Amer. Math. Soc., 96:445-457, 1960.
+
+\bibitem{Appel} K. Appel. One-variable equations in free
+groups. Proc. Amer. Math. Soc., 19, 912-918, 1968
+
+\bibitem{C&E:Equations1} L.P.Comerford and C.C. Edmunds. Quadratic equations over free groups and free products. Journal of Algebra, 68:276-297, 1981.
+
+\bibitem{C&E:Equations2} L.P.Comerford Jr. and C.C. Edmunds. Solutions of
+equations in free groups. Walter de Gruyter, Berlin, New York, 1989.
+
+\bibitem{Makanin} G.S.Makanin. Equations in a free group
+(Russian). Izv. Akad. nauk SSSR, Ser. Mat., 46:1199-1273, 1982
+transl. in Math USSR Izv., V.21, 1983; MR 84m:20040.
+
+\bibitem{K&M} O.Kharlampovich and A.Myasnikov. Irreducible affine
+varieties over a free group. 2: systems in triangular quasi-quadratic
+form and description of residually free groups. 1998.
+
+\bibitem{C&L}  J. Comerford and Y. Lee,"Product of two
+commutators as a square in a free group," CANAD. MATH. BULL. 32(2)
+(1990), 190 - 196
+
+\bibitem{CC&E} J.A.Comerford, L.P. Comerford Jr., C.C.Edmunds. Powers
+as products of commutators. Communications in algebra, 19(2), 675-684,
+1991.
+
+\end{thebibliography}
+\end{document}
+
+
+
+
+
+
+

@@ -1,0 +1,338 @@
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	rogern
+Recorded by:	rogern
+On:		05/29/95
+version:	0.0.0
+Description:	
+
+In DFSARep.C:
+
+  if (numOfTransits==0) return category(startState());
+
+bad encapsulation, and fails when the language is empty.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	rogern
+Recorded by:	rogern
+On:		05/29/95
+version:	0.0.0
+Description:
+
+The execution of a suspension message was delayed until AFTER the
+problem terminated itself, leading to a (spurious) internal error.
+
+Fixed by:	rogern
+On:		09/01/95
+Notes:
+
+The rewrite of the session manager obviated this.
+
+---------------------------------------------------------------------
+
+Priority:	2
+Reported by:	bormotov
+Recorded by:	rogern
+On:		05/30/95
+version:	0.0.0
+Description:
+
+When an OpenWindows user chooses `quit' for a magnus window, the FE
+is left with a stale window path. Probably the same thing happens
+in twm when someone kills a window.
+
+Fixed by:	rogern
+On:		10/15/95
+Notes:
+
+Need things like "wm protocol $w WM_DELETE_WINDOW { problem_Cancel }"
+for each window to translate these into `cancel button clicks', or
+to ignore.
+
+---------------------------------------------------------------------
+
+Priority:	3
+Reported by:	gilbert
+Recorded by:	rogern
+On:		06/01/95
+version:	0.0.0
+Description:
+
+FE is not aware of tiny screens.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	2
+Reported by:	rogern
+Recorded by:	rogern
+On:		06/16/95
+version:	0.0.0
+Description:
+
+RKBPackage loops given < x; >
+
+Fixed by:
+On: 
+Notes:
+
+The rewrite of RKBPackage will shake things like this out.
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	pechkin
+Recorded by:	rogern
+On:		06/21/95
+version:	0.0.0
+Description:
+
+PureObject operator = ( const PureObject &R )
+should return a reference.
+
+Fixed by:	pechkin
+On:		06/21/95
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	ilya
+Recorded by:	rogern
+On:		06/21/95
+version:	0.0.0
+Description:
+
+Can't find automatic struct for < a,b  ; [a b b a b a B B a,b] > ?
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	3
+Reported by:	rogern
+Recorded by:	rogern
+On:		06/21/95
+version:	0.0.0
+Description:
+
+Text widgets with scroll bars may refuse to scroll when read-only
+(ditto things like searching)
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	rogern
+Recorded by:	rogern
+On:		06/23/95
+version:	0.0.0
+Description:
+
+Try enumerating auts of < x,y; > with ave gens = 30; makes Chars longer
+than 2^15.
+
+Fixed by:	rogern
+On:		06/24/95
+Notes:
+
+This required completely rewriting class Chars, so as not to use class
+String as the rep (since a String cannot be longer than 2^15).
+
+---------------------------------------------------------------------
+
+Priority:	2
+Reported by:	alexei
+Recorded by:	rogern
+On:		11/16/95
+version:	1.0.0b
+Description:
+
+Entered the nilpotent group
+
+"2   < x, y ;x^5 y^7 x^2 Y^10, (x y)^10  >"
+
+then (evidently) tried to compute the abelian invariants.
+The system reported
+
+"found the invariants of G1 abelianized:  Z_100"
+
+but then did not stop the problem.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	2
+Reported by:	rgr
+Recorded by:	rogern
+On:		11/21/95
+version:	1.0.0b
+Description:
+
+Define free group < a, b >, and try to enter `quadratic equation' as
+"a^2 b = b^-1". Get parse error "{1 {expected '(' here}}".
+Enter as "(a^2 b = b^-1)". Get parse error
+"{3 {a variable has the same name as a generator}}"
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	2
+Reported by:	alexei
+Recorded by:	rogern
+On:		11/22/95
+version:	1.0.0b
+Description:
+
+Name changes in the FE use the old database, not global A.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	2
+Reported by:	bormotov
+Recorded by:	rogern
+On:		11/22/95
+version:	1.0.0b
+Description:
+
+Give finite abelian group. Ask for order using rank. It should report
+stall, since rank reports nothing in finite case.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	2
+Reported by:	alexei
+Recorded by:	rogern
+On:		11/22/95
+version:	1.0.0b
+Description:
+
+bool ComputationManager::checkForStall( ) may be
+sending `resume' messages just as a problem starts.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	gilbert
+Recorded by:	rogern
+On:		11/25/95
+version:	1.0.0b
+Description:
+
+System thinks abelian presentations are OR when they're not.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	3
+Reported by:	alexei
+Recorded by:	rogern
+On:		11/28/95
+version:	1.0.0b
+Description:
+
+Clicking the middle button while dragging with the left button
+causes the drag box to be forgotten.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	ilya
+Recorded by:	rogern
+On:		11/28/95
+version:	1.0.0b
+Description:
+
+The integral homology of < a, b; a^2 = b^2 > is reported to be Z^37.
+
+Fixed by:
+On:
+Notes:
+
+The rewrite system encoded by the KBMachine is clearly not reduced.
+This should not matter, but checking by hand is impossible...
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	alexei
+Recorded by:	rogern
+On:		11/28/95
+version:	1.0.0b
+Description:
+
+Small cancellation notations: do not report C'(0), and do not give
+attribution for solution of order problem.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	alexei
+Recorded by:	rogern
+On:		11/28/95
+version:	1.0.0b
+Description:
+
+The order problem for the small cancellation group
+< a, b, c, d ;  a = b, c = d> does not work.
+
+Fixed by:
+On:
+Notes:
+
+---------------------------------------------------------------------
+
+Priority:	1
+Reported by:	
+Recorded by:	
+On:		
+version:	
+Description:
+
+Fixed by:
+On:
+Notes:

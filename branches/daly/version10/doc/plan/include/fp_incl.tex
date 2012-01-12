@@ -1,0 +1,280 @@
+%% This is AMSLaTeX source, included by analysis_incl.tex.
+
+
+%%....................................................................
+\subsection{Finitely Presented Groups}
+
+Fix the following workspace objects: let $G$, $G_1$, $G_2$ be a
+finitely presented groups, $H$ and $K$ be finitely generated subgroups
+of $G$, and $w$, $u$, and $v$ be words in the generators of $G$.
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Elements}
+
+\begin{enumerate}
+
+\wishtwo{Word Problem}
+{$G$, $w$}
+{Yes or No}
+{The best form of $w$}
+
+\wish{Equality Problem of elements given as words}
+{$G$, $u$, $v$}
+{Yes or No}
+
+\wishtwo{Conjugacy Problem}
+{$G$, $u$, $v$}
+{Yes or No}
+{A word $w$ such that $u^w=_G v$}
+
+\wishtwo{Power Problem}
+{$G$, $w$}
+{Yes or No}
+{A word $u$ and an integer $n$ such that $u^n =_G w$}
+
+\wishtwo{Maximal root of an element}
+{$G$, $w$}
+{The maximal root $u$ of $w$}
+{The integer $n$ such that $u^n =_G w$}
+
+\wishtwo{Element in commutator subgroup}
+{$G$, $w$}
+{Yes or No}
+{If yes, $w$ written as a product of commutators}
+
+\wishtwo{Element is a commutator}
+{$G$, $w$}
+{Yes or No}
+{If yes, $w$ written as a commutator}
+
+\wishtwo{Is an element in a term of the lower central series}
+{$G$, $w$}
+{Yes or No}
+{If Yes, the term of the lower central series of $G$ to which $w$ belongs}
+
+\end{enumerate}
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Elements in Subgroups}
+
+\begin{enumerate}
+
+\wishtwo{Subgroup Membership Problem}
+{$G$, $w$, $H$}
+{Yes or No}
+{If yes, $w$ written as a structured word in the generators given by
+the user for $H$
+}
+
+\wishtwo{Power of an element in a subgroup}
+{$G$, $w$, $H$}
+{Yes or No}
+{As for membership problem, along with (not necessarily minimal) power}
+
+\end{enumerate}
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Subgroups}
+
+
+\begin{enumerate}
+
+\wishtwo{Subgroup Containment Problem: $H\subseteq K$}
+{$G$, $H$, $K$}
+{Yes or No}
+{If yes, the generators of $H$ expressed in the generators of $K$}
+
+\wishtwo{Subgroup Equality Problem}
+{$G$, $H$, $K$}
+{Yes or No}
+{If yes, the generators of $H$ expressed in the generators of $K$, and vice
+versa
+}
+
+\wishtwo{Subgroup Conjugacy Problem}
+{$G$, $H$, $K$}
+{Yes or No}
+{The conjugator}
+
+\wish{Subgroup is central}
+{$G$, $H$}
+{Yes or No}
+
+\wish{Is a subgroup normal}
+{$G$, $H$}
+{Yes or No}
+
+\wish{Normaliser of a subgroup}
+{$G$, $H$}
+{?}
+
+\wish{Centralizer of a subgroup enumerator}
+{$G$, $H$}
+{?}
+
+\wish{Index of a subgroup Problem}
+{$G$, $H$}
+{The index of $H$ in $G$}
+
+\wish{Normal-closure-enumerator}
+{$G$, $H$}
+{Initializes an enumerator of $gp_G(H)$ in the workspace}
+
+\wish{Random normal closure}
+{$G$, $H$}
+{?}
+
+\wish{Intersection enumerator}
+{$G$, $H$, $K$}
+{?}
+
+\wish{Infinitely generated intersection}
+{$G$, $H$, $K$}
+{Ideal subgroup: $H\cap gp_G(K)$}
+
+\wish{Infinitely generated intersection}
+{$G$, $H$, $K$}
+{Ideal subgroup: $gp_G(H)\cap gp_G(K)$}
+
+\wish{Generation}
+{$G$, $H$}
+{Yes or No as $H$ generates $G$}
+
+\wish{Enumerate relations of a subgroup}
+{$G$, $H$}
+{?}
+
+
+\end{enumerate}
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{Morphisms}
+
+\begin{enumerate}
+
+\wish{Hom enumerator}
+{$G_1$, $G_2$}
+{An enumerator of $Hom(G_1,G_2)$}
+
+\wishtwo{Test for an endomorphism being an automorphism}
+{$G$, $\alpha\in Hom(G,G)$}
+{Yes or No}
+{$\alpha^{-1}$}
+
+\wish{Product of automorphisms}
+{$G$, $\alpha, \beta\in Aut(G)$}
+{$\alpha\beta$}
+
+\wishtwo{Inner automorphism problem}
+{$G$, $\alpha\in Aut(F)$}
+{Yes or No}
+{The $w$ such that $\alpha(x)=_G x^w$}
+
+\wishtwo{Order of an automorphism problem}
+{$G$, $\alpha\in Aut(F)$}
+{Yes or No}
+{The order of $\alpha$}
+
+\wish{Inverse of automorphism}
+{$G$, $\alpha\in Aut(G)$}
+{$\alpha^{-1}$}
+
+\wish{$\dag$ Fixed point set of an automorphism}
+{$G$, $\alpha\in Aut(G)$}
+{The generators of the subgroup of elements left
+identically fixed by $\alpha$
+}
+
+\wish{$\dag$ Fixing subgroup of an element}
+{$G$, $w$}
+{The generators of the subgroup of $Aut(G)$ which leaves $w$ fixed}
+
+\end{enumerate}
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{The Group}
+
+\begin{enumerate}
+
+\wish{The center problem}
+{$G$}
+{Yes or No as $G$ has non-trivial center}
+
+\wish{The isomorphism problem}
+{$G_1$, $G_2$}
+{An isomorphism between $G_1$ and $G_2$ if there is one}
+
+When the following answer Yes, they store a faithful representation of
+the corresponding type with $G$. The representation is available to
+the end user.
+
+\wish{Is a group trivial}
+{$G$}
+{Yes or No}
+
+\wish{Is a group abelian}
+{$G$}
+{Yes or No}
+
+\wish{Is a group perfect}
+{$G$}
+{Yes or No}
+
+\wish{Is a group infinite}
+{$G$}
+{Yes or No}
+
+\wish{Is a group free}
+{$G$}
+{Yes or No}
+
+\wish{Is a group a non-trivial free product}
+{$G$}
+{Yes or No}
+
+\wish{Is a group a non-trivial amalgamated product}
+{$G$}
+{Yes or No}
+
+\wish{Is a group a non-trivial direct product}
+{$G$}
+{Yes or No}
+
+\wish{Is a group simple}
+{$G$}
+{Yes or No}
+
+\wish{Is a group nilpotent}
+{$G$}
+{Yes or No}
+
+\wish{Is a group polycyclic}
+{$G$}
+{Yes or No}
+
+\wish{Is a group solvable}
+{$G$}
+{Yes or No}
+
+\wish{Is a group a one-relator group}
+{$G$}
+{Yes or No}
+
+\wish{Is a group hyperbolic}
+{$G$}
+{Yes or No}
+
+\wish{Is a group automatic}
+{$G$}
+{Yes or No}
+
+\wish{Is a group a small cancellation group}
+{$G$}
+{Yes or No}
+
+\end{enumerate}

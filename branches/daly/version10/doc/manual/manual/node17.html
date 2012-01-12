@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>User class SetIterator&lt;T&gt;</TITLE>
+<META NAME="description" CONTENT="User class SetIterator&lt;T&gt;">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION003121100000000000000"></A><A NAME="setiterator"></A>
+<BR>
+User class <TT>SetIterator&lt;T&gt;</TT>
+</H3>
+
+<P>
+<BR>
+<BR><EM>What and Where
+<BR>
+<BR></EM>
+
+<P>
+The class
+<BR><TT>template &lt;class T&gt; class SetIterator :
+<BR>
+public ObjectOf&lt; SetIteratorData&lt;T&gt; &gt;</TT>
+<BR>
+is defined in <TT>magnus/back_end/general/include/Set.h</TT>.
+
+<P>
+It is for iterating over a set.
+
+<P>
+<BR>
+<BR><EM>Special Notes
+<BR>
+<BR></EM>
+
+<P>
+A Copy constructor, assignment operator,
+and destructor are supplied by the compiler.
+
+<P>
+Examples of use:
+
+<P>
+
+<UL>
+<LI>To iterate over the elements of a <TT>SetOf&lt;T&gt; S</TT>, just do:
+
+<P>
+<PRE>
+  SetIterator&lt;T&gt; I(S);
+  while ( !I.done() ) {
+    /* Do something with I.value() */
+    I.next();
+  }
+</PRE>
+
+<P>
+</LI>
+<LI>You may assign one <TT>SetIterator</TT> to another, so the following works:
+
+<P>
+<PRE>
+  SetIterator&lt;T&gt; I(S);
+  while( !I.done() ) {
+    SetIterator&lt;T&gt; J = I;
+    while( J.next() )
+      if ( I.value() == J.value() ) error("Set contains duplicates!");
+    I.next();
+  }
+  int count = 0;
+  I.reset();
+  while( !I.done() ) {
+    SetIterator&lt;T&gt; J(I);
+    do { if ( I.value() == J.value() ) ++count; } while( J.next() );
+    I.next();
+  }
+  if ( count != S.cardinality() ) error("I give up");
+</PRE>
+
+<P>
+</LI>
+</UL>
+
+<P>
+Since <TT>I</TT> was reset, the two excursions of <TT>I</TT> through <TT>S</TT>
+are guaranteed to produce the same sequence of elements. In any case, <TT>J</TT>
+is guaranteed to look at the rest of what <TT>I</TT> is.
+You may alter <TT>S</TT> during the iteration, but <TT>I</TT> uses the old copy
+of <TT>S</TT> (see <TT>shrinkToIntersectionWith</TT>). You may alter the object
+returned by <TT>I.value()</TT>, but this will not effect <TT>S</TT> or <TT>I</TT>.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

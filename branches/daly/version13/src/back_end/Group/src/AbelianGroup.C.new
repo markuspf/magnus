@@ -1,0 +1,24 @@
+// Copyright (C) 1995 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+
+// Contents: Implementation of the AbelianGroupRep class.
+//
+// Principal Author: Dmitry Bormotov, Alexey Myasnikov
+//
+// Status: in progress
+//
+// Revision History:
+//
+// 96/01/06 @db added new functions:
+//   Word abelianForm( const Word& w ) const;
+//   Word inverseInAbelianForm( const Word& w ) const;
+//
+// * 7/96 Dmitry B. made porting to gcc 2.7.2.
+//
+// Special Notes:
+//
+
+
+#include "AbelianGroupRep.h"
+
+

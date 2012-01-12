@@ -1,0 +1,3 @@
+CCFLAGS=-DHAVE_UNISTD_H -DDEBUG -g -fno-operator-names -D_G_NO_NAV \
+  -Wno-deprecated -DTPD -D_CPP_BACKWARD_BACKWARD_WARNING_H -DSAFETY=2 
+

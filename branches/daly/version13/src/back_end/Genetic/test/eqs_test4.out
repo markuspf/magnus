@@ -1,0 +1,301 @@
+***** 8 *****
+
+1
+Length: 8
+Generations: 62    Time: 0.603135    Length: 8
+Generations: 26    Time: 0.286695    Length: 4
+Generations: 120    Time: 1.12542    Length: 4
+Generations: 66    Time: 0.654243    Length: 6
+Generations: 70    Time: 0.686491    Length: 4
+Generations: 7    Time: 0.11058    Length: 4
+Generations: 5    Time: 0.093063    Length: 4
+Generations: 104    Time: 0.97112    Length: 4
+Generations: 88    Time: 0.855235    Length: 4
+Generations: 123    Time: 1.13828    Length: 6
+Average number of generatons: 67.1
+Average time: 0.652426
+Average time per generation: 0.00972319
+
+2
+Length: 8
+Generations: 42    Time: 0.446038    Length: 5
+Generations: 31    Time: 0.34361    Length: 4
+Generations: 17    Time: 0.206058    Length: 6
+Generations: 69    Time: 0.664542    Length: 5
+Generations: 54    Time: 0.51988    Length: 4
+Generations: 14    Time: 0.179841    Length: 6
+Generations: 57    Time: 0.600246    Length: 7
+Generations: 8    Time: 0.117881    Length: 6
+Generations: 8    Time: 0.121304    Length: 5
+Generations: 127    Time: 1.27892    Length: 4
+Average number of generatons: 42.7
+Average time: 0.447832
+Average time per generation: 0.0104879
+
+3
+Length: 8
+Generations: 7    Time: 0.091375    Length: 5
+Generations: 6    Time: 0.156372    Length: 6
+Generations: 6    Time: 0.13279    Length: 6
+Generations: 103    Time: 1.00448    Length: 4
+Generations: 10    Time: 0.155986    Length: 6
+Generations: 63    Time: 0.626084    Length: 5
+Generations: 38    Time: 0.396285    Length: 4
+Generations: 137    Time: 1.28475    Length: 6
+Generations: 47    Time: 0.473832    Length: 6
+Generations: 9    Time: 0.128599    Length: 6
+Average number of generatons: 42.6
+Average time: 0.445056
+Average time per generation: 0.0104473
+
+4
+Length: 8
+Generations: 16    Time: 0.208388    Length: 7
+Generations: 30    Time: 0.322725    Length: 7
+Generations: 30    Time: 0.338828    Length: 7
+Generations: 28    Time: 0.350308    Length: 6
+Generations: 57    Time: 0.6799    Length: 4
+Generations: 1    Time: 0.054059    Length: 5
+Generations: 53    Time: 0.526479    Length: 5
+Generations: 30    Time: 0.330708    Length: 4
+Generations: 25    Time: 0.292946    Length: 6
+Generations: 116    Time: 1.05074    Length: 4
+Average number of generatons: 38.6
+Average time: 0.415508
+Average time per generation: 0.0107645
+
+5
+Length: 8
+Generations: 139    Time: 1.32096    Length: 6
+Generations: 17    Time: 0.206227    Length: 6
+Generations: 214    Time: 1.9789    Length: 4
+Generations: 208    Time: 2.09157    Length: 6
+Generations: 30    Time: 0.344206    Length: 5
+Generations: 39    Time: 0.411942    Length: 6
+Generations: 16    Time: 0.209818    Length: 6
+Generations: 6    Time: 0.106848    Length: 4
+Generations: 20    Time: 0.28331    Length: 6
+Generations: 26    Time: 0.40988    Length: 4
+Average number of generatons: 71.5
+Average time: 0.736367
+Average time per generation: 0.0102988
+
+
+***** 12 *****
+
+1
+Length: 12
+Generations: 162    Time: 1.65925    Length: 11
+Generations: 302    Time: 2.91777    Length: 9
+Generations: 190    Time: 1.96045    Length: 6
+Generations: 28    Time: 0.341512    Length: 7
+Generations: 141    Time: 1.39823    Length: 6
+Generations: 283    Time: 3.02789    Length: 9
+Generations: 1239    Time: 12.4372    Length: 15
+Generations: 38    Time: 0.448277    Length: 6
+Generations: 565    Time: 5.59636    Length: 10
+Generations: 86    Time: 0.873119    Length: 6
+Average number of generatons: 303.4
+Average time: 3.06601
+Average time per generation: 0.0101055
+
+2
+Length: 12
+Generations: 32    Time: 0.377257    Length: 6
+Generations: 223    Time: 2.7033    Length: 9
+Generations: 511    Time: 5.13417    Length: 9
+Generations: 387    Time: 3.99768    Length: 6
+Generations: 66    Time: 0.676181    Length: 6
+Generations: 645    Time: 7.24779    Length: 6
+Generations: 195    Time: 2.00345    Length: 6
+Generations: 698    Time: 6.94456    Length: 9
+Generations: 390    Time: 3.88727    Length: 9
+Generations: 150    Time: 1.57966    Length: 9
+Average number of generatons: 329.7
+Average time: 3.45513
+Average time per generation: 0.0104796
+
+3
+Length: 12
+Generations: 907    Time: 9.22723    Length: 6
+Generations: 55    Time: 0.634878    Length: 6
+Generations: 31    Time: 0.363605    Length: 6
+Generations: 58    Time: 0.619663    Length: 6
+Generations: 62    Time: 0.674055    Length: 6
+Generations: 103    Time: 1.08195    Length: 6
+Generations: 673    Time: 6.80277    Length: 6
+Generations: 419    Time: 4.14856    Length: 6
+Generations: 976    Time: 9.60726    Length: 6
+Generations: 35    Time: 0.416426    Length: 6
+Average number of generatons: 331.9
+Average time: 3.35764
+Average time per generation: 0.0101164
+
+4
+Length: 12
+Generations: 643    Time: 6.69562    Length: 6
+Generations: 53    Time: 0.587334    Length: 9
+Generations: 127    Time: 1.37605    Length: 6
+Generations: 490    Time: 4.95375    Length: 6
+Generations: 2315    Time: 24.1891    Length: 6
+Generations: 55    Time: 0.626721    Length: 7
+Generations: 119    Time: 1.29246    Length: 6
+Generations: 95    Time: 1.03959    Length: 6
+Generations: 314    Time: 3.28215    Length: 10
+Generations: 243    Time: 2.51232    Length: 6
+Average number of generatons: 445.4
+Average time: 4.65551
+Average time per generation: 0.0104524
+
+5
+Length: 12
+Generations: 309    Time: 3.02429    Length: 6
+Generations: 99    Time: 1.01409    Length: 6
+Generations: 30    Time: 0.370029    Length: 6
+Generations: 432    Time: 4.23888    Length: 6
+Generations: 439    Time: 4.28714    Length: 6
+Generations: 551    Time: 5.24621    Length: 10
+Generations: 207    Time: 2.04441    Length: 6
+Generations: 679    Time: 6.56033    Length: 6
+Generations: 8    Time: 0.165597    Length: 6
+Generations: 1009    Time: 9.52685    Length: 6
+Average number of generatons: 376.3
+Average time: 3.64778
+Average time per generation: 0.00969382
+
+
+***** 16 *****
+
+1
+Length: 16
+Generations: 4736    Time: 49.5968    Length: 8
+Generations: 2605    Time: 27.6107    Length: 8
+Generations: 4496    Time: 48.7425    Length: 8
+Generations: 239    Time: 2.69648    Length: 8
+Generations: 433    Time: 4.39143    Length: 8
+Generations: 1674    Time: 17.5715    Length: 8
+Generations: 1047    Time: 11.2049    Length: 8
+Generations: 1033    Time: 11.0165    Length: 8
+Generations: 2622    Time: 29.3088    Length: 14
+Generations: 10562    Time: 112.171    Length: 8
+Average number of generatons: 2944.7
+Average time: 31.4311
+Average time per generation: 0.0106738
+
+2
+Length: 16
+Generations: 1880    Time: 21.6254    Length: 8
+Generations: 703    Time: 7.41223    Length: 9
+Generations: 5825    Time: 62.2926    Length: 8
+Generations: 1724    Time: 18.2857    Length: 8
+Generations: 305    Time: 3.17913    Length: 8
+Generations: 5390    Time: 56.6185    Length: 8
+Generations: 143    Time: 1.53577    Length: 8
+Generations: 431    Time: 4.52413    Length: 8
+Generations: 191    Time: 2.0934    Length: 8
+Generations: 1002    Time: 10.6989    Length: 12
+Average number of generatons: 1759.4
+Average time: 18.8266
+Average time per generation: 0.0107006
+
+3
+Length: 16
+Generations: 1625    Time: 17.2456    Length: 8
+Generations: 497    Time: 5.53207    Length: 8
+Generations: 1053    Time: 10.7431    Length: 8
+Generations: 2154    Time: 22.5891    Length: 8
+Generations: 116    Time: 1.35282    Length: 8
+Generations: 1979    Time: 21.6667    Length: 12
+Generations: 371    Time: 4.11757    Length: 8
+Generations: 11    Time: 0.207531    Length: 8
+Generations: 849    Time: 9.10679    Length: 8
+Generations: 3401    Time: 35.2327    Length: 10
+Average number of generatons: 1205.6
+Average time: 12.7794
+Average time per generation: 0.0106
+
+4
+Length: 16
+Generations: 2008    Time: 20.6356    Length: 8
+Generations: 6876    Time: 71.8974    Length: 8
+Generations: 2764    Time: 29.3038    Length: 10
+Generations: 872    Time: 8.99311    Length: 11
+Generations: 668    Time: 7.20334    Length: 12
+Generations: 790    Time: 8.36412    Length: 8
+Generations: 241    Time: 2.57926    Length: 8
+Generations: 6567    Time: 68.9072    Length: 8
+Generations: 9560    Time: 104.987    Length: 8
+Generations: 7410    Time: 77.47    Length: 8
+Average number of generatons: 3775.6
+Average time: 40.0341
+Average time per generation: 0.0106034
+
+5
+Length: 16
+Generations: 3766    Time: 38.3972    Length: 8
+Generations: 1141    Time: 11.7306    Length: 8
+Generations: 537    Time: 5.7552    Length: 8
+Generations: 4350    Time: 44.2347    Length: 8
+Generations: 6482    Time: 65.8648    Length: 8
+Generations: 1543    Time: 16.6565    Length: 12
+Generations: 943    Time: 9.62664    Length: 8
+Generations: 2308    Time: 23.5941    Length: 8
+Generations: 4556    Time: 46.2753    Length: 8
+Generations: 27    Time: 0.369463    Length: 8
+Average number of generatons: 2565.3
+Average time: 26.2505
+Average time per generation: 0.0102329
+
+
+***** 20 *****
+
+1
+Number of generations: 26980 Time: 297.097 
+Number of generations: 6420 Time: 71.7524
+Number of generations: 33748 Time: 376.666
+Number of generations: 18962 Time: 208.301
+Number of generations: 15631 Time: 188.426
+Number of generations: 13689 Time: 178.963
+Number of generations: 23187 Time: 304.701
+Number of generations: 3634 Time: 40.3717
+Number of generations: 14558 Time: 165.734
+Number of generations: 28248 Time: 313.57
+
+Average: 214.558
+
+2
+Number of generations: 40999 Time: 490.603
+Number of generations: 2590 Time: 28.5224
+Number of generations: 11988 Time: 136.834
+Number of generations: 4897 Time: 64.3974
+Number of generations: 42959 Time: 487.503
+Number of generations: 14237 Time: 159.917 (15)
+Number of generations: 331 Time: 3.77418
+Number of generations: 8140 Time: 98.624
+
+Average: 183.772
+
+3
+Length: 20
+Generations: 18141    Time: 208.748    Length: 10
+Generations: 5993    Time: 69.1621    Length: 15
+Generations: 13478    Time: 155.286    Length: 10
+Generations: 1829    Time: 20.5795    Length: 10
+Generations: 9665    Time: 111.543    Length: 10
+Generations: 17249    Time: 192.747    Length: 10
+Generations: 50714    Time: 569.204    Length: 10
+Generations: 17188    Time: 208.934    Length: 10
+Generations: 2105    Time: 25.9698    Length: 10
+Generations: 23906    Time: 281.195    Length: 10
+Average number of generatons: 16026.8
+Average time: 184.337
+Average time per generation: 0.0115018
+
+
+***** Averages *****
+
+
+8: 0.539438
+12: 3.63641
+16: 25.8643
+20: 194.222

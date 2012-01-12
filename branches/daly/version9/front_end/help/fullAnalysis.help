@@ -1,0 +1,20 @@
+@@How Full Analysis Works
+
+DESCRIPTION OF TOOLS FOR Full Analysis
+
+The Full Data Analysis Tool will calculate all the basic descriptive 
+measures for the given data set.  
+The measures included are the @mean@html/meanAnalysis/index.html::Mean Analysis@,
+@variance@html/varianceAnalysis/index.html::Variance Analysis@,
+@standard deviation@html/varianceAnalysis/index.html::Standard Deviation Analysis@,
+@range@html/rangeAnalysis/index.html::Range Analysis@,
+@median@html/medianAnalysis/index.html::Median Analysis@,
+@first quartile@html/fractileAnalysis/index.html::Quartile Analysis@,
+@third quartile@html/fractileAnalysis/index.html::Quartile Analysis@ and
+@measure of skewness@html/skewnessAnalysis/index.html::Skewness Analysis@. 
+Clicking on any of these objects will give a description of the statistical
+measure.
+
+     @For more information click here@html/fullAnalysis/index.html::Full Analysis Help@
+
+

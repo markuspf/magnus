@@ -1,0 +1,713 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/outmessages.pamphlet}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.c>>=
+#include "SMObject.h"
+#include "OutMessages.h"
+#include "TheObjects.h"
+#include "Timer.h"
+#include "Set.h"
+#include "TheObjects.h"
+#include "ComputationManager.h"
+
+@
+<<include.h>>=
+#include <stdio.h>
+#include <iostream.h>
+#include "Chars.h"
+#include "List.h"
+#include "ARC.h"
+#include "ARCSlotID.h"
+#include "FEData.h"
+#include "VectorPtr.h"
+
+@
+\section{class OutMessage}
+\subsection{OutMessage::send}
+<<OutMessage::send.h>>=
+  void send( ) const;
+@
+<<OutMessage::send.c>>=
+void OutMessage::send( ) const
+{
+  print( cout );
+  cout << endl << flush;
+}
+
+@
+<<class OutMessage.h>>=
+class OutMessage
+{
+public:
+<<OutMessage::send.h>>
+protected:
+  OutMessage( ) { } //@rn gcc 2.6.3 claims I need this...
+  virtual void print(ostream& ostr) const = 0;
+  // Used by class SessionManager.
+
+private:
+  OutMessage( const OutMessage& );
+  // Hidden, not to be implemented.
+};
+
+@
+\section{class LogMessage}
+Do *NOT* mess with the ostrstream directly, unless you like debugging.
+It is imported publicly only to get the existing @<< operators.
+
+The following ctors initialize a message to the logs of the views of
+the indicated OIDs (no OID means the session log only).
+message_level == 1 means the message should be echoed to the session log;
+message_level == 2 means the message is only for the addressed log.
+
+\subsection{LogMessage::LogMessage}
+<<LogMessage Constructor.h.1>>=
+  LogMessage(int message_level = 1);
+@
+<<LogMessage Constructor.c.1>>=
+LogMessage::LogMessage(int message_level)
+  : num_addressees( 0 ), level( message_level ),
+    oids( 0 )
+{ }
+
+@
+<<LogMessage Constructor.h.2>>=
+  LogMessage(OID o, int message_level = 1);
+@
+<<LogMessage Constructor.c.2>>=
+LogMessage::LogMessage(OID o, int message_level)
+  : num_addressees( 1 ), level( message_level ), 
+    oids( 1 )
+{
+  oids[0] = o;
+}
+
+@
+<<LogMessage Constructor.h.3>>=
+  LogMessage(OID o1, OID o2, int message_level = 1);
+@
+<<LogMessage Constructor.c.3>>=
+LogMessage::LogMessage(OID o1, OID o2, int message_level)
+  : num_addressees( 2 ), level( message_level ),
+    oids( 2 )
+{
+  oids[0] = o1;
+  oids[1] = o2;
+}
+	  
+@
+<<LogMessage Constructor.h.4>>=
+  LogMessage(OID o1, OID o2, OID o3, int message_level = 1);
+@
+<<LogMessage Constructor.c.4>>=
+LogMessage::LogMessage(OID o1, OID o2, OID o3, int message_level)
+  : num_addressees( 3 ), level( message_level ),
+    oids( 3 )
+{
+  oids[0] = o1;
+  oids[1] = o2;
+  oids[2] = o3;
+}
+
+@
+<<LogMessage Constructor.h.5>>=
+  LogMessage( const char* msg, int message_level = 1);
+@
+<<LogMessage Constructor.c.5>>=
+LogMessage::LogMessage(const char* msg, int message_level)
+  : num_addressees( 0 ), level( message_level ),
+    oids( 0 )
+{
+  *this << msg;
+}
+
+@
+<<LogMessage Constructor.h.6>>=
+  LogMessage(OID o, const char* msg, int message_level = 1);
+@
+<<LogMessage Constructor.c.6>>=
+LogMessage::LogMessage(OID o, const char* msg, int message_level)
+  : num_addressees( 1 ), level( message_level ),
+    oids(1)
+{
+  oids[0] = o; 
+  *this << msg;
+}
+
+@
+\subsection{LogMessage::print}
+<<LogMessage::print.h>>=
+  void print(ostream& ostr) const;  // overrides OutMessage
+@
+could check for bogus characters, brace balance, etc.
+<<LogMessage::print.c>>=
+void LogMessage::print(ostream& ostr) const
+{
+  ostrstream& o = (ostrstream&)*this;  // Cast away constness
+  o << ends;
+  ostr << "post_to_log_ {";
+  SetOf<OID> bosses;
+  for( int i = 0; i < num_addressees; ++i ) {
+    OID o = oids[i];
+    SMObject *worker = TheObjects::get( o );
+    SetOf<OID> wbosses;
+    if( worker->isComputationManager() ) 
+      wbosses = ((ComputationManager *)worker)->getClients();
+    else 
+      wbosses |= o;
+    bosses |= wbosses;
+  }
+  SetIterator<OID> I(bosses);
+  for( ; !I.done(); I.next() ) {
+	 ostr << I.value() << ' ';
+  }
+  ostr << "} {" << o.str() << "} " << level;
+  o.freeze(0);
+}
+
+@
+\subsection{class LogMessage}
+<<class LogMessage.h>>=
+class LogMessage : public OutMessage, protected FEData, public ostrstream
+{
+public:
+<<LogMessage Constructor.h.1>>
+<<LogMessage Constructor.h.2>>
+<<LogMessage Constructor.h.3>>
+<<LogMessage Constructor.h.4>>
+<<LogMessage Constructor.h.5>>
+<<LogMessage Constructor.h.6>>
+protected:
+<<LogMessage::print.h>>
+private:
+  int num_addressees;
+  VectorPtrOf<OID> oids; //[3];
+  int level;
+};
+
+@
+\section{class ParseErrorMessage}
+The Front End requires that `diagnosis' start with an int indicating the
+position of the error, followed by a ' '. Use 0 if no other value
+is appropriate.
+\subsection{ParseErrorMessage::ParseErrorMessage}
+<<ParseErrorMessage Constructor.h>>=
+  ParseErrorMessage(const Chars name, const Chars diagnosis);
+@
+<<ParseErrorMessage Constructor.c>>=
+ParseErrorMessage::ParseErrorMessage(const Chars name, const Chars diagnosis)
+  : theName( name ), theDiagnosis( diagnosis )
+{ }
+
+@
+\subsection{ParseErrorMessage::print}
+<<ParseErrorMessage::print.h>>=
+  void print(ostream& ostr) const;  // overrides OutMessage
+@
+<<ParseErrorMessage::print.c>>=
+void ParseErrorMessage::print(ostream& ostr) const
+{
+  ostr
+	 << "syntax_error_in_defn_ name {"
+	 << theName
+	 << "} errMesg {"
+	 << theDiagnosis
+	 << '}';
+}
+
+@
+<<class ParseErrorMessage.h>>=
+class ParseErrorMessage : public OutMessage
+{
+public:
+<<ParseErrorMessage Constructor.h>>
+protected:
+<<ParseErrorMessage::print.h>>
+private:
+  const Chars theName;
+  const Chars theDiagnosis;
+};
+
+@
+\section{class PackageInfoMessage}
+\subsection{Constructor}
+<<PackageInfoMessage Constructor.h>>=
+  PackageInfoMessage(const Chars& name, const Chars& command, 
+                     const Chars& ch_type, const Chars& obj);
+@
+<<PackageInfoMessage Constructor.c>>=
+PackageInfoMessage::PackageInfoMessage(const Chars& name, 
+				       const Chars& command,
+				       const Chars& ch_type, 
+				       const Chars& obj)  :
+  theChType( ch_type ),
+  theName( name ),
+  theObject( obj ),
+  theCommand( command )
+{ }
+
+@
+\subsection{PackageInfoMessage::print}
+<<PackageInfoMessage::print.h>>=
+  void print(ostream& ostr) const;  // overrides OutMessage
+@
+<<PackageInfoMessage::print.c>>=
+void PackageInfoMessage::print(ostream& ostr) const
+{
+  ostr
+    << "view_package_info_  "
+    << " { " << theName << " } "
+    << " { " << theCommand << " } "
+    << " { " << theChType << " } "
+    << " { " << theObject << " } ";\
+}
+
+@
+\subsection{class PackageInfoMessage}
+<<class PackageInfoMessage.h>>=
+class PackageInfoMessage : public OutMessage
+{
+public:
+<<PackageInfoMessage Constructor.h>>
+protected:
+<<PackageInfoMessage::print.h>>
+private:
+  const Chars theChType;
+  const Chars theName;
+  const Chars theObject;
+  const Chars theCommand;
+};
+
+@
+\section{class ParseParamErrorMessage}
+\subsection{Constructor}
+<<ParseParamErrorMessage Constructor.h>>=
+  ParseParamErrorMessage(OID o,const Chars& name, 
+			 const Chars& type,
+			 const Chars& msg);
+@
+<<ParseParamErrorMessage Constructor.c>>=
+ParseParamErrorMessage::ParseParamErrorMessage(OID o,const Chars& name, 
+					       const Chars& type,
+					       const Chars& msg)
+  : theOID( o ), theName( name ), theType( type  ), theMsg( msg )
+{ }
+
+@
+\subsection{ParseParamErrorMessage::print}
+overrides OutMessage
+<<ParseParamErrorMessage::print.h>>=
+  void print(ostream& ostr) const;
+@
+<<ParseParamErrorMessage::print.c>>=
+void ParseParamErrorMessage::print(ostream& ostr) const
+{
+  ostr
+    << "syntax_error_in_param_ OID {"
+    << theOID 
+    << "} name {"
+    << theName
+    << "} type {"
+    << theType
+    << "} errMesg {"
+    << theMsg
+    << '}';
+}
+
+@
+\subsection{class ParseParamErrorMessage}
+<<class ParseParamErrorMessage.h>>=
+class ParseParamErrorMessage : public OutMessage
+{
+public:
+<<ParseParamErrorMessage Constructor.h>>  
+protected:
+<<ParseParamErrorMessage::print.h>>
+private:
+  OID theOID;
+  const Chars theType;
+  const Chars theName;
+  const Chars theMsg;
+};
+
+@
+\section{class ParseParamOk}
+\subsection{Constructor}
+<<ParseParamOk Constructor.h>>=
+  ParseParamOk(OID o):
+    ParseParamErrorMessage(o,"Parameters","","none") { }
+@
+\subsection{class ParseParamOk.h}
+<<class ParseParamOk.h>>=
+class ParseParamOk : public ParseParamErrorMessage
+{
+public:
+<<ParseParamOk Constructor.h>>
+};
+
+@
+\section{class CheckinMessage}
+\subsection{CheckinMessage Constructor}
+<<CheckinMessage Constructor.h>>=
+  CheckinMessage(const class SMObject& smo,
+		 const Chars name,
+		 const ListOf<OID> dependencies,
+		 bool bPrintDefinition = true
+		 );
+@
+This might just as well take a vector of dependencies.
+<<CheckinMessage Constructor.c>>=
+CheckinMessage::CheckinMessage(const SMObject& smo,
+			       const Chars name,
+			       const ListOf<OID> dependencies,
+			       bool bPrintDefinition
+			       )
+  : theSMO( smo ),
+    theName( name ),
+    theDependencies( dependencies ),
+    BPrintDefinition( bPrintDefinition )
+{ }
+
+@
+\subsection{CheckinMessage::print}
+overrides OutMessage
+<<CheckinMessage::print.h>>=
+  void print(ostream& ostr) const;
+@
+By convention, when an object is created internally, it is not
+given a name. This is how we know to echo the definition.
+Shouldn't we always print defn, for double-check?
+<<CheckinMessage::print.c>>=
+void CheckinMessage::print(ostream& ostr) const  // overrides OutMessage
+{
+  //@db report dependents to TheObjects
+  {
+    ListIterator< ListOf<OID> > I( theDependencies );
+    while ( ! I.done() ) {
+      SMObject* smo  = TheObjects::get(OID(I.value()));
+      smo->addDependent( theSMO.oid() );
+      I.next();
+    }
+  }
+  ostr << "create_ objectID " << theSMO.oid()
+       << " typeID " << theSMO.typeID()
+       << " iconID " << theSMO.iconID()
+       << " name {" << theName
+       << "} dependencies {";
+  ListIterator< ListOf<OID> > I( theDependencies );
+  while ( ! I.done() ) {
+    ostr << ' ' << I.value();
+    I.next();
+  }
+  ostr << "} properties {";
+  theSMO.printProperties( ostr );
+  ostr << "} viewStructure {";
+  theSMO.viewStructure( ostr );
+  ostr << '}';
+  if ( theName.length() == 0 ) {
+    ostr << " definition {";
+    if( BPrintDefinition )
+      theSMO.printDefinition( ostr );
+    ostr << '}';
+  }
+}
+
+@
+\subsection{class CheckinMessage}
+<<class CheckinMessage.h>>=
+class CheckinMessage : public OutMessage
+{
+public:
+<<CheckinMessage Constructor.h>>
+protected:
+<<CheckinMessage::print.h>>
+private:
+  const class SMObject& theSMO;
+  const Chars theName;
+  const ListOf<OID> theDependencies;
+  bool BPrintDefinition;
+};
+
+@
+\section{class FEDataUpdate}
+\subsection{class FEDataUpdate}
+<<FEDataUpdate Constructor.h>>=
+  FEDataUpdate( const Key& key, const Expression& datum )
+    : theKey( key ), theDatum( datum )
+  { }
+
+@
+\subsection{FEDataUpdate::print}
+<<FEDataUpdate::print.h>>=
+  void print(ostream& ostr) const;  // overrides OutMessage
+@
+<<FEDataUpdate::print.c>>=
+void FEDataUpdate::print(ostream& ostr) const  // overrides OutMessage
+{
+  ostr << "new_data_ key {" << theKey << "} datum {" << theDatum << '}';
+}
+
+@
+\subsection{class FEDataUpdate}
+<<class FEDataUpdate.h>>=
+class FEDataUpdate : public OutMessage, protected FEData
+{
+public:
+<<FEDataUpdate Constructor.h>>  
+protected:
+<<FEDataUpdate::print.h>>  
+private:
+  const Key theKey;
+  const Expression theDatum;
+};
+
+@
+\section{class StateTransition}
+\subsection{StateTransition Constructor}
+<<StateTransition Constructor.h>>=
+  StateTransition(Kind k, OID o) : kind( k ), oid( o ) { }
+@
+\subsection{StateTransition::print}
+overrides OutMessage
+<<StateTransition::print.h>>=
+  void print(ostream& ostr) const;
+@
+<<StateTransition::print.c>>=
+void StateTransition::print(ostream& ostr) const
+{
+  if ( kind == START )
+	 ostr << "confirm_start_";
+  else if ( kind == SUSPEND )
+	 ostr << "confirm_suspend_";
+  else if ( kind == RESUME )
+	 ostr << "confirm_resume_";
+  else if ( kind == TERMINATE )
+	 ostr << "terminate_problem_";
+  else if ( kind == STALLED )
+	 ostr << "problem_stalled_";
+  ostr << " viewID " << oid;
+}
+
+@
+\subsection{class StateTransition}
+<<class StateTransition.h>>=
+class StateTransition : public OutMessage
+{
+public:
+  enum Kind { START, SUSPEND, RESUME, TERMINATE, STALLED };
+<<StateTransition Constructor.h>>
+protected:
+<<StateTransition::print.h>>  
+private:
+  const Kind kind;
+  const OID oid;
+};
+
+@
+\section{class ARCUpdate}
+\subsection{ARCUpdate Constructor}
+<<ARCUpdate Constructor.h>>=
+  ARCUpdate(OID o, ARCSlotID a, ARC v) : oid( o ), asi( a ), value( v ) { }
+@
+\subsection{ARCUpdate::print}
+<<ARCUpdate::print.h>>=
+  void print(ostream& ostr) const;  // overrides OutMessage
+@
+<<ARCUpdate::print.c>>=
+void ARCUpdate::print(ostream& ostr) const
+{
+  ostr
+	 << "arc_update_ viewID " << oid
+	 << " ARCSlotID " << asi
+	 << " value " << value;
+}
+
+@
+\subsection{class ARCUpdate}
+<<class ARCUpdate.h>>=
+class ARCUpdate : public OutMessage
+{
+public:
+<<ARCUpdate Constructor.h>>
+protected:
+<<ARCUpdate::print.h>>
+private:
+  OID oid;
+  ARCSlotID asi;
+  ARC value;
+};
+
+@
+\section{class Warning}
+Do *NOT* mess with the ostrstream directly, unless you like debugging.
+It is imported publicly only to get the existing @<< operators.
+\subsection{Warning::print}
+<<Warning::print.h>>=
+  void print(ostream& ostr) const;  // overrides OutMessage
+@
+The timer is used as a 
+partial safeguard against repeated warnings from within a loop
+<<Warning::print.c>>=
+void Warning::print(ostream& ostr) const
+{
+  static Timer timer( 0 );   // First call should go out
+  if ( timer.expired() ) {
+	 ostrstream& o = (ostrstream&)*this;  // Cast away constness
+	 o << ends;
+	 ostr << "warn_ {" << o.str() << '}';
+	 timer.reset( 1000 );
+  }
+}
+
+@
+\subsection{class Warning}
+<<class Warning.h>>=
+class Warning : public OutMessage, protected FEData, public ostrstream
+{
+protected:
+<<Warning::print.h>>
+};
+
+@
+\section{class Message}
+\subsection{Message Constructor}
+<<Message Constructor.h>>=
+  Message( Chars title = "Information" ) : theTitle( title ) { }
+@
+\subsection{Message::print}
+<<Message::print.h>>=
+  void print(ostream& ostr) const;  // overrides OutMessage
+@
+<<Message::print.c>>=
+void Message::print(ostream& ostr) const
+{
+  ostrstream& o = (ostrstream&)*this;  // Cast away constness
+  o << ends;
+  ostr << "tk_dialog .d {" << theTitle << "} {" << o.str() << "} warning 0 OK";
+//  ostr "alert {" << o.str() << '}';
+}
+
+@
+\subsection{class Message}
+<<class Message.h>>=
+class Message : public OutMessage, protected FEData, public ostrstream
+{
+public:
+<<Message Constructor.h>>  
+protected:
+<<Message::print.h>>
+private:
+  Chars theTitle;
+};
+
+@
+\section{class InvokingMessage}
+\subsection{InvokingMessage Constructor}
+<<InvokingMessage Constructor.h>>=
+  InvokingMessage( ) { }
+@
+\subsection{
+<<InvokingMessage::print.h>>=
+  void print(ostream& ostr) const;  // overrides OutMessage
+@
+<<InvokingMessage::print.c>>=
+void InvokingMessage::print(ostream& ostr) const
+{
+  ostrstream& o = (ostrstream&)*this;  // Cast away constness
+  o << ends;
+  ostr << o.str();
+}
+
+@
+\subsection{class InvokingMessage}
+<<class InvokingMessage.h>>=
+class InvokingMessage : public OutMessage, protected FEData, public ostrstream
+{
+public:
+<<InvokingMessage Constructor.h>>
+protected:
+<<InvokingMessage::print.h>>
+};
+
+@
+\section{OutMessages.h}
+<<OutMessages.h>>=
+// src/outmessages.pamphlet
+#ifndef _OUTMESSAGES_H_
+#define _OUTMESSAGES_H_
+
+<<include.h>>
+<<class OutMessage.h>>
+<<class LogMessage.h>>
+<<class ParseErrorMessage.h>>
+<<class PackageInfoMessage.h>>
+<<class ParseParamErrorMessage.h>>
+<<class ParseParamOk.h>>
+<<class CheckinMessage.h>>
+<<class FEDataUpdate.h>>
+<<class StateTransition.h>>
+<<class ARCUpdate.h>>
+<<class Warning.h>>
+<<class Message.h>>
+<<class InvokingMessage.h>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+@
+\section{license}
+Copyright (C) 1994-2004 The New York Group Theory Cooperative
+See license/NYGTC for the full notice
+<<*>>=
+<<include.c>>
+<<OutMessage::send.c>>
+
+<<LogMessage Constructor.c.1>>
+<<LogMessage Constructor.c.2>>
+<<LogMessage Constructor.c.3>>
+<<LogMessage Constructor.c.4>>
+<<LogMessage Constructor.c.5>>
+<<LogMessage Constructor.c.6>>
+<<LogMessage::print.c>>
+
+<<ParseErrorMessage Constructor.c>>
+<<ParseErrorMessage::print.c>>
+
+<<PackageInfoMessage Constructor.c>>
+<<PackageInfoMessage::print.c>>
+
+<<ParseParamErrorMessage Constructor.c>>
+<<ParseParamErrorMessage::print.c>>
+
+<<CheckinMessage Constructor.c>>
+<<CheckinMessage::print.c>>
+
+<<FEDataUpdate::print.c>>
+
+<<StateTransition::print.c>>
+
+<<ARCUpdate::print.c>>
+
+<<Warning::print.c>>
+
+<<Message::print.c>>
+
+<<InvokingMessage::print.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

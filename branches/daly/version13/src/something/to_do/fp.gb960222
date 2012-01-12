@@ -1,0 +1,28 @@
+From gilbert@rio Thu Feb 22 18:32:34 1996
+Date: Thu, 22 Feb 1996 18:32:35 -0500
+From: gilbert@rio ( Gilbert Baumslag)
+To: bormotov@jolly2
+Content-Length: 578
+
+G1 is not trivial: this follows because its abelianization
+is non-trivial.
+
+G1 is infinite: this follows because the torsion-free rank
+of its abelianisation is non-zero.
+
+*******G1 is infinite: the free abelian rank is positive.
+
+This should be replaced by:
+
+G1 is infinite: this follows by computing the torsion-free rank
+of the abelianisation of G1.   
+
+When we check to see if a presentation is a metric
+small cancellation presentation, the answer, if there are
+no pieces, should read:
+
+The presentation of G1 is metric small cancellation; there are
+no non-trivial pieces.
+
+
+

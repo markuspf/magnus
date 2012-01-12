@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>User class ListOf&lt;T&gt;</TITLE>
+<META NAME="description" CONTENT="User class ListOf&lt;T&gt;">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00312600000000000000">
+User class <TT>ListOf&lt;T&gt;</TT></A>
+</H3>
+
+<P>
+<BR>
+<BR><EM>What and Where
+<BR>
+<BR></EM>
+
+<P>
+The class
+<BR><TT>template &lt;class T&gt; class ListOf : ObjectOf&lt; ListRep&lt;T&gt; &gt;</TT>
+<BR>
+is defined in <TT>magnus/back_end/general/include/List.h</TT>.
+
+<P>
+A <TT>ListOf&lt;T&gt;</TT> is good for ordered sequences of <TT>T</TT>
+which change size or composition frequently, at the cost of O(n) access.
+
+<P>
+<BR>
+<BR><EM>Special Notes
+<BR>
+<BR></EM>
+
+<P>
+Class <TT>T</TT> must have
+
+<P>
+
+<OL>
+<LI>A copy constructor
+</LI>
+<LI>A destructor
+</LI>
+<LI>An assignment operator
+</LI>
+<LI>An <TT>==</TT> operator
+</LI>
+</OL>
+
+<P>
+There must be an
+
+<P>
+<TT>ostream&amp; operator &#171; ( ostream&amp;, const Type&amp; )</TT>
+
+<P>
+and a conversion of <TT>T</TT> to <TT>Type</TT>.
+
+<P>
+Some <TT>ListOf</TT> methods can safely ignore bad indices,
+but they post a warning if <TT>SAFETY &gt; 0</TT> on the assumption that
+the caller is probably bugged.
+
+<P>
+A Copy constructor, assignment operator,
+and destructor are supplied by the compiler.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

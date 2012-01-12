@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/Proba.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Proba.h}
+\section{include}
+<<include>>=
+#include "iostream.h"
+
+@
+\section{class foo}
+<<class foo>>=
+class foo {
+public:
+  foo();
+  ~foo();
+
+  virtual int ()foo(int(foo::* pmf)(int),int i)
+  { 
+    return i;
+  }
+
+  int g(int);
+  virtual int h(int);
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/Proba.h
+#ifndef _Proba_h_
+#define _Proba_h_
+
+<<license>>
+<<include>>
+<<class foo>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

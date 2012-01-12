@@ -1,0 +1,12 @@
+@@Description of Graphical Regression Analysis
+
+Description of Graphical Regression Analysis
+
+
+   The Graphical Analysis Tool will plot the given data points and then superimpose the fitted regression line along with the sample correlation coefficient. To use the regression analysis tools the data must be paired data (Xi,Yi) . If the samples are not the same size an error message will be outputted. 
+
+           @For further information click here@html/graphRegression/index.html::Description of Graphical Regression@   
+
+
+
+

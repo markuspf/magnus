@@ -1,0 +1,151 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/EquationsInFPProblem.h}
+\author{Denis Serbin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "SMEqSystem.h"
+#include "AbelianEquations.h"
+
+@
+\section{class EqSystemInAbelianARCer}
+<<class EqSystemInAbelianARCer>>=
+class EqSystemInAbelianARCer : public ARCer
+{
+public:
+  EqSystemInAbelianARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+      retValue( 0 ),
+      file()
+    { } 
+  
+  void setArguments( const AbelianEquationsSolver& );
+  
+  ~EqSystemInAbelianARCer()
+    {
+      file << end;
+    }
+
+  Chars getFileName() const
+    { return file.getFileName(); }
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+ 
+  bool getRetValue() const
+    { return retValue; }
+ 
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  File file;
+  bool retValue;
+  AbelianEquationsSolver AES;
+};
+
+@
+\section{class EqSystemInAbelianCM}
+<<class EqSystemInAbelianCM>>=
+class EqSystemInAbelianCM : public ComputationManager
+{
+public:
+  EqSystemInAbelianCM( class EqSystemInFPProblem& p );
+  Chars getFileName() const { return arcer.getFileName(); }
+  Trichotomy haveSolutions() const { return answer; }
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );  // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  SMEqSystem& theSystem;
+  EqSystemInAbelianARCer arcer;
+  bool answer;
+};
+
+@
+\section{class EqSystemInFPProblem}
+<<class EqSystemInFPProblem>>=
+class EqSystemInFPProblem : public Supervisor
+{
+public:
+  EqSystemInFPProblem( SMEqSystem& s );
+  SMEqSystem& getSystem() const { return theSystem; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );  // overrides ComputationManager
+
+private:
+  SMEqSystem& theSystem;
+  Subordinate<EqSystemInFPProblem , EqSystemInAbelianCM> abelianCM;
+};
+
+@
+\section{class EquationInAbelianCM}
+<<class EquationInAbelianCM>>=
+class EquationInAbelianCM : public ComputationManager
+{
+public:
+  EquationInAbelianCM( class EquationInFPProblem& p );
+  Chars getFileName() const { return arcer.getFileName(); }
+  Trichotomy haveSolutions() const { return answer; }
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );  // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  SMEquation2& theEquation;
+  EqSystemInAbelianARCer arcer;
+  bool answer;
+};
+
+@
+\section{class EquationInFPProblem}
+<<class EquationInFPProblem>>=
+class EquationInFPProblem : public Supervisor
+{
+public:
+  EquationInFPProblem( SMEquation2& s );
+  SMEquation2& getEquation() const { return theEquation; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );  // overrides ComputationManager
+
+private:
+  SMEquation2& theEquation;
+  Subordinate<EquationInFPProblem , EquationInAbelianCM> abelianCM;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/EquationsInFPProblem.h
+#ifndef _EquationsInFP_h_
+#define _EquationsInFP_h_
+
+<<license>>
+<<include>>
+<<class EqSystemInAbelianARCer>>
+<<class EqSystemInAbelianCM>>
+<<class EqSystemInFPProblem>>
+<<class EquationInAbelianCM>>
+<<class EquationInFPProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

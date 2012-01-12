@@ -1,0 +1,355 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/SubgroupProblems.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SetOfWordsChecker.h"
+#include "CommutatorsChecker.h"
+#include "NilpotentProblems.h"
+#include "ToddCoxeter.h"
+#include "Subgroup.h"
+#include "GeneticProblems.h"
+
+@
+\section{class IsSGAbelian}
+<<class IsSGAbelian>>=
+class IsSGAbelian : public Supervisor
+{
+public:
+  IsSGAbelian( class SMSubgroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  SetOfWordsChecker theChecker;
+  MirrorSubordinate normalClosure;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate nilpotentQuotients;
+  Subordinate<IsSGAbelian,NilpotentWPInQuotients> nilpotentWPInQuotients;
+  MirrorSubordinate computeBasis;
+  Subordinate<IsSGAbelian,NilpotentWP> nilpotentWP;
+  Subordinate<IsSGAbelian, GeneticWPCM> genetic;
+};
+
+@
+\section{class IsSGCentral}
+<<class IsSGCentral>>=
+class IsSGCentral : public Supervisor
+{
+public:
+  IsSGCentral( class SMSubgroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  SetOfWordsChecker theChecker;
+  MirrorSubordinate normalClosure;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate nilpotentQuotients;
+  Subordinate<IsSGCentral,NilpotentWPInQuotients> nilpotentWPInQuotients;
+  MirrorSubordinate computeBasis;
+  Subordinate<IsSGCentral,NilpotentWP> nilpotentWP;
+  Subordinate<IsSGCentral, GeneticWPCM> genetic;
+};
+
+@
+\section{class IsSGNilpotent}
+<<class IsSGNilpotent>>=
+class IsSGNilpotent : public Supervisor
+{
+public:
+  IsSGNilpotent( const class SMSubgroup& S, int nilpClass = 2 );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }           // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  const SMSubgroup& theSubgroup;
+  int theClass;
+  CommutatorsChecker theChecker;
+  CommutatorsCheckerARCer theArcer;
+  MirrorSubordinate normalClosure;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate nilpotentQuotients;
+  Subordinate<IsSGNilpotent,NilpotentWPInQuotients> nilpotentWPInQuotients;
+};
+
+@
+\section{class IsSGTrivial}
+<<class IsSGTrivial>>=
+class IsSGTrivial : public Supervisor
+{
+public:
+  IsSGTrivial(  class SMSubgroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  SetOfWordsChecker theChecker;
+  MirrorSubordinate normalClosure;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate nilpotentQuotients;
+  Subordinate<IsSGTrivial,NilpotentWPInQuotients> nilpotentWPInQuotients;
+  MirrorSubordinate computeBasis;
+  Subordinate<IsSGTrivial,NilpotentWP> nilpotentWP;
+  Subordinate<IsSGTrivial, GeneticWPCM> genetic;
+};
+
+@
+\section{class SGIndexProblem}
+<<class SGIndexProblem>>=
+class SGIndexProblem : public Supervisor
+{
+public:
+  SGIndexProblem(SMSubgroup& subgroup);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  MirrorSubordinate sgToddCoxeter;
+  MirrorSubordinate sgGHToddCoxeter;
+};
+
+@
+\section{class ApproxMethodARCer}
+<<class ApproxMethodARCer>>=
+class ApproxMethodARCer : public ARCer
+{
+public:
+  ApproxMethodARCer( ComputationManager& boss ) 
+    : ARCer( boss ) , sg( FPGroup() ) , tmpOutput( ) 
+  { } 
+  
+  void setArguments( const FPGroup& g , const VectorOf<Word>& v );
+  
+  FPGroup getRetValue( );
+  Chars tmpOutputFilename();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  Subgroup sg;
+  File tmpOutput;
+  FPGroup result;
+};
+
+@
+\section{class ApproxMethod}
+<<class ApproxMethod>>=
+class ApproxMethod : public ComputationManager
+{
+public:
+  ApproxMethod( class SGPresentationProblem& sgp );
+  FPGroup getResult();
+  Chars tmpOutputFilename();  
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  FPGroup result;
+  ApproxMethodARCer arcer;
+};
+
+@
+\section{class TCMethodARCer}
+<<class TCMethodARCer>>=
+class TCMethodARCer : public ARCer
+{
+public:
+  TCMethodARCer( ComputationManager& boss ) 
+    : ARCer( boss ) , sg( FPGroup() ) , 
+      pr( ) , tmpOutput( ) 
+  { } 
+
+  void setArguments( const FPGroup& g , const VectorOf<Word>& v ,
+		     const PermutationRepresentation& prep );
+  
+  FPGroup getRetValue( );
+  Chars tmpOutputFilename();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  Subgroup sg;
+  PermutationRepresentation pr;
+  File tmpOutput;
+  FPGroup result;
+};
+
+@
+\section{class TCMethod}
+<<class TCMethod>>=
+class TCMethod : public ComputationManager
+{
+public:
+  TCMethod( class SGPresentationProblem& sgp );
+  FPGroup getResult();
+  Chars tmpOutputFilename();
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  Bool init;
+  FPGroup result;
+  TCMethodARCer arcer;
+};
+
+@
+\section{class SGPresentationProblem}
+<<class SGPresentationProblem>>=
+class SGPresentationProblem : public Supervisor
+{
+public:
+  SGPresentationProblem(SMSubgroup& s);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  SMSubgroup& getTestSubgroup(); 
+  void takeControl( );         // overrides ComputationManager
+  void start( );               // overrides ComputationManager
+  void terminate( );           // overrides ComputationManager
+
+private:
+  SMSubgroup& theSubgroup;
+  Bool done;
+  Bool term;
+  
+  Subordinate<SGPresentationProblem,ApproxMethod> am;
+  Subordinate<SGPresentationProblem,TCMethod> tcm;
+  MirrorSubordinate sgToddCoxeter;
+};
+
+@
+\section{class RewriteWordARCer}
+<<class RewriteWordARCer>>=
+class RewriteWordARCer : public ARCer
+{
+public:
+  RewriteWordARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+      retValue(),
+      theWord(),
+      F(),
+      rank( 0 ),
+      tmpOutput(),
+      pr(NULL)
+    { } 
+  
+  void setArguments(const PermutationRepresentation&,
+		    const FreeGroup&,const Word&);
+  
+  Chars tmpOutputFilename();
+  int getRank();
+  Word getRepresentative();
+  
+  Word rewrite(const PermutationRepresentation&,const VectorOf<Word>&,
+	       const FreeGroup& F,const Word&,bool);
+  
+  Word getRetValue() const{ return retValue; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  Word retValue;
+  Word theWord;
+  FreeGroup F;
+  int rank;
+  File tmpOutput;
+  PermutationRepresentation* pr;
+};
+
+@
+\section{class SGRewriteWordProblem}
+<<class SGRewriteWordProblem>>=
+class SGRewriteWordProblem : public Supervisor
+{
+public:
+  SGRewriteWordProblem(SMSubgroup& s,SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  SMWord& theWord;
+  SMSubgroup& theSubgroup;
+  bool init;
+  RewriteWordARCer arcer;
+  MirrorSubordinate sgToddCoxeter;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/SubgroupProblems.h
+#ifndef _SubgroupProblems_h_
+#define _SubgroupProblems_h_
+
+<<license>>
+<<include>>
+<<class IsSGAbelian>>
+<<class IsSGCentral>>
+<<class IsSGNilpotent>>
+<<class IsSGTrivial>>
+<<class SGIndexProblem>>
+<<class ApproxMethodARCer>>
+<<class ApproxMethod>>
+<<class TCMethodARCer>>
+<<class TCMethod>>
+<<class SGPresentationProblem>>
+<<class RewriteWordARCer>>
+<<class SGRewriteWordProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+
+
+

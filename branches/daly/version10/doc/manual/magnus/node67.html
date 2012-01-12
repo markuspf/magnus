@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>proc framer</TITLE>
+<META NAME="description" CONTENT="proc framer">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00334100000000000000">
+<TT>proc framer</TT></A>
+</H3>
+
+<P>
+The <TT>proc framer</TT> in <TT>general.tcl</TT> relieves some of the tedium
+of creating frames and packing widgets into them, though you still
+have to think about how to arrange frames to get the effect you want.
+The above example becomes
+
+<P>
+<PRE>
+  button .d9.ok -text OK; button .d9.cancel -text Cancel
+  framer .d9 .d9 top {
+    left {} {} {
+      ok {} cancel {}
+    }
+  }
+</PRE>
+
+<P>
+Look in, e.g., <TT>options.tcl</TT> for more elaborate examples.
+
+<P>
+The first argument to <TT>framer</TT>, <TT>parent</TT>, is the parent of all
+widgets which are to be packed. It saves having to re-type it for
+every widget. The second argument is the highest level master of all
+widgets packed by <TT>framer</TT>, and of all frames it creates and
+packs. It may as well be <TT>parent</TT>. The third argument gives the
+initial <TT>-side</TT> argument to <TT>pack</TT>.  What follows is a list of
+2- and 4-tuples.
+
+<P>
+The 2-tuples are widget names followed by a list of arguments to <TT>pack</TT>, possibly <TT>{}</TT>. These widgets must have parent <TT>parent</TT>.
+
+<P>
+The 4-tuples specify frames which may contain slave frames and
+widgets. They consist of a <TT>-side</TT> option for the slaves, a list
+of <TT>frame</TT> options, a list of <TT>pack</TT> options for the frame,
+and a further list of widgets and frame specifications.
+
+<P>
+As <TT>framer</TT> creates the specified frames, it gives them the names
+<TT>f1</TT>, <TT>f2</TT>, etc., and makes <TT>parent</TT> their parent.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

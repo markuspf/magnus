@@ -1,0 +1,13 @@
+@@Description of Alternate Model Testing
+
+Description of Alternate Model Testing
+
+   The Alternate Models Tool will allow the user to construct various alternative one variable models. These include exponential and power mdoels. The fitted coefficients of determination will be computed and compared to that of the fitted linear model. To use the regression analysis tools the data must be paired data (Xi,Yi).
+   If the samples are not the same size an error message will be outputted. 
+
+
+           @For further information click here@html/alternateModel/index.html::Description of Alternate Model@   
+
+
+
+

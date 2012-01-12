@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/HomologyProblem.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "Vector.h"
+
+@
+\section{class HomologyARCer}
+<<class HomologyARCer>>=
+class HomologyARCer : public ARCer
+{
+public:
+  HomologyARCer( ComputationManager& );
+  ~HomologyARCer( );
+
+  void setArguments( const class KBMachine& M, int startDimension, 
+		     int endDimension );
+
+  VectorOf<Integer> getTorsionInvariants( ) const { return torsionInvariants; }
+
+  int getTorsionFreeRank() const { return torsionFreeRank; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  class KBMachine *kbmachine;
+  int startdim, enddim;
+  VectorOf<Integer> torsionInvariants;
+  int torsionFreeRank;
+};
+
+@
+\section{class HomologyProblem}
+<<class HomologyProblem>>=
+class HomologyProblem : public ComputationManager
+{
+public:
+  HomologyProblem( const class HomologySupervisor& );
+  bool isSolved() const { return solved; }
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+  
+private:
+  SMFPGroup& theGroup;
+  int theDimension;
+  HomologyARCer homologyArcer;
+  bool arcerStarted;
+  bool solved;
+};
+
+@
+\section{class HomologySupervisor}
+<<class HomologySupervisor>>=
+class HomologySupervisor : public Supervisor
+{
+public:
+  HomologySupervisor(class SMFPGroup& G, int d = 2 );
+  SMFPGroup& group() const { return theGroup; }
+  int dimension( ) const { return theDimension; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }           // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  int theDimension;
+  Subordinate<HomologySupervisor, HomologyProblem> homology;
+  MirrorSubordinate kbSupervisor;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/HomologyProblem.h
+#ifndef _HOMOLOGYPROBLEM_H_
+#define _HOMOLOGYPROBLEM_H_
+
+<<license>>
+<<include>>
+<<class HomologyARCer>>
+<<class HomologyProblem>>
+<<class HomologySupervisor>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

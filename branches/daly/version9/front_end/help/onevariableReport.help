@@ -1,0 +1,32 @@
+                          THE REPORT TOOL
+
+  The CAISS-STAT Report Tool for a One-Variable Data Set  allows the user to implement automatically all the tools available for such data sets.  In the Report Tool dialog box the user will have the opportunity to include or not include in the final report any of the other tools by clicking on an appropriate box. Where choices need to be made, such as level of significance or confidence level, they must be made directly in the Report dialog box.  The tools that are included within Report are
+
+   The Data Summary Tool will construct a frequency distribution of the given data set. Recall that a frequency distribution is a tabular summary of the data that arranges the data into classes and then gives a count or frequency in each class. The classes will either be constructed automatically or by user prompts.   
+
+     For more information click here
+
+   The Full Data Analysis Tool will calculate all the basic descriptive measures for the given data set.  The measures included are the mean, variance, standard deviation, range, median, first quartile, third quartile and measure of skewness.   Clicking on any of these objects will give a description of the statistical measure. 
+
+     For more information click here
+
+
+   The Graphical Analysis Tool will construct various graphical presentations of the given data set.  These will include a histogram, a frequency polygon and a normal distribution with the given mean and standard deviation superimposed on the histogram. Clicking on any of the links will give a more complete description. 
+
+     For more information click here
+
+
+   The Analysis of the Mean Tool will calculate either a confidence interval for the population mean or evaluate a hypothesis test against a given target mean. 
+
+     For more information click here
+
+
+   The Analysis of the Variance Tool will calculate either a confidence interval for either the population variance or population standard deviation or evaluate a hypothesis test against a given target variance. 
+
+     For more information click here
+
+
+   The Goodness of Fit Tool will test the data set to see how well it fits various theoretical populations including a normal, exponential and uniform. 
+
+     For more information click here
+

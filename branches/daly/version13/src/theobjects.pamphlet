@@ -1,0 +1,405 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/theobjects.pamphlet}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include.h}
+<<include.h>>=
+#include "Set.h"
+#include "Associations.h"
+#include "Chars.h"
+
+@
+<<include.c>>=
+#include "SMObject.h"
+#include "ComputationManager.h"
+#include "TheObjects.h"
+#include "Supervisor.h"
+
+@
+\section{Public methods}
+\subsection{public isRunning}
+True iff oid is the OID of a ComputationManager which is in state RUNNING.
+<<isRunning.h>>=
+  static bool isRunning(OID oid);
+@
+<<isRunning.c>>=
+bool TheObjects::isRunning(OID oid)
+{
+  SMObject* smo = TheObjects::get( oid );
+  return
+  ( smo && smo->isComputationManager()
+	&& ((ComputationManager*)smo)->state() == ComputationManager::RUNNING);
+}
+
+@
+\subsection{public isStalled}
+Returns true when no running ComputationManager has any ARCs from OID.
+
+See [[ComputationManager::checkForStall()]]. This checks whether any
+CM which has ever had ARCs with benefactor oid, has any free ARCs now.
+<<isStalled.h>>=
+  static bool isStalled(OID oid);
+@
+<<isStalled.c>>=
+bool TheObjects::isStalled(OID oid)
+{
+  for( int j = 0; j < theObjectsLength; ++j ) {
+	 SMObject* smo = theObjects[j];
+	 if ( smo != 0 &&
+	      smo->isComputationManager() &&
+	      ((ComputationManager*)smo)->workingFor( oid ) 
+	      )
+	   return false;
+  }
+  return true;
+}
+
+@
+\subsection{public remove}
+Removes and deletes the indicated SMObject, and all of its dependents.
+A bad oid is quietly ignored, for messaging fault-tolerance.
+Returns the dependency closure of oid, i.e., the objects which were
+deleted.
+<<remove.h>>=
+  static SetOf<OID> remove(OID oid);
+@
+<<remove.c>>=
+SetOf<OID> TheObjects::remove(OID oid)
+{
+  SetOf<OID> toDelete = TheObjects::dependencyClosure( oid );
+#ifdef debug_TheObjects
+  cerr << "\nabout to delete " << toDelete.cardinality()
+       << " objects" << endl << endl << flush;
+#endif
+  SetIterator<OID> I( toDelete );
+  while ( ! I.done() ) {
+    int i = I.value().unwrap();
+    if ( i >= 0 && i < theObjectsLength && theObjects[i] ) {
+#ifdef debug_TheObjects
+      cerr << "\ndeleting " << i << endl << endl << flush;
+#endif
+      //@db
+      SMObject* smo = theObjects[i];
+      if( smo->isComputationManager() ) {
+	ComputationManager* CM = (ComputationManager*)smo;
+	if( CM->state() == ComputationManager::RUNNING ||
+	    CM->state() == ComputationManager::SUSPENDED )
+	  CM->adminTerminate();
+      }
+      delete theObjects[i];
+      theObjects[i] = 0;
+      if( theNames->bound(i) )
+	theNames->unbind(i);
+    }
+    I.next();
+  }
+  return toDelete;
+}
+
+@
+\subsection{public get}
+Returns the SMObject* with the given oid,
+or 0 if there is no such object, for messaging fault-tolerance.
+Used by class SessionManager and class Ctor.
+<<get.h>>=
+  static SMObject* get(OID oid);
+@
+<<get.c>>=
+SMObject* TheObjects::get(OID oid)
+{
+  int i = oid.unwrap();
+  return ( i >= 0 && i < theObjectsLength ? theObjects[i] : 0 );
+}
+
+@
+\subsection{public dependencyClosure}
+A bad oid is quietly ignored, for messaging fault-tolerance.
+<<dependencyClosure.h>>=
+  static SetOf<OID> dependencyClosure(OID oid);
+@
+<<dependencyClosure.c>>=
+SetOf<OID> TheObjects::dependencyClosure(OID oid)
+{
+  SetOf<OID> result;
+  int i = oid.unwrap();
+  if ( i >= 0 && i < theObjectsLength && theObjects[i] ) {
+	 result.adjoinElement( oid );
+	 if  (theObjects[oid.unwrap()]->isComputationManager() )
+	      return result;
+	 ListIterator< ListOf<OID> > I( theObjects[i]->getDependents() );
+	 while ( ! I.done() ) {
+		result |= TheObjects::dependencyClosure( I.value() );
+		I.next();
+	 }
+  }
+  return result;
+}
+
+@
+\subsection{public name}
+Returns name of the object with the given oid
+<<name.h>>=
+  static Chars name(OID oid);
+@
+<<name.c>>=
+Chars TheObjects::name(OID oid)
+{
+  if( theNames->bound(oid) )
+    return theNames->valueOf(oid);
+  else
+    return "";
+}
+
+@
+\section{Private methods}
+\subsection{private reserveOid}
+Reserves a place in theObjects for a new SMObject, and returns the index.
+Used by class SMObject to prepare for enrollment.
+<<reserveOid.h>>=
+  static OID reserveOid( );
+@
+<<reserveOid.c>>=
+OID TheObjects::reserveOid( )
+{
+  // Maybe need to initialize:
+  if ( theObjectsLength == 0 ) resize( minimumLength );
+  // Look for an empty spot
+  int i = 0;
+  while ( i < theObjectsLength && theObjects[i] != 0 ) ++i;
+  if ( i == theObjectsLength ) resize( i++ << 1 );
+  return OID(i);
+}
+
+@
+\subsection{private enroll}
+Used by class SMObject.
+<<enroll.h>>=
+  static void enroll(SMObject* newObject);
+@
+<<enroll.c>>=
+void TheObjects::enroll(SMObject* newObject)
+{
+  int oid = (newObject->oid()).unwrap();
+  theObjects[oid] = newObject;
+}
+
+@
+\subsection{private passControl}
+Passes control to a ComputationManager in a fair way.
+
+Terrible, temporary hackery: A ComputationManager may have a fastResult(), 
+which means it should get control immediately, and then be removed.
+Here we find all of these.
+<<passControl.h>>=
+  static void passControl( );
+@
+<<passControl.c>>=
+void TheObjects::passControl( )
+{
+  for( int j = 0; j < theObjectsLength; ++j ) {
+	 SMObject* smo = theObjects[j];
+	 if ( smo != 0 &&
+	      smo->isComputationManager() &&
+	      ((ComputationManager*)smo)->fastResult()
+	      ) {
+	   ((ComputationManager*)smo)->takeControl();
+	   remove( j );
+	 }
+  }
+  int i = CMToGetControl;
+  int count = theObjectsLength;
+  while ( count-- ) {
+	 if ( i >= theObjectsLength ) i = 0;
+	 SMObject* smo = theObjects[i];
+	 if ( smo != 0 &&
+	      smo->isComputationManager() &&
+	      ((ComputationManager*)smo)->state() 
+	      == ComputationManager::RUNNING
+	      ) 
+	   {
+	     ComputationManager* cm = (ComputationManager*)smo;
+	     if ( !(cm->checkForStall()) ) {
+	       
+	       if( cm->isSupervisor() )  
+		 ((Supervisor*)cm)->supervise();
+	       else
+		 cm->takeControl();
+	       break;
+	     }
+	   }
+	 ++i;
+  }
+  CMToGetControl = i + 1;
+  //@dp Magnus should sleep, do not eat CPU time, when there are no CMs
+  //    with allocated ARCs.
+  static int passesHandledBeforeSleeping = 10;
+  //  bool runningCMs = false;
+  if(passesHandledBeforeSleeping >= 0 ) 
+    --passesHandledBeforeSleeping;
+  for( int j = 0; j < theObjectsLength; ++j ) {
+    SMObject* smo = theObjects[j];
+    if ( smo != 0
+	 && smo->isComputationManager()
+	 && ((ComputationManager*)smo)->state() == ComputationManager::RUNNING
+	 && ((ComputationManager*)smo)->freeARCs() > 0 
+	 ) {
+      //runningCMs = true;
+      passesHandledBeforeSleeping = 10;
+      break;
+    }
+  }
+  if( passesHandledBeforeSleeping < 0 /*!runningCMs*/  )
+  #ifdef SYSV
+    sleep(1); // @db: don't have usleep under Solaris
+  #else    
+    usleep(200);
+  #endif   
+}
+
+@
+\subsection{private resize}
+A helper for expanding theObjects.
+<<resize.h>>=
+  static void resize(int newLength);
+@
+<<resize.c>>=
+void TheObjects::resize(int newLength)
+{
+  SMObject** temp = new SMObject*[newLength];
+  for( int i = 0; i < theObjectsLength; ++i )
+	 temp[i] = theObjects[i];
+  for( int i = theObjectsLength; i < newLength; ++i )
+	 temp[i] = 0;
+  theObjectsLength = newLength;
+  delete [] theObjects;
+  theObjects = temp;
+}
+
+@
+\subsection{private setName}
+Changes name of an object
+<<setName.h>>=
+  static void setName(OID oid, Chars name);
+@
+<<setName.c>>=
+void TheObjects::setName(OID oid, Chars name)
+{
+  theNames->bind(oid,name);
+}
+
+@
+\section{Private Data}
+\subsection{private theObjectsLength}
+<<theObjectsLength.h>>=
+  static int theObjectsLength;
+@
+<<theObjectsLength.c>>=
+int TheObjects::theObjectsLength = 0;
+@
+\subsection{private theObjects}
+<<theObjects.h>>=
+  static SMObject** theObjects;
+@
+<<theObjects.c>>=
+SMObject** TheObjects::theObjects = 0;
+@
+\subsection{private CMToGetControl}
+Keeps a copy of the names of the objects for SM use
+<<CMToGetControl.h>>=
+  static int CMToGetControl;
+@
+<<CMToGetControl.c>>=
+int TheObjects::CMToGetControl = 0;
+@
+\subsection{private theNames}
+<<theNames.h>>=
+  static AssociationsOf<OID,Chars>* theNames; 
+@
+<<theNames.c>>=
+AssociationsOf<OID,Chars>* TheObjects::theNames = 
+  new AssociationsOf<OID,Chars>(); 
+
+@
+\subsection{private minimumLength}
+<<minimumLength.h>>=
+  static const int minimumLength = 16;
+@
+\section{TheObjects.h}
+\subsection{class TheObjects}
+<<class TheObjects>>=
+class TheObjects
+{
+public:
+<<isRunning.h>>
+<<isStalled.h>>
+<<remove.h>>
+<<get.h>>
+<<dependencyClosure.h>>
+<<name.h>>
+private:
+  friend class SMObject;
+  friend class SessionManager;
+  friend class Ctor;
+  friend class UnboundedSupervisor;
+  friend class ResourceManager;
+  friend class ExtendToHomProblem; //@db temporary hack
+<<reserveOid.h>>
+<<enroll.h>>
+<<passControl.h>>
+<<setName.h>>
+<<resize.h>>
+<<minimumLength.h>>
+<<theObjectsLength.h>>
+<<theObjects.h>>
+<<CMToGetControl.h>>
+<<theNames.h>>
+};
+
+@
+\section{license}
+Copyright (C) 1995 The New York Group Theory Cooperative
+See magnus/doc/COPYRIGHT for the full notice.
+\section{Include File}
+<<TheObjects.h>>=
+// src/theobjects.pamphlet
+#ifndef _THEOBJECTS_H_
+#define _THEOBJECTS_H_
+
+<<include.h>>
+<<class TheObjects>>
+#endif
+@
+\section{Code}
+<<*>>=
+// src/theobjects.pamphlet
+<<include.c>>
+
+<<isRunning.c>>
+<<isStalled.c>>
+<<reserveOid.c>>
+<<enroll.c>>
+<<dependencyClosure.c>>
+<<remove.c>>
+<<get.c>>
+<<passControl.c>>
+<<resize.c>>
+<<setName.c>>
+<<name.c>>
+
+<<theObjectsLength.c>>
+<<theObjects.c>>
+<<CMToGetControl.c>>
+<<theNames.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

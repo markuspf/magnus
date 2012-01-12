@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{../../../../mnt/linux/bin/axiom}
+\begin{document}
+\title{src/backend/SessionManager/src/Makefile}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Environment}
+<<environment>>=
+IN=${SRC}/backend/SessionManager/src
+MID=${INT}/backend/SessionManager/src
+OUT=${OBJ}/${SYS}/backend/SessionManager/src
+DOC=${MNT}/${SYS}/doc/src/backend/SessionManager/src
+
+@
+\section{Code}
+\subsection{SessionManager}
+<<SessionManager.C (MID from IN)>>=
+${MID}/SessionManager.C: ${IN}/SessionManager.C.pamphlet
+	@echo 1 making ${MID}/SessionManager.C from ${IN}/SessionManager.C.pamphlet
+	@${DOCUMENT} src SessionManager.C ${MID}
+
+@
+<<SessionManager.o (OUT from MID)>>=
+${OUT}/SessionManager.o: ${MID}SessionManager.C
+	@echo 2 making ${OUT}/SessionManager.o from ${MID}SessionManager.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/SessionManager.o ${MID}SessionManager.C
+
+@
+<<SessionManager.C.dvi (DOC from IN)>>=
+${DOC}/SessionManager.C.dvi: ${IN}/SessionManager.C.pamphlet ${DOC}/axiom.sty
+	@echo 3 making ${DOC}/SessionManager.C.dvi from ${IN}/SessionManager.C.pamphlet 
+	@${DOCUMENT} dvi SessionManager.C ${DOC} SessionManager.C ${NOISE}
+
+@
+\section{axiom.sty}
+<<axiom.sty (OUT from IN)>>=
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 16 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@${DOCUMENT} chunk "axiom.sty" ${SRC}/doc/axiom.sty ${DOC} axiom.sty
+ 
+@
+<<*>>
+<<environment>>
+
+FILES=${OUT}/SessionManager.o
+
+DOCFILES=${DOC}/SessionManager.C.dvi
+
+all: ${FILES} ${DOCFILES}
+
+<<SessionManager.C (MID from IN)>>
+<<SessionManager.o (OUT from MID)>>
+<<SessionManager.C.dvi (DOC from IN)>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

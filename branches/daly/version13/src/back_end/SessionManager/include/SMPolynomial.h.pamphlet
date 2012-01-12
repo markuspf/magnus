@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/SMPolynomial.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Polynomial.h"
+#include "AlgebraicObject.h"
+
+@
+\subsection{class SMPolynomial}
+<<class SMPolynomial>>=
+class SMPolynomial : public AlgebraicObject
+{
+public:
+  SMPolynomial( const Polynomial<Integer>& P, const Chars heritage);
+
+  SMPolynomial( ) : AlgebraicObject("")
+  { }
+
+  Polynomial<Integer> getPolynomial( ) const { return thePolynomial; }
+  static const char* type( ) { return "SMPolynomial"; }
+  const char* typeID( ) const { return type(); }          // overrides SMObject
+  const IconID iconID( ) const { return IconID::Polynomial; }
+  // overrides SMObject
+  // @db need to change the ID later
+  void viewStructure(ostream& ostr) const;                // overrides SMObject
+  void printProperties(ostream& ostr) const;              // overrides SMObject
+  void printDefinition(ostream& ostr) const;              // overrides SMObject
+
+protected:
+  void readMessage(istream&) { }                        // overrides SMObject
+
+private:
+  Polynomial<Integer> thePolynomial;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/SMPolynomial.h
+#ifndef _SMPolynomial_H_
+#define _SMPolynomial_H_
+
+<<license>>
+<<include>>
+<<class SMPolynomial>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

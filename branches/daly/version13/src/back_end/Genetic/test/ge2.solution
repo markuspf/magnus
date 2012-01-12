@@ -1,0 +1,44 @@
+p -> 1, 
+q -> a, 
+R -> 1, 
+u -> 1, 
+x -> a b^-1 a^2 b a^2, 
+Y -> 1, 
+t -> b^-1 a^-1,
+s -> 1,
+z -> b
+
+p q R P u x Y U t s Q r S z X y Z T,
+
+w = 1  a  1  1  1  a B a a b a a  1  1  B A  1  A  1  1  b  A A B A A b A  1  B  a b,
+    p  q  R  P	u        x        Y  U   t   s  Q  r  S  z        X        y  Z   T  
+
+C = 1  a  1  1  1  a B a a b a a  1  1  B A  1  A  1  1  b  A A B A A b A  1  B  a b
+
+
+
+C = [a^-2, a^-1 b a^-2 b^-1 a^-2 b] [a,b]
+
+[x1,y1][x2,y2] = C'
+
+C' = b^-1 a b a^2 b^-1 a^2 b a^2 b^-1 a^-2 b a^-2 b^-1 a^-2 b a^-1  (original const)
+
+C is a cyclical permutation of C'
+
+
+
+*** Finding solutions of [x1,y1][x2,y2] = C' ***
+
+
+h2 = 	p -> u x Y u^-1 t s R p^-1, 
+	q -> u x Y u^-1 t s q^-1 R^-1 s^-1 t^-1 u Y^-1 x^-1 u^-1, 
+	R -> R, 
+	u -> t z Y u^-1, 
+	x -> t z x^-1 Y^-1 z^-1 t^-1, 
+	Y -> Y, 
+	t -> t, 
+	s -> s,
+	z -> z.
+
+Im h2 (p^-1 q^-1 p q u^-1 x^-1 u x) = 
+[ (u x Y u^-1 t s R p^-1), (u x Y u^-1 t s q^-1 R^-1 s^-1 t^-1 u Y^-1 x^-1 u^-1) ] [ (t z Y u^-1), (t z x^-1 Y^-1 z^-1 t^-1)]

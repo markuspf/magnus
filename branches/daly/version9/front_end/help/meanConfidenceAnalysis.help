@@ -1,0 +1,12 @@
+@@How Confidence Interval for Mean Analysis Works
+
+CONFIDENCE INTERVAL  FOR MEAN ANALYSIS
+
+The first procedure is to construct a confidence interval for the population mean from the sample mean and standard deviation of the given one variable data set. If the sample size is over 30 a large sample procedure will be used and for a sample size under 30 a small sample procedure will be employed. In the latter case theoretically the parent population must be normal (see below) so it is best to check for normality and/or symmetry of the data in the case of a small sample. 
+
+
+        @For more information click here@html/meanTool/confidence.html::Mean Analysis Help@
+
+
+
+

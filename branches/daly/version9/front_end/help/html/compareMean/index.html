@@ -1,0 +1,1262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Comparison_5fof_5fMeans_5fTool</TITLE>
+<META NAME="description" CONTENT="Comparison_5fof_5fMeans_5fTool">
+<META NAME="keywords" CONTENT="Comparison_5fof_5fMeans_5fTool">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="Comparison_5fof_5fMeans_5fTool.css">
+
+</HEAD>
+
+<BODY >
+
+<DIV ALIGN="CENTER">
+<B>THE COMPARISON OF MEANS TOOL</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+The <B>Comparison of Means Tool</B> will perform two standard inference procedures for the
+population means of the two independent populations from which the given two variable data set has
+been drawn.  
+
+<P>
+The first procedure is to construct a <B>confidence interval </B> for the difference of population
+means from the sample means and standard deviations of the given two variable data set.  If the
+sample sizes are over 30 a large sample procedure will be used and for a sample sizes under 30 a
+small sample procedure will be employed.  In the latter case theoretically the parent populations
+must be normal so it is best to check for normality and/or symmetry of the data in the
+case of a small sample. 
+
+<P>
+The second procedure is to evaluate a hypothesis test for the difference of the population means
+testing a user supplied null hypothesis ( given in the form of a target difference) against a user
+supplied alternative hypothesis. A null hypothesis of zero would test whether the population
+means differ.  The P-value of the given data  will be computed and the output box will
+indicate whether the results are significant relative to a user supplied level of significance.  As
+with the confidence interval procedure if the sample sizes are over 30 a large sample procedure will
+be used and for a sample sizes under 30 a small sample procedure will be employed.
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>CONFIDENCE INTERVAL FOR THE DIFFERENCE OF MEANS </B></DIV>
+ <BR>
+<DIV ALIGN="CENTER">
+<B>OF A TWO
+VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+Suppose <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \cal P_1$">,<IMG
+ WIDTH="25" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \cal P_2$"> are the two independent populations represented by the two-variable
+data set and suppose <IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \mu_1$"> is the mean of <IMG
+ WIDTH="29" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \cal P_1$"> and <IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \mu_2$"> is the mean of <IMG
+ WIDTH="25" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \cal P_2$">.  We
+wish to estimate <!-- MATH
+ $\mu_1-\mu_2$
+ -->
+<IMG
+ WIDTH="57" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \mu_1-\mu_2$">.  Let
+<!-- MATH
+ \begin{displaymath}
+\theta = \mu_1 - \mu_2.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="90" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.gif"
+ ALT="$\displaystyle \theta = \mu_1 - \mu_2.$">
+</DIV><P></P>
+Then an unbiased estimator for <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ \theta$"> is given by the difference of the sample means
+<!-- MATH
+ \begin{displaymath}
+\th = \X_1 - \X_2.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="52" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$\displaystyle \th = \X_1 - \X_2.$">
+</DIV><P></P>
+
+<P>
+If the sample sizes <IMG
+ WIDTH="44" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ n_1,n_2$"> are large ( both over 30 in practice) then the statistic
+<!-- MATH
+ \begin{displaymath}
+z = \frac{\th - \theta}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="109" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$\displaystyle z = \frac{\th - \theta}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$">
+</DIV><P></P>
+has an approximate standard normal distribution.  In the formula above <IMG
+ WIDTH="22" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ S_1^2$"> is the sample
+variance of the first sample and <IMG
+ WIDTH="22" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$ S_2^2$"> is the sample
+variance of the second sample.  From this the following large sample confidence interval <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \alpha$">%
+for the difference of means can be derived
+<!-- MATH
+ \begin{displaymath}
+(\X_1 - \X_2) - z_\alpha\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}} \le \mu_1 - \mu_2 \le
+ (\X_1 - \X_2) + z_\alpha\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}} .
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="411" HEIGHT="70" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$\displaystyle (\X_1 - \X_2) - z_\alpha\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_...
+...mu_2 \le
+(\X_1 - \X_2) + z_\alpha\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}} .$">
+</DIV><P></P>
+In the formula <IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ z_\alpha$"> is an appropriate normal confidence coefficient. 
+
+<P><P>
+<BR>
+
+<P>
+<B>EXAMPLE</B> Suppose in our two variable data set we have the information
+<!-- MATH
+ \begin{displaymath}
+\X_1 = 83, S_1 = 6, n_1 = 38: \hphantom{xx} \X_2 = 80, S_2 = 5.4, n_2 = 40.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="369" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.gif"
+ ALT="$\displaystyle \X_1 = 83, S_1 = 6, n_1 = 38: \hphantom{xx} \X_2 = 80, S_2 = 5.4, n_2 = 40.$">
+</DIV><P></P>
+Then a 95% confidence interval for the difference of the population means would be given by
+<!-- MATH
+ \begin{displaymath}
+(83 - 80) - (1.96)\sqrt{\frac{6^2}{38} + \frac{5.4^2}{40}} \le \mu_1 - \mu_2 \le
+(83 - 80) + (1.96)\sqrt{\frac{6^2}{38} + \frac{5.4^2}{40}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="520" HEIGHT="61" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\displaystyle (83 - 80) - (1.96)\sqrt{\frac{6^2}{38} + \frac{5.4^2}{40}} \le \mu_1 - \mu_2 \le
+(83 - 80) + (1.96)\sqrt{\frac{6^2}{38} + \frac{5.4^2}{40}}$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+\implies .46 \le \mu_1 - \mu_2 \le 5.58
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="148" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.gif"
+ ALT="$\displaystyle \implies .46 \le \mu_1 - \mu_2 \le 5.58$">
+</DIV><P></P> 
+
+<P><P>
+<BR>
+
+<P>
+If the sample sizes <IMG
+ WIDTH="44" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ n_1,n_2$"> are small we must assume that the parent populations are normal or
+approximately normal. If this is the case and the variances are approximately equal then the
+statistic <!-- MATH
+ \begin{displaymath}
+t = \frac{\th - \theta}{S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="123" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$\displaystyle t = \frac{\th - \theta}{S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$">
+</DIV><P></P>
+has an
+t-distribution with <!-- MATH
+ $n_1 + n_2 - 2$
+ -->
+<IMG
+ WIDTH="84" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ n_1 + n_2 - 2$"> degrees of freedom.  In the formula above <IMG
+ WIDTH="22" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ S_p^2$"> is the <B>pooled estimate</B> of the sample variances given by
+<!-- MATH
+ \begin{displaymath}
+S_p^2 = \frac{ (n_1) S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="192" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.gif"
+ ALT="$\displaystyle S_p^2 = \frac{ (n_1) S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}.$">
+</DIV><P></P>
+Hence
+<!-- MATH
+ \begin{displaymath}
+S_ p = \sqrt{ \frac{ (n_1) S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="207" HEIGHT="70" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$\displaystyle S_ p = \sqrt{ \frac{ (n_1) S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}}.$">
+</DIV><P></P> 
+
+<P>
+From this the following small
+sample confidence interval <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ \alpha$">% for the difference of means can be derived <!-- MATH
+ \begin{displaymath}
+(\X_1 - \X_2) -
+t_\alpha S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}} \le \mu_1 - \mu_2 \le
+ (\X_1 - \X_2) + t_\alpha S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}} .
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="437" HEIGHT="58" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="$\displaystyle (\X_1 - \X_2) -
+t_\alpha S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}} ...
+... - \mu_2 \le
+(\X_1 - \X_2) + t_\alpha S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}} .$">
+</DIV><P></P>
+In the formula <IMG
+ WIDTH="19" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ t_\alpha$"> is an appropriate t confidence coefficient based on <!-- MATH
+ $n_1 + n_2 -2$
+ -->
+<IMG
+ WIDTH="84" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ n_1 + n_2 - 2$">
+degrees of freedom.
+  
+<P><P>
+<BR>
+
+<P>
+<B>EXAMPLE</B> Suppose in our two variable data set we have the information
+<!-- MATH
+ \begin{displaymath}
+\X_1 = 83, S_1 = 6, n_1 = 18: \hphantom{xx} \X_2 = 81, S_2 = 5.4, n_2 = 10.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="369" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.gif"
+ ALT="$\displaystyle \X_1 = 83, S_1 = 6, n_1 = 18: \hphantom{xx} \X_2 = 81, S_2 = 5.4, n_2 = 10.$">
+</DIV><P></P>
+We first would have to compute <IMG
+ WIDTH="21" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$ S_p$">:
+<!-- MATH
+ \begin{displaymath}
+S_p = \sqrt{\frac{(17)(6^2) + (9)(5.4^2)}{26}} = 5.8.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="244" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.gif"
+ ALT="$\displaystyle S_p = \sqrt{\frac{(17)(6^2) + (9)(5.4^2)}{26}} = 5.8.$">
+</DIV><P></P>
+Then a 95% confidence interval for the
+difference of the population means would be given by 
+<!-- MATH
+ \begin{displaymath}
+(83 - 81) - (2.0566)5.8\sqrt{\frac{1}{18} +
+\frac{1}{10}} \le \mu_1 - \mu_2 \le (83 - 81) + (2.056)5.8\sqrt{\frac{1}{18} + \frac{1}{10}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="559" HEIGHT="61" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.gif"
+ ALT="$\displaystyle (83 - 81) - (2.0566)5.8\sqrt{\frac{1}{18} +
+\frac{1}{10}} \le \mu_1 - \mu_2 \le (83 - 81) + (2.056)5.8\sqrt{\frac{1}{18} + \frac{1}{10}}$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+\implies -2.7 \le \mu_1 - \mu_2 \le 6.7
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="153" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.gif"
+ ALT="$\displaystyle \implies -2.7 \le \mu_1 - \mu_2 \le 6.7$">
+</DIV><P></P> 
+
+<P><P>
+<BR>
+
+<P>
+For more information on general estimation theory click here     
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>HYPOTHESIS TESTING FOR COMPARISON OF MEANS </B></DIV>
+ <BR>
+<DIV ALIGN="CENTER">
+<B>OF A ONE
+VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+In a <B>comparison of means test</B> or <B>two sample test of means</B> we are testing a null
+hypothesis of the form 
+<!-- MATH
+ \begin{displaymath}
+H_0: \mu_1 - \mu_2 = \delta \tag 1
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="127" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="$\displaystyle H_0: \mu_1 - \mu_2 = \delta \tag 1$">
+</DIV><P></P>
+where <IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.gif"
+ ALT="$ \delta$"> is some value against some alternative. If <!-- MATH
+ $\delta = 0$
+ -->
+<IMG
+ WIDTH="41" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ \delta = 0$"> then we are testing
+whjether the population means are equal or not.  As for estimation, testing a comparison of means is
+handled somewhat differently for small samples than for large samples.  In the latter case the
+central limit theorem allows us to always use the normal distribution and not be concerned with the
+actual distribution of the parent population.  In the small sample case we must assume that the
+parent populations are normal and the t-distribution is used.  For this reason tests of means
+are referred to as <B>t-tests</B>.
+
+<P>
+If large samples are drawn, then the appropriate test statistic
+for testing a null hypothesis of the form 1 is
+<!-- MATH
+ \begin{displaymath}
+z = \frac{(\X_1-\X_1) - \delta}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}} \tag 2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="118" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.gif"
+ ALT="$\displaystyle z = \frac{(\X_1-\X_1) - \delta}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}} \tag 2$">
+</DIV><P></P>
+which has an approximate normal distribution.   
+
+<P>
+If large samples are not drawn, that is either sample size is under 30, then we must assume that
+both parent populations are normal.  We also assume that both populations have the same variance.
+Then the appropriate test statistic for testing a null hypothesis of the form 1 is 
+<!-- MATH
+ \begin{displaymath}
+t = \frac{(\X_1-\X_2) - \delta}{S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \tag 1
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="131" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.gif"
+ ALT="$\displaystyle t = \frac{(\X_1-\X_2) - \delta}{S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \tag 1$">
+</DIV><P></P>
+where as in estimation theory <IMG
+ WIDTH="21" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$ S_p$"> is the pooled estimate of the standard deviation and is given by
+<!-- MATH
+ \begin{displaymath}
+S_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}}. \tag 3
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="236" HEIGHT="70" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.gif"
+ ALT="$\displaystyle S_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}}. \tag 3$">
+</DIV><P></P>
+
+<P>
+The distribution of the test statistic given in 3 is a t-distribution with <IMG
+ WIDTH="84" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$ n_1+n_2-1$"> degrees
+of freedom. 
+
+<P>
+We illustrate these tests with some examples.
+
+<P>
+EXAMPLE 
+
+<P>
+It is desired to test whether average per
+patient cost for a given surgical procedure is the same in two different hospitals A and B.  Costs
+of course will vary from patient to patient.  A random sample of 60 procedures was drawn from
+hospital records from hospital A and 80 such records in hospital B.  The sample mean in hospital
+A was $2675 with a standard deviation of $630 while the sample mean in hospital
+B was $2480 with a standard deviation of $850.  Is this evidence at a 5% level that the mean
+costs in the two hospitals differ.   
+
+<P>
+If we let <IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \mu_1$"> be the average per patient cost in
+hospital A and <IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \mu_2$"> be the average per patient cost in hospital B then the parameter being testing
+is <!-- MATH
+ $\mu_1 - \mu_2$
+ -->
+<IMG
+ WIDTH="57" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \mu_1-\mu_2$"> the difference of the two means.  The appropriate null hypothesis is then <!-- MATH
+ $\mu_1
+- \mu_2 = 0$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.gif"
+ ALT="$ \mu_1
+- \mu_2 = 0$"> a difference of 0 indicating no difference between the two hospitals.  Since there is
+no obvious preferred direction the alternative here is <!-- MATH
+ $\mu_1 - \mu_2 \ne 0$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \mu_1 - \mu_2 \ne 0$">.  This is then a
+two-sided alternative and we will use a two-tailed test.
+
+<P>
+Here then we have
+<!-- MATH
+ \begin{displaymath}
+H_0: \mu_1 - \mu_2 = 0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="120" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.gif"
+ ALT="$\displaystyle H_0: \mu_1 - \mu_2 = 0$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu_1 - \mu_2 \ne 0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="120" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.gif"
+ ALT="$\displaystyle H_1: \mu_1 - \mu_2 \ne 0$">
+</DIV><P></P>
+Since <IMG
+ WIDTH="58" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.gif"
+ ALT="$ n_1 = 60$"> and <IMG
+ WIDTH="58" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.gif"
+ ALT="$ n_2 = 80$"> this is a <B>large sample procedure</B> and the appropriate test
+statistic is 6.5.5 
+<!-- MATH
+ \begin{displaymath}
+z = \frac{(\X_1-\X_2) - \delta}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="109" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.gif"
+ ALT="$\displaystyle z = \frac{(\X_1-\X_2) - \delta}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$">
+</DIV><P></P>
+which has a normal distribution.  Since this is a large sample we don't have to worry about the
+underlying parent population distributions.
+
+<P>
+The rejection region based on the normal distribution is pictured in figure 1.  
+
+<P>
+
+<P></P>
+3.49truein by 1.83truein (Reject5 scaled 850)
+<DIV ALIGN="CENTER">
+Figure 1  Rejection Region</DIV>
+
+<P></P>
+
+<P>
+The critical z-values here are <!-- MATH
+ $z_c = -1.96$
+ -->
+<IMG
+ WIDTH="80" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.gif"
+ ALT="$ z_c = -1.96$"> and <!-- MATH
+ $z_c = 1.96$
+ -->
+<IMG
+ WIDTH="67" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.gif"
+ ALT="$ z_c = 1.96$">.  There are two critical values
+because both tails are significant.
+
+<P>
+The sample results are:
+<!-- MATH
+ \begin{displaymath}
+\X_1 = 2675, S_1 = 630 \text{ and } n_1 = 60
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="133" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.gif"
+ ALT="$\displaystyle \X_1 = 2675, S_1 = 630$">&nbsp; &nbsp; and <IMG
+ WIDTH="58" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.gif"
+ ALT="$\displaystyle n_1 = 60$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+\X_2 = 2480, S_2 = 850 \text{ and } n_2 = 80
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="133" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.gif"
+ ALT="$\displaystyle \X_2 = 2480, S_2 = 850$">&nbsp; &nbsp; and <IMG
+ WIDTH="58" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.gif"
+ ALT="$\displaystyle n_2 = 80$">
+</DIV><P></P>
+therefore the value of the test statistic is
+<!-- MATH
+ \begin{displaymath}
+z = \frac{2675 - 2480}{\sqrt{\frac{630^2}{60} + \frac{850^2}{80}}} = 1.56
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="180" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img52.gif"
+ ALT="$\displaystyle z = \frac{2675 - 2480}{\sqrt{\frac{630^2}{60} + \frac{850^2}{80}}} = 1.56$">
+</DIV><P></P>
+This value falls in the acceptance region and therefore the results are not significant.  It follows
+that the null hypothesis of no difference between the hospitals is accepted. 
+
+<P>
+The results would be reported in the following manner.
+
+<P><P>
+<BR>
+At a 5% level the results were not significant.  Therefore we would conclude that there is no
+statistical difference between the average per patient costs for this procedure between the two
+hospitals.
+ 
+<P><P>
+<BR>
+
+<P>
+EXAMPLE  
+
+<P>
+A cereal company A wants to compare its grams of fat per serving to a competitor B, claiming that
+the average grams per serving is less in A.  From each company 9 servings were sampled and analyzed
+for fat content. The sample mean for company A was 1.8 grams with a standard deviation of .43 grmas
+while the sample mean for company B was 2.3 grams with a standard deviation of .38 grams.  Is this
+evidence at a 5% level that the average per serving fat content is lower for company A.  
+
+<P>
+If we let <IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \mu_1$"> be the average fat content per serving for A and <IMG
+ WIDTH="21" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \mu_2$"> be the average fat
+content per serving for B then the parameter being testing is <!-- MATH
+ $\mu_1 - \mu_2$
+ -->
+<IMG
+ WIDTH="57" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \mu_1-\mu_2$"> the difference of the
+two means.  The appropriate null hypothesis is then <!-- MATH
+ $\mu_1 - \mu_2 = 0$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.gif"
+ ALT="$ \mu_1
+- \mu_2 = 0$"> a difference of 0 indicating
+no difference between the two hospitals.  The
+alternative here is <!-- MATH
+ $\mu_1 - \mu_2 < 0$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.gif"
+ ALT="$ \mu_1 - \mu_2 &lt; 0$">, indicating that the fat content is lower for company A.  This
+is  a one-sided alternative and we will use a one-tailed test.
+
+<P>
+Here then we have
+<!-- MATH
+ \begin{displaymath}
+H_0: \mu_1 - \mu_2 = 0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="120" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.gif"
+ ALT="$\displaystyle H_0: \mu_1 - \mu_2 = 0$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu_1 - \mu_2 < 0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="120" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.gif"
+ ALT="$\displaystyle H_1: \mu_1 - \mu_2 &lt; 0$">
+</DIV><P></P>
+Since <!-- MATH
+ $n_1 = n_2 = 9$
+ -->
+<IMG
+ WIDTH="88" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.gif"
+ ALT="$ n_1 = n_2 = 9$"> this is a <B>small sample procedure</B> and the appropriate test
+statistic is 6.5.6 
+<!-- MATH
+ \begin{displaymath}
+t = \frac{(\X_1-\X_2) - \delta}{S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="123" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img56.gif"
+ ALT="$\displaystyle t = \frac{(\X_1-\X_2) - \delta}{S_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} $">
+</DIV><P></P>
+where <IMG
+ WIDTH="19" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img57.gif"
+ ALT="$ s_p$"> is the pooled estimate of the standard deviation and is given by
+<!-- MATH
+ \begin{displaymath}
+S_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="228" HEIGHT="70" ALIGN="MIDDLE" BORDER="0"
+ SRC="img58.gif"
+ ALT="$\displaystyle S_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}}.$">
+</DIV><P></P>
+
+<P>
+The distribution of this test statistic given  is a t-distribution with <IMG
+ WIDTH="84" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.gif"
+ ALT="$ n_1+n_2-1$"> degrees
+of freedom, so here 9+9-2 = 16 degrees of freedom.  This is vased on the assumption that both
+parent distributions are normal and they have a common overall variance.   
+
+<P>
+The rejection region based on the t-distribution with 16 d.f. is pictured in figure 2
+
+<P>
+
+<P></P>
+3.64truein by 1.78truein (Reject6 scaled 850)
+<DIV ALIGN="CENTER">
+Figure 2  Rejection Region</DIV>
+
+<P></P>
+
+<P>
+The critical t-value is <!-- MATH
+ $t_c = t_{.05,16} = -1.746$
+ -->
+<IMG
+ WIDTH="147" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.gif"
+ ALT="$ t_c = t_{.05,16} = -1.746$">.  
+
+<P>
+The sample results are:
+<!-- MATH
+ \begin{displaymath}
+\X_1 = 1.8, S_1 = .43 \text{ and } n_1 = 9
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="118" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img60.gif"
+ ALT="$\displaystyle \X_1 = 1.8, S_1 = .43$">&nbsp; &nbsp; and <IMG
+ WIDTH="50" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.gif"
+ ALT="$\displaystyle n_1 = 9$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+\X_2 = 2.3, S_2 = .38 \text{ and } n_2 = 9.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="118" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.gif"
+ ALT="$\displaystyle \X_2 = 2.3, S_2 = .38$">&nbsp; &nbsp; and <IMG
+ WIDTH="54" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img63.gif"
+ ALT="$\displaystyle n_2 = 9.$">
+</DIV><P></P>
+We first compute the pooled estimate <IMG
+ WIDTH="21" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$ S_p$">.
+<!-- MATH
+ \begin{displaymath}
+s_p = \sqrt{\frac{(8)(.43^2) + 8(.38^2)}{16}} = .406.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="241" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.gif"
+ ALT="$\displaystyle s_p = \sqrt{\frac{(8)(.43^2) + 8(.38^2)}{16}} = .406.$">
+</DIV><P></P>
+Therefore the value of the test statistic is
+<!-- MATH
+ \begin{displaymath}
+z = \frac{1.8-2.3}{.406\sqrt{\frac{1}{8} + \frac{1}{8}}} = -2.46
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="183" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img65.gif"
+ ALT="$\displaystyle z = \frac{1.8-2.3}{.406\sqrt{\frac{1}{8} + \frac{1}{8}}} = -2.46$">
+</DIV><P></P>
+This value falls in the rejection region and therefore the results are  significant.  It follows
+that the null hypothesis of no difference between the brands is rejected in favor of the
+alternative that the average fat content is lower for company A. 
+
+<P>
+The results would be reported in the following manner.
+
+<P><P>
+<BR>
+At a 5% level the results were  significant.  Therefore we would conclude that the average fat
+content per serving is lower for company A than company B.
+ 
+<P><P>
+<BR>
+
+<P>
+We finish by mentioning two additional types of comparison of means testing.  Suppose we have two
+independent samples from normal populations but with different variances.  Then the test statistic
+given in 2 is not valid.  In this case the following can be used as a test statistic
+<!-- MATH
+ \begin{displaymath}
+z = \frac{(\X_1-\X_2) - \delta}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}. \tag 6.5.8
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="147" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
+ SRC="img66.gif"
+ ALT="$\displaystyle z = \frac{(\X_1-\X_2) - \delta}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}. \tag 6.5.8$">
+</DIV><P></P>
+This is the same formula as for the large sample case but here it satisfies a t-distribution with
+the number of degrees of freedom given by the formula
+<!-- MATH
+ \begin{displaymath}
+m = \frac{(\frac{S_1^2}{n_1} + {S_2^2}{n_2})^2}{\frac{(\frac{S_1^2}{n_1})^2}{n_1-1} +
+\frac{(\frac{S_2^2}{n_2})^2}{n_1-1}}.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="141" HEIGHT="73" ALIGN="MIDDLE" BORDER="0"
+ SRC="img67.gif"
+ ALT="$\displaystyle m = \frac{(\frac{S_1^2}{n_1} + {S_2^2}{n_2})^2}{\frac{(\frac{S_1^2}{n_1})^2}{n_1-1} +
+\frac{(\frac{S_2^2}{n_2})^2}{n_1-1}}.$">
+</DIV><P></P>
+This is called the <B>Smith-Satherwaite Test</B>.
+
+<P><P>
+<BR>
+
+<P>
+The final case is called a <B>paired comparison test</B> and handles situations which often arise
+in nursing and medical research.  Suppose we take two sets of measurements on the <B>same
+patients</B>, such as before and after, and wish to determine if the means differ.  The two sample means
+tests described earlier in this section are no longer valid since the populations are not
+independent.  The procedure in this case then  is to consider, for each patient, the difference
+before and after, and then do a one sample means test on the differences.  
+
+<P>
+Formally call the populations <B>before</B> and <B>after</B>. The parameter of interest is then <IMG
+ WIDTH="25" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img68.gif"
+ ALT="$ \mu_D$">
+the mean of the differences between before and after.  Let <!-- MATH
+ $x_1,...,x_n$
+ -->
+<IMG
+ WIDTH="66" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img69.gif"
+ ALT="$ x_1,...,x_n$"> be a sample from the before
+population and <!-- MATH
+ $y_1,...,y_n$
+ -->
+<IMG
+ WIDTH="63" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img70.gif"
+ ALT="$ y_1,...,y_n$"> the after values for the same individuals. That is <IMG
+ WIDTH="17" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$ y_i$"> is the after
+value for the before value <IMG
+ WIDTH="18" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.gif"
+ ALT="$ x_i$"> for each <!-- MATH
+ $i=1,2...,n$
+ -->
+<IMG
+ WIDTH="84" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img73.gif"
+ ALT="$ i=1,2...,n$">.  We then consider the sample of differences
+<!-- MATH
+ $d_1,...,d_n$
+ -->
+<IMG
+ WIDTH="64" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img74.gif"
+ ALT="$ d_1,...,d_n$"> where <!-- MATH
+ $d_i = y_i - x_i$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img75.gif"
+ ALT="$ d_i = y_i - x_i$">.  Hyptheses of the form <!-- MATH
+ $H_0:\mu_D = \delta$
+ -->
+<IMG
+ WIDTH="88" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ H_0:\mu_D = \delta$"> are handled by
+doing a one sample means test on this collection of differences.
+
+<P>
+EXAMPLE 
+A study was conducted on 10 patients to determine the effectiveness of a weight reduction program. 
+The before and after weights are listed below.  Was the program effective at a 5% level?
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom{xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img77.gif"
+ ALT="$ \hphantom{xxxx}$">Before Weights<!-- MATH
+ $\hphantom{xxxxx}$
+ -->
+<IMG
+ WIDTH="50" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img78.gif"
+ ALT="$ \hphantom{xxxxx}$">After Weights
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">210<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">197
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">175<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">165
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">169<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">173
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">212<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">205
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">180<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">178
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">190<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">190
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">158<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">155
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">170<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">157
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">183<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">182
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">183<!-- MATH
+ $\hphantom{xxxxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="122" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ \hphantom{xxxxxxxxxxxxx}$">185
+
+<P><P>
+<BR>
+
+<P>
+The weight program will be effective if the average before and after difference is negative. 
+Therefore the null and alternative hypotheses to test whether the weight reduction program is
+effective are
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+H_O: \mu_D = 0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="92" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img81.gif"
+ ALT="$\displaystyle H_O: \mu_D = 0$">
+</DIV><P></P>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu_D < 0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="88" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img82.gif"
+ ALT="$\displaystyle H_1: \mu_D &lt; 0$">
+</DIV><P></P>
+with the program being effective if the null hypothesis is rejected.
+
+<P><P>
+<BR>
+
+<P>
+The sample of differences is 
+<!-- MATH
+ \begin{displaymath}
+-13,-10,4,-7,-2,0,-3,-13,-1,2
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="258" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img83.gif"
+ ALT="$\displaystyle -13,-10,4,-7,-2,0,-3,-13,-1,2$">
+</DIV><P></P>
+Therefore we get that
+<!-- MATH
+ \begin{displaymath}
+\X_D = -4.3, s_D = 6.11 \text{ and } n = 10.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="145" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img84.gif"
+ ALT="$\displaystyle \X_D = -4.3, s_D = 6.11$">&nbsp; &nbsp; and <IMG
+ WIDTH="55" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img85.gif"
+ ALT="$\displaystyle n = 10.$">
+</DIV><P></P>
+This is a small sample procedure so we will use a one-sample t-test.  The critical t-value here is
+<!-- MATH
+ \begin{displaymath}
+t_c = t_{.05,9} = -1.833
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="141" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img86.gif"
+ ALT="$\displaystyle t_c = t_{.05,9} = -1.833$">
+</DIV><P></P>
+The computed t-value using 6.5.2 is
+<!-- MATH
+ \begin{displaymath}
+t = \frac{-4.3-0}{\frac{6.11}{3}} = -2.11.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="161" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img87.gif"
+ ALT="$\displaystyle t = \frac{-4.3-0}{\frac{6.11}{3}} = -2.11.$">
+</DIV><P></P>
+This is significant.  Therefore at a 5% level we would reject the null hypothesis in favor of the
+alternative and hence at a 5% level there is evidence that the weight reduction program is
+effective.  
+
+<BR><HR>
+
+</BODY>
+</HTML>

@@ -1,0 +1,52 @@
+@@Description Of Data Set
+
+DESCRIPTION OF DATA SET TYPES
+
+CAISS-STAT allows the user to enter and then analyze and explore several different types of data sets.  These include
+
+1)One Variable Data Set
+
+2)Two Variable Data Set
+
+3)Multi Variable Data Set
+
+4)Cross-Classified Data Set
+
+5)Time Series Data Set
+
+6)Quality Control Data Set
+
+7)Probability Distribution
+
+Below we give a brief description of each of these options.  Different tools are provided with each of the data set type options.  For further information and a more complete description click on the more information line below each description.
+
+(1) ONE VARIABLE DATA SETS
+
+          A one variable data set is a collection of numbers.  These numbers generally represent a set of measurements such as heights, weights, time, stress etc.  These will usually consist of a random sample from some continuous population.  A typical example would be
+4.8, 8.9, 3.7, 6.6, 5.9
+
+Analysis of a one variable data set usually includes determining the descriptive measures of the data, such as the mean and standard deviation and then using these calculations to infer population measures. 
+
+         @For more information click here@html/DescriptionOfOneVariableDataSet.html::Description of One Variable DataSet@
+
+(2) TWO VARIABLE DATA SETS
+
+          A two variable data set consists of two collections of numbers.  These can either be independent or paired and generally represent  set of measurements such as heights, weights, time, stress etc. from two populations. A typical example would be
+
+X       3.4 ,5.6, 7.9, 8.8
+Y          4.6,5.6,4.8,8.3
+
+Analysis of a two variable data set differs whether they are considered independent populations or correlated populations. If the sets of numbers are considered as samples from independent populations the two samples can be different sizes but if they are consider as samples from correlated populations they must be paired and the sample sizes must be the same. 
+
+         @For more information click here@html/DescriptionOfTwoVariableDataSet.html::Description of Two Variable DataSet@
+                      
+ 
+(3)   ATTRIBUTE DATA SETS
+   
+        An attribute data set consists of data that is in the form of counts or frequencies.  Questions of interest for attribute data sets generally revolve around proportions, that is the theoretical proportion
+of some characteristic or attribute.  The entries in an attribute data set will consist of observed frequencies of characteristics or attributes. 
+For example suppose an election is being analyzed. A poll was conducted for Candidate A and the results were that out of 200 voters polled 80 would vote for Candidate A.  The attribute data would
+be 80 for Candidate A out of a total of 200.  Attribute data could also be cross-classified data in the form of a contingency table.  
+       Attribute data sets can be used for simple proportion testing either with one sample or two or for contingency table analysis. 
+ 
+         @For more information click here@html/DescriptionOfCrossDataSet.html::Description of Attibute DataSet@

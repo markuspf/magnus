@@ -1,0 +1,644 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>dataSummaryTool</TITLE>
+<META NAME="description" CONTENT="dataSummaryTool">
+<META NAME="keywords" CONTENT="dataSummaryTool">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="dataSummaryTool.css">
+
+</HEAD>
+
+<BODY >
+<DIV ALIGN="CENTER">
+<B>THE DATA SUMMARY TOOL</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+The <B>Data Summary Tool</B> will construct a frequency distribution of the given one variable data
+set.  A frequency distribution is a tabular summary of the data that arranges the data into
+classes and then gives a count or frequency in each class.  In the data summary tool the 
+frequency distribution will be constructed automatically with eight equally spaced classes
+beginning with the minimum value and proceeding to the maximum value.  The user can change these
+settings in the data summary output box to use whatver classes are desired.  
+
+<P>
+The first step in analyzing a collection of data is to place the data into some sort of summary
+form.  This will allow the user to make some preliminary sense of what is usually presented as just
+a list of numbers.   With statistical data the most commonly used summary form is called a
+<B>frequency distribution</B>.  A <B>frequency distribution</B> is a table which arranges the data
+into classes or ranges and then provides a count or tally for each class.  The list of data below
+is a collection of 60 weights of teenage boys taken in a pediatric study. Immediately following is
+a frequency distribution of the same data.
+
+<P>
+EXAMPLE 1
+
+The following data represents the weights (to the nearest pound) of 60 randomly chosen teenage
+boys used in a pediatric nursing study.
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \hphantom{xxxx}$">124   138   119   122   145    157   152   168   181   135
+
+<P>
+<!-- MATH
+ $\hphantom{xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \hphantom{xxxx}$">156   111   175   151   148    142   137   129   152   156
+
+<P>
+<!-- MATH
+ $\hphantom{xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \hphantom{xxxx}$">163   148   143   167   188    157   143   138   175   171
+
+<P>
+<!-- MATH
+ $\hphantom{xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \hphantom{xxxx}$">124   158   116   132   176    155   149   163   151   135
+
+<P>
+<!-- MATH
+ $\hphantom{xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \hphantom{xxxx}$">174   166   145   157   145    183   142   165   173   149
+
+<P>
+<!-- MATH
+ $\hphantom{xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \hphantom{xxxx}$">128   144   159   152   165     127  172   168   161   145
+
+<P><P>
+<BR>
+
+<P>
+Data such as this is called <B>raw data</B> or <B>ungrouped data</B>. In order to make sense of this
+jumble of numbers it is arranged into the following tabular form.
+
+<P>
+EXAMPLE 2
+
+<P>
+Frequency Distribution for the Weight Data in EXAMPLE 1
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \hphantom{xxxxxxxxx}$">Weight in Pounds<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \hphantom{xxx}$">Frequency
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">110-119<!-- MATH
+ $\hphantom{xxxxxxxhhhhhhh}$
+ -->
+<IMG
+ WIDTH="132" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \hphantom{xxxxxxxhhhhhhh}$">3
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">120-129<!-- MATH
+ $\hphantom{xxxxxxxhhhhhhh}$
+ -->
+<IMG
+ WIDTH="132" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \hphantom{xxxxxxxhhhhhhh}$">6
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">130-139<!-- MATH
+ $\hphantom{xxxxxxxhhhhhhh}$
+ -->
+<IMG
+ WIDTH="132" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \hphantom{xxxxxxxhhhhhhh}$">6
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">140-149<!-- MATH
+ $\hphantom{xxxxxxxhhhhhh}$
+ -->
+<IMG
+ WIDTH="123" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ \hphantom{xxxxxxxhhhhhh}$">12
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">150-159<!-- MATH
+ $\hphantom{xxxxxxxhhhhhh}$
+ -->
+<IMG
+ WIDTH="123" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.gif"
+ ALT="$ \hphantom{xxxxxxxhhhhhh}$">14
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">160-169<!-- MATH
+ $\hphantom{xxxxxxxhhhhhhh}$
+ -->
+<IMG
+ WIDTH="132" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \hphantom{xxxxxxxhhhhhhh}$">9
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">170-179<!-- MATH
+ $\hphantom{xxxxxxxhhhhhhh}$
+ -->
+<IMG
+ WIDTH="132" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \hphantom{xxxxxxxhhhhhhh}$">7
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">180-189<!-- MATH
+ $\hphantom{xxxxxxxhhhhhhh}$
+ -->
+<IMG
+ WIDTH="132" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ \hphantom{xxxxxxxhhhhhhh}$">7
+
+<P><P>
+<BR>
+
+<P>
+Hence a frequency distribution arranges the data into classes and then presents the count or
+<B>frequency</B> in each class.  Data that has been summarized into a frequency distribution is
+called <B>grouped data</B>.  Notice that in forming this frequency distribution we have gained
+conciseness.  However in forming the table we lose the knowledge of the individual measurements. 
+Beyond this, the frequency distribution gives us a picture of how the data set is distributed and
+hence a sample picture of the population from which the data was drawn.   This will help us to
+construct a mathematical model for the population .  
+
+<P>
+The construction of a frequency distribution is relatively straightforward.  We decide on the
+classes we want and then count the total in each of the chosen classes.  We attempt to choose the
+classes in such a way as to give us as much information as possible.  Some guidelines to follow
+are :
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \hphantom{xxx}$">(1) Do not use too many classes and do not use too few.  In the former case we
+don't gain enough conciseness while in the latter we lose too much information.  As a rule of
+thumb in practice, if possible we try to stay between 5 and 15 classes.
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \hphantom{xxx}$">(2) The classes should be disjoint and cover all the data
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \hphantom{xxx}$">(3) If possible the classes should have the same length.
+
+<P><P>
+<BR>
+
+<P>
+We now introduce some terminology that is associated with frequency distributions.  First, for any
+class its <B>class frequency</B> is the total for that class.  For example in EXAMPLE 2 the
+class freqeuncy for the class 130-139 is 6.  The <B>class boundaries</B> of a class are the largest
+and smallest values that go into that class.  Since the weights of the subjects in EXAMPLE 2
+are rounded off to the nearest pound the <B>lower class boundary</B> of the class 130-139 is 129.5
+while the <B>upper class boundary</B>  is 139.5.  There is a slight distinction between these and
+the <B>class limits</B>  which are the largest and smallest values for a class which appear in the
+distribution.  The <B>lower class limit</B> of the class 130-139 is 130 while the <B>upper class
+limit</B> is 139.  The <B>class interval</B>  is the length of the interval the class covers and is
+found by taking the difference between the class boundaries.  For example the class interval for
+each of the classes in the frequency distribution of EXAMPLE 2 is 10.  Finally for any class
+its <B>class mark</B> is its midpoint.  Its importance is that it can be used as a single number to
+represent the class.  For example the class mark of the class 130-139 is 134.5.
+
+<P>
+There are certain alternative forms of frequency distributions that will also be encountered and
+used.  A <B>percentage distribution</B> has the same format relative to classes as an ordinary
+freqeuncy distribution but lists, instead of the actual class frequencies, the percentage the class
+frequency is of the total.  A percentage distribution is used most often when the individual
+class frequencies are large.  A percentage distribution is also extremely important in trying to
+get a sense of the general distribution of the population.
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 3 
+
+<P>
+The chart below is a percentage distribution of the weight data given in the previous examples. 
+The percentages are found by taking the percentage that class frequency represents of the total. 
+Therefore in the class 130-139 there was a frequency of 6 out of a total of 60 so a percentage of
+(6/60)x100 = 10%.
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \hphantom{xxxxxxxxx}$">Weight in Pounds<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \hphantom{xxx}$">Percent
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">110-119<!-- MATH
+ $\hphantom{xxxxxxxhhhh}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ \hphantom{xxxxxxxhhhh}$">5.0%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">120-129<!-- MATH
+ $\hphantom{xxxxxxxhhh}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ \hphantom{xxxxxxxhhh}$">10.0%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">130-139<!-- MATH
+ $\hphantom{xxxxxxxhhh}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ \hphantom{xxxxxxxhhh}$">10.0%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">140-149<!-- MATH
+ $\hphantom{xxxxxxxhhh}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ \hphantom{xxxxxxxhhh}$">20.0%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">150-159<!-- MATH
+ $\hphantom{xxxxxxxhhh}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ \hphantom{xxxxxxxhhh}$">23.3%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">160-169<!-- MATH
+ $\hphantom{xxxxxxxhhh}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ \hphantom{xxxxxxxhhh}$">15.0%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">170-179<!-- MATH
+ $\hphantom{xxxxxxxhhh}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ \hphantom{xxxxxxxhhh}$">11.7%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">180-189<!-- MATH
+ $\hphantom{xxxxxxxhhhh}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.gif"
+ ALT="$ \hphantom{xxxxxxxhhhh}$">5.0%
+
+<P><P>
+<BR>
+
+<P>
+Another alternative format for a frequency distribution is a <B>cumulative less than
+distribution</B>.  In this format what will be listed will be the cumulative totals up to the end of
+the classes.  It often serves as a sample version of the <B>cumulative distribution function</B>
+which is important in modeling populations. 
+
+<P>
+EXAMPLE 4
+
+<P>
+The chart below is a cumulative less than distribution for the data
+listed above on weights 
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="86" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$ \hphantom{xxxxxxxxx}$">Weight in Pounds<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.gif"
+ ALT="$ \hphantom{xxx}$">Frequency
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Less than 120<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">3
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Less than 130<!-- MATH
+ $\hphantom{xxxxxxxx}$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \hphantom{xxxxxxxx}$">9
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Less than 140<!-- MATH
+ $\hphantom{xxxxxxx}$
+ -->
+<IMG
+ WIDTH="68" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \hphantom{xxxxxxx}$">15
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Less than 150<!-- MATH
+ $\hphantom{xxxxxxx}$
+ -->
+<IMG
+ WIDTH="68" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \hphantom{xxxxxxx}$">27
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Less than 160<!-- MATH
+ $\hphantom{xxxxxxx}$
+ -->
+<IMG
+ WIDTH="68" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \hphantom{xxxxxxx}$">41
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Less than 170<!-- MATH
+ $\hphantom{xxxxxxx}$
+ -->
+<IMG
+ WIDTH="68" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \hphantom{xxxxxxx}$">50
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Less than 180<!-- MATH
+ $\hphantom{xxxxxxx}$
+ -->
+<IMG
+ WIDTH="68" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \hphantom{xxxxxxx}$">57
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxxxxxxx}$
+ -->
+<IMG
+ WIDTH="104" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ \hphantom{xxxxxxxxxxx}$">Less than 190<!-- MATH
+ $\hphantom{xxxxxxx}$
+ -->
+<IMG
+ WIDTH="68" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ \hphantom{xxxxxxx}$">60
+
+<P><P>
+<BR>
+
+<BR><HR>
+
+</BODY>
+</HTML>

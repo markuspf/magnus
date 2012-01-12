@@ -1,0 +1,259 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/KernelPresentation.h}
+\author{Denis Serbin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "KBModule.h"
+#include "FEData.h"
+#include "Word.h"
+#include "FPGroup.h"
+#include "SMVectorOfWords.h"
+#include "Chars.h"
+#include "PresentationProblems.h"
+
+@
+\section{class FPNewPresentationARCer}
+<<class FPNewPresentationARCer>>=
+class FPNewPresentationARCer : public ARCer 
+{
+public:
+  FPNewPresentationARCer( ComputationManager& boss ) : 
+    ARCer( boss ),
+    dntg( false )
+    { } 
+
+  void setArguments( const KBMachine& kb , 
+		     const FPGroup& g , 
+		     const VectorOf<Word>& y );
+  
+  FPGroup getRetValue() { return retValue; }
+  bool doesntGenerate() { return dntg; }
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  NewPresentation N;
+  FPGroup G;
+  VectorOf<Word> newGens;
+  bool dntg;
+  FPGroup retValue;
+};
+
+@
+\section{class FPNewPresentationProblem}
+<<class FPNewPresentationProblem>>=
+class FPNewPresentationProblem : public Supervisor
+{
+public:
+  FPNewPresentationProblem( class SMVectorOfWords& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  SMVectorOfWords& theVector;
+  bool init;
+  FPNewPresentationARCer arcer;
+  MirrorSubordinate kbSupervisor;
+};
+
+@
+\section{class FPImagePresentationARCer}
+<<class FPImagePresentationARCer>>=
+class FPImagePresentationARCer : public ARCer 
+{
+public:
+  FPImagePresentationARCer( ComputationManager& boss ) : 
+    ARCer( boss ) 
+    { } 
+  
+  void setArguments( const FPGroup& preimage, const FPGroup& image, 
+		     const VectorOf<Word>& y );
+  
+  FPGroup getRetValue() 
+    { return retValue; }
+  
+  VectorOf<Word> getVectorOfImages()
+    { return newImages; }
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  ImageOfHom Im;
+  VectorOf<Word> newImages;
+  FPGroup retValue;
+};
+
+@
+\section{class FPImagePresentationCM}
+<<class FPImagePresentationCM>>=
+class FPImagePresentationCM : public ComputationManager
+{
+public:
+  FPImagePresentationCM( class FPKernelPresentationProblem& );
+  VectorOf<Word> getVectorOfImages()
+    { return im; }
+  
+  FPGroup getImage()
+    { return G; }
+  
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  SMHomomorphism2& theMap;
+  FPGroup G;
+  VectorOf<Word> im;
+  FPImagePresentationARCer arcer;
+};
+
+@
+\section{class FPKernelPresentationARCer}
+<<class FPKernelPresentationARCer>>=
+class FPKernelPresentationARCer : public ARCer 
+{
+public:
+  FPKernelPresentationARCer( ComputationManager& boss ) 
+    : ARCer( boss ) 
+    { } 
+
+  void setArguments( const KBMachine& kb , const FPGroup& preimage , 
+		     const FPGroup& image , const VectorOf<Word>& y );
+  
+  FPGroup getRetValue() { return retValue; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  KernelOfHom K;
+  FPGroup retValue;
+};
+
+@
+\section{class FPKernelPresentationCM}
+<<class FPKernelPresentationCM>>=
+class FPKernelPresentationCM : public ComputationManager
+{
+public:
+  FPKernelPresentationCM( class FPKernelPresentationProblem& );
+  
+  void setFlag( bool f )
+    { flag = f; }
+  
+  FPGroup getResult()
+    { return result; }
+
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  FPKernelPresentationProblem& KPP;
+  bool init;
+  bool flag;
+  FPGroup result;
+  FPKernelPresentationARCer arcer;
+};
+
+@
+\section{class KBSupervisorCM}
+<<class KBSupervisorCM>>=
+class KBSupervisorCM : public ComputationManager
+{
+public:
+  KBSupervisorCM( class FPKernelPresentationProblem& );
+
+  void setFlag( bool f )
+    { flag = f; }
+  
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+  
+private:
+  FPKernelPresentationProblem& KPP;
+  bool init;
+  bool flag;
+  KBSupervisorARCer arcer;
+};
+
+@
+\section{class FPKernelPresentationProblem}
+<<class FPKernelPresentationProblem>>=
+class FPKernelPresentationProblem : public Supervisor
+{
+public:
+  FPKernelPresentationProblem( class SMHomomorphism2& );
+  
+  SMHomomorphism2& getInitialHomo()
+    { return theMap; }
+  
+  SMHomomorphism2& getHomo()
+    { return *theMap2; }
+  
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  SMHomomorphism2& theMap;
+  SMHomomorphism2* theMap2;
+  bool foundImage;
+  bool foundKB;
+  Subordinate<FPKernelPresentationProblem,FPKernelPresentationCM> kernel;
+  Subordinate<FPKernelPresentationProblem,FPImagePresentationCM> image;
+  Subordinate<FPKernelPresentationProblem,KBSupervisorCM> kbs;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/KernelPresentation.h
+#ifndef _KernelPresentationProblem_H_
+#define _KernelPresentationProblem_H_
+
+<<license>>
+<<include>>
+<<class FPNewPresentationARCer>>
+<<class FPNewPresentationProblem>>
+<<class FPImagePresentationARCer>>
+<<class FPImagePresentationCM>>
+<<class FPKernelPresentationARCer>>
+<<class FPKernelPresentationCM>>
+<<class KBSupervisorCM>>
+<<class FPKernelPresentationProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

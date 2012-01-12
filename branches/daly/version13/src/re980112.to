@@ -1,0 +1,65 @@
+	Weekly report for period 01/05/98 - 01/11/98.	
+
+1. Name: Improve on existing genetic algorithms for word, triviality,
+	abelian problems and implement. Use Serbin's new work which
+	enables one to express a word which is in the derived group as
+	a product of commutators, which will allow you to work on wods
+	which are long enough to get the genetic algorithm started.
+   A) Use Serbin's new work.	
+   Date assigned: 01/12/98  
+   Status: Awaiting for the Serbin's work to be completed	
+   Projected date of completion: As soon as his code is available
+
+   B) Improve by using normal closure of the relation subgroup
+   Date assigned: none
+   Status: discussed with Alexei, in progress 	
+   Projected date of completion: 01/13/98
+
+2. Name: Help Alex with designing abstract enumerator class and the
+	derived class for enumerating relations.
+   Date assigned: 01/12/98  
+   Status: Ongoing	
+   Projected date of completion: Ongoing
+
+3. Name: Design abstract menu class and implement.
+   Date assigned: 01/12/98  
+   Status: First implementation was completed in my copy on 01/05/98. 
+	Prepared a version and discussed with Alexei on 01/06/98. 
+	Ready to release a version with more menus on 01/12/98.
+   Dates of completion: 01/06/98, 01/12/98
+
+4. Name: Code and then put genetic algorithms for the conjugacy
+	problem for finitely presented groups into the master copy.
+   Date assigned: Ongoing
+   Status: Not started	
+   Projected date of completion: Ongoing
+
+5. Name: Report on Pechkin's work at meeting on 01/12/98
+   Date assigned: 01/12/98  
+   Status: In progress	
+   Projected date of completion: 01/12/98
+
+6. Name: Think about new design
+   Date assigned: Ongoing
+   Status: Ongoing	
+   Projected date of completion: Ongoing
+
+7. Name: Make sure that versions of Magnus are made available to Roger
+	on 01/05/98 
+   Date assigned: Ongoing
+   Status: Could not finish on 01/05/98, had to work for almost two
+	days resolving conflicts and straightening up the new code
+	from Omsk. 
+   Dates of completion: 01/07/98, BSD Version: 01/08/98
+
+8. Name: Think about genetic algorithms for the isomorphism problems
+	for finitely presented groups.
+   Date assigned: Ongoing
+   Status: Not started	
+   Projected date of completion: Ongoing
+
+9. Name: Review all new code as it arrives and inform the group about
+	it as it becomes available.
+   Date assigned: Ongoing
+   Status: Ongoing	
+   Projected date of completion: Ongoing

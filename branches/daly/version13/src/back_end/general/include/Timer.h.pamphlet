@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/Timer.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Timer.h}
+\section{include}
+<<include>>=
+#include <sys/time.h>
+#include <iostream.h>
+#include <IPC.h>
+#include "config.h"
+
+@
+\section{class Timer}
+The resolution is 1 milisecond, with maximum interval of 2^31 / 1000 seconds
+(24.9 days).
+<<class Timer>>=
+class Timer
+{
+public:
+  Timer(int miliseconds) { reset( miliseconds ); }
+
+  bool expired( ) const {
+	 timeval tv;
+	 gettimeofday( &tv, 0 );
+	 return ( tv.tv_sec > alarmSecs ||
+		 ( tv.tv_sec == alarmSecs ) && ( tv.tv_usec >= alarmUSecs )
+				 );
+  }
+
+  void reset(int miliseconds) {
+	 timeval tv;
+	 gettimeofday( &tv, 0 );
+	 alarmSecs = tv.tv_sec + ( miliseconds / 1000 );
+	 alarmUSecs = tv.tv_usec + ( miliseconds % 1000 ) * 1000;
+  }
+
+  friend ostream& operator < ( ostream& ostr, const Timer& T )
+  {
+    ostr < T.alarmSecs;
+    ostr < T.alarmUSecs;
+    return ostr;
+  }
+  
+  friend istream& operator > ( istream& istr, Timer& T)
+  {
+    istr > T.alarmSecs;
+    istr > T.alarmUSecs;
+    return istr;
+  }
+private:
+  long alarmSecs, alarmUSecs;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/Timer.h
+#ifndef _TIMER_H_
+#define _TIMER_H_
+
+<<license>>
+<<include>>
+
+#if defined(BSD)
+extern "C" int gettimeofday(void*, void*);
+#elif defined(SYSV)
+extern "C" int gettimeofday(struct timeval *, void *);
+#endif
+
+<<class Timer>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

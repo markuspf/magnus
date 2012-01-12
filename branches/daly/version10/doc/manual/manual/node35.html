@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Messages</TITLE>
+<META NAME="description" CONTENT="Messages">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00331000000000000000"></A><A NAME="FEMessages"></A>
+<BR>
+Messages
+</H2>
+
+<P>
+
+<P>
+
+<P>
+The <I>FE</I> and <I>SM</I> exchange messages. The syntax and semantics of the
+messages which the <I>FE</I> can accept are fixed; they are described in
+this section.
+
+<P>
+In contrast, the <I>FE</I> knows as little as possible about the messages it
+sends to the <I>SM</I>. Rather, the <I>FE</I> is supplied by the <I>SM</I> with <EM>message templates</EM> for each kind of message it will need to
+send. These templates contain <EM>formal parameters</EM> which the <I>FE</I> replaces, at the time the message is sent, with <EM>actual
+parameters</EM>. The syntax and semantics of formal parameters are also
+fixed, and are described below along with each message type.
+
+<P>
+A message from the <I>SM</I> to the <I>FE</I> is an ASCII string containing no
+non-printable characters, newlines, linefeeds, or tabs. It consists of
+a <EM>message name</EM> followed by an ordered sequence of zero or more
+arguments. A message name matches <TT>'[a-zA-Z][a-zA-Z_]*_'</TT>. Each
+argument is preceded by at least one space. The argument syntax is
+described with each message, below.
+
+<P>
+The following sections describe each message that the <I>FE</I> can accept,
+grouped by function.  Because of the semantic interconnections between
+the various messages, the sections are not in the temporal order in
+which the messages are sent.
+
+<P>
+Except where noted, the arguments of messages to the <I>FE</I> are keyword
+arguments. For example, suppose the message named <TT>foo_</TT> takes
+two arguments: an integer and a constant string. The syntax is
+specified like:
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>theInt theString</EM>
+<BR>
+<BR>
+
+<P>
+In this case <EM>theInt</EM> and <EM>theString</EM> are keyword
+identifiers, so the actual message could be, for example:
+
+<P>
+<TT>foo_ theInt 7 theString {Hello world}</TT>
+
+<P>
+<TT>foo_ theString {Hello world} theInt {7}</TT>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html580"
+  HREF="node36.html">Checking in an Object</A>
+<LI><A NAME="tex2html581"
+  HREF="node37.html"><I>Hot</I> text</A>
+<LI><A NAME="tex2html582"
+  HREF="node38.html">Menu Definitions</A>
+<LI><A NAME="tex2html583"
+  HREF="node39.html">Global Message Templates</A>
+<LI><A NAME="tex2html584"
+  HREF="node40.html">General Messages</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+
+</BODY>
+</HTML>

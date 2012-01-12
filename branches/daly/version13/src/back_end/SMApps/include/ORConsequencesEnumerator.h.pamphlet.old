@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/ORConsequencesEnumerator.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "OneRelatorGroup.h"
+#include "Supervisor.h"
+#include "SMSubgroup.h"
+#include "SMEnumerator.h"
+#include "File.h"
+
+@
+\section{class ORConsequencesEnumeratorARCer}
+<<class ORConsequencesEnumeratorARCer>>=
+class ORConsequencesEnumeratorARCer : public EnumeratorARCer
+{
+public:
+  ORConsequencesEnumeratorARCer( ComputationManager& boss, const OneRelatorGroup& g ) 
+    : EnumeratorARCer( boss ),
+      theEnumerator( g ),   
+      theGroup( g ),
+      counter( 1 ),
+      numberOfAll( 100 ){ } 
+  
+  Chars getFileName() const {return file.getFileName();}
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void setNumberOfAll( int n ) { numberOfAll = n; }
+
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+protected:
+  void enumerate();
+  
+private:
+  EnumeratorOfConsequences theEnumerator;
+  OneRelatorGroup theGroup;
+  File file;
+  int counter;
+  int numberOfAll;
+};
+
+@
+\section{class ORConsequencesEnumerator}
+<<class ORConsequencesEnumerator>>=
+class ORConsequencesEnumerator : public  EnumeratorProblem< Word >
+{
+public:
+  ORConsequencesEnumerator( SMFPGroup&);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  class SMFPGroup& getGroup() const { return theSMFPGroup;}
+  void takeControl( );         // overrides ComputationManager
+  Chars getDataFileName() const { return arcer.getFileName(); }
+
+  void start( ) {       // overrides ComputationManager
+    int totalNum = getParameters().getValue("numberOfAll");
+    arcer.setNumberOfAll( totalNum );
+  }       
+  
+  void terminate( ) { }       // overrides ComputationManager
+
+  void resume() {
+    arcer.submitSignal();
+    
+    int totalNum = getParameters().getValue("numberOfAll");
+    arcer.setNumberOfAll( totalNum );
+
+  }
+
+private:
+  SMFPGroup& theSMFPGroup;
+  ORConsequencesEnumeratorARCer arcer;
+  bool started;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/ORConsequencesEnumerator.h
+#ifndef _OR_CONS_ENUMERATOR_H_
+#define _OR_CONS_ENUMERATOR_H_
+
+<<license>>
+<<include>>
+<<class ORConsequencesEnumeratorARCer>>
+<<class ORConsequencesEnumerator>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

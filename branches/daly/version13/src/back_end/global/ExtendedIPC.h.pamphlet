@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/ExtendedIPC.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "global.h"
+#include "Integer.h"
+#include "Rational.h"
+
+@
+\section{Output Operators}
+<<Output Operators>>=
+inline ostream& operator < ( ostream& ostr, const Integer& n )
+{
+  ostr << n << ' ';
+  return ostr;
+}
+
+inline ostream& operator < ( ostream& ostr, const Rational& r )
+{
+  ostr << r << ' ';
+  return ostr;
+}
+
+@
+\section{Input Operators}
+<<Input Operators>>=
+inline istream& operator > ( istream& istr, Integer& n )
+{
+  istr >> n;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, Rational& r )
+{
+  istr >> r;
+  return istr;
+}
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/ExtendedIPC.h
+#ifndef _EXTENDED_IPC_H_
+#define _EXTENDED_IPC_H_
+
+<<include>>
+<<license>>
+<<Output Operators>>
+<<Input Operators>>
+#endif
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

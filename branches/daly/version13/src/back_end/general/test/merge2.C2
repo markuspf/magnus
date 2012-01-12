@@ -1,0 +1,81 @@
+// Contents: The version of merge sort which runs insertion sort
+//           when the number of elements to be sorted is <= k.
+//           Time measurements are taken for different values of k.
+//
+// Principal Author: Dmitry Bormotov
+//
+// Status: Completed
+//
+// Revision History:
+//
+
+
+#include <stdio.h>
+#include <signal.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <fstream.h>
+#include "global.h"
+
+int Y[10000];
+
+double diffTime(timeval t2, timeval t1);
+void insertionSort(int* x, int a, int b);
+void insert( int* y, int a, int j );
+void merge (int ax, int bx, int ay, int by, int az, int bz,
+              const int X[], const int Y[], int Z[]);
+
+void mergesort2 (int X[], int a, int b, int K)
+/* pre: X[a..b] is a non-empty array segment, K >= 2 */  
+{
+  int gap = b - a + 1, k, m;
+
+  if( gap <= K )
+    insertionSort(X,a,b);
+  
+  else { // a < b
+  
+    //int* Y = malloc( gap * sizeof(int)  );  
+	
+    m = (a + b - 1) / 2;
+    mergesort2(X, a, m, K); mergesort2(X, m + 1, b, K);
+    merge(a, m, m + 1, b, 0, b - a, X, X, Y);
+    k = a - 1;
+	    
+    /* invariant:  X[a..k] == Y[0..k-a] && k <= b */
+    while (k < b) { 
+      k = k + 1;
+      X[k] = Y[k - a];
+    }
+    /* X[a..b] is sorted, and has values and multiplicities
+     * unchanged from X[a..b] as input
+     */
+    
+    //free(Y);
+  }
+} 
+
+int main ( )
+{
+  timeval t1,t2;
+  int maxSize = 10000;
+  int x[maxSize];
+  int n = 1024;
+ 
+  for( int k = 2; k < n; k *= 2 ) {
+    
+    for( int i = 0; i < n; ++i )
+      x[i] = n-i-1;
+    int a = 0, b = n - 1;
+
+    gettimeofday(&t1, NULL);
+  
+    mergesort2(x,a,b,k);
+    
+    gettimeofday(&t2, NULL);
+
+    double dif = diffTime(t2,t1);
+    cout << "k = " << k << "   time: " << dif << endl;
+  }
+}
+

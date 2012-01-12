@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Utility class BlackBox</TITLE>
+<META NAME="description" CONTENT="Utility class BlackBox">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00312300000000000000">
+Utility class <TT>BlackBox</TT></A>
+</H3>
+
+<P>
+<BR>
+<BR><EM>What and Where
+<BR>
+<BR></EM>
+
+<P>
+The class <TT>class BlackBox</TT>
+is defined in <TT>magnus/back_end/general/include/BlackBox.h</TT>.
+
+<P>
+A <TT>BlackBox</TT> is a wrapper for an external binary
+which communicates exclusively through its standard I/O.
+The binary must accept some sort of `quit' command from its
+standard input.
+
+<P>
+<BR>
+<BR><EM>Public Members
+<BR>
+<BR></EM>
+
+<P>
+
+  <TT>BlackBox(const char* <TT>command</TT>)</TT>Constructor
+<BR>  <IMG
+ WIDTH="701" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+Instantiate a {\tt BlackBox} by supplyin...
+...l {\tt sanityCheck} afterwards, even with no arg, to see if
+everything is ok.
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>Bool sanityCheck(const char* <TT>greeting</TT> = NULL)</TT>Method
+<BR>  <IMG
+ WIDTH="700" HEIGHT="78" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+{\tt greeting} is a (possibly proper) pr...
+...t greeting} (if not {\tt NULL}), and
+all other initialization was successful.
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>ostream&amp; toCommand( )</TT>Method
+<BR>  <IMG
+ WIDTH="453" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+Returns an {\tt ostream} bound to the binary's standard input.
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>istream&amp; fromCommand( )</TT>Method
+<BR>  <IMG
+ WIDTH="463" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+Returns an {\tt istream} bound to the binary's standard output.
+}$">
+<BR>
+<BR>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

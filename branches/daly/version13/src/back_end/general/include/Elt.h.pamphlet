@@ -1,0 +1,168 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/Elt.h}
+\author{Stephane Collart}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Elt.h}
+Fundamental Questions:
+\begin{list}{}
+\item What does one do about functions and operators taking two or more
+arguments, when it is important to correctly resolve the actual
+type of both arguments? As a special case, see the Q about op ==
+below. Some type mismatches would be allowed (e.g. EltIdentityRep
+with anything else) and others not (e.g. WordRep and MatrixRep).
+
+\item Where should equality be resolved (as expressed through operator ==)?
+\begin{list}{}
+\item at the object level, via the accessors?
+\item via delegation to the representation level?
+\end{list}
+Note the ramifications: you have two objects a,b, ostensibly of
+type T; should they be compared as T's, or as their *actual* types?
+If the latter is preferred, what does one do about type mismatches?
+Simple minded delegation to a virtual function of one of the
+arguments does not resolve the type of the second argument.
+
+\item In a tentative revision of the practice of not giving
+pseudo-abstract classes a default constructor, Elt now gets a
+default constructor which gives it an actual EltIdentityRep* as a rep
+This makes an object-level (ie wrapped-pointer) class behave more
+closely like a real pointer. A default initialised Elt may be
+assigned to and even from in perfect consistency. Eventually,
+it is intended to make such a default initialised Elt behave like
+the identity; note that this is not implemented fully yet (see
+restrictions).
+
+\item Does Elt need a global operator * taking two Elt arguments? in 
+every case when one expects a conversion from some type T which has
+a conversion to Elt on the left hand side of `a * b',
+the only alternative is to give T itself an operator * ( Elt ),
+since the ARM will not consider a conversion to apply a method.
+
+\item The same question occurs much more frequently and generally with
+operator ==; for this reason Elt has tentatively been given a global
+== inlined below.
+
+Restrictions:
+
+If you try applying methods to a default initialised Elt, you
+will likely get grief (as if you tried dereferencing the null pointer.)
+\section{include}
+<<include>>=
+#include "EltRep.h"
+#include "Integer.h"
+#include "Rational.h"
+
+@
+\section{public GenericObject}
+<<public GenericObject>>=
+class Elt : public GenericObject {
+public:
+  // copy constructor provided by compiler
+
+  Elt( ) : GenericObject( new EltIdentityRep ) { }
+  // @stc this is a tentative way of giving Elt a default constructor
+
+  // destructor provided by compiler
+
+  int operator == ( const Elt& e ) const {
+	 return ((look() == e.look()) || (*look() == *e.look()));
+  }
+
+  int operator != ( const Elt& e ) const { return !( *this == e ); }
+  static Type type( ) { return EltRep::type(); }
+  Type actualType( ) const { return look()->actualType(); }
+  int hash( ) const { return look()->hash(); }
+
+  Elt operator * ( const Elt& e ) const {
+	 return Elt( *look() * *e.look() );
+  }
+
+  Elt operator *= ( const Elt& e ) {
+	 return *this = Elt( *look() * *e.look() );
+  }
+
+  Elt raiseToPower( Integer power ) const;
+
+  Elt inverse() const {
+	 return Elt( look()->inverse() );
+  }
+
+  friend Elt inverse( const Elt& e ) { return e.inverse(); }
+  // to make it more convenient to take the inverse of something which
+  // can be converted to an Elt
+
+  Elt conjugateBy( const Elt& e ) const {
+	 return Elt( look()->conjugateBy(e.look()) );
+  }
+
+  friend Elt commutator( const Elt&, const Elt& );
+
+  // The paradigm for output:
+  // The Rep of the root of a hierarchy defines
+  // virtual void printOn(ostream&) const;
+  // The root defines a friend << which
+  // calls printOn. Subclasses of Rep override printOn.
+  // No other << or printOn's are needed.
+
+  friend ostream& operator << ( ostream&, const Elt& );
+
+  void debugPrint( ostream& o ) const; // mixed pseudo-virtual
+
+  friend ostream& operator < ( ostream& ostr, const Elt& e )
+  {
+    e.look()->write(ostr);
+    return ostr;
+  }
+  
+  friend istream& operator > ( istream& istr, Elt& e )
+  {
+    e.change()->read(istr);
+    return istr;
+  }
+
+protected:
+  // Shadow representation accessors to get representations of the
+  // right type in the members of this class:
+
+  const EltRep* look( ) const {
+	 return (const EltRep*)GenericObject::look();
+  }
+  EltRep* enhance( ) const {
+	 return (EltRep*)GenericObject::enhance();
+  }
+  EltRep* change( ) {
+	 return (EltRep*)GenericObject::change();
+  }
+
+  Elt( EltRep* p ) : GenericObject(p) { }
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/Elt.h
+#ifndef _ELT_H_
+#define _ELT_H_
+
+<<license>>
+<<include>>
+<<public GenericObject>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

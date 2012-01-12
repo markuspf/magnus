@@ -1,0 +1,14 @@
+@@Description of Two Variable Data Set
+
+   TWO VARIABLE DATA SETS
+
+          A two variable data set consists of two collections of numbers.  These can either be independent or paired and generally represent  set of measurements such as heights, weights, time, stress etc. from two populations. A typical example would be
+
+X       3.4 ,5.6, 7.9, 8.8
+Y          4.6,5.6,4.8,8.3
+
+Analysis of a two variable data set differs whether they are considered independent populations or correlated populations. If the sets of numbers are considered as samples from independent populations the two samples can be different sizes but if they are consider as samples from correlated populations they must be paired and the sample sizes must be the same. 
+
+         @For more information click here@html/DescriptionOfTwoVariableDataSet.html::Description of Two Variable DataSet@
+                      
+

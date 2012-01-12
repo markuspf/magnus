@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>General Principle</TITLE>
+<META NAME="description" CONTENT="General Principle">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00242100000000000000">
+General Principle</A>
+</H3>
+
+<P>
+In the course of implementation, you may find yourself creating ad hoc
+low-level tests as you go along to debug or to test the correct
+low-level functioning of your implementation.  Typically, this may
+involve adding special, not-for-the-final-implementation friend and
+(static) member functions with access to the private parts of a class
+or several classes.  These should be considered part of the
+implementation, and should be conditionally compiled with the flag
+<TT>DEBUG</TT>, defined in <TT>magnus/back_end/global/global.h</TT>, set.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

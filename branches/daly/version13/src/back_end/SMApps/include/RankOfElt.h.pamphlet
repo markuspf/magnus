@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/RankOfElt.h}
+\author{Alexander Ushakov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "FreeGroup.h"
+#include "Supervisor.h"
+#include "RankOfSubgroup.h"
+
+@
+\section{class RankOfElement}
+<<class RankOfElement>>=
+class RankOfElement : public ComputationManager
+{
+public:
+  RankOfElement(class RankOfElementProblem& problemObject );
+  ~RankOfElement( );
+
+  Trichotomy getAnswer() const { 
+       return theARCer.getAnswer();
+  }
+
+  Chars getFileName( ) { return theARCer.getFileName(); }
+  // Returns name of the file with computation details
+
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };              // overrides ComputationManager
+  void terminate( ) { };          // overrides ComputationManager
+
+private:
+  VectorOf<Word> constructVector( const Word& word );
+  const class SMWord& theWord;
+  FreeGroup theGroup;
+  RankOfSubgroupARCer theARCer;
+};
+
+@
+\section{class RankOfElementProblem}
+<<class RankOfElementProblem>>=
+class RankOfElementProblem : public Supervisor
+{
+public:
+  RankOfElementProblem(const class SMWord& w);
+  const class SMWord& getWord( ) const;
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const SMWord& theWord;
+  bool linkHasBeenSent;
+  Subordinate<RankOfElementProblem, RankOfElement> rankOfElement;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/RankOfElt.h
+#ifndef _RANK_OF_ELT_H_
+#define _RANK_OF_ELT_H_
+
+<<license>>
+<<include>>
+<<class RankOfElement>>
+<<class RankOfElementProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,246 @@
+/magnus/back_end/AProducts/include/CONDITION.h:// 20020430000 tpd fix the stringify problem
+/magnus/back_end/AProducts/include/CONDITION.h:// 20020430000 tpd fix the stringify problem
+/magnus/back_end/AProducts/src/CONDITION.C:// 20020430000 tpd add stdlib.h for exit definition
+/magnus/back_end/AProducts/src/OneRelatorGroupWithTorsion.C:// 20020430000 tpd missing return in isPowerOfEltInMagnusSubgroup
+/magnus/back_end/AProducts/src/OneRelatorGroupWithTorsion.C:// 20020430000 tpd missing return in isPowerOfEltInMagnusSubgroup
+/magnus/back_end/black_boxes/TietzeTrek/Fclasses/FResources.C:/* 20031016000 tpd this is always false as size is type short (0 to 32767)
+/magnus/back_end/black_boxes/TietzeTrek/Compile.mk:	@ ${CC} ${CFLAGS} -DTPD -Wno-deprecated -c $< -o $@
+/magnus/back_end/black_boxes/TietzeTrek/Compile.mk:	@ $(SHELL) -ec '$(CC) -DTPD -Wno-deprecated -M $(INCLUDE) $< | sed "s:$*.o:& $@:g"' > $@
+/magnus/back_end/black_boxes/TietzeTrek/GLink/GLfunctions.C:// 20031016000 tpd RAND_MAX is defined in stdlib.h
+/magnus/back_end/black_boxes/TietzeTrek/GLink/GLfunctions.C:#ifndef TPD
+/magnus/back_end/black_boxes/TietzeTrek/TTnodesRsrc/FTT1node.C:/* 20031016000 tpd force static cast */
+/magnus/back_end/black_boxes/ace/control.c:  toppd = botpd = 0;
+/magnus/back_end/black_boxes/ace/al0.h:	the NEXTPD macro can be fast (masking the ring index with 1...1 to 
+/magnus/back_end/black_boxes/ace/al0.h:	number/generator values.  Entries are added at botpd and removed 
+/magnus/back_end/black_boxes/ace/al0.h:	at toppd.  The list is empty if botpd = toppd; so, in fact, the
+/magnus/back_end/black_boxes/ace/al0.h:#define NEXTPD(i)  ((++i) & (pdsiz-1))
+/magnus/back_end/black_boxes/ace/al0.h:extern int toppd, botpd;
+/magnus/back_end/black_boxes/ace/coinc.c:  toppd  = botpd  = 0;
+/magnus/back_end/black_boxes/ace/coinc.c:  toppd = botpd = 0;		/* pd's no longer valid */
+/magnus/back_end/black_boxes/ace/enum.c:int    pdsiz, *pdqcol, *pdqrow, toppd, botpd;
+/magnus/back_end/black_boxes/ace/enum.c:            pdqrow[botpd] = iback;
+/magnus/back_end/black_boxes/ace/enum.c:            pdqcol[botpd] = mi;
+/magnus/back_end/black_boxes/ace/enum.c:            if ((botpd = NEXTPD(botpd)) == toppd)
+/magnus/back_end/black_boxes/ace/enum.c:              toppd = NEXTPD(toppd);
+/magnus/back_end/black_boxes/ace/enum.c:      if ( pdefn == 3 && toppd != botpd
+/magnus/back_end/black_boxes/ace/enum.c:          if ((toppd = NEXTPD(toppd)) == botpd)
+/magnus/back_end/black_boxes/ace/enum.c:        if (toppd != botpd)
+/magnus/back_end/black_boxes/ace/enum.c:          toppd = NEXTPD(toppd);
+/magnus/back_end/black_boxes/ace/enum.c:  toppd = botpd = 0;
+/magnus/back_end/black_boxes/ace/util0.c:  toppd   = botpd   = 0;
+/magnus/back_end/black_boxes/ace/util0.c:  toppd = botpd = 0;
+/magnus/back_end/black_boxes/ace/util0.c:  toppd = botpd = 0;
+/magnus/back_end/black_boxes/ace/util0.c:  	/* int toppd, botpd; + int pdqcol[], pdqrow[]; */
+/magnus/back_end/black_boxes/ace/util0.c:  fprintf(fop, "toppd=%d botpd=%d", toppd, botpd);
+/magnus/back_end/black_boxes/ace/util0.c:  if (toppd == botpd)
+/magnus/back_end/black_boxes/kbmag/lib/fsa.c:    /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/black_boxes/kbmag/lib/fsalogic.c:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/black_boxes/tc5/save_ct.c:	time_t	*betime; /* 20031017 tpd rewrite into time_t */
+/magnus/back_end/black_boxes/tc5/save_ct.c:        char    *out_file; /* 20031017 tpd use malloc instead of stack */
+/magnus/back_end/Equations/include/QEqnSolutions.h:// 20020430000 tpd move class Edge to the public interface
+/magnus/back_end/Equations/include/QEqnSolutions.h:// 20020430000 tpd move class Edge to the public interface
+/magnus/back_end/Equations/include/QEqnSolutions.h:// 20020430000 tpd move class Edge to the public interface
+/magnus/back_end/general/include/Associations.h:  // TPD make the typename explicit
+/magnus/back_end/general/include/DArray.h:// 20031103 tpd commented out
+/magnus/back_end/general/include/DArray.h:// 20031103 tpd commented out
+/magnus/back_end/general/include/File.h:// 20030626000 TPD force the return type of tellp to unsigned long
+/magnus/back_end/general/include/File.h:    // tpd    sprintf(s,"%.7d",tellp());
+/magnus/back_end/general/include/QuickAssociations.h:    // TPD make this an explicit typename
+/magnus/back_end/general/include/RandomNumbers.h:// 20020430000 tpd sqrt and log declared in /usr/include/bits/mathcalls.h
+/magnus/back_end/general/include/RandomNumbers.h:// 20020430000 tpd sqrt and log declared in /usr/include/bits/mathcalls.h
+/magnus/back_end/general/src/BlackBox.C:  // 20031103 tpd force coerce '(void*)(int)'
+/magnus/back_end/general/src/BlackBox.C:  // 20031103 tpd force coerce '(void*)(int)'
+/magnus/back_end/general/src/BlackBox.C:  // 20031103 tpd force coerce '(void*)(int)'
+/magnus/back_end/general/src/BlackBox.C:  // 20031103 tpd force coerce '(void*)(int)'
+/magnus/back_end/general/src/Chars.C:// 20030628000 TPD change type of newstate from int to ios::iostate 
+/magnus/back_end/general/src/Chars.C:// 20030628001 TPD remove ipfx call
+/magnus/back_end/general/src/Chars.C:  // TPD  int new_state = istr.rdstate();
+/magnus/back_end/general/Makefile.~1.1.~:#tpdhere BlackBox RandomNumbers
+/magnus/back_end/Genetic/src/GACPforORGSolver.C:// 20030628000 TPD default values are specified in the header file
+/magnus/back_end/Genetic/src/GACPforORGSolver.C:// 20030628001 TPD default values are specified in the header file
+/magnus/back_end/Genetic/src/GAEquationSolver.C:// 20030628000 TPD default is specified in the header file
+/magnus/back_end/Genetic/src/GAEquationSolver.C:// 20030628001 TPD default is specified in the header file
+/magnus/back_end/Genetic/src/GAIsPartOfBasis.C:// 20030628000 TPD mangle ofstream declaration to force compile
+/magnus/back_end/Genetic/src/GAIsPartOfBasis.C:// 20030628001 TPD mangle ofstream cast to force compile
+/magnus/back_end/Genetic/src/TwoCommSolver.C:// 20030628000 TPD default is specified in header file
+/magnus/back_end/Genetic/src/TwoCommSolver.C:  // TPD			ostream* out = NULL )
+/magnus/back_end/Genetic/src/TwoCommSolver.C:// 20030628001 TPD default is specified in header file
+/magnus/back_end/Genetic/src/TwoCommSolver.C:  // TPD				 ostream* out = NULL )
+/magnus/back_end/global/DerivedObjectOf.h:  // 20031103 tpd make everything public
+/magnus/back_end/global/compile.mk:# 20031020 tpd add -D_CPP_BACKWARD_IOSTREAM_H for streams?
+/magnus/back_end/global/compile.mk.~1.1.~:# 20031020 tpd add -D_CPP_BACKWARD_IOSTREAM_H for streams?
+/magnus/back_end/Group/include/AbelianInfinitenessProblem.h:// 20031103 tpd commented out
+/magnus/back_end/Group/include/AbelianInfinitenessProblem.h:    { // 20031104 tpd comment out
+/magnus/back_end/Group/include/AbelianInfinitenessProblem.h:    // 20031103 tpd commented out
+/magnus/back_end/Group/include/AbelianInfinitenessProblem.h:  // 20031103 tpd commented out
+/magnus/back_end/Group/Makefile:# 20031103 tpd commented out
+/magnus/back_end/Group/src/AbelianEquations.C:// 20030627000 TPD remove the default. It is specified in the include header
+/magnus/back_end/Group/src/AbelianEquations.C:// tpd void AbelianEquationsSolver::findSolutions( File& file , bool out = true )
+/magnus/back_end/Group/src/AbelianGroupRep.C:// 20031103 tpd commented out
+/magnus/back_end/Group/src/AbelianGroupRep.C:// 20030627000 TPD changed multi-line literal to single line
+/magnus/back_end/Group/src/AbelianGroupRep.C:    // tpd make the error msg one line
+/magnus/back_end/Group/src/AbelianGroupRep.C:// 20031103 tpd commented out
+/magnus/back_end/Group/src/AbelianGroupRep.C:// 20031103 tpd commented out
+/magnus/back_end/Group/src/AbelianInfinitenessProblem.C:  // 20031103 tpd commented out
+/magnus/back_end/Group/src/AbelianGroupRep.C.~1.1.~:// 20030627000 TPD changed multi-line literal to single line
+/magnus/back_end/Group/src/AbelianGroupRep.C.~1.1.~:    // tpd make the error msg one line
+/magnus/back_end/libg++/src/AllocRing.C:// 20030628000 TPD cast the void* to an AllocNode
+/magnus/back_end/libg++/src/AllocRing.C:      // TPD deleting void* is undefined.
+/magnus/back_end/libg++/src/AllocRing.C:// 2003062800` TPD cast the void* to an AllocQNode
+/magnus/back_end/libg++/src/AllocRing.C:    // TPD deleting void* is undefined
+/magnus/back_end/libg++/src/Integer.C:// 20030626000 TPD call to abs(long int&) is ambiguous 
+/magnus/back_end/libg++/src/Integer.C:// 20030626001 TPD remove call to opfx
+/magnus/back_end/libg++/src/Integer.C:  // tpd  if (s.opfx())
+/magnus/back_end/libg++/src/Integer.C:// 20030626002 TPD remove call to opfx
+/magnus/back_end/libg++/src/Integer.C:// 20030626003 TPD changed stream.set to stream.setstate (2 places)
+/magnus/back_end/libg++/src/Integer.C:  // tpd if (!stream.ipfx0())
+/magnus/back_end/libg++/src/Integer.C:  // tpd    return stream;
+/magnus/back_end/libg++/src/Integer.C:  // tpd stream.set(ios::failbit);
+/magnus/back_end/libg++/src/Integer.C:  // tpd stream.set(ios::failbit|ios::eofbit);
+/magnus/back_end/libg++/src/Rational.C:// 20030626000 TPD removed call to ipfx
+/magnus/back_end/libg++/src/Rational.C:  // tpd  if (!s.ipfx(0))
+/magnus/back_end/libg++/src/String.C:// 20030626000 TPD remove call to ipfx 
+/magnus/back_end/libg++/src/String.C:// 20030626001 TPD change type of newstate from int to ios::iostate 
+/magnus/back_end/libg++/src/String.C:  // tpd if (!s.ipfx(0) || (!(s.flags() & ios::skipws) && !ws(s)))
+/magnus/back_end/libg++/src/String.C:  // tpd  int new_state = s.rdstate();
+/magnus/back_end/libg++/src/String.C:/* 20030626002 TPD remove call to ipfx */
+/magnus/back_end/libg++/src/String.C:  // tpd if (!s.ipfx(0))
+/magnus/back_end/libg++/src/String.C:  // tpd    return 0;
+/magnus/back_end/Matrix/src/GaussTransformation.C:// 20031016000 tpd commented out. double fails because this class
+/magnus/back_end/NilpotentGroup/src/BasicCommutators.C:// 20030628000 TPD default values are specified in the header file
+/magnus/back_end/NilpotentGroup/src/BasicCommutators.C:  // TPD		   bool embeddingBrackets = true) const {
+/magnus/back_end/NilpotentGroup/src/NilpotentCollector.C:// 20030628000 TPD default arguments are specified in the header file
+/magnus/back_end/NilpotentGroup/src/NilpotentCollector.C:  // TPD				      Type colType = STANDARD, 
+/magnus/back_end/NilpotentGroup/src/NilpotentCollector.C:  // TPD				      bool initialize = true)
+/magnus/back_end/NilpotentGroup/src/SGOfFNGRep.C:// 20030628000 TPD remove the class specifier after the typename
+/magnus/back_end/NilpotentGroup/Makefile.~1.1.~:#tpdhere NilpotentGroup \
+/magnus/back_end/Packages/src/PackagesData.C:// 20040628000 TPD use stringstream instead of iostream for tmp;
+/magnus/back_end/Packages/src/PackagesData.C:  // TPD skip sizeof
+/magnus/back_end/Packages/src/PackagesData.C:    // TPD      cfgFile.read(&lastIDNumber, sizeof(int) );
+/magnus/back_end/Packages/src/PackagesData.C:// 20040628000 TPD use stringstream instead of iostream for tmp;
+/magnus/back_end/Polynomial/src/Polynomial.C:// 20030628000 TPD default values are specified in the header 
+/magnus/back_end/SessionManager/include/FEData.h:  // TPD make this public
+/magnus/back_end/SessionManager/include/FEData.h:  // 20030629000 TPD make Expression unprotected
+/magnus/back_end/SessionManager/include/FEData.h:    // TPD remove private
+/magnus/back_end/SessionManager/include/BaseProperties.h://tpdhere
+/magnus/back_end/SessionManager/include/SessionManager.h:  //tpd make this public
+/magnus/back_end/SessionManager/src/ARCer.C:// 20030630000 TPD add namespace std
+/magnus/back_end/SessionManager/src/ARCer.C:    // 20030630000 TPD remove nocreate
+/magnus/back_end/SessionManager/src/ARCer.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/ARCer.C:    // 20030630000 TPD remove nocreate
+/magnus/back_end/SessionManager/src/ARCer.C:      // 20030630000 TPD remove nocreate
+/magnus/back_end/SessionManager/src/Menu.C:/* 20031014000 tpd new menus, possibly never debugged per Gilbert 
+/magnus/back_end/SessionManager/src/Menu.C: 20031014000 tpd comment out new menus per Gilbert */
+/magnus/back_end/SessionManager/src/SM1.C:/* 20031014000 tpd new menus, possibly never debugged per Gilbert 
+/magnus/back_end/SessionManager/src/SM1.C: 20031014000 tpd comment out new menus per Gilbert */
+/magnus/back_end/SessionManager/src/SM1.C:// 20030630000 TPD add namespace std
+/magnus/back_end/SessionManager/src/SM1.C:    // 20030630000 TPD remove nocreate
+/magnus/back_end/SessionManager/src/SM1.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SM1.C:    // 20030630000 TPD remove nocreate
+/magnus/back_end/SessionManager/src/SM1.C:      // 20030630000 TPD remove nocreate
+/magnus/back_end/SessionManager/src/SM1.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SM1.C:  // 20030630000 TPD rename s to ss so we don't cover the parameter name
+/magnus/back_end/SessionManager/src/SM1.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SM1.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SM1.C:  // 20030630000 TPD template expansion causes grief
+/magnus/back_end/SessionManager/src/SM1.C:    // 20030630000 TPD template expansion causes grief
+/magnus/back_end/SessionManager/src/SM1.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SM1.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SMEnumerator.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SMEnumerator.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SMEnumerator.C:  // 20030630000 TPD template expansion causes grief
+/magnus/back_end/SessionManager/src/SMEnumerator.C:    // 20030630000 TPD template expansion causes grief
+/magnus/back_end/SessionManager/src/SMEnumerator.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SMEnumerator.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SMList.C:  /* 20031017000 tpd change tmpnam to mkstemp */
+/magnus/back_end/SessionManager/src/SMList.C:  // 20030630000 TPD rename s to ss so we don't cover the parameter name
+/magnus/back_end/SessionManager/Makefile.~1.1.~:#tpdhere SM1 DatabaseManager
+/magnus/back_end/SMApps/include/IsWordAPE.h:  //20031103 tpd make everything public
+/magnus/back_end/SMApps/include/fastProblems.h:  // 20030628000 TPD remove class from typedef
+/magnus/back_end/SMApps/include/fastProblems.h:  // TPD  void readMessage(class istream &) { }       // overrides SMObject
+/magnus/back_end/SMApps/src/SA.C:{ // 20031104 tpd comment out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd comment out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd comment out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/SA.C:// 20031103 tpd change "int n = 2" to "int n". default specified in header
+/magnus/back_end/SMApps/src/SA.C:  // 20031103 tpd GG was named G which shadowed the argument
+/magnus/back_end/SMApps/src/AbelianInvariants.C:{ // 20031104 tpd comment out
+/magnus/back_end/SMApps/src/AbelianProblems.C:// 20031103 tpd change "int n = 2" to "int n". default specified in header
+/magnus/back_end/SMApps/src/TTProblem.C:  // 20031103 tpd GG was named G which shadowed the argument
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd comment out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd comment out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/src/menuDefns.C:    // 20031103 tpd commented out
+/magnus/back_end/SMApps/Makefile.~1.1.~:#tpdhere SA 
+/magnus/back_end/Subgroup/include/SubgroupGraph.h:  // 20030628000 TPD add ignore to distinguish signature from above
+/magnus/back_end/Subgroup/src/SubgroupGraphRep.C:// 20030628000 TPD add ignore to distinguish signature from above
+/magnus/back_end/Todd-Coxeter/src/CosetEnumerator.C:    // 20031104 tpd comment out

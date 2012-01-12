@@ -1,0 +1,543 @@
+\documentclass{article}
+\usepackage{mnt/linux/bin/axiom}
+\begin{document}
+\title{Makefile}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Philosophy}
+Magnus is a large, special purpose computer algebra system for doing
+research in Infinite Group Theory. It was developed from 1995 to 2001
+under the direction of Gilbert Baumslag.
+
+Magnus contains fundamental algorithms in Infinite Group Theory. The
+answers given by these algorithms are mathematically correct and will
+continue to be useful 30 years from now. This open source effort is an
+attempt to keep Magnus alive and useful.
+
+However keeping Magnus alive means more than just taking the source
+code and dumping it onto a public server. There are a lot of things
+about the system that need to change if it is going to survive and
+thrive for the next 30 years.
+
+The system is complex and difficult to build. There are few people who
+know how it is structured and why it is structured that way. Somehow
+it needs to be documented deeply so others can contribute.
+
+The mathematics is difficult. Unlike other free software you can't
+just reach for the old saying ``read the source code''. The source
+code is plain, clear and about as close to the mathematical theory as
+is practical. Unfortunately the mathematical theory is enshrined in
+some research library where few people will have access. Shomehow this
+must change. The research work, the mathematics, the published papers,
+and the source code have all got to be kept together for the next
+generation to read, understand, and modify.
+
+All of which seems to integrate into a requirement for better
+documentation. The key change which developers of Magnus will find
+with this version is that the documentation is primary and the code is
+secondary. Taking direction from Knuth and Dijkstra the system is now
+in a literate programming style. The hope is that the next generation
+of developers and users will be able to understand, maintain, and
+extend the system gracefully. And that eventually papers submitted to
+journals (a Magnus Journal?) will be easily imported into the system
+with their running code made available automatically.
+
+There is no guarantee that this attempt to change the culture of
+computational mathematics is going to succeed. But it is our firm
+belief that current systems have reached a complexity plateau and we
+need to find new techniques to push the envelope.
+
+In general, we need to consider changes to the system with a 30 year
+horizon rather than the current write-ship-debug mentality of software
+development. This is, after all, mathematics, the queen of the
+sciences. It deserves all the time, talent, and attention we can bring
+to bear on the subject.
+
+Tim Daly -- September 24, 2002
+\section{Contributions}
+All of these people have, in some way or other, been associated with
+Magnus. If you contribute, add your name. The names are in
+alphabetical order as we make no attempt to quantify the relative
+merit of the contributions.
+\begin{verbatim}
+Gibert Baumslag
+Timothy Daly
+Roger Needham
+\end{verbatim}
+\section{Pervasive Literate Programming}
+I think David Diamond said it best (Datamation, June 1976, pg 134):
+\begin{verbatim}
+The fellow who designed it is working far away.
+The spec's not been updated for many a livelong day.
+The guy who implemented it is promoted up the line.
+And some of the enhancements didn't match to the design.
+They haven't kept the flowcharts, the manual's a mess.
+And most of what you need to know, you'll simply have to guess.
+\end{verbatim}
+and with respect to Magnus:
+\begin{verbatim}
+The research that it's based on is no longer to be had.
+And the theory that it's based on has changed by just a tad.
+If we keep it all together then at least there is a hope.
+That the people who maintain it will have a chance to cope.
+\end{verbatim}
+
+As you can already see from this document the whole of the Magnus
+effort is structured around literate programs. Every directory has a
+{\bf Makefile.pamphlet} file which explains details of that
+directory. The whole source tree hangs from the Makefile tree. (Some
+of the Makefile.pamphlet files contain only text if executable code is
+not needed).  Every source file is embedded in a pamphlet file.
+
+Which begs the question: ``What is a pamphlet file?''.
+Basically it is a tex document with some additional markup
+tags that surround source code. Pamphlet files are intended
+to document one particular subject. Pamphlet files can be
+later combined into ``booklet'' files as one would embed
+chapters into books. 
+
+Which begs the question: ``Why bother with pamphlet files?''.
+Clearly you didn't read the philosophy rant above. In more detail
+there have been two traditional methods of documenting source
+code. The first is to sprinkle random comments into the code.
+This suffers from the problem that the comments assume you
+already understand the purpose of the code and why an
+enlightened comment like ``{\sl This oughta work}'' is perfectly
+clear and compelling. The second method is to write a document
+as a separate file. They get written half-heartedly because
+the lack of source code allows you to
+skip over explaining ugly implementation details (where all
+of the real confusion lies). This form of documentation 
+never gets updated and gradually becomes uninteresting 
+history.
+
+Pamphlet files overcome neither of these limitations if
+you don't make the effort to do it right. Ask yourself
+the question ``What would Knuth do?'' or ``Will this
+be clear 30 years from now?''. 
+
+Which begs the question: ``Why go to all this trouble?''.
+Because you're having a conversation with people who are
+far removed from you in time, space, and understanding.
+Because someone else will have to maintain your code.
+Because you are part of a community of mathematicians
+who hold you to high standards. Because if you can't
+explain it clearly maybe YOU don't understand it or
+it isn't as clear as you think it is.
+
+\section{Tools, tools, tools}
+\subsection{noweb, The Literate Programming Tool}
+\subsection{noweb, The Literate Programming Tool}
+Literate programs are a combination of documentation and
+source code kept in a pamphlet file. There have to be
+tools to deconstruct the pamphlet into useable components.
+At the current time we are using a system called noweb
+that was developed by Norman Ramsey. 
+The source code \cite{4}
+for noweb is in the zips directory. You can uncompress
+it, compile it, and install it into the Magnus executable
+directory by typing:
+
+{\bf make noweb}
+
+By default, if the noweb directory does not exist it will
+be built as needed simply typing:
+
+{\bf make}
+
+Every directory contains a {\bf Makefile.pamphlet} and typing:
+
+{\bf document Makefile}
+
+will expand into the {\bf Makefile} for that directory (note that we
+skip the ``.pamphlet'' suffix).  Thus you should never modify the
+Makefile directly (nor any source file) as the {\bf document} command
+will overwrite the sources. The {\bf Makefile} has four primary
+responsibilities. It needs to explain everything about this directory
+and the files under its control.  It needs to set up target
+directories so the Makefiles in the subdirectories can expect them. It
+needs to build all of the files in the current directory into their
+target directories. It needs to set up the environment and walk the
+subtree of directories beneath it so they can do their job.
+
+\subsubsection{The document command}
+The document has the syntax:
+\begin{verbatim}
+  document [ -o redirect ] pamphlet
+\end{verbatim}
+where the {\bf redirect} file can be any name where the output
+can go. The {\bf pamphlet} file is the name of the file without
+the .pamphlet suffix. The document command supplies this. Thus to
+document {\bf Makefile.pamphlet} type:
+\begin{verbatim}
+  document Makefile
+\end{verbatim}
+
+\subsection{Future Tool Directions}
+Lets imagine that we'd like to receive a pamphlet file from
+a colleague. It contains a new theory and spiffy new algorithm.
+We'd like to be able to put the pamphlet file into the system
+and have everything magically happen to integrate the new 
+pamphlet into the system. What would that imply? Well,
+lets assume that the pamphlet file has certain required
+sections. We'd like to get more than the technical paper and
+the code. We'd also like to see the help information, test cases,
+example code, cross-references to other pamphlets that would get
+automatically included, have the proof available and automatically
+checkable, etc. In the best of all possible worlds
+we have a front-end system that knows nothing except how to 
+deconstruct and integrate properly formed pamphlet files. If this were
+true we could be sure that all of the mathematics is documented and external
+to the system. There are no ``rabbits'' (as Dijkstra called surprises or
+special knowledge) that
+we pull out of our hat. Conceptually, given an underlying Lisp system, 
+it is clear we can built such a system.
+
+\section{Variables}
+\subsection{Shell variables}
+The only shell variable used by Magnus is the [[MAGNUS]] variable. It 
+should be set like: [[export MAGNUS=(yourpath)/mnt/linux]]. This
+variable tells the build what kind of system you want to build (in
+this example case, a linux system). It tells the runtime which kind of
+system you want to run on (again, a linux system).
+\subsection{The MAG variable}
+The [[MAG]] variable is used to construct all of the other relative
+paths in the build system. The [[MAG]] variable takes its value from
+the current working directory. In order to execute the make properly
+you need to [[cd (yourpath)]].
+<<environment>>=
+MAG=$(shell pwd)
+@
+\subsection{The SYS variable}
+The [[SYS]] variable tells us which target system we are building. The
+setting of this variable will contruct the actual Makefile used during
+the build. The setting of this variable is taken from the basename of
+the [[MAGNUS]] shell variable
+<<environment>>=
+#SYS=$(notdir $(MAGNUS))
+SYS=linux
+@
+\subsection{The directory structure}
+The system breaks into 4 main subdirectories: src, int, obj, and
+mnt. The src directory contains system-independent, read-only
+files. The int directory contains system-independent,
+machine-generated files. The obj directory contains machine-dependent,
+machine-generated files. The mnt directory contains the final ship
+system image.
+
+The directory structure is intended to allow you to build a system
+with the minimum of effort. In particular, the int and obj
+subdirectories are cache areas and temporary workspace areas for the
+build system. The build system never writes outside of the installed
+directories. Work that can be saved is kept in the int and obj
+subdirectories so it can be reused if nothing has changed, otherwise
+it is rebuilt.
+\subsubsection{The SRC variable}
+The src directory contains system-independent, read-only files. These
+files are only ever changed by human hands or by programs for source
+maintenance. The Makefiles don't modify these files.
+\subsection{Makefile Variables for Paths}
+The [[SRC]] variable is used to give the location of the source tree.
+<<environment>>=
+SRC=${MAG}/src
+@
+\subsubsection{The INT variable}
+The int directory contains system-independent, machine-generated
+files.
+
+Since the int directory only contains system-independent files this
+cache can be NFS mounted and shared across multiple systems, including
+systems with different architectures (e.g. Intel vs Sparc). Generally
+this directory will contain intermediate working files generated from
+pamphlets.
+
+This directory is a cache and a temporary workspace for the build. It
+is not needed once the system is built and can be erase. However, if
+left in place it will decrease the time it takes to rebuild the
+system.
+
+The [[INT]] variable is used to give the location of the intermediate
+cache.
+<<environment>>=
+INT=${MAG}/int
+@
+\subsubsection{The OBJ variable}
+The obj directory contains system-dependent, machine-generated files.
+
+Since the int directory only contains system-independent files this
+cache can be NFS mounted and shared across multiple systems, including
+systems with different architectures (e.g. Intel vs Sparc). Generally
+this directory will contain intermediate working files generated from
+pamphlets.
+
+This directory is a cache and a temporary workspace for the build. It
+is not needed once the system is built and can be erase. However, if
+left in place it will decrease the time it takes to rebuild the
+system.
+
+The [[OBJ]] variable is used to give the location of the intermediate
+cache.
+<<environment>>=
+OBJ=${MAG}/obj
+@
+\subsubsection{The MNT variable}
+The mnt directory contains the final ship system image.
+
+This variable is used to hold the location of all of the files that
+will be shipped to the end-user of the system. It should be possible
+to copy this subdirectory and have a complete, working image.
+<<environment>>=
+MNT=${MAG}/mnt
+@
+\subsection{The BIN variable}
+The commands we use, both during the system build and during system
+execution are built in the [[BIN]] subdirectory. Some initial commands
+are copied verbatim from the [[src/scripts]] subdirectory.
+<<environment>>=
+BIN=${MNT}/${SYS}/bin
+@
+\subsection{The ZIPS variable}
+The [[ZIPS]] directory contains packages that we use to build the
+system. These packages are built from scratch so it is easier to
+upgrade.
+<<environment>>=
+ZIPS=${MAG}/zips
+@
+\subsection{The TMP variable}
+Note that [[TMP]] is a workspace in the [[OBJ]] directory. It is
+working space for temporary files since we cannot assume that we can
+write outside of our own tree.
+<<environment>>=
+TMP=${OBJ}/tmp
+@
+\subsubsection{The NOISE variable}
+This variable contains the path to the temporary output file for
+latex. Output from commands like the [[document]] command will
+generally be written to the [[TMP/noise]] file. If the build seems to
+hang while making a document file then check this file. It will
+contain the output of the latex command and the likely error in the
+tex file.
+<<environment>>=
+NOISE=${TMP}/noise
+@
+\subsubsection{The INC variable}
+This variable contains the path to our local include subdirectory used
+by the C compiler.
+<<environment>>=
+INC=${INT}/include
+@
+\subsection{The CCFLAGS variable}
+This variable specifies all of the flags used by the C compiler.
+<<environment>>=
+CCFLAGS=-DHAVE_UNISTD_H -DDEBUG -g -fno-operator-names -D_G_NO_NAV \
+  -Wno-deprecated -DTPD -D_CPP_BACKWARD_BACKWARD_WARNING_H -DSAFETY=2 
+@
+\subsection{The INCLUDE variable}
+This variable specifies the include directories used by the C
+compiler.
+
+The [[usr/include/g++-3]] directory contains [[stdiostream.h]] which
+is used in the [[BlackBox.h]] include file.
+<<environment>>=
+#INCLUDE=-I${INC} -I${INT} -I/usr/include/g++-3
+INCLUDE=-I${INC} -I${INT}
+@
+\section{The Makefile stanzas}
+\subsection{rootdirs}
+Note that the [[-p]] (parent) option to mkdir will make all
+intermediate directories as well if they don't exist.
+<<rootdirs>>=
+rootdirs:
+	@echo 1 checking directory structure
+	@mkdir -p ${INT}
+	@mkdir -p ${OBJ}/${SYS}
+	@mkdir -p ${TMP}
+	@mkdir -p ${BIN}
+	@cp -pr ${SRC}/scripts/* ${BIN}
+
+@
+\subsection{noweb}
+Note that this stanza echos a line into a file called noweb.
+Makefile semantics says that when this file exists we will
+skip this stanza. So in a clean system where the noweb file
+does not exist we will execute this once and never again
+(unless someone deletes the noweb file).
+
+Never add anything after the colon otherwise the noweb
+build will depend on it rather than the noweb flag file
+in the current directory.
+
+We have added a patch to the [[${SPAD}/obj/noweb/src/c/modules.c]]
+file that causes noweb to output undefined chunk names exactly
+as they exist in the original file. This gets around the most
+common failure of boxing up a file into a pamphlet. The patch
+file lives in the {\bf zips} directory and will be applied
+after noweb is untarred but before the make occurs.
+
+<<noweb>>=
+noweb:
+	@echo 2 making noweb
+	@mkdir -p ${TMP}
+	@mkdir -p ${OBJ}/noweb
+	@mkdir -p ${BIN}/lib
+	@mkdir -p ${BIN}/man
+	@mkdir -p ${BIN}/tex/inputs
+	@( cd ${OBJ}/noweb ; \
+	tar -zxf ${ZIPS}/noweb-2.10a.tgz ; \
+	cd ${OBJ}/noweb/src ; \
+	./awkname gawk ; \
+	cd ${OBJ}/noweb/src/c ; \
+	echo 3 applying patch zips/noweb.modules.c.patch ; \
+	patch <${ZIPS}/noweb.modules.c.patch ; \
+	cd ${OBJ}/noweb/src ; \
+	echo 4 applying patch zips/noweb.src.Makefile.patch ; \
+	patch <${ZIPS}/noweb.src.Makefile.patch ; \
+	cd ${OBJ}/noweb/src ; \
+	echo 5 applying patch zips/noweb.src.Makefile.2.patch ; \
+	patch <${ZIPS}/noweb.src.Makefile.2.patch ; \
+	cd ${OBJ}/noweb/src ; \
+	echo 6 making noweb, output redirected to ${TMP}/noweb.output ; \
+	${ENV} ${MAKE} all install >${TMP}/noweb.output )
+	@echo The file marks the fact that noweb has been made > noweb
+
+nowebclean:
+	@echo 8 cleaning ${OBJ}/noweb
+	@rm -rf ${OBJ}/noweb
+	@rm -f noweb
+
+@
+\subsubsection{The DOCUMENT command}
+The tangle command is used to extract sources from pamphlets and build
+.dvi files. It runs latex twice to handle cross references. We make it
+into a variable so that users can use the native tangle command if
+they have one installed.
+<<environment>>=
+DOCUMENT=${BIN}/document
+@
+\subsubsection{The TANGLE command}
+The tangle command is used to extract sources from pamphlets. We make
+it into a variable so that users can use the native tangle command if
+they have one installed.
+<<environment>>=
+TANGLE=${BIN}/notangle
+@
+\subsubsection{The WEAVE command}
+The tangle command is used to extract tex files from pamphlets. We
+make it into a variable so that users can use the native weave command
+if they have one installed.
+<<environment>>=
+WEAVE=${BIN}/noweave
+@
+\subsection{Literate Commands}
+The literate commands are used during the build process to construct
+the Makefiles. As a consequence they are basically shell scripts that
+we copy into the [[BIN]] subdirectory.
+<<literate commands>>=
+litcmds:
+	@echo 9 Environment ${ENV}
+	@echo 10 copying ${SRC}/scripts to ${BIN}
+	@cp -pr ${SRC}/scripts/* ${BIN}
+
+@
+\subsection{src}
+<<src>>=
+src: rootdirs
+	@echo 11 making ${SRC}
+	@( cd src ; \
+	${DOCUMENT} src Makefile ; \
+	${DOCUMENT} dvi Makefile . Makefile ${NOISE} ; \
+	${ENV} ${MAKE} )
+
+srcclean:
+	@echo 12 cleaning ${OBJ}/${SYS}/lib
+	@rm -rf ${OBJ}/${SYS}/lib
+
+@
+\subsection{document}
+<<document>>=
+document: rootdirs
+	@echo 13 documenting files
+	@mkdir -p ${INT}/doc/lsp
+	@mkdir -p ${INT}/doc/src
+	@(cd src ; ${ENV} ${MAKE} document )
+
+@
+\subsection{clean}
+<<clean>>=
+clean: srcclean nowebclean
+	@echo 14 all subdirectories cleaned
+	@rm -f lastBuildDate
+	@rm -f *~
+	@rm -rf ${INT}
+	@rm -rf ${OBJ}
+	@rm -rf ${MNT}
+
+@
+\section{The Makefile}
+<<*>>=
+<<environment>>
+
+ENV= MAG=${MAG} SYS=${SYS} SRC=${SRC} INC=${INC} INT=${INT} OBJ=${OBJ} \
+     TMP=${TMP} BIN=${BIN} MNT=${MNT} ZIPS=${ZIPS} \
+     CCFLAGS='${CCFLAGS}' INCLUDE='${INCLUDE}' NOISE=${NOISE} \
+     DOCUMENT=${DOCUMENT} TANGLE=${TANGLE} WEAVE=${WEAVE}
+
+all: noweb litcmds
+	@echo 15 making ${SRC}
+	@echo 16 making ${SRC}/Makefile.${SYS}
+	@${DOCUMENT} chunk Makefile.${SYS} Makefile . Makefile.${SYS}
+	@${DOCUMENT} dvi Makefile . Makefile ${NOISE}
+	@ ${ENV} ${MAKE} -f Makefile.${SYS}
+	@echo 17 finished system build on `date` | tee >lastBuildDate
+
+start: noweb litcmds
+
+<<noweb>>
+<<literate commands>>
+
+document: noweb litcmds
+	@echo 18 making a ${SYS} system
+	@echo 19 Environment ${ENV}
+	@ ${DOCUMENT} chunk Makefile.${SYS} Makefile . Makefile.${SYS}
+	@ ${ENV} ${MAKE} -f Makefile.${SYS} document
+
+clean: noweb litcmds
+	@echo 20 cleaning up
+	@ ${DOCUMENT} chunk Makefile.${SYS} Makefile . Makefile.${SYS}
+	@ ${ENV} ${MAKE} -f Makefile.${SYS} clean
+	@ rm -f noweb
+	@ rm -f *~
+
+@
+\subsection{Makefile.linux}
+<<Makefile.linux>>=
+# System dependent Makefile for the Intel/Linux platform
+
+ENV= MAG=${MAG} SYS=${SYS} SRC=${SRC} INC=${INC} INT=${INT} OBJ=${OBJ} \
+     TMP=${TMP} BIN=${BIN} MNT=${MNT} ZIPS=${ZIPS} \
+     CCFLAGS='${CCFLAGS}' INCLUDE='${INCLUDE}' NOISE=${NOISE} \
+     DOCUMENT=${DOCUMENT} TANGLE=${TANGLE} WEAVE=${WEAVE}
+
+all: src
+	@echo 23 Makefile.linux called
+	
+
+<<rootdirs>>
+<<noweb>>
+<<src>>
+<<document>>
+<<clean>>
+
+@
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

@@ -1,0 +1,173 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/ConjugacyProblem.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Word.h"
+#include "FPGroup.h"
+#include "Supervisor.h"
+#include "GAConjProblemForORGroup.h"
+
+@
+\section{class FPConjugacyARCer}
+<<class FPConjugacyARCer>>=
+class FPConjugacyARCer : public ARCer
+{
+public:
+  FPConjugacyARCer( ComputationManager& boss );
+
+  void setArguments( 
+		    const class SMFPGroup& G, 
+		    const class Word& u, 
+		    const class Word& w 
+		    );
+
+  Trichotomy answer( ) const { return theAnswer; }
+
+  Word conjugator( ) const { return theConjugator; } 
+  // Returns a valid result when answer() returns yes.
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  const SMFPGroup *theGroup;
+  Word firstWord, secondWord;
+  Trichotomy theAnswer;
+  Word theConjugator;
+};
+
+@
+\section{class FPConjugacyWrapper}
+<<class FPConjugacyWrapper>>=
+class FPConjugacyWrapper : public ComputationManager
+{
+public:
+  FPConjugacyWrapper(class ConjugacyProblem& CP);
+
+  Trichotomy answer( ) const { return theAnswer; }
+  // This not report the result to the FE, but just sits and waits to
+  // be polled through this member. yes => conjugate, no => not conjugate,
+  // dontknow => not done yet.
+
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  const class ConjugacyProblem& problem;
+  FPConjugacyARCer arcer;
+  Trichotomy theAnswer;
+};
+
+@
+\section{class MSCConjugacyARCer}
+<<class MSCConjugacyARCer>>=
+class MSCConjugacyARCer : public ARCer
+{
+public:
+  MSCConjugacyARCer( ComputationManager& );
+  void setArguments( const FPGroup& G, const Word& u, const Word& v );
+  Trichotomy answer( ) const { return theAnswer; }
+
+  Word conjugator( ) const { return theConjugator; } 
+  // Returns a valid result when answer() returns yes.
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  FPGroup theGroup;
+  Word firstWord, secondWord;
+  Trichotomy theAnswer;
+  Word theConjugator;
+};
+
+@
+\section{class MSCConjugacyWrapper}
+<<class MSCConjugacyWrapper>>=
+class MSCConjugacyWrapper : public ComputationManager
+{
+public:
+  MSCConjugacyWrapper(class ConjugacyProblem& CP);
+
+  Trichotomy answer( ) const { return theAnswer; }
+  // This not report the result to the FE, but just sits and waits to
+  // be polled through this member. yes => conjugate, no => not conjugate,
+  // dontknow => not done yet.
+
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  const class ConjugacyProblem& problem;
+  MSCConjugacyARCer arcer;
+  Trichotomy theAnswer;
+};
+
+@
+\section{class ConjugacyProblem}
+<<class ConjugacyProblem>>=
+class ConjugacyProblem : public Supervisor
+{
+public:
+  ConjugacyProblem(const class SMWord& w1, const class SMWord& w2);
+  const class SMWord& firstWord( ) const { return u; }
+  const class SMWord& secondWord( ) const { return v; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  const class SMWord& u;
+  const class SMWord& v;
+  bool scMethodFailed;
+  bool geneticLinkHasBeenSent;
+  Subordinate<ConjugacyProblem,FPConjugacyWrapper> fpConjugacyWrapper;
+  Subordinate<ConjugacyProblem,MSCConjugacyWrapper> mscConjugacyWrapper;
+  Subordinate<ConjugacyProblem,GAConjugacyForORGroup> GAConjugacy;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/ConjugacyProblem.h
+#ifndef _CONJUGACYPROBLEM_H_
+#define _CONJUGACYPROBLEM_H_
+
+<<license>>
+<<include>>
+<<class FPConjugacyARCer>>
+<<class FPConjugacyWrapper>>
+<<class MSCConjugacyARCer>>
+<<class MSCConjugacyWrapper>>
+<<class ConjugacyProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

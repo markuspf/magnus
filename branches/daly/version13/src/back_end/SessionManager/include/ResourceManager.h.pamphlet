@@ -1,0 +1,135 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/ResourceManager.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "ARC.h"
+#include "ARCSlotID.h"
+#include "OID.h"
+
+@
+\section{ResourceManager}
+\subsection{class ResourceManager}
+<<class ResourceManager>>=
+class ResourceManager
+{
+public:
+  ResourceManager(OID oid);
+  ~ResourceManager( );
+
+  OID getOID( ) const;
+  // Since this class is imported by an SMObject, we need to store the
+  // OID here, too.
+
+  ARC freeARCs( ) const;
+  // Returns the number of liquid, i.e., spendable ARCs available to this.
+
+  bool workingFor(OID oid) const;
+  // Returns true if this has 1 or more ARCs from oid.
+
+  bool isNeeded() const;
+
+
+  void freeze( );
+  // Says that this may not spend any ARCs, and any ARCs allocated by this
+  // are also frozen.
+
+  void liquefy( );
+  // Reverses the effect of `freeze' (which need not have been called).
+
+  void allocate(ResourceManager& recipient, ARC arcs);
+  // This wishes to give `arcs' to `recipient', to spend as `recipient'
+  // likes.
+
+  void acceptAllocation(OID benefactor,	ARCSlotID asi, ARC arcs,
+                        bool overrides = false	);
+  // `benefactor' wants to give us `arcs'. We are told to which ARCSlotID
+  // of the OID to report spending. When `overrides', we clear any record
+  // of allocation from `oid', and substitute this one.
+
+  void usedARCs(ARC arcs);
+  // A derivative informs this that is has spent `arcs'.
+
+  void usedOneARC( );
+  // Commonly used shortcut.
+
+  void usedMemory(int kilobytes) { }  //@rn Not yet supported.
+
+private:
+
+  bool isLiquid(OID oid) const;
+  // We will record in a central location which objects in this class
+  // are frozen. This aids in determining whether a Resources record
+  // is free for use.
+
+  ResourceManager(const ResourceManager&);
+  // Hidden, not to be implemented.
+
+  ResourceManager& operator = (const ResourceManager&);
+  // Hidden, not to be implemented.
+
+<<struct Resources>>
+
+  Resources* toUse;
+  // These are the Resources gotten from elsewhere.
+
+  Resources* lastDrawnFrom;
+  // Pointer into toUse of last Resources drawn from.
+
+  OID theOID;
+  // The oid of the ComputationManager for which this manages Resources.
+
+};
+
+@
+\subsection{struct Resources}
+<<struct Resources>>=
+  struct Resources
+  {
+	 Resources(OID oid, ARCSlotID asi, ARC arcs, Resources* n) :
+	   benefactor(oid),
+		theARCs(arcs),
+		theARCSlotID(asi),
+		memory(-1),        // No limit
+		next(n)
+	 { }
+
+	 ~Resources( ) { delete next; }
+
+	 OID benefactor;
+	 ARCSlotID theARCSlotID;
+	 ARC theARCs;
+	 int memory;
+
+	 Resources* next;
+  };
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/ResourceManager.h
+#ifndef _RESOURCEMANAGER_H_
+#define _RESOURCEMANAGER_H_
+
+<<license>>
+<<include>>
+<<class ResourceManager>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

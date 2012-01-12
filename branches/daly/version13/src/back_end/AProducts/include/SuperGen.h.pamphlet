@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/AProducts/include/SuperGen.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include <iostream.h>
+#include "global.h"
+#include "Generator.h"
+
+@
+\section{class SuperGen}
+<<class SuperGen>>=
+class SuperGen {
+public:
+
+  SuperGen() : gen(1), exp(0) { }
+
+  SuperGen( const Generator& g, int exponent = 1 ) : gen(g), exp(exponent) {
+    // Need correct if the generator was given in negative form.
+    if( ord(g) < 0 ) {
+      gen = inv(g);
+      exp = -exponent;
+    }
+  }      
+
+  Generator generator() const { return gen; }
+
+  int exponent() const { return exp; }
+
+  bool operator == ( const SuperGen& g ) const 
+  {
+    if( &g == this || gen == g.gen && exp == g.exp )
+      return true;
+    return false;
+  }
+
+private:
+  Generator gen;
+  int exp;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/AProducts/include/SuperGen.h
+#ifndef __SUPERGEN_H__
+#define __SUPERGEN_H__
+
+<<license>>
+<<include>>
+<<class SuperGen>>
+
+void operator < ( ostream& ostr, const SuperGen& g );
+void operator > ( istream& istr, SuperGen& g );
+ostream& operator << ( ostream& ostr, const SuperGen& g );
+istream& operator >> ( istream& istr, SuperGen& g );
+
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

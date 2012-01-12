@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/KB/include/GenMult.h}
+\author{Sarah Rees}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Word.h"
+#include "Set.h"
+#include "Vector.h"
+#include "FSA.h"
+#include "DFSA.h"
+#include "GenMultRep.h"
+
+@
+\section{class GenMult}
+<<class GenMult>>=
+class GenMult : public FSA {
+// this should surely be derived from DFSA but I can't get the
+// constructor to work except by doing this
+public:
+  GenMult( ) : FSA( new GenMultRep() ) { };
+
+  GenMult( const VectorOf<Chars> &  genNames ) :
+  FSA( new GenMultRep( genNames) ) { }
+
+  GenMult( const VectorOf<Chars> & genNames, const WordOrder & word_order) :
+  FSA( new GenMultRep( genNames,word_order) ) { }
+
+protected:
+  // Need to shadow inherited look() and change(), to get right ptr types.
+  const GenMultRep *look() const { 
+    return (GenMultRep*)FSA::look(); }
+  GenMultRep *change() { 
+    return (GenMultRep*)FSA::change(); }
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/KB/include/GenMult.h
+#ifndef _GenMult_H_
+#define _GenMult_H_
+
+<<license>>
+<<include>>
+<<class GenMult>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

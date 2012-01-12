@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/ExtendToHomProblem.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "FPGroup.h"
+#include "SMMap.h"
+#include "CommutatorIterator.h"
+#include "NilpotentProblems.h"
+#include "GeneticProblems.h"
+
+@
+\section{class CheckRelatorsInNilpotentARCer}
+This is commented out.
+<<class CheckRelatorsInNilpotentARCer>>=
+class CheckRelatorsInNilpotentARCer : public ARCer
+{
+public:
+  CheckRelatorsInNilpotentARCer( ComputationManager& boss ) 
+    : ARCer( boss ) { } 
+
+  void setArguments( ExtendToHomChecker* );
+  bool getRetValue() { return retValue; }
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  ExtendToHomChecker* theExtendToHomChecker;
+  bool retValue;
+};
+
+\section{class ExtendToHomChecker}
+<<class ExtendToHomChecker>>=
+class ExtendToHomChecker
+{
+public:
+  ExtendToHomChecker(class ExtendToHomProblem& boss, class SMMap& );
+  Trichotomy doesExtendToHom( );
+  Chars getExplanation( ) const { return explanation; } 
+  Trichotomy preliminaryCheckings();
+  bool checkRelatorsInNilpotent() const;
+
+private:
+  class ExtendToHomProblem& theBoss;
+  class SMMap& theMap;
+  const Map M;
+  class SMFPGroup& theDomain;
+  class SMFPGroup& theRange;
+  FPGroup G1;
+  FPGroup G2;
+  SetOf<Word> relators;
+  class GIC& gic1;
+  class GIC& gic2;
+  class GCM& gcm1;
+  class GCM& gcm2;
+  int theClass;
+  bool triedAbelianization;
+//  bool triedPreliminaryCheckings;
+  Chars explanation;
+  SetOf<Word> getAllRelators( class SMFPGroup& ) const;
+};
+
+@
+\section{class ExtendToHomProblem}
+<<class ExtendToHomProblem>>=
+class ExtendToHomProblem : public Supervisor
+{
+public:
+  ExtendToHomProblem( class SMMap& );
+  Trichotomy answer( ) const { return theAnswer; }
+  Trichotomy nilpWPAnswer( ) ;
+  Trichotomy nilpWPInQuotAnswer( ) ;
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  void sendResultMessage( Chars );
+  SMMap& theMap;
+  const SMFPGroup& theDomain;
+  const SMFPGroup& theRange;
+  int theClass;
+  ExtendToHomChecker theChecker;
+  Trichotomy theAnswer;
+  Chars explanation;
+  MirrorSubordinate normalClosure;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate nilpotentQuotients;
+  Subordinate<ExtendToHomProblem,NilpotentWPInQuotients> 
+     nilpotentWPInQuotients;
+  MirrorSubordinate computeBasis;
+  Subordinate<ExtendToHomProblem,NilpotentWP> nilpotentWP;
+  Subordinate<ExtendToHomProblem, GeneticWPCM> genetic;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/ExtendToHomProblem.h
+#ifndef _EXTEND_TO_HOM_PROBLEM_H_
+#define _EXTEND_TO_HOM_PROBLEM_H_
+
+<<license>>
+<<include>>
+<<class ExtendToHomChecker>>
+<<class ExtendToHomProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

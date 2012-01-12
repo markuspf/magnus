@@ -1,0 +1,172 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/Trichotomy.h}
+\author{Stephane Collart}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "global.h"
+
+@
+\section{class Trichotomy}
+<<class Trichotomy>>=
+class Trichotomy
+{
+public:
+	enum TrichotomyValue { DONTKNOW = -1, NO, YES };
+	class dontknow { }; // used as marker in ctor of global Trich consts
+	// @stc it seems as though g++ 2.6.3 requires local classes declared 
+        // before first place of use in class definition
+	Trichotomy( bool b ) : theValue(convert(b)) { }
+	Trichotomy( int i ) : theValue(convert(i)) { }
+	Trichotomy( void* p ) : theValue(convert(p)) { }
+	Trichotomy( const dontknow& ) : theValue(DONTKNOW) { }
+
+#ifdef ALLOW_BOGUS_CONVERSIONS
+	operator bool ( ) const
+	{
+		if (theValue == -1) error("Non-bool value of Trichotomy in"
+			" Trichotomy::operator bool()");
+		return bool(theValue);
+	}
+
+	operator int ( ) const
+	{
+		return bool(*this);
+	}
+#endif
+
+	inline friend bool operator == ( const Trichotomy& t, const Trichotomy& u )
+	{
+		return t.theValue == u.theValue;
+	}
+	// global to permit dual promotion
+
+	// op != global below
+
+#ifdef ALLOW_BOGUS_CONVERSIONS
+	Trichotomy operator ! ( ) const
+	{
+		if (undefined()) return dontknow();
+		else return !bool(*this);
+	}
+  
+	bool defined( ) const { return theValue != -1; }
+	// true iff *this != dontknow
+
+	bool undefined( ) const { return !defined(); }
+	// true iff *this == dontknow
+#endif
+
+        friend ostream& operator << ( ostream& ostr, const Trichotomy& t )
+        {
+	  switch( t.theValue ) {
+	  case DONTKNOW : ostr << "DONTKNOW"; break;
+	  case NO       : ostr << "NO";  break;
+	  case YES      : ostr << "YES";
+	  }
+	  return ostr;
+	}
+
+        friend ostream& operator < ( ostream& ostr, const Trichotomy& t )
+        {
+	  int i; 
+	  switch( t.theValue ) {
+	  case DONTKNOW : i = -1; break;
+	  case NO       : i = 0;  break;
+	  case YES      : i = 1;
+	  }
+	  ostr < i;
+
+	  return ostr;
+	}
+  
+        friend istream& operator > ( istream& istr, Trichotomy& t )
+        {
+	  int i;
+	  istr > i;
+	  switch( i ) {
+	  case -1 : t.theValue = DONTKNOW; break;
+	  case 0  : t.theValue = NO; break;
+	  case 1  : t.theValue = YES;
+	  }
+
+	  return istr;
+	}
+
+private:
+	static TrichotomyValue convert( bool b )
+	{
+		if (b) return YES; else return NO;
+	}
+	
+	static TrichotomyValue convert( void* p )
+	{
+		if (p) return YES; else return NO;
+	}
+
+	TrichotomyValue theValue;
+
+};
+
+@
+\section{global operators}
+<<global operators>>=
+inline bool operator != ( const Trichotomy& t, const Trichotomy& u )
+{
+	return !(t == u);
+}
+
+#ifdef ALLOW_BOGUS_CONVERSIONS
+inline Trichotomy operator && ( const Trichotomy& t, const Trichotomy& u )
+{
+	if (t.undefined() || u.undefined()) return Trichotomy::dontknow();
+	else return bool(t) && bool(u);
+}
+
+inline Trichotomy operator || ( const Trichotomy& t, const Trichotomy& u )
+{
+	if (t.undefined() || u.undefined()) return Trichotomy::dontknow();
+	else return bool(t) || bool(u);
+}
+#endif
+
+@
+\section{global const declarations}
+<<global const declarations>>=
+extern const Trichotomy YES, NO, DONTKNOW, yes, no, dontknow;
+// @stc verify that it is necessary to explicitely give consts external linkage
+
+//@rn const bool forever = true; // useful synonym
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/Trichotomy.h
+#ifndef _TRICHOTOMY_H_
+#define _TRICHOTOMY_H_
+
+<<include>>
+#define ALLOW_BOGUS_CONVERSIONS
+
+<<license>>
+<<class Trichotomy>>
+<<global operators>>
+<<global const declarations>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

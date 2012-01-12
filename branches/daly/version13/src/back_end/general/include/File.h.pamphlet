@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/File.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{File.h}
+This is a simple deriviation from fstream, specially designed 
+for reporting large amount of data ( f.e. details of algorithms
+work ) to Session Manager and Front End to make it available for
+the end user.
+\section{include}
+<<include>>=
+#include <stdio.h>
+#include <fstream.h>
+#include "magnus.h"
+
+@
+\section{File}
+<<struct File>>=
+struct File : public fstream
+{
+  File( )  
+  {
+    char s[L_tmpnam];
+    char* tmpFileName = tempnam(MagnusTmp::magnusTmp(),NULL);
+    theFileName = tmpFileName;
+    free(tmpFileName);
+    open(theFileName, ios::app);
+    colorFile.open(theFileName+Chars(".color"),ios::app);
+#if SAFETY > 0
+    if( !(*this) )
+      error( "File::File( ) : "
+	     "Cannot open a file." );
+#endif
+    setColor(mainColor);
+  }
+  // Creates temporary file 
+  
+  
+  File( const Chars& fileName ) : 
+    fstream( fileName, ios::app ), 
+    theFileName(fileName)
+  {
+    colorFile.open(theFileName+Chars(".color"),ios::app);
+#if SAFETY > 0
+    if( !(*this) )
+      error( "File::File( Chars fileName ) : "
+	     "Cannot open a file." );
+#endif
+    setColor(mainColor);
+  }
+  // Creates file with a specific name
+  
+  
+  Chars getFileName() const { return theFileName; }
+  // Returns name of the file.
+  
+  void setColor( const Chars& colorName ) 
+  {
+#if SAFETY > 0
+    if( colorName.length() !=3 )
+      error( "void File::setColor( const Chars& colorName ) : "
+	     "Wrong color argument." );
+#endif
+    
+    char s[10];
+    long size = tellp();
+    sprintf(s,"%.7d",size);
+    colorFile << "#" << s << "%" <<  colorName << "@";
+    colorFile.flush();
+  }
+  
+  
+private:
+  
+  Chars theFileName; // holds name of the file
+  fstream colorFile; // holds color mapping
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/File.h
+#ifndef _File_h_
+#define _File_h_
+
+<<license>>
+<<include>>
+
+// Colors have to be in form RGB,
+// where R,G or B represents one hexademical digit of red,
+// green or blue intensity, respectively.
+const Chars mainColor = "000";
+const Chars titleColor = "aaa";
+
+<<struct File>>
+
+inline ostream& ready(ostream& ostr) 
+{
+  ostr <<  flush;
+  return ostr;
+}
+
+inline ostream& end(ostream& ostr) 
+{
+  ostr <<  flush;
+  return ostr;
+}
+
+
+#endif  // _File_h_
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

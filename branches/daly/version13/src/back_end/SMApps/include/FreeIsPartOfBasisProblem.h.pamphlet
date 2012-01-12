@@ -1,0 +1,210 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/FreeIsPartOfBasisProblem.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "GeneralWhitehead.h"
+#include "GAIsPartOfBasis.h"
+#include "SMSetOfWords.h"
+#include "SMWord.h"
+
+@
+\section{class GAIsPartOfBasisArcer}
+<<class GAIsPartOfBasisArcer>>=
+class GAIsPartOfBasisArcer : public ARCer
+{
+public:
+  GAIsPartOfBasisArcer( ComputationManager& );
+  ~GAIsPartOfBasisArcer( ) { }
+  void setArguments( FreeGroup f,Word w );
+  Chars getComputationFileName() const { return compFile.getFileName();}
+  Chars getResultFileName() const { return resultFile.getFileName();}
+  const VectorOf<Word>& getAutomorphism() const { return theAuto;}
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  Word theWord;
+  FreeGroup theGroup;
+  File compFile;
+  File resultFile;
+  VectorOf<Word> theAuto;
+};
+
+@
+\section{class GAIsPartOfBasisCM}
+<<class GAIsPartOfBasisCM>>=
+class GAIsPartOfBasisCM : public ComputationManager
+{
+public:
+  GAIsPartOfBasisCM( class FreeIsPartOfBasisProblem&  );
+  Trichotomy getAnswer() const { return answer;}
+  Chars getComputationFileName() const 
+     { return arcer.getComputationFileName();}
+  Chars getResultFileName() const { return arcer.getResultFileName();}
+  const VectorOf<Word>& getAutomorphism() const 
+     { return arcer.getAutomorphism();}
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  GAIsPartOfBasisArcer arcer;
+  Trichotomy answer;
+  const class SMWord& theWord;
+  bool linkHasBeenSent;
+};
+
+@
+\section{class FreeIsPartOfBasis}
+<<class FreeIsPartOfBasis>>=
+class FreeIsPartOfBasis : public ComputationManager
+{
+public:
+  FreeIsPartOfBasis(class FreeIsPartOfBasisProblem& problemObject );
+  ~FreeIsPartOfBasis( );
+
+  Trichotomy answer( ) const { return theAnswer; }
+  // This not report the result to the FE, but just sits and waits to
+  // be polled through this member. yes => conjugate, no => not conjugate,
+  // dontknow => not done yet.
+
+  Map getAutomorphism( ) const;
+  // Returns a valid result when answer() returns yes, otherwise
+  // it is an error.
+
+  Chars getFileName( ) { return theFileName; }
+  // Returns name of the file with computation details
+
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };              // overrides ComputationManager
+  void terminate( ) { };          // overrides ComputationManager
+
+private:
+  bool linkHasBeenSent;
+  const class SMWord& theWord;
+  Trichotomy theAnswer;
+  FreeGroup theGroup;
+  Map theAutomorphism;
+  GeneralWhitehead* GW;
+  Chars theFileName; 
+  // Keeps name of the file containing details of the computation.
+};
+
+@
+\section{class FreeIsPartOfBasisProblem}
+<<class FreeIsPartOfBasisProblem>>=
+class FreeIsPartOfBasisProblem : public Supervisor
+{
+public:
+  FreeIsPartOfBasisProblem(const class SMWord& w);
+  const class SMWord& getWord( ) const { return theWord; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const SMWord& theWord;
+  bool link1HasBeenSent;
+  bool link2HasBeenSent;
+  Subordinate<FreeIsPartOfBasisProblem, FreeIsPartOfBasis> freeIsPartOfBasis;
+  Subordinate<FreeIsPartOfBasisProblem, GAIsPartOfBasisCM> gaIsPartOfBasisCM;
+};
+
+@
+\section{class FreeGeneralIsPartOfBasis}
+<<class FreeGeneralIsPartOfBasis>>=
+class FreeGeneralIsPartOfBasis : public ComputationManager
+{
+public:
+  FreeGeneralIsPartOfBasis( class FreeGeneralIsPartOfBasisProblem&
+			    problemObject );
+
+  ~FreeGeneralIsPartOfBasis( );
+
+  Trichotomy answer( ) const { return theAnswer; }
+  // This not report the result to the FE, but just sits and waits to
+  // be polled through this member. yes => conjugate, no => not conjugate,
+  // dontknow => not done yet.
+
+  Map getAutomorphism( ) const;
+  // Returns a valid result when answer() returns yes, otherwise
+  // it is an error.
+
+  Chars getFileName( ) { return theFileName; }
+  // Returns name of the file with computation details
+
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };           // overrides ComputationManager
+  void terminate( ) { };       // overrides ComputationManager
+
+private:
+  const class SMSetOfWords& theSet;
+  Trichotomy theAnswer;
+  FreeGroup theGroup;
+  Map theAutomorphism;
+  GeneralWhitehead* GW;
+  Chars theFileName; 
+  // Keeps name of the file containing details of the computation.
+};
+
+@
+\section{class FreeGeneralIsPartOfBasisProblem}
+<<class FreeGeneralIsPartOfBasisProblem>>=
+class FreeGeneralIsPartOfBasisProblem : public Supervisor
+{
+public:
+  FreeGeneralIsPartOfBasisProblem( const class SMSetOfWords& );
+  const class SMSetOfWords& getSetOfWords( ) const { return theSet; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const SMSetOfWords& theSet;
+  bool linkHasBeenSent;
+
+  Subordinate<FreeGeneralIsPartOfBasisProblem, FreeGeneralIsPartOfBasis>
+    freeIsPartOfBasis;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/FreeIsPartOfBasisProblem.h
+#ifndef _FREE_IS_PART_OF_BASIS_PROBLEM_H_
+#define _FREE_IS_PART_OF_BASIS_PROBLEM_H_
+
+<<license>>
+<<include>>
+<<class GAIsPartOfBasisArcer>>
+<<class GAIsPartOfBasisCM>>
+<<class FreeIsPartOfBasis>>
+<<class FreeIsPartOfBasisProblem>>
+<<class FreeGeneralIsPartOfBasis>>
+<<class FreeGeneralIsPartOfBasisProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

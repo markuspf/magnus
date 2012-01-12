@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/RSApproximation.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Vector.h"
+#include "RSWord.h"
+#include "FPGroup.h"
+
+@
+\section{class RSApproximation}
+RS stands for Redemeister-Schreier. Here we rewrite all relations
+using class RSWord and then choose from an infinite number of
+relations the ones that have only generators with indices from -l
+to l, where l is the parameter of the RS approximation.
+<<class RSApproximation>>=
+class RSApproximation 
+{
+public:
+  // Copy constructor provided by compiler (does logical deep copy).
+
+  RSApproximation( const FPGroup& G );
+  // The first generator ( [1] ) should be called t and it's exponent
+  // sum in every relation should be 0.
+
+  SetOf<RSWord> getApproximation( int l ) const;
+
+private:
+  FPGroup theGroup;
+  FreeGroup F;
+  VectorOf<RSWord> theRels;
+  VectorOf<int> min;
+  VectorOf<int> max;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/RSApproximation.h
+#ifndef _RSApproximation_h_
+#define _RSApproximation_h_
+
+<<license>>
+<<include>>
+<<class RSApproximation>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

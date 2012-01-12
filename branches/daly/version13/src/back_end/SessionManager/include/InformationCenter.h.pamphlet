@@ -1,0 +1,178 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/InformationCenter.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Property.h"
+
+@
+\section{class InformationCenter}
+<<class InformationCenter>>=
+class InformationCenter {
+public:
+  InformationCenter() {}
+
+  Trichotomy haveProperty ( const PropertyType ptype  ) const;
+  void  putProperty       ( const GenericProperty& property, Trichotomy have );
+  Chars getDescription    ( const PropertyType ptype  ) const;
+  void  setUnknownProperty( const PropertyType ptype  );
+  void  setHaveNotProperty( const PropertyType ptype, const Chars& expl );
+  void  setKnownProperty  ( const GenericProperty& property );
+  void  getKnownProperty  ( GenericProperty& property ) const;
+  const GenericProperty* getKnownProperty( const PropertyType ptype ) const;
+        GenericProperty* getKnownProperty( const PropertyType ptype );
+  
+  void read ( istream& istr, bool extraDetails );
+  void write( ostream& ostr, bool extraDetails );
+
+private:
+  // Disable copying of Information Center.
+  InformationCenter( const InformationCenter& );
+  InformationCenter& operator=( const InformationCenter& );
+
+  // Data members:
+  PropertiesCollection theProperties;
+};
+
+@
+\subsection{haveProperty}
+<<Trichotomy InformationCenter::haveProperty>>=
+inline 
+Trichotomy InformationCenter::haveProperty ( const PropertyType ptype ) const
+{
+  return theProperties.haveProperty( ptype );
+}
+
+@
+\subsection{putProperty}
+<<void InformationCenter::putProperty>>=
+inline 
+void InformationCenter::putProperty ( const GenericProperty& property,
+					    Trichotomy       have )
+{
+  theProperties.putProperty( property, have );
+}
+
+@
+\subsection{getDescription}
+<<Chars InformationCenter::getDescription>>=
+inline
+Chars InformationCenter::getDescription ( const PropertyType ptype ) const
+{
+  return theProperties.getDescription( ptype );
+}
+
+@
+\subsection{setUnknownProperty}
+<<void InformationCenter::setUnknownProperty>>=
+inline 
+void InformationCenter::setUnknownProperty( const PropertyType ptype )
+{
+  theProperties.setUnknownProperty( ptype );
+}
+
+@
+\subsection{setHaveNotProperty}
+<<void InformationCenter::setHaveNotProperty>>=
+inline 
+void InformationCenter::setHaveNotProperty( const PropertyType ptype, 
+					    const Chars& expl )
+{
+  theProperties.setHaveNotProperty( ptype, expl );
+}
+
+@
+\subsection{setKnownProperty}
+<<void InformationCenter::setKnownProperty>>=
+inline
+void InformationCenter::setKnownProperty  ( const GenericProperty& property )
+{
+  theProperties.setKnownProperty( property );
+}
+
+@
+\subsection{getKnownProperty}
+<<void InformationCenter::getKnownProperty>>=
+inline 
+void InformationCenter::getKnownProperty  ( GenericProperty& property) const
+{
+  theProperties.getKnownProperty( property );
+}
+
+@
+\subsection{getKnownProperty}
+<<const GenericProperty* InformationCenter::getKnownProperty>>=
+inline 
+const GenericProperty* InformationCenter::getKnownProperty(
+   const PropertyType ptype  ) const
+{
+  return theProperties.getKnownProperty(ptype);
+}
+
+@
+\subsection{getKnownProperty}
+<<GenericProperty* InformationCenter::getKnownProperty>>=
+inline 
+GenericProperty* InformationCenter::getKnownProperty(const PropertyType ptype) 
+{
+  return theProperties.getKnownProperty(ptype);
+}
+
+@
+\subsection{read}
+<<void InformationCenter::read>>=
+inline 
+void InformationCenter::read ( istream& istr, bool extraDetails )
+{
+  theProperties.read( istr, extraDetails );
+}
+
+@
+\subsection{write}
+<<void InformationCenter::write>>=
+inline 
+void InformationCenter::write( ostream& ostr, bool extraDetails )
+{
+  theProperties.write( ostr, extraDetails );
+}
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/InformationCenter.h
+#ifndef _INFORMATION_CENTER_H_
+#define _INFORMATION_CENTER_H_
+
+<<license>>
+<<include>>
+<<class InformationCenter>>
+<<Trichotomy InformationCenter::haveProperty>>
+<<void InformationCenter::putProperty>>
+<<Chars InformationCenter::getDescription>>
+<<void InformationCenter::setUnknownProperty>>
+<<void InformationCenter::setHaveNotProperty>>
+<<void InformationCenter::setKnownProperty>>
+<<void InformationCenter::getKnownProperty>>
+<<const GenericProperty* InformationCenter::getKnownProperty>>
+<<GenericProperty* InformationCenter::getKnownProperty>>
+<<void InformationCenter::read>>
+<<void InformationCenter::write>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

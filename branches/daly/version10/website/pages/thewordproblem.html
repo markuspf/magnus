@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+ <head>
+  <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+  <title>
+   Magnus Word Problem
+  </title>
+ </head>
+ <body lang="en-US" text="#000000" bgcolor="#ffffcc">
+  <div align="center">
+  <p style="margin-bottom: 0cm">
+   <font size=7 style="font-size: 66pt">
+    <b>
+     Magnus
+    </b>
+   </font>
+  </p>
+  <font size=4> 
+  A System for Exploring Infinite Groups
+  </font>
+  </div>
+<hr>
+<center>
+<h3> The Word Problem </h3>
+</center>
+<font size=4>
+Given a finite presentation <b><em>P</em></b> of a group 
+<b><em>G</em></b> and given two 
+words <em>U</em>, <em>V</em> defining elements
+<em>u</em>, <em>v</em> of <b><em>G</em></b>, the <b>Word Problem</b>
+is to decide if <em>U</em> is congruent to <em>V</em>. There is no
+general algorithm which, given <b><em>P</em></b>, <em>U</em> and <em>V</em>,
+can decide this question.
+<br>
+<br>
+There is no general algorithm to solve this problem for all finite
+presentations. Magnus has several algorithms which can be applied
+to a finite presentation to attempt to decide this question for a
+particular finite presentation.
+<br>
+<br>
+The Word Problem was defined by M. Dehn in 1910. The idea was to find
+algorithms for important presentations. When the idea of an algorithm
+was formalized in the 1930's it could be proven that the word problem
+had no general algorithm and was thus unsolvable.
+<br>
+<br>
+Cejtin[1] proposed this simple semigroup example which is known to have an
+unsolveable word problem:
+<br>
+<br>
+<center>
+<em>
+&lt;a,b,c,d,e | ac=ca, ad=da, bc=cb, bd=db, ce=eca, de=edb, cca=ccae&gt;
+</em>
+</center>
+<br>
+<br>
+Cejtin proposed a semigroup presentation which illustrates the 
+<em>individual word problem</em>. Given an
+arbitrary word <em>w</em> and the presentation:
+<br>
+<br>
+<center>
+<em>
+&lt;a,b,c,d,e | ac=ca, ad=da, bc=cb, bd=db, ce=eca, de=edb, cca=ccae, cdca=cdcae, caaa=aaa, daaa=aaa&gt;
+</em>
+</center>
+<br>
+does the word <em>w = aaa</em>?
+<br>
+<br>
+Borisov[1] "lifts" this Cejtin's semigroup example to the word problem for 
+a group presentation giving this constructed group presentation
+(where the trivial relations are omitted):
+<center>
+<em>
+&lt;a,b,c,d,e,p,q,r,t,k | <br>
+p^10a=ap, p^10b=bp, p^10c=cp, p^10d=dp, p^10e=ep,<br>
+qa=aq^10, qb=bq^10, qc=cq^10, qd=dq^10, qe=eq^10,<br>
+ra=ar, rb=br, rc=cr, rd=dr, re=er,<br>
+pacqr=rpcaq, p^2adq^2r=rp^2daq^2,<br>
+p^3bcq^3r=rp^3cbq^3, p^4bdq^4r=rp^4dbq^4,<br>
+p^5ceq^5r=rq^5ecaq^5, p^6deq^6r=rp^6edbq^6,<br>
+p^7cdcq^7r=p^7cdceq^7,<br>
+p^8caaaq^8r=rp^8aaaq^8,<br>
+p^9daaaq^9r=rp^9aaaq^9,<br>
+pt=tp, qt=tq,<br>
+k(aaa)^-1t(aaa) = k(aaa)^-1t(aaa)
+</em>
+</center>
+<br>
+<br>
+Borisov proves that for any semigroup word <em>w=w(a,b,c,d,e)</em>
+<center>
+<em>
+w^-1tw)k = k(w^-1tw) in the group if and only if w = aaa in the semigroup
+</em>
+</center>
+</font>
+<center>
+<font face="Helvetica, Arial, sans-serif">
+[<a href="../index.html">home</a>]
+</font>
+</center>
+<br>
+<font size=2>
+[1] Collins, Donald J., <em>A Simple Presentatin of a Group with 
+Unsolvable Word Problem</em> Illinois Journal of Mathematics, V20 Num 2,
+Summer 1986 pp230-234
+</font>
+ </body>
+</html>

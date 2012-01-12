@@ -1,0 +1,42 @@
+1. The problem "Is a group trivial ?"
+
+   Four new fast checks added (those which we discussed). 
+   The magnus's behavior has been fixed so that the problem window
+   doesn't appear at all if the question asked can be answered
+   immediately.
+
+2. All help pages written recently by Gilbert are in the current version.
+
+3. In the group finiteness problem, if abelianization of the group has
+   been computed before, the problem manager now refers to the abelian
+   invariants of the group G abelianized rather then simply of the
+   group G. I.e. the messages were corrected.
+
+
+4. The problem "Is a group abelian ?"
+
+   4.1. New fast check added: #gens - #rels > 1 => not abelian
+   4.2. The CM "Compute abelian invariants of G abelianized" is
+        removed from the problem window.
+   4.3. If answer is: G is not abelian, magnus will show you the
+        commutator which is not equal to one (if applicable).
+	Also now we can send special tcl/tk characters like square
+        brackets to all logs in magnus, for instance presenting
+        commutators if form [a,b,...] is not a problem anymore.
+   4.4. If the group has only one relator the problem manager will
+        apply existed algorithm for one relator groups. Proper
+        explanation is suppose to be present.
+
+
+   Note: This problem object is not completely fixed yet, some changes
+	 are to be done in the following release(s) of magnus.
+
+5. Fixed broken links to magnus manual from all problem windows.
+   If you choose the help menu button corresponding manual window
+   has to appear without failing (please let me know if it is not true
+   for some problem). Also each problem has been equipped with its own
+   default page saying "There is no documentation for this problem
+   yet.", so if you want to write something just edit appropriate
+   text file in any editor and then send it to me. All those files
+   are in front_end/help/probs/.
+

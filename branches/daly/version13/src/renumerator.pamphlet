@@ -1,0 +1,513 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/renumerator.pamphlet}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "SMEnumerator.h"
+#include "File.h"
+#include "Word.h"
+#include "SMFPGroup.h"
+#include "OutMessages.h"
+#include "RandomNumbers.h"
+
+@
+<<include.c>>=
+#include "REnumerator.h"
+#include "SMEnumerator.h"
+#include "OutMessages.h"
+#include "SMFPGroup.h"
+#include "viewStructure.h"
+#include "RandomNumbers.h"
+#include "conversions.h"
+#include "SMListIterator.h"
+
+@
+\section{class NCEnumerateTotalARCer}
+\subsection{NCEnumerateTotalARCer Constructor}
+<<NCEnumerateTotalARCer Constructor.h>>=
+  NCEnumerateTotalARCer( ComputationManager& boss, SMListData& d,
+                         const FPGroup& group ) 
+    : EnumeratorARCer( boss, d ), 
+      theGroup(group),
+      numberOfAll(100),
+      counter(0) { } 
+@  
+\subsection{NCEnumerateTotalARCer::enumerate}
+<<NCEnumerateTotalARCer::enumerate.h>>=
+  void enumerate();
+@
+<<NCEnumerateTotalARCer::enumerate.c>>=
+void NCEnumerateTotalARCer::enumerate( )
+{
+  int numOfRelators = theGroup.getRelators().cardinality();
+  VectorOf<Word> relators = makeVectorOf(theGroup.getRelators());
+  while(counter < numberOfAll) {
+    currentWord = currentWord.nextInShortLex(numOfRelators);
+    Word newRelator = currentWord.replaceGenerators(relators).freelyReduce();
+    if (newRelator.length() > 0) {
+      counter++;
+      theData << EnumWriteWord( newRelator, theGroup) << "\n\n";
+    }
+    if (submitSignalRecieved()){
+      return;
+    }
+  }
+}
+
+@
+\subsection{NCEnumerateTotalARCer::setTotalNumber}
+<<NCEnumerateTotalARCer::setTotalNumber.h>>=
+  void setTotalNumber(int n) { numberOfAll = n; }
+@
+\subsection{NCEnumerateTotalARCer::getFileName}
+This seems to have disappeared in favor of using [[theData]].
+<<NCEnumerateTotalARCer::getFileName.h>>=
+  Chars getFileName() { return file.getFileName(); }
+@
+\subsection{NCEnumerateTotalARCer::writeResults}
+<<NCEnumerateTotalARCer::writeResults.h>>=
+  void writeResults( ostream& ostr ) 
+    {
+      ostr < currentWord < counter;
+      ostr < theData;
+    }
+@
+\subsection{NCEnumerateTotalARCer::readResults.h}
+<<NCEnumerateTotalARCer::readResults.h>>=
+  void readResults( istream& istr) 
+    {
+      istr > currentWord > counter;
+      istr > theData;
+    }
+@  
+\subsection{class NCEnumerateTotalARCer}
+<<class NCEnumerateTotalARCer>>=
+class NCEnumerateTotalARCer : public EnumeratorARCer
+{
+public:
+<<NCEnumerateTotalARCer Constructor.h>>
+<<NCEnumerateTotalARCer::setTotalNumber.h>>
+<<NCEnumerateTotalARCer::writeResults.h>>
+<<NCEnumerateTotalARCer::readResults.h>>
+protected:
+<<NCEnumerateTotalARCer::enumerate.h>>
+private:
+  FPGroup theGroup;
+  int numberOfAll;
+  Word currentWord;
+  int counter;
+};
+
+@
+\section{class NCEnumerateRandomARCer}
+\subsection{NCEnumerateRandomARCer Constructor}
+<<NCEnumerateRandomARCer Constructor.h>>=
+  NCEnumerateRandomARCer( ComputationManager& boss, SMListData& d,
+                          const FPGroup& group ) 
+    : EnumeratorARCer( boss, d ), 
+    theGroup(group),
+    numberOfAll(100),
+    maxConjLength(100),
+    typeIsUniform( true ),
+    numberOfFactors( 10 ),
+    counter(0) { } 
+@
+\subsection{NCEnumerateRandomARCer::setTotalNumber}
+<<NCEnumerateRandomARCer::setTotalNumber.h>>=
+  void setTotalNumber(int n) { numberOfAll = n; }
+@
+\subsection{NCEnumerateRandomARCer::setConjL}
+<<NCEnumerateRandomARCer::setConjL.h>>=
+  void setConjL(int n) { maxConjLength = n; }
+@
+\subsection{NCEnumerateRandomARCer::setNumOfFactors}
+<<NCEnumerateRandomARCer::setNumOfFactors.h>>=
+  void setNumOfFactors(int n) { numberOfFactors = n; }
+@
+\subsection{NCEnumerateRandomARCer::setTypeUniform}
+<<NCEnumerateRandomARCer::setTypeUniform.h>>=
+  void setTypeUniform() { typeIsUniform = true; }
+@
+\subsection{NCEnumerateRandomARCer::setTypeNormal}
+<<NCEnumerateRandomARCer::setTypeNormal.h>>=
+  void setTypeNormal() { typeIsUniform = false; }
+@
+\subsection{NCEnumerateRandomARCer::getFileName}
+This seems to have disappeared in favor of using [[theData]].
+<<NCEnumerateRandomARCer::getFileName.h>>=
+  Chars getFileName() { return file.getFileName(); }
+@
+\subsection{NCEnumerateRandomARCer::writeResults}
+<<NCEnumerateRandomARCer::writeResults.h>>=
+  void writeResults( ostream& o ) { 
+    o < counter; 
+    o < theData;
+  }
+@
+\subsection{NCEnumerateRandomARCer::readResults}
+<<NCEnumerateRandomARCer::readResults.h>>=
+  void readResults( istream& i ) { 
+    i > counter; 
+    i > theData; 
+  }
+@
+\subsection{NCEnumerateRandomARCer::enumerate}
+<<NCEnumerateRandomARCer::enumerate.h>>=
+  void enumerate();
+@
+<<NCEnumerateRandomARCer::enumerate.c>>=
+void NCEnumerateRandomARCer::enumerate( )
+{
+  while(counter < numberOfAll) {
+    if (submitSignalRecieved()){
+      return;
+    }
+    // Randomly select the number fo products of r ^ w, where
+    // r - relator and w a word from the group
+    int numOfProducts = 0;
+    if ( typeIsUniform ) {
+      numOfProducts = ur.rand(1,numberOfFactors);
+    } else {
+      while (numOfProducts <=0 || numOfProducts > numberOfFactors)
+	numOfProducts = nr.rand(numberOfFactors/2,numberOfFactors/2);
+    }
+    Word newRelator;
+    for (int j = 0;j<numOfProducts;j++)
+      newRelator = (newRelator*getRelConj()).freelyReduce();
+    if (newRelator.length() > 0) {
+      counter++;
+      theData << EnumWriteWord( newRelator, theGroup) << "\n\n";
+    }
+  }
+}
+
+@
+\subsection{NCEnumerateRandomARCer::getRelConj}
+<<NCEnumerateRandomARCer::getRelConj.h>>=
+  Word getRelConj();
+@
+<<NCEnumerateRandomARCer::getRelConj.c>>=
+Word NCEnumerateRandomARCer::getRelConj()
+{
+  // Number of the generators and their inverses
+  int numOfGenerators = theGroup.numberOfGenerators()*2;
+  int numOfRelators = theGroup.getRelators().cardinality();
+  VectorOf<Word> relators = makeVectorOf(theGroup.getRelators());
+  // Randomly select the length of a conjugator
+  int conjLength = 0;
+  if ( typeIsUniform ) {
+    conjLength = ur.rand(1,maxConjLength);
+  } else {
+    while (conjLength <=0 || conjLength > maxConjLength)
+      conjLength = nr.rand(maxConjLength/2,maxConjLength/2);
+  }
+  // Make a conjugator
+  Word newConj;
+  for (int j=0;j<conjLength;j++){
+    int g=0;
+    if ( typeIsUniform ) {
+      g = ur.rand(1,numOfGenerators);
+    } else {
+      while (g <=0 || g > numOfGenerators)
+	g = nr.rand(numOfGenerators/2,numOfGenerators/2);
+    }
+    // get inverse if it was choosen
+    if ( g > numOfGenerators/2 ) {
+      g = g - numOfGenerators/2;
+    } else {
+      g *= -1;
+    }
+    Generator newG(g);
+    newConj *= newG;
+  }
+  // Choose a relator
+  int relatorNum = -1;
+  if ( typeIsUniform ) {
+    relatorNum = ur.rand(0,numOfRelators-1);
+  } else {
+    while (relatorNum <0 || relatorNum > numOfRelators-1)
+      relatorNum = nr.rand((numOfRelators-1)/2,(numOfRelators-1)/2);
+  } 
+  // new relator is equal to relator ^ newConj.
+  Word newRelator = newConj * relators[relatorNum] * newConj.inverse();
+  newRelator = newRelator.freelyReduce();
+  return newRelator;
+}
+
+@
+\subsection{class NCEnumerateRandomARCer}
+<<class NCEnumerateRandomARCer>>=
+class NCEnumerateRandomARCer : public EnumeratorARCer
+{
+public:
+<<NCEnumerateRandomARCer Constructor.h>>
+<<NCEnumerateRandomARCer::setTotalNumber.h>>
+<<NCEnumerateRandomARCer::setConjL.h>>
+<<NCEnumerateRandomARCer::setNumOfFactors.h>>
+<<NCEnumerateRandomARCer::setTypeUniform.h>>
+<<NCEnumerateRandomARCer::setTypeNormal.h>>
+<<NCEnumerateRandomARCer::writeResults.h>>
+<<NCEnumerateRandomARCer::readResults.h>>
+protected:
+<<NCEnumerateRandomARCer::enumerate.h>>
+<<NCEnumerateRandomARCer::getRelConj.h>>
+private:
+  FPGroup theGroup;
+  int numberOfAll;
+  int maxConjLength;
+  bool typeIsUniform;
+  int counter;
+  int numberOfFactors;
+  UniformRandom ur; 
+  NormalRandom nr; 
+};
+
+@
+\section{class NCRelatorEnumerator}
+\subsection{NCRelatorEnumerator Constructor}
+<<NCRelatorEnumerator Constructor.h>>=
+  NCRelatorEnumerator(SMFPGroup& );
+@
+<<NCRelatorEnumerator Constructor.c>>=
+NCRelatorEnumerator::NCRelatorEnumerator(SMFPGroup& b)
+  : EnumeratorProblem< Word >( b ),
+    theGroup(b),
+    arcer( NULL )
+{}
+
+@
+\subsection{NCRelatorEnumerator::takeControl}
+<<NCRelatorEnumerator::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<NCRelatorEnumerator::takeControl.c>>=
+void NCRelatorEnumerator::takeControl( )
+{
+  if (freeARCs() > 0){
+      if (arcer->takeControl()){
+	adminSuspend();
+	return;	
+      }
+      else
+	usedOneARC();
+  }
+}
+
+@
+\subsection{NCRelatorEnumerator::getDataFileName}
+This seems to have disappeared in favor of using [[theData]].
+<<NCRelatorEnumerator::getDataFileName.h>>=
+  Chars getDataFileName() const;
+@
+<<NCRelatorEnumerator::getDataFileName.c>>=
+Chars NCRelatorEnumerator::getDataFileName() const
+{
+  // make empty file if arcers have not been initialized yet 
+  if ( !arcer ){
+    char* tmpFileName = tempnam(MagnusTmp::magnusTmp(),NULL);
+    ofstream o( tmpFileName );
+    o << endl << flush;
+    o.close();
+    return Chars( tmpFileName );
+  }
+  Chars selArcer = getParameters().getValue("RBG1");
+  if ( selArcer == Chars("RB1") ){
+    return ((NCEnumerateRandomARCer* )arcer)->getFileName();
+  } else {
+    return ((NCEnumerateTotalARCer* )arcer)->getFileName();
+  }
+}
+
+@
+\subsection{NCRelatorEnumerator::start}
+<<NCRelatorEnumerator::start.h>>=
+  void start( ) ;                // overrides ComputationManager  
+@
+<<NCRelatorEnumerator::start.c>>=
+void NCRelatorEnumerator::start( ) {              
+  //    Chars selArcer = getParameters().getValue("RBG1");
+  int totalNum = getParameters().getValue("P1");
+  Chars fileName;
+  LogMessage msg1(*this,theGroup);
+  // if ( selArcer == Chars("RB1") ){
+  int conjL;
+  int factors;
+  arcer = new NCEnumerateRandomARCer( *this, theData,theGroup.getFPGroup() ); 
+  fileName = theData.getDataFileName();
+  Chars randomType = getParameters().getValue("RandomRBG");
+  if ( randomType == Chars("rRB1") ){
+    ((NCEnumerateRandomARCer* )arcer)->setTypeNormal();
+    conjL = getParameters().getValue("P3");
+    factors = getParameters().getValue("nFact");
+    msg1 << Link(Chars( "Click here to see the relators  of ")+
+		 Text( Name(theGroup) )+
+		 Chars(", enumerated using normal distribution"),
+		 "REnumerator",
+		 fileName,true );
+  } else {
+    ((NCEnumerateRandomARCer* )arcer)->setTypeUniform();
+    conjL = getParameters().getValue("P4");
+    factors = getParameters().getValue("uFact");
+    msg1 << Link(Chars( "Click here to see the relators  of ")+
+		 Text( Name(theGroup) )+
+		 Chars(", enumerated using uniform distribution"),
+		 "REnumerator",
+		 fileName,true );
+    
+  }
+  ((NCEnumerateRandomARCer* )arcer)->setTotalNumber(totalNum);
+  ((NCEnumerateRandomARCer* )arcer)->setConjL(conjL);
+  ((NCEnumerateRandomARCer* )arcer)->setNumOfFactors(factors);
+  /*} else {
+    arcer = new NCEnumerateTotalARCer( *this,theGroup.getFPGroup() ); 
+    ((NCEnumerateTotalARCer* )arcer)->setTotalNumber(totalNum);
+    fileName = ((NCEnumerateTotalARCer* )arcer)->getFileName();
+    msg1 << Link(Chars( "Click here to see the relators  of ")+
+    Text( Name(theGroup) ),
+    "REnumerator",
+    fileName,true );
+    }
+  */
+  msg1.send();    
+  
+}
+
+@
+\subsection{NCRelatorEnumerator::resume}
+<<NCRelatorEnumerator::resume.h>>=
+  void resume( );                // overrides ComputationManager
+@
+<<NCRelatorEnumerator::resume.c>>=
+void NCRelatorEnumerator::resume( )
+{              
+  arcer->submitSignal();
+  //  Chars selArcer = getParameters().getValue("RBG1");
+  int totalNum = getParameters().getValue("P1");
+  // if ( selArcer == Chars("RB1") ){
+  int conjL;
+  int factors;
+  Chars randomType = getParameters().getValue("RandomRBG");
+  if ( randomType == Chars("rRB1") ){
+    conjL = getParameters().getValue("P3");
+    factors = getParameters().getValue("nFact");   
+  } else {
+    conjL = getParameters().getValue("P4");
+    factors = getParameters().getValue("uFact");   
+  }
+  ((NCEnumerateRandomARCer* )arcer)->setTotalNumber(totalNum);
+  ((NCEnumerateRandomARCer* )arcer)->setConjL(conjL);
+  ((NCEnumerateRandomARCer* )arcer)->setNumOfFactors(factors);
+  /*} else {
+    
+    ((NCEnumerateTotalARCer* )arcer)->setTotalNumber(totalNum);
+    
+    }
+  */
+}
+
+
+@
+\subsection{NCRelatorEnumerator::viewStructure]
+<<NCRelatorEnumerator::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<NCRelatorEnumerator::viewStructure.c>>=
+void NCRelatorEnumerator::viewStructure(ostream& ostr) const
+{
+   EnumertatorProblemView pv(oid(),"Relator enumerator",
+			     "Enumerate relators using normal closure",
+			     helpID("REnumeratorProblem",theGroup),
+			      Text("Ncrel en")
+			     );
+   pv.addParameter(EditInteger("P1","Number of relators",1,100,0,1000000));
+   RadioButton rRB1("rRB1","Enumerate using normal disribution");
+   RadioButton rRB2("rRB2","Enumerate using uniform disribution");
+   rRB1.add(EditInteger("P3","Max. length of conjugates",1,10,1,500));
+   rRB2.add(EditInteger("P4","Max. length of conjugates",1,10,1,500));
+   rRB1.add(EditInteger("nFact","Number of factors",1,10,1,32));
+   rRB2.add(EditInteger("uFact","Number of factors",1,10,1,32));
+   RadioButtonGroup randomRBG("RandomRBG");
+   randomRBG.add(rRB1);
+   randomRBG.add(rRB2);
+   // randomRBG.addParameter(
+   //   EditInteger("P2","Number of conjugates",0,10,1,1000));
+   //RadioButton rb1("RB1","Enumerate randomly");
+   //rb1.add(randomRBG);
+   //RadioButtonGroup rbg("RBG1");
+   //rbg.add(rb1);
+   //   RadioButton rb2("RB2","Enumerate totally");
+   //rb2.add(EditInteger("P5", "Any parameter",1) );
+   //rbg.add(rb2);
+   pv.addParameter(randomRBG);
+   pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			     Text("For the use of enumerator"),40));
+   submit(ostr, pv);
+}
+
+@
+\subsection{NCRelatorEnumerator::terminate}
+<<NCRelatorEnumerator::terminate.h>>=
+  void terminate( ) { }          // overrides ComputationManager
+@
+\subsection{class NCRelatorEnumerator}
+<<class NCRelatorEnumerator>>=
+class NCRelatorEnumerator : public EnumeratorProblem< Word >
+{
+public:
+<<NCRelatorEnumerator Constructor.h>>
+<<NCRelatorEnumerator::takeControl.h>>
+<<NCRelatorEnumerator::start.h>>
+<<NCRelatorEnumerator::resume.h>>
+<<NCRelatorEnumerator::viewStructure.h>>
+<<NCRelatorEnumerator::terminate.h>>
+private:
+  SMFPGroup& theGroup;
+  EnumeratorARCer* arcer;
+};
+
+@
+\section{license}
+Copyright (C) 1994 The New York Group Theory Cooperative
+See magnus/doc/COPYRIGHT for the full notice.
+<<REnumerator.h>>=
+// src/renumerator.pamphlet
+#ifndef _REnumerator_H_
+#define _REnumerator_H_
+
+<<include.h>>
+<<class NCEnumerateTotalARCer>>
+<<class NCEnumerateRandomARCer>>
+<<class NCRelatorEnumerator>>
+#endif
+@
+\section{renumerator.c}
+<<*>>=
+
+<<include.c>>
+<<NCEnumerateTotalARCer::enumerate.c>>
+
+<<NCEnumerateRandomARCer::enumerate.c>>
+<<NCEnumerateRandomARCer::getRelConj.c>>
+
+<<NCRelatorEnumerator Constructor.c>>
+<<NCRelatorEnumerator::takeControl.c>>
+<<NCRelatorEnumerator::start.c>>
+<<NCRelatorEnumerator::resume.c>>
+<<NCRelatorEnumerator::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

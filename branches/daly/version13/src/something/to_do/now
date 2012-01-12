@@ -1,0 +1,15 @@
+1. Need to have Define2Int procedure or it's equivalent in front end.
+   Think about the situation in general.( I.e. a window with several
+   fields of different types.)
+
+2. Provide necessary front end implementation for quadratic equations.
+   Please think in general again: listboxes, file viewers with
+   possibility to create objects.
+
+3. Need to implement interface between SM and FE to allow free
+   changing of names of SM Objects.
+
+4. ParseErroMessage is not convienent to use.
+
+5. Sander's complaints.
+

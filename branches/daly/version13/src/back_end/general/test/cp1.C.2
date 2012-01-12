@@ -1,0 +1,44 @@
+// Contents: Computer Project 10, Kahlman Filter
+//
+// Principal Authors: Dmitry Bormotov
+//
+
+
+#include "global.h"
+
+void main( )
+{
+  // Definitions:
+  // 
+  //  x1  :  Xn-
+  //  x2  :  Xn+, Xn-1+
+  //  P1  :  Pn-
+  //  P2  :  Pn+, Pn-1+
+
+  double z[7] = { 10, 10.1, 10.2, 9.9, 10, 10.8, 10 };
+  double b0 = 1, bq = .1, br = 1;
+
+  double P2 = b0, x2 = 10, C, x1, P1;
+  
+  for( int i = 1; i <= 7; ++i ) {
+    
+    x1 = x2;
+    P1 = P2 + bq;
+    C = P1 / ( P1 + br );
+    x2 = x1 + C * ( z[i-1] - x1 );
+    P2 = ( 1 - C ) * P1;
+
+    cout << "Iteration " << i << ":" 
+	 << "  Xn- = " << x1 
+	 << "  Pn- = " << P1
+	 << "  Cn = " << C 
+	 << endl << "            "
+	 << "  Xn+ = " << x2
+	 << "  Pn+ = " << P2
+	 << endl << endl;
+  }
+  
+  
+}
+
+

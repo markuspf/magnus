@@ -1,0 +1,19 @@
+[bormotov@localhost bin]$ ./primitive
+Enter the number of generators of a free group: 2
+
+Free Group F = < x1, x2 >
+Length: 1   Number of elements: 4   Number of primitive elements: 4
+Length: 2   Number of elements: 12   Number of primitive elements: 8
+Length: 3   Number of elements: 36   Number of primitive elements: 32
+Length: 4   Number of elements: 108   Number of primitive elements: 48
+Length: 5   Number of elements: 324   Number of primitive elements: 152
+Length: 6   Number of elements: 972   Number of primitive elements: 160
+Length: 7   Number of elements: 2916   Number of primitive elements: 544
+Length: 8   Number of elements: 8748   Number of primitive elements: 560
+Length: 9   Number of elements: 26244   Number of primitive elements: 1680
+Length: 10   Number of elements: 78732   Number of primitive elements: 1712
+Length: 11   Number of elements: 236196   Number of primitive elements: 5264
+Length: 12   Number of elements: 708588   Number of primitive elements: 5168
+Length: 13   Number of elements: 2125764   Number of primitive elements: 15976
+Length: 14   Number of elements: 6377292   Number of primitive elements: 15648
+Length: 15   Number of elements: 19131876   Number of primitive elements: 47784

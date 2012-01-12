@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/Socket.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "config.h"
+#ifdef LINUX
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <string>
+#include <arpa/inet.h>
+#endif
+
+@
+\section{class Socket}
+<<class Socket>>=
+class Socket
+{
+#ifdef LINUX
+
+ public:
+  Socket();
+  virtual ~Socket();
+
+  // Server initialization
+  bool create();
+  bool bind ( const int port );
+  bool listen() const;
+  bool accept ( Socket& ) const;
+
+  // Client initialization
+  bool connect ( const std::string host, const int port );
+
+  // Data Transimission
+  bool send ( const std::string ) const;
+  int recv ( std::string& ) const;
+
+
+  void set_non_blocking ( const bool );
+
+  bool is_valid() const { return m_sock != -1; }
+
+  const Socket& operator << ( const std::string& ) const;
+  const Socket& operator << ( char* buffer ) const;
+  const Socket& operator >> ( std::string& ) const;
+  const Socket& operator >> ( char* buffer ) const;
+
+ private:
+
+  int m_sock;
+  sockaddr_in m_addr;
+#endif
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/Socket.h
+#ifndef Socket_class
+#define Socket_class
+
+<<license>>
+<<include>>
+const int MAXHOSTNAME = 200;
+const int MAXCONNECTIONS = 5;
+const int MAXRECV = 1024;
+
+<<class Socket>>
+#endif

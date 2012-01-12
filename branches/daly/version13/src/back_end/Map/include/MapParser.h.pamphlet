@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Map/include/MapParser.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "WordParser.h"
+#include "Map.h"
+
+@
+\section{class MapParser}
+A Map defined on generators $\{ x, y, z \}$ has the form
+\begin{verbatim}
+ {
+   x -> w(x,y,z),
+   y -> w(x,y,z),
+   z -> w(x,y,z)
+ }
+\end{verbatim}
+where the images of $x$, $y$, $z$ need not be in order, whitespace is optional,
+and $w(x,y,z)$ are words in the generators. Missing images default to the
+identity.
+<<class MapParser>>=
+class MapParser : public WordParser {
+public:
+  MapParser(istream &istr) : WordParser(istr) { }
+  // Initialize the parser with the istream from which to read.
+
+  // Destructor supplied by compiler.
+
+  MapRep* parseMap(
+    const FGGroup& domain,
+    const FGGroup& range,
+    Chars& errMesg
+  );
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1998 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+
+@
+<<*>>=
+// src/backend/Map/include/MapParser.h
+#ifndef _MAP_PARSER_H_
+#define _MAP_PARSER_H_
+
+<<license>>
+<<include>>
+<<class MapParser>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

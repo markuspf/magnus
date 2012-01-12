@@ -1,0 +1,48 @@
+1.
+For Mac OS 10.3 download X11User.pkg from
+http://wsidecar.apple.com/cgi-bin/nph-reg3rdpty1.pl/product=02232&cat=1&platform=osx&method=sa/X11User.dmg
+
+For 10.4 it is available on the installation DVD in extra software package.
+
+Install it.
+
+3.
+Fink is a set of unix-style tools for Mac (like Cygwin for Windows),
+you can get it from:
+
+http://fink.sourceforge.net/download/index.php?phpLang=en
+
+note that different versions of Mac OS require different versions of Fink.
+
+4.
+FinkCommander - is a user friendly interface to Fink's package
+management, it is available as a separate binary in the Fink package or you can get a more recent version from
+
+http://prdownloads.sourceforge.net/finkcommander/FinkCommander_0.5.4.dmg.gz?download
+
+It does not have an installer, just copy FinkCommander from the
+package to /Applications (worked for me).
+
+5.
+After that run FinkCommander and install make, gcc, tcl, and, if you are going to access the subversion repository, subversion (with ssl).
+
+6.
+The most recent version of Magnus can be obtained from the Subversion repository (using Subversion, can also be installed using FinkCommander, you need the one with SSL support):
+
+https://svn.sourceforge.net/svnroot/magnus/trunk/magnus
+
+then start X11 and from X11 terminal run
+> ./configure
+
+Here both Linux and BSD work for Mac OS
+path to tcl has to be /sw/bin/wish
+for all other options defaults are ok.
+
+then
+> make
+> cd front_end
+> ./magnus
+
+have fun!
+
+It is possible that you don't really need X11 and Fink's tcl, instead try to install AquaTCL (Batteries Included version) and use normal Mac OS terminal instead of xterm.

@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>General Messages</TITLE>
+<META NAME="description" CONTENT="General Messages">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00331500000000000000"></A><A NAME="general_msgs"></A>
+<BR>
+General Messages
+</H3>
+
+<P>
+The <I>FE</I> accepts the following general-purpose messages:
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>message</EM>
+<BR>
+<BR>
+
+<P>
+A fatal error, described in the <EM>message</EM>, has been detected by
+the <I>SM</I>.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> 
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> that the <I>SM</I> has completed its shutdown, so
+the <I>FE</I> may now exit.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>viewID</EM>
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> that the <I>SM</I> has started the problem with
+<EM>viewID</EM>.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>viewID</EM>
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> that the <I>SM</I> has suspended the problem with
+<EM>viewID</EM>. The <I>FE</I> may get this message even when the end user
+has not suspended the problem, e.g., when all of the ARCs for the
+problem have been used up.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>viewID</EM>
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> that the <I>SM</I> has resumed the problem with
+<EM>viewID</EM>.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>viewID</EM>
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> to put the problem in a state similar to
+suspended, except that it cannot be resumed. This message is sent when
+the problem has finished its work.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM><TT>{</TT>objectID<TT>+}</TT></EM>
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> that the <I>SM</I> has deleted the objects with the
+given <EM>objectID</EM>s. In this case <EM>objectID</EM> is not a keyword
+argument.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>viewID ARCSlotID value</EM>
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> that the ARC value of <EM>ARCSlotID</EM> in
+<EM>viewID</EM> has changed to <EM>value</EM>. These messages are
+correctly interpreted whether the view is open or not, and are quietly
+ignored when there is no view at all with <EM>viewID</EM> (as happens,
+e.g., when a purely internal active object sends an ARC update).
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>name errMesg</EM>
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> that a previous attempt to check in an object with
+name <EM>name</EM> failed due to a syntax error in the definition of the
+object. The error message is in <EM>errMesg</EM>. The <I>FE</I> is
+responsible for reposting the same kind of dialog, with the same
+entries as when the dialog was last confirmed, along with the error
+message. If the new dialog is confirmed, with any or all entries
+possibly different, the <I>FE</I> must use the same message template as in
+the previous check in request.
+
+<P>
+The <EM>errMesg</EM> has the form <TT>{<IMG
+ WIDTH="15" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.gif"
+ ALT="$n$"> {<EM>descr</EM>}}</TT>, where
+<IMG
+ WIDTH="15" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.gif"
+ ALT="$n$"> is the index of the problem, and <EM>descr</EM> says what is wrong.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>viewID text level</EM>
+<BR>
+<BR>
+
+<P>
+This tells the <I>FE</I> to append the <I>Hot</I> <EM>text</EM> at the end of
+the log of <EM>viewID</EM>. When <EM>level</EM> has value <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.gif"
+ ALT="$1$">, the
+<EM>text</EM> is posted to both the view log and the session log; when
+<EM>level</EM> is <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.gif"
+ ALT="$2$">, only the former.
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>name prefix typeID</EM>
+<BR>
+<BR>
+
+<P>
+This is an experimental message, sent at startup, via which the <I>SM</I> associates human readable text, the <EM>name</EM>, with a <EM>typeID</EM>.
+The <EM>prefix</EM> is the preferred default name prefix for an object
+of the given type. Currently, the arguments are not keyword arguments.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

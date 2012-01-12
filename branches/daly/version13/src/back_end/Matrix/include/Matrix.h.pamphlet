@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Matrix/include/Matrix.h}
+\author{Dmitry Bormotov, Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "DArray.h"
+#include "DerivedObjectOf.h"
+
+@
+\section{class MatrixRep}
+<<class MatrixRep>>=
+template <class R> class MatrixRep : public DArrayRep<R> {
+public:
+  MatrixRep( int height, int width) : DArrayRep<R>(height,width) {}
+  // Makes MatrixRep with height == h and width == w
+
+  MatrixRep( int n ) : DArrayRep<R>(n) {}
+  // Makes MatrixRep with height=width=n
+
+  MatrixRep* clone( ) { return new MatrixRep(*this); }
+  MatrixRep& operator += ( const MatrixRep& );
+  MatrixRep& operator -= ( const MatrixRep& );
+  MatrixRep& operator *= ( const MatrixRep& );  
+  MatrixRep operator + ( const MatrixRep& ) const; 
+  MatrixRep operator - ( const MatrixRep& ) const; 
+  MatrixRep operator * ( const MatrixRep& ) const; 
+  MatrixRep operator - ( ) const;
+
+private:
+
+#ifdef DEBUG
+  //friend int main( );
+#endif
+
+};
+
+@
+\section{class Matrix}
+<<class Matrix>>=
+template <class R> 
+class Matrix : public DerivedObjectOf<DArray<R> ,MatrixRep<R> >{
+public:
+  Matrix(int n = 0 ) : 
+    DerivedObjectOf<DArray<R>,MatrixRep<R> >(new MatrixRep<R>(n)) { }
+  // Makes Matrix with height=width=n
+
+  Matrix(int h, int w) : 
+   DerivedObjectOf<DArray<R>,MatrixRep<R> >(new MatrixRep<R>(h, w)){ }
+  // Makes Matrix with height == h and width == w
+
+  // copy constructor supplied by compiler
+
+  Matrix& operator += ( const Matrix& M ) {
+     *change() += *(M.look());
+     return *this;
+  }
+
+  Matrix& operator -= ( const Matrix& M ) {
+     *change() -= *(M.look());
+     return *this;
+  }
+
+  Matrix& operator *= ( const Matrix& M ) {
+      *change() *= *(M.look());
+      return *this;
+  }
+  Matrix operator + ( const Matrix& M) const {
+           return Matrix(*look() + *(M.look())); } 
+
+  Matrix operator - ( const Matrix& M ) const {
+           return Matrix(*look() - *(M.look())); } 
+
+  Matrix operator * ( const Matrix& M ) const {
+           return Matrix(*look() * *(M.look())); } 
+
+  Matrix operator - ( ) const {return Matrix(- *look());}
+
+
+protected :
+  Matrix( MatrixRep<R> newrep ) : 
+    DerivedObjectOf<DArray<R>,MatrixRep<R> >(new MatrixRep<R>(newrep)) {}
+
+  Matrix( MatrixRep<R>* newrep ) : 
+    DerivedObjectOf<DArray<R>,MatrixRep<R> >(newrep) {}
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Matrix/include/Matrix.h
+#ifndef _MATRIX_H_
+#define _MATRIX_H_
+
+<<license>>
+<<include>>
+<<class MatrixRep>>
+<<class Matrix>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+
+

@@ -1,0 +1,590 @@
+\documentclass{article}
+\usepackage{../../../../mnt/linux/bin/axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/Makefile}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Environment}
+<<environment>>=
+IN=${SRC}/backend/SessionManager/include
+OUT=${INT}/include
+DOC=${MNT}/${SYS}/doc/src/backend/SessionManager/include
+
+@
+\section{Code}
+\section{AlgebraicObject}
+\subsection{AlgebraicObject}
+<<AlgebraicObject.h (OUT from IN)>>=
+${OUT}/AlgebraicObject.h: ${IN}/AlgebraicObject.h.pamphlet
+	@echo 1 making ${OUT}/AlgebraicObject.h from ${IN}/AlgebraicObject.h.pamphlet
+	@${DOCUMENT} src AlgebraicObject.h ${OUT}
+
+@
+<<AlgebraicObject.h.dvi (DOC from IN)>>=
+${DOC}/AlgebraicObject.h.dvi: ${IN}/AlgebraicObject.h.pamphlet ${DOC}/axiom.sty
+	@echo 2 making ${DOC}/AlgebraicObject.h.dvi from ${IN}/AlgebraicObject.h.pamphlet 
+	@${DOCUMENT} dvi AlgebraicObject.h ${DOC} AlgebraicObject.h ${NOISE}
+
+@
+\section{ARCer}
+\subsection{ARCer}
+<<ARCer.h (OUT from IN)>>=
+${OUT}/ARCer.h: ${IN}/ARCer.h.pamphlet
+	@echo 3 making ${OUT}/ARCer.h from ${IN}/ARCer.h.pamphlet
+	@${DOCUMENT} src ARCer.h ${OUT}
+
+@
+<<ARCer.h.dvi (DOC from IN)>>=
+${DOC}/ARCer.h.dvi: ${IN}/ARCer.h.pamphlet ${DOC}/axiom.sty
+	@echo 4 making ${DOC}/ARCer.h.dvi from ${IN}/ARCer.h.pamphlet 
+	@${DOCUMENT} dvi ARCer.h ${DOC} ARCer.h ${NOISE}
+
+@
+\section{ARC}
+\subsection{ARC}
+<<ARC.h (OUT from IN)>>=
+${OUT}/ARC.h: ${IN}/ARC.h.pamphlet
+	@echo 5 making ${OUT}/ARC.h from ${IN}/ARC.h.pamphlet
+	@${DOCUMENT} src ARC.h ${OUT}
+
+@
+<<ARC.h.dvi (DOC from IN)>>=
+${DOC}/ARC.h.dvi: ${IN}/ARC.h.pamphlet ${DOC}/axiom.sty
+	@echo 6 making ${DOC}/ARC.h.dvi from ${IN}/ARC.h.pamphlet 
+	@${DOCUMENT} dvi ARC.h ${DOC} ARC.h ${NOISE}
+
+@
+\section{ARCSlotID}
+\subsection{ARCSlotID}
+<<ARCSlotID.h (OUT from IN)>>=
+${OUT}/ARCSlotID.h: ${IN}/ARCSlotID.h.pamphlet
+	@echo 7 making ${OUT}/ARCSlotID.h from ${IN}/ARCSlotID.h.pamphlet
+	@${DOCUMENT} src ARCSlotID.h ${OUT}
+
+@
+<<ARCSlotID.h.dvi (DOC from IN)>>=
+${DOC}/ARCSlotID.h.dvi: ${IN}/ARCSlotID.h.pamphlet ${DOC}/axiom.sty
+	@echo 8 making ${DOC}/ARCSlotID.h.dvi from ${IN}/ARCSlotID.h.pamphlet 
+	@${DOCUMENT} dvi ARCSlotID.h ${DOC} ARCSlotID.h ${NOISE}
+
+@
+\section{BaseProperties}
+\subsection{BaseProperties}
+<<BaseProperties.h (OUT from IN)>>=
+${OUT}/BaseProperties.h: ${IN}/BaseProperties.h.pamphlet
+	@echo 9 making ${OUT}/BaseProperties.h from ${IN}/BaseProperties.h.pamphlet
+	@${DOCUMENT} src BaseProperties.h ${OUT}
+
+@
+<<BaseProperties.h.dvi (DOC from IN)>>=
+${DOC}/BaseProperties.h.dvi: ${IN}/BaseProperties.h.pamphlet ${DOC}/axiom.sty
+	@echo 10 making ${DOC}/BaseProperties.h.dvi from ${IN}/BaseProperties.h.pamphlet 
+	@${DOCUMENT} dvi BaseProperties.h ${DOC} BaseProperties.h ${NOISE}
+
+@
+\section{GCM}
+\subsection{GCM}
+<<GCM.h (OUT from IN)>>=
+${OUT}/GCM.h: ${IN}/GCM.h.pamphlet
+	@echo 17 making ${OUT}/GCM.h from ${IN}/GCM.h.pamphlet
+	@${DOCUMENT} src GCM.h ${OUT}
+
+@
+<<GCM.h.dvi (DOC from IN)>>=
+${DOC}/GCM.h.dvi: ${IN}/GCM.h.pamphlet ${DOC}/axiom.sty
+	@echo 18 making ${DOC}/GCM.h.dvi from ${IN}/GCM.h.pamphlet 
+	@${DOCUMENT} dvi GCM.h ${DOC} GCM.h ${NOISE}
+
+@
+\section{GIC}
+\subsection{GIC}
+<<GIC.h (OUT from IN)>>=
+${OUT}/GIC.h: ${IN}/GIC.h.pamphlet
+	@echo 19 making ${OUT}/GIC.h from ${IN}/GIC.h.pamphlet
+	@${DOCUMENT} src GIC.h ${OUT}
+
+@
+<<GIC.h.dvi (DOC from IN)>>=
+${DOC}/GIC.h.dvi: ${IN}/GIC.h.pamphlet ${DOC}/axiom.sty
+	@echo 20 making ${DOC}/GIC.h.dvi from ${IN}/GIC.h.pamphlet 
+	@${DOCUMENT} dvi GIC.h ${DOC} GIC.h ${NOISE}
+
+@
+\section{InformationCenter}
+\subsection{InformationCenter}
+<<InformationCenter.h (OUT from IN)>>=
+${OUT}/InformationCenter.h: ${IN}/InformationCenter.h.pamphlet
+	@echo 21 making ${OUT}/InformationCenter.h from ${IN}/InformationCenter.h.pamphlet
+	@${DOCUMENT} src InformationCenter.h ${OUT}
+
+@
+<<InformationCenter.h.dvi (DOC from IN)>>=
+${DOC}/InformationCenter.h.dvi: ${IN}/InformationCenter.h.pamphlet ${DOC}/axiom.sty
+	@echo 22 making ${DOC}/InformationCenter.h.dvi from ${IN}/InformationCenter.h.pamphlet 
+	@${DOCUMENT} dvi InformationCenter.h ${DOC} InformationCenter.h ${NOISE}
+
+@
+\section{Menu}
+\subsection{Menu}
+<<Menu.h (OUT from IN)>>=
+${OUT}/Menu.h: ${IN}/Menu.h.pamphlet
+	@echo 23 making ${OUT}/Menu.h from ${IN}/Menu.h.pamphlet
+	@${DOCUMENT} src Menu.h ${OUT}
+
+@
+<<Menu.h.dvi (DOC from IN)>>=
+${DOC}/Menu.h.dvi: ${IN}/Menu.h.pamphlet ${DOC}/axiom.sty
+	@echo 24 making ${DOC}/Menu.h.dvi from ${IN}/Menu.h.pamphlet 
+	@${DOCUMENT} dvi Menu.h ${DOC} Menu.h ${NOISE}
+
+@
+\section{MIC}
+\subsection{MIC}
+<<MIC.h (OUT from IN)>>=
+${OUT}/MIC.h: ${IN}/MIC.h.pamphlet
+	@echo 25 making ${OUT}/MIC.h from ${IN}/MIC.h.pamphlet
+	@${DOCUMENT} src MIC.h ${OUT}
+
+@
+<<MIC.h.dvi (DOC from IN)>>=
+${DOC}/MIC.h.dvi: ${IN}/MIC.h.pamphlet ${DOC}/axiom.sty
+	@echo 26 making ${DOC}/MIC.h.dvi from ${IN}/MIC.h.pamphlet 
+	@${DOCUMENT} dvi MIC.h ${DOC} MIC.h ${NOISE}
+
+@
+\section{ObjectFactory}
+\subsection{ObjectFactory}
+<<ObjectFactory.h (OUT from IN)>>=
+${OUT}/ObjectFactory.h: ${IN}/ObjectFactory.h.pamphlet
+	@echo 27 making ${OUT}/ObjectFactory.h from ${IN}/ObjectFactory.h.pamphlet
+	@${DOCUMENT} src ObjectFactory.h ${OUT}
+
+@
+<<ObjectFactory.h.dvi (DOC from IN)>>=
+${DOC}/ObjectFactory.h.dvi: ${IN}/ObjectFactory.h.pamphlet ${DOC}/axiom.sty
+	@echo 28 making ${DOC}/ObjectFactory.h.dvi from ${IN}/ObjectFactory.h.pamphlet 
+	@${DOCUMENT} dvi ObjectFactory.h ${DOC} ObjectFactory.h ${NOISE}
+
+@
+\section{OID}
+\subsection{OID}
+<<OID.h (OUT from IN)>>=
+${OUT}/OID.h: ${IN}/OID.h.pamphlet
+	@echo 31 making ${OUT}/OID.h from ${IN}/OID.h.pamphlet
+	@${DOCUMENT} src OID.h ${OUT}
+
+@
+<<OID.h.dvi (DOC from IN)>>=
+${DOC}/OID.h.dvi: ${IN}/OID.h.pamphlet ${DOC}/axiom.sty
+	@echo 32 making ${DOC}/OID.h.dvi from ${IN}/OID.h.pamphlet 
+	@${DOCUMENT} dvi OID.h ${DOC} OID.h ${NOISE}
+
+@
+\section{Property}
+\subsection{Property}
+<<Property.h (OUT from IN)>>=
+${OUT}/Property.h: ${IN}/Property.h.pamphlet
+	@echo 35 making ${OUT}/Property.h from ${IN}/Property.h.pamphlet
+	@${DOCUMENT} src Property.h ${OUT}
+
+@
+<<Property.h.dvi (DOC from IN)>>=
+${DOC}/Property.h.dvi: ${IN}/Property.h.pamphlet ${DOC}/axiom.sty
+	@echo 36 making ${DOC}/Property.h.dvi from ${IN}/Property.h.pamphlet 
+	@${DOCUMENT} dvi Property.h ${DOC} Property.h ${NOISE}
+
+@
+\section{RandomDefinitionsGenerator}
+\subsection{RandomDefinitionsGenerator}
+<<RandomDefinitionsGenerator.h (OUT from IN)>>=
+${OUT}/RandomDefinitionsGenerator.h: ${IN}/RandomDefinitionsGenerator.h.pamphlet
+	@echo 37 making ${OUT}/RandomDefinitionsGenerator.h from ${IN}/RandomDefinitionsGenerator.h.pamphlet
+	@${DOCUMENT} src RandomDefinitionsGenerator.h ${OUT}
+
+@
+<<RandomDefinitionsGenerator.h.dvi (DOC from IN)>>=
+${DOC}/RandomDefinitionsGenerator.h.dvi: ${IN}/RandomDefinitionsGenerator.h.pamphlet ${DOC}/axiom.sty
+	@echo 38 making ${DOC}/RandomDefinitionsGenerator.h.dvi from ${IN}/RandomDefinitionsGenerator.h.pamphlet 
+	@${DOCUMENT} dvi RandomDefinitionsGenerator.h ${DOC} RandomDefinitionsGenerator.h ${NOISE}
+
+@
+\section{ResourceManager}
+\subsection{ResourceManager}
+<<ResourceManager.h (OUT from IN)>>=
+${OUT}/ResourceManager.h: ${IN}/ResourceManager.h.pamphlet
+	@echo 39 making ${OUT}/ResourceManager.h from ${IN}/ResourceManager.h.pamphlet
+	@${DOCUMENT} src ResourceManager.h ${OUT}
+
+@
+<<ResourceManager.h.dvi (DOC from IN)>>=
+${DOC}/ResourceManager.h.dvi: ${IN}/ResourceManager.h.pamphlet ${DOC}/axiom.sty
+	@echo 40 making ${DOC}/ResourceManager.h.dvi from ${IN}/ResourceManager.h.pamphlet 
+	@${DOCUMENT} dvi ResourceManager.h ${DOC} ResourceManager.h ${NOISE}
+
+@
+\section{SMDataSet}
+\subsection{SMDataSet}
+<<SMDataSet.h (OUT from IN)>>=
+${OUT}/SMDataSet.h: ${IN}/SMDataSet.h.pamphlet
+	@echo 43 making ${OUT}/SMDataSet.h from ${IN}/SMDataSet.h.pamphlet
+	@${DOCUMENT} src SMDataSet.h ${OUT}
+
+@
+<<SMDataSet.h.dvi (DOC from IN)>>=
+${DOC}/SMDataSet.h.dvi: ${IN}/SMDataSet.h.pamphlet ${DOC}/axiom.sty
+	@echo 44 making ${DOC}/SMDataSet.h.dvi from ${IN}/SMDataSet.h.pamphlet 
+	@${DOCUMENT} dvi SMDataSet.h ${DOC} SMDataSet.h ${NOISE}
+
+@
+\section{SMEqSystem}
+\subsection{SMEqSystem}
+<<SMEqSystem.h (OUT from IN)>>=
+${OUT}/SMEqSystem.h: ${IN}/SMEqSystem.h.pamphlet
+	@echo 47 making ${OUT}/SMEqSystem.h from ${IN}/SMEqSystem.h.pamphlet
+	@${DOCUMENT} src SMEqSystem.h ${OUT}
+
+@
+<<SMEqSystem.h.dvi (DOC from IN)>>=
+${DOC}/SMEqSystem.h.dvi: ${IN}/SMEqSystem.h.pamphlet ${DOC}/axiom.sty
+	@echo 48 making ${DOC}/SMEqSystem.h.dvi from ${IN}/SMEqSystem.h.pamphlet 
+	@${DOCUMENT} dvi SMEqSystem.h ${DOC} SMEqSystem.h ${NOISE}
+
+@
+\section{SMEquation}
+\subsection{SMEquation}
+<<SMEquation.h (OUT from IN)>>=
+${OUT}/SMEquation.h: ${IN}/SMEquation.h.pamphlet
+	@echo 49 making ${OUT}/SMEquation.h from ${IN}/SMEquation.h.pamphlet
+	@${DOCUMENT} src SMEquation.h ${OUT}
+
+@
+<<SMEquation.h.dvi (DOC from IN)>>=
+${DOC}/SMEquation.h.dvi: ${IN}/SMEquation.h.pamphlet ${DOC}/axiom.sty
+	@echo 50 making ${DOC}/SMEquation.h.dvi from ${IN}/SMEquation.h.pamphlet 
+	@${DOCUMENT} dvi SMEquation.h ${DOC} SMEquation.h ${NOISE}
+
+@
+\section{SMFPGroup}
+\subsection{SMFPGroup}
+<<SMFPGroup.h (OUT from IN)>>=
+${OUT}/SMFPGroup.h: ${IN}/SMFPGroup.h.pamphlet
+	@echo 51 making ${OUT}/SMFPGroup.h from ${IN}/SMFPGroup.h.pamphlet
+	@${DOCUMENT} src SMFPGroup.h ${OUT}
+
+@
+<<SMFPGroup.h.dvi (DOC from IN)>>=
+${DOC}/SMFPGroup.h.dvi: ${IN}/SMFPGroup.h.pamphlet ${DOC}/axiom.sty
+	@echo 52 making ${DOC}/SMFPGroup.h.dvi from ${IN}/SMFPGroup.h.pamphlet 
+	@${DOCUMENT} dvi SMFPGroup.h ${DOC} SMFPGroup.h ${NOISE}
+
+@
+\section{SMHomomorphism}
+\subsection{SMHomomorphism}
+<<SMHomomorphism.h (OUT from IN)>>=
+${OUT}/SMHomomorphism.h: ${IN}/SMHomomorphism.h.pamphlet
+	@echo 53 making ${OUT}/SMHomomorphism.h from ${IN}/SMHomomorphism.h.pamphlet
+	@${DOCUMENT} src SMHomomorphism.h ${OUT}
+
+@
+<<SMHomomorphism.h.dvi (DOC from IN)>>=
+${DOC}/SMHomomorphism.h.dvi: ${IN}/SMHomomorphism.h.pamphlet ${DOC}/axiom.sty
+	@echo 54 making ${DOC}/SMHomomorphism.h.dvi from ${IN}/SMHomomorphism.h.pamphlet 
+	@${DOCUMENT} dvi SMHomomorphism.h ${DOC} SMHomomorphism.h ${NOISE}
+
+@
+\section{SMObject}
+\subsection{SMObject}
+<<SMObject.h (OUT from IN)>>=
+${OUT}/SMObject.h: ${IN}/SMObject.h.pamphlet
+	@echo 59 making ${OUT}/SMObject.h from ${IN}/SMObject.h.pamphlet
+	@${DOCUMENT} src SMObject.h ${OUT}
+
+@
+<<SMObject.h.dvi (DOC from IN)>>=
+${DOC}/SMObject.h.dvi: ${IN}/SMObject.h.pamphlet ${DOC}/axiom.sty
+	@echo 60 making ${DOC}/SMObject.h.dvi from ${IN}/SMObject.h.pamphlet 
+	@${DOCUMENT} dvi SMObject.h ${DOC} SMObject.h ${NOISE}
+
+@
+\section{SMPermutation}
+\subsection{SMPermutation}
+<<SMPermutation.h (OUT from IN)>>=
+${OUT}/SMPermutation.h: ${IN}/SMPermutation.h.pamphlet
+	@echo 61 making ${OUT}/SMPermutation.h from ${IN}/SMPermutation.h.pamphlet
+	@${DOCUMENT} src SMPermutation.h ${OUT}
+
+@
+<<SMPermutation.h.dvi (DOC from IN)>>=
+${DOC}/SMPermutation.h.dvi: ${IN}/SMPermutation.h.pamphlet ${DOC}/axiom.sty
+	@echo 62 making ${DOC}/SMPermutation.h.dvi from ${IN}/SMPermutation.h.pamphlet 
+	@${DOCUMENT} dvi SMPermutation.h ${DOC} SMPermutation.h ${NOISE}
+
+@
+\section{SMPolynomial}
+\subsection{SMPolynomial}
+<<SMPolynomial.h (OUT from IN)>>=
+${OUT}/SMPolynomial.h: ${IN}/SMPolynomial.h.pamphlet
+	@echo 63 making ${OUT}/SMPolynomial.h from ${IN}/SMPolynomial.h.pamphlet
+	@${DOCUMENT} src SMPolynomial.h ${OUT}
+
+@
+<<SMPolynomial.h.dvi (DOC from IN)>>=
+${DOC}/SMPolynomial.h.dvi: ${IN}/SMPolynomial.h.pamphlet ${DOC}/axiom.sty
+	@echo 64 making ${DOC}/SMPolynomial.h.dvi from ${IN}/SMPolynomial.h.pamphlet 
+	@${DOCUMENT} dvi SMPolynomial.h ${DOC} SMPolynomial.h ${NOISE}
+
+@
+\section{SMSetOfWords}
+\subsection{SMSetOfWords}
+<<SMSetOfWords.h (OUT from IN)>>=
+${OUT}/SMSetOfWords.h: ${IN}/SMSetOfWords.h.pamphlet
+	@echo 65 making ${OUT}/SMSetOfWords.h from ${IN}/SMSetOfWords.h.pamphlet
+	@${DOCUMENT} src SMSetOfWords.h ${OUT}
+
+@
+<<SMSetOfWords.h.dvi (DOC from IN)>>=
+${DOC}/SMSetOfWords.h.dvi: ${IN}/SMSetOfWords.h.pamphlet ${DOC}/axiom.sty
+	@echo 66 making ${DOC}/SMSetOfWords.h.dvi from ${IN}/SMSetOfWords.h.pamphlet 
+	@${DOCUMENT} dvi SMSetOfWords.h ${DOC} SMSetOfWords.h ${NOISE}
+
+@
+\section{SMSubgroup}
+\subsection{SMSubgroup}
+<<SMSubgroup.h (OUT from IN)>>=
+${OUT}/SMSubgroup.h: ${IN}/SMSubgroup.h.pamphlet
+	@echo 67 making ${OUT}/SMSubgroup.h from ${IN}/SMSubgroup.h.pamphlet
+	@${DOCUMENT} src SMSubgroup.h ${OUT}
+
+@
+<<SMSubgroup.h.dvi (DOC from IN)>>=
+${DOC}/SMSubgroup.h.dvi: ${IN}/SMSubgroup.h.pamphlet ${DOC}/axiom.sty
+	@echo 68 making ${DOC}/SMSubgroup.h.dvi from ${IN}/SMSubgroup.h.pamphlet 
+	@${DOCUMENT} dvi SMSubgroup.h ${DOC} SMSubgroup.h ${NOISE}
+
+@
+\section{SMVectorOfWords}
+\subsection{SMVectorOfWords}
+<<SMVectorOfWords.h (OUT from IN)>>=
+${OUT}/SMVectorOfWords.h: ${IN}/SMVectorOfWords.h.pamphlet
+	@echo 69 making ${OUT}/SMVectorOfWords.h from ${IN}/SMVectorOfWords.h.pamphlet
+	@${DOCUMENT} src SMVectorOfWords.h ${OUT}
+
+@
+<<SMVectorOfWords.h.dvi (DOC from IN)>>=
+${DOC}/SMVectorOfWords.h.dvi: ${IN}/SMVectorOfWords.h.pamphlet ${DOC}/axiom.sty
+	@echo 70 making ${DOC}/SMVectorOfWords.h.dvi from ${IN}/SMVectorOfWords.h.pamphlet 
+	@${DOCUMENT} dvi SMVectorOfWords.h ${DOC} SMVectorOfWords.h ${NOISE}
+
+@
+\section{SMWord}
+\subsection{SMWord}
+<<SMWord.h (OUT from IN)>>=
+${OUT}/SMWord.h: ${IN}/SMWord.h.pamphlet
+	@echo 71 making ${OUT}/SMWord.h from ${IN}/SMWord.h.pamphlet
+	@${DOCUMENT} src SMWord.h ${OUT}
+
+@
+<<SMWord.h.dvi (DOC from IN)>>=
+${DOC}/SMWord.h.dvi: ${IN}/SMWord.h.pamphlet ${DOC}/axiom.sty
+	@echo 72 making ${DOC}/SMWord.h.dvi from ${IN}/SMWord.h.pamphlet 
+	@${DOCUMENT} dvi SMWord.h ${DOC} SMWord.h ${NOISE}
+
+@
+\section{Supervisor}
+\subsection{Supervisor}
+<<Supervisor.h (OUT from IN)>>=
+${OUT}/Supervisor.h: ${IN}/Supervisor.h.pamphlet
+	@echo 73 making ${OUT}/Supervisor.h from ${IN}/Supervisor.h.pamphlet
+	@${DOCUMENT} src Supervisor.h ${OUT}
+
+@
+<<Supervisor.h.dvi (DOC from IN)>>=
+${DOC}/Supervisor.h.dvi: ${IN}/Supervisor.h.pamphlet ${DOC}/axiom.sty
+	@echo 74 making ${DOC}/Supervisor.h.dvi from ${IN}/Supervisor.h.pamphlet 
+	@${DOCUMENT} dvi Supervisor.h ${DOC} Supervisor.h ${NOISE}
+
+@
+\section{ViewContents}
+\subsection{ViewContents}
+<<ViewContents.h (OUT from IN)>>=
+${OUT}/ViewContents.h: ${IN}/ViewContents.h.pamphlet
+	@echo 77 making ${OUT}/ViewContents.h from ${IN}/ViewContents.h.pamphlet
+	@${DOCUMENT} src ViewContents.h ${OUT}
+
+@
+<<ViewContents.h.dvi (DOC from IN)>>=
+${DOC}/ViewContents.h.dvi: ${IN}/ViewContents.h.pamphlet ${DOC}/axiom.sty
+	@echo 78 making ${DOC}/ViewContents.h.dvi from ${IN}/ViewContents.h.pamphlet 
+	@${DOCUMENT} dvi ViewContents.h ${DOC} ViewContents.h ${NOISE}
+
+@
+\section{viewStructure}
+\subsection{viewStructure}
+<<viewStructure.h (OUT from IN)>>=
+${OUT}/viewStructure.h: ${IN}/viewStructure.h.pamphlet
+	@echo 79 making ${OUT}/viewStructure.h from ${IN}/viewStructure.h.pamphlet
+	@${DOCUMENT} src viewStructure.h ${OUT}
+
+@
+<<viewStructure.h.dvi (DOC from IN)>>=
+${DOC}/viewStructure.h.dvi: ${IN}/viewStructure.h.pamphlet ${DOC}/axiom.sty
+	@echo 80 making ${DOC}/viewStructure.h.dvi from ${IN}/viewStructure.h.pamphlet 
+	@${DOCUMENT} dvi viewStructure.h ${DOC} viewStructure.h ${NOISE}
+
+@
+\section{axiom.sty}
+<<axiom.sty (DOC from IN)>>=
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 81 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@${DOCUMENT} chunk "axiom.sty" ${SRC}/doc/axiom.sty ${DOC} axiom.sty
+ 
+@
+<<*>>=
+<<environment>>
+
+FILES= ${OUT}/AlgebraicObject.h ${OUT}/ARCer.h \
+       ${OUT}/ARC.h ${OUT}/ARCSlotID.h \
+       ${OUT}/BaseProperties.h \
+       ${OUT}/GCM.h ${OUT}/GIC.h \
+       ${OUT}/InformationCenter.h ${OUT}/Menu.h \
+       ${OUT}/MIC.h ${OUT}/ObjectFactory.h \
+       ${OUT}/OID.h \
+       ${OUT}/Property.h \
+       ${OUT}/RandomDefinitionsGenerator.h ${OUT}/ResourceManager.h \
+       ${OUT}/SMDataSet.h \
+       ${OUT}/SMEqSystem.h \
+       ${OUT}/SMEquation.h ${OUT}/SMFPGroup.h \
+       ${OUT}/SMHomomorphism.h \
+       ${OUT}/SMObject.h \
+       ${OUT}/SMPermutation.h ${OUT}/SMPolynomial.h \
+       ${OUT}/SMSetOfWords.h ${OUT}/SMSubgroup.h \
+       ${OUT}/SMVectorOfWords.h ${OUT}/SMWord.h \
+       ${OUT}/Supervisor.h \
+       ${OUT}/ViewContents.h ${OUT}/viewStructure.h
+
+DOCFILES= ${DOC}/AlgebraicObject.h.dvi ${DOC}/ARCer.h.dvi \
+          ${DOC}/ARC.h.dvi ${DOC}/ARCSlotID.h.dvi \
+          ${DOC}/BaseProperties.h.dvi \
+          ${DOC}/GCM.h.dvi ${DOC}/GIC.h.dvi \
+          ${DOC}/InformationCenter.h.dvi ${DOC}/Menu.h.dvi \
+          ${DOC}/MIC.h.dvi ${DOC}/ObjectFactory.h.dvi \
+          ${DOC}/OID.h.dvi \
+          ${DOC}/Property.h.dvi \
+          ${DOC}/RandomDefinitionsGenerator.h.dvi \
+          ${DOC}/ResourceManager.h.dvi \
+          ${DOC}/SMDataSet.h.dvi \
+          ${DOC}/SMEqSystem.h.dvi \
+          ${DOC}/SMEquation.h.dvi ${DOC}/SMFPGroup.h.dvi \
+          ${DOC}/SMHomomorphism.h.dvi \
+          ${DOC}/SMObject.h.dvi \
+          ${DOC}/SMPermutation.h.dvi ${DOC}/SMPolynomial.h.dvi \
+          ${DOC}/SMSetOfWords.h.dvi ${DOC}/SMSubgroup.h.dvi \
+          ${DOC}/SMVectorOfWords.h.dvi ${DOC}/SMWord.h.dvi \
+          ${DOC}/Supervisor.h.dvi \
+          ${DOC}/ViewContents.h.dvi ${DOC}/viewStructure.h.dvi
+
+all: ${FILES} ${DOCFILES}
+	@echo 82 finished ${IN}
+
+<<AlgebraicObject.h (OUT from IN)>>
+<<AlgebraicObject.h.dvi (DOC from IN)>>
+
+<<ARCer.h (OUT from IN)>>
+<<ARCer.h.dvi (DOC from IN)>>
+
+<<ARC.h (OUT from IN)>>
+<<ARC.h.dvi (DOC from IN)>>
+
+<<ARCSlotID.h (OUT from IN)>>
+<<ARCSlotID.h.dvi (DOC from IN)>>
+
+<<BaseProperties.h (OUT from IN)>>
+<<BaseProperties.h.dvi (DOC from IN)>>
+
+<<GCM.h (OUT from IN)>>
+<<GCM.h.dvi (DOC from IN)>>
+
+<<GIC.h (OUT from IN)>>
+<<GIC.h.dvi (DOC from IN)>>
+
+<<InformationCenter.h (OUT from IN)>>
+<<InformationCenter.h.dvi (DOC from IN)>>
+
+<<Menu.h (OUT from IN)>>
+<<Menu.h.dvi (DOC from IN)>>
+
+<<MIC.h (OUT from IN)>>
+<<MIC.h.dvi (DOC from IN)>>
+
+<<ObjectFactory.h (OUT from IN)>>
+<<ObjectFactory.h.dvi (DOC from IN)>>
+
+<<OID.h (OUT from IN)>>
+<<OID.h.dvi (DOC from IN)>>
+
+<<Property.h (OUT from IN)>>
+<<Property.h.dvi (DOC from IN)>>
+
+<<RandomDefinitionsGenerator.h (OUT from IN)>>
+<<RandomDefinitionsGenerator.h.dvi (DOC from IN)>>
+
+<<ResourceManager.h (OUT from IN)>>
+<<ResourceManager.h.dvi (DOC from IN)>>
+
+<<SMDataSet.h (OUT from IN)>>
+<<SMDataSet.h.dvi (DOC from IN)>>
+
+<<SMEqSystem.h (OUT from IN)>>
+<<SMEqSystem.h.dvi (DOC from IN)>>
+
+<<SMEquation.h (OUT from IN)>>
+<<SMEquation.h.dvi (DOC from IN)>>
+
+<<SMFPGroup.h (OUT from IN)>>
+<<SMFPGroup.h.dvi (DOC from IN)>>
+
+<<SMHomomorphism.h (OUT from IN)>>
+<<SMHomomorphism.h.dvi (DOC from IN)>>
+
+<<SMObject.h (OUT from IN)>>
+<<SMObject.h.dvi (DOC from IN)>>
+
+<<SMPermutation.h (OUT from IN)>>
+<<SMPermutation.h.dvi (DOC from IN)>>
+
+<<SMPolynomial.h (OUT from IN)>>
+<<SMPolynomial.h.dvi (DOC from IN)>>
+
+<<SMSetOfWords.h (OUT from IN)>>
+<<SMSetOfWords.h.dvi (DOC from IN)>>
+
+<<SMSubgroup.h (OUT from IN)>>
+<<SMSubgroup.h.dvi (DOC from IN)>>
+
+<<SMVectorOfWords.h (OUT from IN)>>
+<<SMVectorOfWords.h.dvi (DOC from IN)>>
+
+<<SMWord.h (OUT from IN)>>
+<<SMWord.h.dvi (DOC from IN)>>
+
+<<Supervisor.h (OUT from IN)>>
+<<Supervisor.h.dvi (DOC from IN)>>
+
+<<ViewContents.h (OUT from IN)>>
+<<ViewContents.h.dvi (DOC from IN)>>
+
+<<viewStructure.h (OUT from IN)>>
+<<viewStructure.h.dvi (DOC from IN)>>
+
+<<axiom.sty (DOC from IN)>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

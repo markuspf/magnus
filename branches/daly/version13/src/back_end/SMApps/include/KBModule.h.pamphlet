@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/KBModule.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include <signal.h>
+#include <unistd.h>
+#include "Timer.h"
+#include "Supervisor.h"
+#include "RKBPackage.h"
+#include "KBMachine.h"
+#include "List.h"
+#include "ARCer.h"
+#include "FPGroup.h"
+
+@
+\section{class KBSupervisorARCer}
+<<class KBSupervisorARCer>>=
+class KBSupervisorARCer : public ARCer
+{
+public:
+  KBSupervisorARCer( ComputationManager& boss ) : ARCer( boss ) { } 
+  void setArguments( const FPGroup& );
+  // Inherited from ARCer:
+  // bool takeControl( );
+  KBMachine getKBMachine() { return KBM; }
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  FPGroup G;
+  RKBPackage* RKBP;
+  // Wraps the Rutgers Knuth-Bendix Package.
+  KBMachine KBM;
+};
+
+@
+\section{class KBSupervisor}
+<<class KBSupervisor>>=
+class KBSupervisor : public ComputationManager
+{
+public:
+  KBSupervisor(class GCM& gcm);
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+  
+private:
+  SMFPGroup& theGroup;
+  KBSupervisorARCer arcer;
+};
+
+@
+\section{class KBProblem}
+<<class KBProblem>>=
+class KBProblem : public Supervisor
+{
+public:
+  KBProblem(class SMFPGroup& G);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate kbSupervisor;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/KBModule.h
+#ifndef _KBMODULE_H_
+#define _KBMODULE_H_
+
+<<license>>
+<<include>>
+<<class KBSupervisorARCer>>
+<<class KBSupervisor>>
+<<class KBProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,119 @@
+	The description of a genetic algorithm that looks for
+	  a counter-example to the Hanna Neumann conjecture.
+
+
+Hanna Neumann conjecture: 
+
+	if A and B are finitely generated non-trivial subgroups of a
+free group of finite rank, and I is the intersection of A and B, then
+rk(I)-1 <= (rk(A)-1)(rk(B)-1).
+
+
+
+Genetic algorithm:
+
+	In the broadest sense, a GA creates a set of solutions that
+reproduce based on their fitness in a given environment. The process
+follows this pattern:
+
+1. An initial population of random solutions is created.
+
+2. Each member of the population is assigned a fitness value based on
+its evaluation against the current problem.
+
+3. Solutions with a higher fitness value are most likely to parent new
+solutions during reproduction.
+
+4. The new solution set replaces the old, a generation is complete,
+and the process continues at step 2.
+
+
+			Some definitions.
+
+
+Chromosome: 
+
+	A member of the population named after its biological
+counterpart.
+
+Roulette Wheel Selection:
+
+	A roulette wheel selects the chromosomes used in
+reproduction. The wheel is the fitness array, and a marble is a random
+number less than the sum of all fitnesses in the population. To find
+the chromosome associated with the marble's landing place, the
+algorithm iterates through the fitness array; if the marble value is
+less than the current fitness element, the corresponding chromosome
+becomes a parent. Otherwise, the algorithm subtracts the current
+fitness value from the marble and then repeats the process with the
+next element in the fitness array. Thus the largest fitness values tend
+to be most likely resting places for the marble, since they use a
+larger area of the abstract wheel.
+
+Crossover:
+
+	Crossover is a central feature of genetic algorithms that
+creates a new chromosome from two parents. Corresponding to biological
+crossover, the software version combines a pair of parents by randomly
+selecting a point at which pieces of the parents' bit strings are
+swapped.
+
+Mutation: 
+
+	A random change in each chromosome of the new population.
+
+Elitist selection: 
+
+	The technique that always copies the most-fit chromosome into
+the next generation.
+
+Fitness scaling:
+
+	The technique that adjust the fitness values to the advantage
+of the most fit chromosomes.
+
+Windowing:
+
+	This is the simplest form of fitness scaling. To implement
+windowing, subtract the minimum value from all fitness values, thus
+adjusting the fitness array to a zero-base.
+
+
+			The algorithm.
+
+
+1. An initial population of random solutions is created.
+
+2. Each member of the population is assigned a fitness value based on
+its evaluation against the current problem.
+
+   The fitness function:  rk(I)-1 - (rk(A) - 1) (rk(B) - 1).
+
+3. Solutions with a higher fitness value are most likely to parent new
+solutions during reproduction. 
+
+3.1. To adjust the fitness values, the algorithm subtracts the
+minimum fitness value (windowing), add one, and then squares the
+result. Adding one gives every chromosome a chance of reproduction,
+and squaring the windowed fitness value strengthens the reproductive
+chances of the most-fit chromosomes.
+
+3.2. Roulette wheel selection is used to select parents. 
+
+3.3. For each pair of parents crossover can be used to produce an
+offspring. The algorithm uses the simple version of crossover, which
+gives the child some generators of both parents(subgroups). This item
+can be omitted, so that the algorithm will depend on mutations only,
+in which case it is called an evolutionary algorithm.
+
+3.4. Mutation is performed. Mutation can add a randomly chosen
+generator to a subgroup, delete one of the generators, or change several
+letters in any generator of the subgroup.
+
+4. The new solution set replaces the old, a generation is complete,
+and the process continues at step 2.
+
+
+
+
+ 

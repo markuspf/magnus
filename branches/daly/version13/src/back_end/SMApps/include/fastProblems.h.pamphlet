@@ -1,0 +1,1883 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/fastProblems.h}
+\author{Roger Needham, Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "ComputationManager.h"
+#include "Word.h"
+#include "SMVectorOfWords.h"
+#include "SMEnumerator.h"
+
+@
+\section{class FastComputation}
+Each derivative of class FastComputation has merely a ctor which takes
+the SMObject argument(s), data members to store them, and the
+`takeControl' method. It would involve less typing at least to factor
+out all but the last in a base class parameterized by an int, then
+specialize `takeControl' for values of the int. But of course gcc
+2.6.3 can't handle template method specialization.
+<<class FastComputation>>=
+class FastComputation : public ComputationManager
+{
+public:
+  FastComputation( );
+  void readMessage(istream &) { }       // overrides SMObject
+  void viewStructure(ostream& ostr) const;    // overrides SMObject
+  void start( ) { }                           // overrides ComputationManager
+  void terminate( ) { }                       // overrides ComputationManager
+};
+
+@
+\section{class CommutatorInFree}
+<<class CommutatorInFree>>=
+class CommutatorInFree : public FastComputation
+{
+public:
+  CommutatorInFree(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class FreeInCommutatorSG}
+<<class FreeInCommutatorSG>>=
+class FreeInCommutatorSG : public FastComputation
+{
+public:
+  FreeInCommutatorSG(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class ProductOfCommutators}
+<<class ProductOfCommutators>>=
+class ProductOfCommutators : public FastComputation
+{
+public:
+  ProductOfCommutators(const class SMWord& w) : 
+    theWord( w ),
+    theFile( )
+    { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+  File theFile;
+};
+
+@
+\section{class ProductOfSquares}
+<<class ProductOfSquares>>=
+class ProductOfSquares : public FastComputation
+{
+public:
+  ProductOfSquares(const class SMWord& w) : 
+    theWord( w ),
+    theFile( )
+    { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+  File theFile;
+};
+
+@
+\section{class FreeIsElementAProperPower}
+<<class FreeIsElementAProperPower>>=
+class FreeIsElementAProperPower : public FastComputation
+{
+public:
+  FreeIsElementAProperPower(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class FreeMaximalRootOfElement}
+<<class FreeMaximalRootOfElement>>=
+class FreeMaximalRootOfElement : public FastComputation
+{
+public:
+  FreeMaximalRootOfElement(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class FreeCentolizerOfElement}
+<<class FreeCentolizerOfElement>>=
+class FreeCentolizerOfElement : public FastComputation
+{
+public:
+  FreeCentolizerOfElement(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class FreeGetN\_thElement}
+<<class FreeGetN_thElement>>=
+class FreeGetN_thElement : public FastComputation
+{
+public:
+  FreeGetN_thElement( class SMFPGroup& G, int n = 0 ) : 
+    theGroup( G ), theNumber( n ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  int theNumber;
+};
+
+@
+\section{class FreeGetNextN\_thElement}
+<<class FreeGetNextN_thElement>>=
+class FreeGetNextN_thElement : public FastComputation
+{
+public:
+  FreeGetNextN_thElement( class SMWord& w, int n = 0 ) : 
+    theWord( w ), theNumber( n ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+  int theNumber;
+};
+
+@
+\section{class WordProblemInFree}
+<<class WordProblemInFree>>=
+class WordProblemInFree : public FastComputation
+{
+public:
+  WordProblemInFree(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class WordsAreEqual}
+<<class WordsAreEqual>>=
+class WordsAreEqual : public FastComputation
+{
+public:
+  WordsAreEqual(const class SMWord& w1, const class SMWord& w2)
+    : word1( w1 ), word2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word1;
+  const class SMWord& word2;
+};
+
+@
+\section{class EndoOnFreeIsMono}
+<<class EndoOnFreeIsMono>>=
+class EndoOnFreeIsMono : public FastComputation
+{
+public:
+  EndoOnFreeIsMono( class SMMap& m ) : map( m ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMMap& map;
+};
+
+@
+\section{class EndoOnFreeIsEpi}
+<<class EndoOnFreeIsEpi>>=
+class EndoOnFreeIsEpi : public FastComputation
+{
+public:
+  EndoOnFreeIsEpi( class SMMap& m ) : map( m ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMMap& map;
+};
+
+@
+\section{class EndoOnFreeIsAut}
+<<class EndoOnFreeIsAut>>=
+class EndoOnFreeIsAut : public FastComputation
+{
+public:
+  EndoOnFreeIsAut(const class SMMap& m) : map( m ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+};
+
+@
+\section{class EndoOnFreeIsInner}
+<<class EndoOnFreeIsInner>>=
+class EndoOnFreeIsInner : public FastComputation
+{
+public:
+  EndoOnFreeIsInner(const class SMMap& m) : map( m ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+};
+
+@
+\section{class EndoOnFreeIsIAAut}
+<<class EndoOnFreeIsIAAut>>=
+class EndoOnFreeIsIAAut : public FastComputation
+{
+public:
+  EndoOnFreeIsIAAut(const class SMMap& m) : map( m ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+};
+
+@
+\section{class InverseAuto}
+<<class InverseAuto>>=
+class InverseAuto : public FastComputation
+{
+public:
+  InverseAuto(const class SMMap& m) : map( m ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+};
+
+@
+\section{class AutoWhiteheadDecomposition}
+<<class AutoWhiteheadDecomposition>>=
+class AutoWhiteheadDecomposition : public FastComputation
+{
+public:
+  AutoWhiteheadDecomposition(const class SMMap& m) : map( m ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+};
+
+@
+\section{class WordInSGOfFree}
+<<class WordInSGOfFree>>=
+class WordInSGOfFree : public FastComputation
+{
+public:
+  WordInSGOfFree(const class SMSubgroup& S, const class SMWord& w)
+    : word( w ), subgroup( S )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word;
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class PowerOfWordInSGOfFree}
+<<class PowerOfWordInSGOfFree>>=
+class PowerOfWordInSGOfFree : public FastComputation
+{
+public:
+  PowerOfWordInSGOfFree(const class SMSubgroup& S, const class SMWord& w)
+    : word( w ), subgroup( S )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word;
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class ConjugacyProblemInFree}
+<<class ConjugacyProblemInFree>>=
+class ConjugacyProblemInFree : public FastComputation
+{
+public:
+  ConjugacyProblemInFree(const class SMWord& w1, const class SMWord& w2)
+    : word1( w1 ), word2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word1;
+  const class SMWord& word2;
+};
+
+@
+\section{class ConjugateOfWordInSGOfFree}
+<<class ConjugateOfWordInSGOfFree>>=
+class ConjugateOfWordInSGOfFree : public FastComputation
+{
+public:
+  ConjugateOfWordInSGOfFree(const class SMSubgroup& S, const class SMWord& w)
+    : word( w ), subgroup( S )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word;
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class WordInNielsenBasisSGOfFree}
+<<class WordInNielsenBasisSGOfFree>>=
+class WordInNielsenBasisSGOfFree : public FastComputation
+{
+public:
+  WordInNielsenBasisSGOfFree(const class SMSubgroup& S, const class SMWord& w)
+    : word( w ), subgroup( S )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word;
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class SchreierRepOfWordInSGOfFree}
+<<class SchreierRepOfWordInSGOfFree>>=
+class SchreierRepOfWordInSGOfFree : public FastComputation
+{
+public:
+  SchreierRepOfWordInSGOfFree(const class SMSubgroup& S, const class SMWord& w)
+    : word( w ), subgroup( S )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word;
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class SGOfFreeContainment}
+<<class SGOfFreeContainment>>=
+class SGOfFreeContainment : public FastComputation
+{
+public:
+  SGOfFreeContainment(const class SMSubgroup& S1, const class SMSubgroup& S2)
+    : subgroup1( S1 ), subgroup2( S2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup1;
+  const class SMSubgroup& subgroup2;
+};
+
+@
+\section{class SGOfFreeAreEqual}
+<<class SGOfFreeAreEqual>>=
+class SGOfFreeAreEqual : public FastComputation
+{
+public:
+  SGOfFreeAreEqual(const class SMSubgroup& S1, const class SMSubgroup& S2)
+    : subgroup1( S1 ), subgroup2( S2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup1;
+  const class SMSubgroup& subgroup2;
+};
+
+@
+\section{class SGOfFreeJoin}
+<<class SGOfFreeJoin>>=
+class SGOfFreeJoin : public FastComputation
+{
+public:
+  SGOfFreeJoin(const class SMSubgroup& S1, const class SMSubgroup& S2)
+    : subgroup1( S1 ), subgroup2( S2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup1;
+  const class SMSubgroup& subgroup2;
+};
+
+@
+\section{class SGOfFreeIntersection}
+<<class SGOfFreeIntersection>>=
+class SGOfFreeIntersection : public FastComputation
+{
+public:
+  SGOfFreeIntersection(const class SMSubgroup& S1, const class SMSubgroup& S2)
+    : subgroup1( S1 ), subgroup2( S2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup1;
+  const class SMSubgroup& subgroup2;
+};
+
+@
+\section{class SGOfFreeIsNormal}
+<<class SGOfFreeIsNormal>>=
+class SGOfFreeIsNormal : public FastComputation
+{
+public:
+  SGOfFreeIsNormal( class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMSubgroup& subgroup;
+};
+
+@
+\section{class SGOfFreeIsAFreeFactor}
+<<class SGOfFreeIsAFreeFactor>>=
+class SGOfFreeIsAFreeFactor : public FastComputation
+{
+public:
+  SGOfFreeIsAFreeFactor(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class SGOfFreeIsMalnormal}
+<<class SGOfFreeIsMalnormal>>=
+class SGOfFreeIsMalnormal : public FastComputation
+{
+public:
+  SGOfFreeIsMalnormal(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class QuadEquationSurfaceForm}
+<<class QuadEquationSurfaceForm>>=
+class QuadEquationSurfaceForm : public FastComputation
+{
+public:
+  QuadEquationSurfaceForm(const class SMEquation& S) : equation( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMEquation& equation;
+};
+
+@
+\section{class SGOfFreeWhiteheadReduction}
+<<class SGOfFreeWhiteheadReduction>>=
+class SGOfFreeWhiteheadReduction : public FastComputation
+{
+public:
+  SGOfFreeWhiteheadReduction(const class SMVectorOfWords& S) : vect( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMVectorOfWords& vect;
+};
+
+@
+\section{class SGOfFreeNielsenBasis}
+<<class SGOfFreeNielsenBasis>>=
+class SGOfFreeNielsenBasis : public FastComputation
+{
+public:
+  SGOfFreeNielsenBasis(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class SGOfFreeIndex}
+<<class SGOfFreeIndex>>=
+class SGOfFreeIndex : public FastComputation
+{
+public:
+  SGOfFreeIndex(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class SGOfFreeRank}
+<<class SGOfFreeRank>>=
+class SGOfFreeRank : public FastComputation
+{
+public:
+  SGOfFreeRank(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class SGOfFreeNormaliser}
+<<class SGOfFreeNormaliser>>=
+class SGOfFreeNormaliser : public FastComputation
+{
+public:
+  SGOfFreeNormaliser(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class SGOfFreeHallCompletion}
+<<class SGOfFreeHallCompletion>>=
+class SGOfFreeHallCompletion : public FastComputation
+{
+public:
+  SGOfFreeHallCompletion(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class FreeIsSGTrivial}
+<<class FreeIsSGTrivial>>=
+class FreeIsSGTrivial : public FastComputation
+{
+public:
+  FreeIsSGTrivial(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class FreeIsAutomatic}
+<<class FreeIsAutomatic>>=
+class FreeIsAutomatic : public FastComputation
+{
+public:
+  FreeIsAutomatic(const class SMFPGroup& G) : group( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMFPGroup& group;
+};
+
+@
+\section{class FreelyReduceWord}
+<<class FreelyReduceWord>>=
+class FreelyReduceWord : public FastComputation
+{
+public:
+  FreelyReduceWord(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class CyclicallyReduceWord}
+<<class CyclicallyReduceWord>>=
+class CyclicallyReduceWord : public FastComputation
+{
+public:
+  CyclicallyReduceWord(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class FormalInverseOfWord}
+<<class FormalInverseOfWord>>=
+class FormalInverseOfWord : public FastComputation
+{
+public:
+  FormalInverseOfWord(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class WordLength}
+<<class WordLength>>=
+class WordLength : public FastComputation
+{
+public:
+  WordLength( const class SMWord& w )
+    : theWord ( w ) 
+  { }
+  
+  void takeControl( );              // overrides ComputationManager  
+  
+private:
+  const SMWord& theWord;
+};
+
+@
+\section{class InitialSegmentOfWord}
+<<class InitialSegmentOfWord>>=
+class InitialSegmentOfWord : public FastComputation
+{
+public:
+  InitialSegmentOfWord(const class SMWord& w, int length = 1) : 
+    theWord( w ), theLength( length ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+  int theLength;
+};
+
+@
+\section{class TerminalSegmentOfWord}
+<<class TerminalSegmentOfWord>>=
+class TerminalSegmentOfWord : public FastComputation
+{
+public:
+  TerminalSegmentOfWord(const class SMWord& w, int length = 1) : 
+    theWord( w ), theLength( length ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+  int theLength;
+};
+
+@
+\section{class SegmentOfWord}
+<<class SegmentOfWord>>=
+class SegmentOfWord : public FastComputation
+{
+public:
+  SegmentOfWord(const class SMWord& w, int start = 1, int length = 1) : 
+    // @dp bogus ctor in gcc 2.7.2.1: don't work without default parameters!!!
+    theWord( w ), theStart( start ), theLength( length ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+  int theStart;
+  int theLength;
+};
+
+@
+\section{class FormalProductOfWords}
+<<class FormalProductOfWords>>=
+class FormalProductOfWords : public FastComputation
+{
+public:
+  FormalProductOfWords(const class SMWord& w1, const class SMWord& w2)
+    : word1( w1 ), word2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word1;
+  const class SMWord& word2;
+};
+
+@
+\section{class ConjugateOfWord}
+<<class ConjugateOfWord>>=
+class ConjugateOfWord : public FastComputation
+{
+public:
+  ConjugateOfWord(const class SMWord& w1, const class SMWord& w2)
+    : theWord1( w1 ), theWord2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord1;
+  const class SMWord& theWord2;
+};
+
+@
+\section{class CommutatorOfWords}
+<<class CommutatorOfWords>>=
+class CommutatorOfWords : public FastComputation
+{
+public:
+  CommutatorOfWords(const class SMWord& w1, const class SMWord& w2)
+    : theWord1( w1 ), theWord2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord1;
+  const class SMWord& theWord2;
+};
+
+@
+\section{class PowerOfMap}
+<<class PowerOfMap>>=
+class PowerOfMap : public FastComputation
+{
+public:
+  PowerOfMap(const class SMMap& m, int p) : map( m ), power( p ) { }
+
+  PowerOfMap(const class SMMap& m) : map( m ) { }
+  //@rn Bogus ctor; see `But no' comment in Menu.h.
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+  int power;
+};
+
+@
+\section{class ComposeMaps}
+<<class ComposeMaps>>=
+class ComposeMaps : public FastComputation
+{
+public:
+  ComposeMaps(const class SMMap& m1, const class SMMap& m2)
+    : map1( m1 ), map2( m2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map1;
+  const class SMMap& map2;
+};
+
+@
+\section{class FreeAreHomsEqual}
+<<class FreeAreHomsEqual>>=
+class FreeAreHomsEqual : public FastComputation
+{
+public:
+  FreeAreHomsEqual(const class SMMap& m1, const class SMMap& m2)
+    : map1( m1 ), map2( m2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map1;
+  const class SMMap& map2;
+};
+
+@
+\section{class ImageUnderMap}
+<<class ImageUnderMap>>=
+class ImageUnderMap : public FastComputation
+{
+public:
+  ImageUnderMap(const class SMMap& m, const class SMWord& w)
+    : map( m ), word( w )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+  const class SMWord& word;
+};
+
+@
+\section{class SGImageUnderMap}
+<<class SGImageUnderMap>>=
+class SGImageUnderMap : public FastComputation
+{
+public:
+  SGImageUnderMap(const class SMMap& m, const class SMSubgroup& S)
+    : map( m ), subgroup( S )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class ExtendFreeByAut}
+<<class ExtendFreeByAut>>=
+class ExtendFreeByAut : public FastComputation
+{
+public:
+  ExtendFreeByAut(const class SMMap& m);
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMFPGroup& theGroup;
+  const class SMMap& theMap;
+};
+
+@
+\section{class FPIsMSC}
+<<class FPIsMSC>>=
+class FPIsMSC : public FastComputation
+{
+public:
+  FPIsMSC(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class FastHomology}
+This handles all integral homology computations which are `hard-wired',
+i.e., do not rely on other, potentially expensive computations, like
+a rewrite system.
+Envisaged thus far are one-relator, and abelian groups.
+<<class FastHomology>>=
+class FastHomology : public FastComputation
+{
+public:
+  FastHomology(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class FastAbelianForm}
+<<class FastAbelianForm>>=
+class FastAbelianForm : public FastComputation
+{
+public:
+  FastAbelianForm(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class FastInverseInAbelianForm}
+<<class FastInverseInAbelianForm>>=
+class FastInverseInAbelianForm : public FastComputation
+{
+public:
+  FastInverseInAbelianForm(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class ProductInAbelianForm}
+<<class ProductInAbelianForm>>=
+class ProductInAbelianForm : public FastComputation
+{
+public:
+  ProductInAbelianForm(const class SMWord& w1, const class SMWord& w2)
+    : word1( w1 ), word2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word1;
+  const class SMWord& word2;
+};
+
+@
+\section{class AbelianSGJoin}
+<<class AbelianSGJoin>>=
+class AbelianSGJoin : public FastComputation
+{
+public:
+  AbelianSGJoin(const class SMSubgroup& S1, const class SMSubgroup& S2)
+    : subgroup1( S1 ), subgroup2( S2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup1;
+  const class SMSubgroup& subgroup2;
+};
+
+@
+\section{class MSCOrder}
+<<class MSCOrder>>=
+class MSCOrder : public FastComputation
+{
+public:
+  MSCOrder(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class MSCIsTrivial}
+<<class MSCIsTrivial>>=
+class MSCIsTrivial : public FastComputation
+{
+public:
+  MSCIsTrivial(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class MSCIsFinite}
+<<class MSCIsFinite>>=
+class MSCIsFinite : public FastComputation
+{
+public:
+  MSCIsFinite(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class MSCIsAbelian}
+<<class MSCIsAbelian>>=
+class MSCIsAbelian : public FastComputation
+{
+public:
+  MSCIsAbelian(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class ORIsTrivial}
+<<class ORIsTrivial>>=
+class ORIsTrivial : public FastComputation
+{
+public:
+  ORIsTrivial(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class ORIsFinite}
+<<class ORIsFinite>>=
+class ORIsFinite : public FastComputation
+{
+public:
+  ORIsFinite(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class ORIsAbelian}
+<<class ORIsAbelian>>=
+class ORIsAbelian : public FastComputation
+{
+public:
+  ORIsAbelian(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class OROrder}
+<<class OROrder>>=
+class OROrder : public FastComputation
+{
+public:
+  OROrder(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class ORWithTorsionEltFiniteOrder}
+<<class ORWithTorsionEltFiniteOrder>>=
+class ORWithTorsionEltFiniteOrder : public FastComputation
+{
+public:
+  ORWithTorsionEltFiniteOrder(class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+};
+
+@
+\section{class ORWithTorsionAreEltsEqual}
+<<class ORWithTorsionAreEltsEqual>>=
+class ORWithTorsionAreEltsEqual : public FastComputation
+{
+public:
+  ORWithTorsionAreEltsEqual(class SMWord& w1, class SMWord& w2) 
+    : theWord1( w1 ), theWord2( w2 ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMWord& theWord1;
+  class SMWord& theWord2;
+};
+
+@
+\section{class ORWithTorsionWordProblem}
+This is commented out
+<<class ORWithTorsionWordProblem>>=
+class ORWithTorsionWordProblem : public FastComputation
+{
+public:
+  ORWithTorsionWordProblem(class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+};
+
+@
+\section{class ORWithTorsionExtendedWordProblem}
+<<class ORWithTorsionExtendedWordProblem>>=
+class ORWithTorsionExtendedWordProblem : public FastComputation
+{
+public:
+  ORWithTorsionExtendedWordProblem(class SMSubgroup& S, class SMWord& w) 
+    : theSubgroup( S ),  theWord( w ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMSubgroup& theSubgroup;
+  class SMWord& theWord;
+};
+
+@
+\section{class ORWithTorsionCentralizerOfElt}
+<<class ORWithTorsionCentralizerOfElt>>=
+class ORWithTorsionCentralizerOfElt : public FastComputation
+{
+public:
+  ORWithTorsionCentralizerOfElt(class SMWord& w) 
+    : theWord( w ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+};
+
+@
+\section{class ORWithTorsionConjugacyProblem}
+<<class ORWithTorsionConjugacyProblem>>=
+class ORWithTorsionConjugacyProblem : public FastComputation
+{
+public:
+  ORWithTorsionConjugacyProblem(class SMWord& w1, class SMWord& w2) 
+    : word1( w1 ), word2( w2 ) { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMWord& word1;
+  class SMWord& word2;
+};
+
+@
+\section{class MakeCyclicDecomposition}
+<<class MakeCyclicDecomposition>>=
+class MakeCyclicDecomposition : public FastComputation
+{
+public:
+  MakeCyclicDecomposition(class SMFPGroup& G ) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+    
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class MakeAbelianQuotient}
+<<class MakeAbelianQuotient>>=
+class MakeAbelianQuotient : public FastComputation
+{
+public:
+  MakeAbelianQuotient(class SMFPGroup& G ) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+    
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class MakeQuotientFromSubgroup}
+<<class MakeQuotientFromSubgroup>>=
+class MakeQuotientFromSubgroup : public FastComputation
+{
+public:
+  MakeQuotientFromSubgroup(class SMSubgroup& S ) : theSubgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+    
+private:
+  class SMSubgroup& theSubgroup;
+};
+
+@
+\section{class MakeNilpotentQuotient}
+<<class MakeNilpotentQuotient>>=
+class MakeNilpotentQuotient : public FastComputation
+{
+public:
+  MakeNilpotentQuotient( class SMFPGroup& G, int n = 1 ) : 
+    theGroup( G ), theClass( n ) { }
+  
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  int theClass;
+};
+
+@
+\section{class MakeQuotient}
+<<class MakeQuotient>>=
+class MakeQuotient : public FastComputation
+{
+public:
+  MakeQuotient( class SMFPGroup& G, const SetOf<Word>& S = SetOf<Word>() ) : 
+    theGroup( G ), relators( S ) { }
+  
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  SetOf<Word> relators;
+};
+
+@
+\section{class MakeAPOfFree}
+<<class MakeAPOfFree>>=
+class MakeAPOfFree : public FastComputation
+{
+public:
+  MakeAPOfFree( const SMFPGroup& G1, const SMFPGroup& G2,  
+	        const SMSubgroup& S1, const SMSubgroup& S2 )
+  : subgroup1( S1 ),
+    subgroup2( S2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+    
+private:
+  const SMSubgroup& subgroup1;
+  const SMSubgroup& subgroup2;
+};
+
+@
+\section{class APOfFreeReducedForm}
+<<class APOfFreeReducedForm>>=
+class APOfFreeReducedForm : public FastComputation
+{
+public:
+  APOfFreeReducedForm(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class APOfFreeNormalForm}
+<<class APOfFreeNormalForm>>=
+class APOfFreeNormalForm : public FastComputation
+{
+public:
+  APOfFreeNormalForm(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class APOfFreeCyclicNormalForm}
+<<class APOfFreeCyclicNormalForm>>=
+class APOfFreeCyclicNormalForm : public FastComputation
+{
+public:
+  APOfFreeCyclicNormalForm(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class APOfFreeIsTrivial}
+<<class APOfFreeIsTrivial>>=
+class APOfFreeIsTrivial : public FastComputation
+{
+public:
+  APOfFreeIsTrivial(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class APOfFreeIsHyperbolic}
+<<class APOfFreeIsHyperbolic>>=
+class APOfFreeIsHyperbolic : public FastComputation
+{
+public:
+  APOfFreeIsHyperbolic(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class APOfFreeIsFinite}
+<<class APOfFreeIsFinite>>=
+class APOfFreeIsFinite : public FastComputation
+{
+public:
+  APOfFreeIsFinite(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class APOfFreeIsAbelian}
+<<class APOfFreeIsAbelian>>=
+class APOfFreeIsAbelian : public FastComputation
+{
+public:
+  APOfFreeIsAbelian(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class APOfFreeOrder}
+<<class APOfFreeOrder>>=
+class APOfFreeOrder : public FastComputation
+{
+public:
+  APOfFreeOrder(class SMFPGroup& G) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+    
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class APOfFreeWordProblem}
+<<class APOfFreeWordProblem>>=
+class APOfFreeWordProblem : public FastComputation
+{
+public:
+  APOfFreeWordProblem(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class APOfFreeNumberOfSubstitutions}
+<<class APOfFreeNumberOfSubstitutions>>=
+class APOfFreeNumberOfSubstitutions : public FastComputation
+{
+public:
+  APOfFreeNumberOfSubstitutions(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class APOfFreeAreEqual}
+<<class APOfFreeAreEqual>>=
+class APOfFreeAreEqual : public FastComputation
+{
+public:
+  APOfFreeAreEqual(const class SMWord& w1, const class SMWord& w2)
+    : word1( w1 ), word2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word1;
+  const class SMWord& word2;
+};
+
+@
+\section{class APOfFree\_DoEltsCommute}
+<<class APOfFree_DoEltsCommute>>=
+class APOfFree_DoEltsCommute : public FastComputation
+{
+public:
+  APOfFree_DoEltsCommute(const class SMWord& w1, const class SMWord& w2)
+    : word1( w1 ), word2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word1;
+  const class SMWord& word2;
+};
+
+@
+\section{class APOfFreeIsSGTrivial}
+<<class APOfFreeIsSGTrivial>>=
+class APOfFreeIsSGTrivial : public FastComputation
+{
+public:
+  APOfFreeIsSGTrivial(const class SMSubgroup& S) : subgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup;
+};
+
+@
+\section{class CheckinAPOfFree}
+<<class CheckinAPOfFree>>=
+class CheckinAPOfFree : public FastComputation
+{
+public:
+  CheckinAPOfFree( ) { }
+  void takeControl( );              // overrides ComputationManager
+};
+
+@
+\section{class APOfFreeIsSGAbelian}
+<<class APOfFreeIsSGAbelian>>=
+class APOfFreeIsSGAbelian : public FastComputation
+{
+public:
+  APOfFreeIsSGAbelian(const class SMSubgroup& S) : theSubgroup( S ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& theSubgroup;
+};
+
+@
+\section{class APOfFreeCyclic\_CentralizerOfElt}
+<<class APOfFreeCyclic_CentralizerOfElt>>=
+class APOfFreeCyclic_CentralizerOfElt : public FastComputation
+{
+public:
+  APOfFreeCyclic_CentralizerOfElt(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class APOfFreeCyclic\_ConjugacyProblem}
+<<class APOfFreeCyclic_ConjugacyProblem>>=
+class APOfFreeCyclic_ConjugacyProblem : public FastComputation
+{
+public:
+  APOfFreeCyclic_ConjugacyProblem( const class SMWord& w1,
+				   const class SMWord& w2 )
+    : word1( w1 ), word2( w2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word1;
+  const class SMWord& word2;
+};
+
+@
+\section{class APOfFreeCyclic\_MaximalRoot}
+<<class APOfFreeCyclic_MaximalRoot>>=
+class APOfFreeCyclic_MaximalRoot : public FastComputation
+{
+public:
+  APOfFreeCyclic_MaximalRoot(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class APOfFreeCyclic\_IsEltAProperPower}
+<<class APOfFreeCyclic_IsEltAProperPower>>=
+class APOfFreeCyclic_IsEltAProperPower : public FastComputation
+{
+public:
+  APOfFreeCyclic_IsEltAProperPower(const class SMWord& w) : theWord( w ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+};
+
+@
+\section{class APOfFreeCyclic\_IsEltAProperPowerOfSecond}
+<<class APOfFreeCyclic_IsEltAProperPowerOfSecond>>=
+class APOfFreeCyclic_IsEltAProperPowerOfSecond : public FastComputation
+{
+public:
+  APOfFreeCyclic_IsEltAProperPowerOfSecond( const class SMWord& w1,
+					    const class SMWord& w2 ) 
+    : word1( w1 ), word2( w2 ) 
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMWord& word1;
+  const class SMWord& word2;
+};
+
+@
+\section{class FNGAutoIsIAAut}
+<<class FNGAutoIsIAAut>>=
+class FNGAutoIsIAAut : public FastComputation
+{
+public:
+  FNGAutoIsIAAut(const class SMMap& m) : map( m ) { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMMap& map;
+};
+
+@
+\section{class SGOfNGjoinSubgroupProblem}
+<<class SGOfNGjoinSubgroupProblem>>=
+class SGOfNGjoinSubgroupProblem : public FastComputation
+{
+public:
+  SGOfNGjoinSubgroupProblem(const class SMSubgroup& s1, 
+                            const class SMSubgroup& s2) 
+    : subgroup1(s1), subgroup2(s2)
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMSubgroup& subgroup1;
+  const class SMSubgroup& subgroup2;
+};
+
+@
+\section{class NGLCStermGensProblem}
+<<class NGLCStermGensProblem>>=
+class NGLCStermGensProblem : public FastComputation
+{
+public:
+  NGLCStermGensProblem( class SMFPGroup& g, int num = 1) 
+    : group(g),number(num)
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& group;
+  int number;
+};
+
+@
+\section{class MakeFreeProduct}
+<<class MakeFreeProduct>>=
+class MakeFreeProduct : public FastComputation
+{
+public:
+  MakeFreeProduct( class SMFPGroup& g1, class SMFPGroup& g2);
+  void takeControl( );              // overrides ComputationManager
+
+protected:
+  void makeHomomorphisms(SMFPGroup* smo);
+  class SMFPGroup& group1;
+  class SMFPGroup& group2;
+  FPGroup fpGroup1;
+  FPGroup fpGroup2;
+  bool isAbelian;
+  class FreeProduct* fp;
+};
+
+@
+\section{class MakeDirectProduct}
+<<class MakeDirectProduct>>=
+class MakeDirectProduct : public MakeFreeProduct
+{
+public:
+  MakeDirectProduct( class SMFPGroup& g1, class SMFPGroup& g2) 
+    : MakeFreeProduct(g1,g2)
+    { }
+  
+  void takeControl( );              // overrides ComputationManager
+
+};
+
+@
+\section{class MakeFactorGroup}
+<<class MakeFactorGroup>>=
+class MakeFactorGroup : public FastComputation
+{
+public:
+  MakeFactorGroup( class SMFPGroup& F, class SMSubgroup& H) 
+    : theGroup( F ), theSubgroup( H ) 
+    { }
+  
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  class SMSubgroup& theSubgroup;
+};
+
+@
+\section{class MakeListOfWords}
+<<class MakeListOfWords>>=
+class MakeListOfWords : public FastComputation
+{
+public:
+  MakeListOfWords( EnumeratorProblem<Word>& e):
+    enumerator( e ) { }
+  void takeControl( );              // overrides ComputationManager
+  
+protected:
+  EnumeratorProblem<Word>& enumerator;
+};
+
+@
+\section{class MakeRipsConstruction}
+<<class MakeRipsConstruction>>=
+class MakeRipsConstruction : public FastComputation
+{
+public:
+  MakeRipsConstruction(class SMFPGroup& G ) : theGroup( G ) { }
+  void takeControl( );              // overrides ComputationManager
+    
+private:
+  class SMFPGroup& theGroup;
+};
+
+@
+\section{class ComputeRSApproximation}
+<<class ComputeRSApproximation>>=
+class ComputeRSApproximation : public FastComputation
+{
+public:
+  ComputeRSApproximation(class SMFPGroup& G, int _l = 0 ) 
+    : theGroup( G ), l( _l ) { }
+
+  void takeControl( );              // overrides ComputationManager
+    
+private:
+  class SMFPGroup& theGroup;
+  int l;
+};
+
+@
+\section{class ComputeMean}
+<<class ComputeMean>>=
+class ComputeMean : public FastComputation
+{
+public:
+  ComputeMean( const class SMDataSet& S )
+    : theSet ( S ) 
+  { }
+  
+  void takeControl( );              // overrides ComputationManager  
+  
+private:
+  const SMDataSet& theSet;
+};
+
+@
+\section{class ComputeDeviation}
+<<class ComputeDeviation>>=
+class ComputeDeviation : public FastComputation
+{
+public:
+  ComputeDeviation( const class SMDataSet& S )
+    : theSet ( S ) 
+  { }
+  
+  void takeControl( );              // overrides ComputationManager  
+  
+private:
+  const SMDataSet& theSet;
+};
+
+@
+\section{class ShowGraph}
+<<class ShowGraph>>=
+class ShowGraph : public FastComputation
+{
+public:
+  ShowGraph( const class SMPolynomial& P ) 
+    : poly( P )
+  { }
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMPolynomial& poly;
+};
+
+@
+\section{class ComputePolynomialSum}
+<<class ComputePolynomialSum>>=
+class ComputePolynomialSum : public FastComputation
+{
+public:
+  ComputePolynomialSum(const class SMPolynomial& P1, 
+		       const class SMPolynomial& P2)
+    : poly1( P1 ), poly2( P2 )
+  { }
+
+  void takeControl( );              // overrides ComputationManager
+
+private:
+  const class SMPolynomial& poly1;
+  const class SMPolynomial& poly2;
+};
+
+@
+\section{class ComputePolynomialProduct}
+<<class ComputePolynomialProduct>>=
+class ComputePolynomialProduct : public FastComputation
+{
+public:
+  ComputePolynomialProduct(const class SMPolynomial& P1, 
+			   const class SMPolynomial& P2)
+    : poly1( P1 ), poly2( P2 )
+    { }
+  
+  void takeControl( );              // overrides ComputationManager
+  
+ private:
+  const class SMPolynomial& poly1;
+  const class SMPolynomial& poly2;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/fastProblems.h
+#ifndef _FASTPROBLEMS_H_
+#define _FASTPROBLEMS_H_
+
+<<license>>
+<<include>>
+<<class FastComputation>>
+<<class CommutatorInFree>>
+<<class FreeInCommutatorSG>>
+<<class ProductOfCommutators>>
+<<class ProductOfSquares>>
+<<class FreeIsElementAProperPower>>
+<<class FreeMaximalRootOfElement>>
+<<class FreeCentolizerOfElement>>
+<<class FreeGetN_thElement>>
+<<class FreeGetNextN_thElement>>
+<<class WordProblemInFree>>
+<<class WordsAreEqual>>
+<<class EndoOnFreeIsMono>>
+<<class EndoOnFreeIsEpi>>
+<<class EndoOnFreeIsAut>>
+<<class EndoOnFreeIsInner>>
+<<class EndoOnFreeIsIAAut>>
+<<class InverseAuto>>
+<<class AutoWhiteheadDecomposition>>
+<<class WordInSGOfFree>>
+<<class PowerOfWordInSGOfFree>>
+<<class ConjugacyProblemInFree>>
+<<class ConjugateOfWordInSGOfFree>>
+<<class WordInNielsenBasisSGOfFree>>
+<<class SchreierRepOfWordInSGOfFree>>
+<<class SGOfFreeContainment>>
+<<class SGOfFreeAreEqual>>
+<<class SGOfFreeJoin>>
+<<class SGOfFreeIntersection>>
+<<class SGOfFreeIsNormal>>
+<<class SGOfFreeIsAFreeFactor>>
+<<class SGOfFreeIsMalnormal>>
+<<class QuadEquationSurfaceForm>>
+<<class SGOfFreeWhiteheadReduction>>
+<<class SGOfFreeNielsenBasis>>
+<<class SGOfFreeIndex>>
+<<class SGOfFreeRank>>
+<<class SGOfFreeNormaliser>>
+<<class SGOfFreeHallCompletion>>
+<<class FreeIsSGTrivial>>
+<<class FreeIsAutomatic>>
+<<class FreelyReduceWord>>
+<<class CyclicallyReduceWord>>
+<<class FormalInverseOfWord>>
+<<class WordLength>>
+<<class InitialSegmentOfWord>>
+<<class TerminalSegmentOfWord>>
+<<class SegmentOfWord>>
+<<class FormalProductOfWords>>
+<<class ConjugateOfWord>>
+<<class CommutatorOfWords>>
+<<class PowerOfMap>>
+<<class ComposeMaps>>
+<<class FreeAreHomsEqual>>
+<<class ImageUnderMap>>
+<<class SGImageUnderMap>>
+<<class ExtendFreeByAut>>
+<<class FPIsMSC>>
+<<class FastHomology>>
+<<class FastAbelianForm>>
+<<class FastInverseInAbelianForm>>
+<<class ProductInAbelianForm>>
+<<class AbelianSGJoin>>
+<<class MSCOrder>>
+<<class MSCIsTrivial>>
+<<class MSCIsFinite>>
+<<class MSCIsAbelian>>
+<<class ORIsTrivial>>
+<<class ORIsFinite>>
+<<class ORIsAbelian>>
+<<class OROrder>>
+<<class ORWithTorsionEltFiniteOrder>>
+<<class ORWithTorsionAreEltsEqual>>
+<<class ORWithTorsionExtendedWordProblem>>
+<<class ORWithTorsionCentralizerOfElt>>
+<<class ORWithTorsionConjugacyProblem>>
+<<class MakeCyclicDecomposition>>
+<<class MakeAbelianQuotient>>
+<<class MakeQuotientFromSubgroup>>
+<<class MakeNilpotentQuotient>>
+<<class MakeQuotient>>
+<<class MakeAPOfFree>>
+<<class APOfFreeReducedForm>>
+<<class APOfFreeNormalForm>>
+<<class APOfFreeCyclicNormalForm>>
+<<class APOfFreeIsTrivial>>
+<<class APOfFreeIsHyperbolic>>
+<<class APOfFreeIsFinite>>
+<<class APOfFreeIsAbelian>>
+<<class APOfFreeOrder>>
+<<class APOfFreeWordProblem>>
+<<class APOfFreeNumberOfSubstitutions>>
+<<class APOfFreeAreEqual>>
+<<class APOfFree_DoEltsCommute>>
+<<class APOfFreeIsSGTrivial>>
+<<class CheckinAPOfFree>>
+<<class APOfFreeIsSGAbelian>>
+<<class APOfFreeCyclic_CentralizerOfElt>>
+<<class APOfFreeCyclic_ConjugacyProblem>>
+<<class APOfFreeCyclic_MaximalRoot>>
+<<class APOfFreeCyclic_IsEltAProperPower>>
+<<class APOfFreeCyclic_IsEltAProperPowerOfSecond>>
+<<class FNGAutoIsIAAut>>
+<<class SGOfNGjoinSubgroupProblem>>
+<<class NGLCStermGensProblem>>
+<<class MakeFreeProduct>>
+<<class MakeDirectProduct>>
+<<class MakeFactorGroup>>
+<<class MakeListOfWords>>
+<<class MakeRipsConstruction>>
+<<class ComputeRSApproximation>>
+<<class ComputeMean>>
+<<class ComputeDeviation>>
+<<class ShowGraph>>
+<<class ComputePolynomialSum>>
+<<class ComputePolynomialProduct>>
+#endif 
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

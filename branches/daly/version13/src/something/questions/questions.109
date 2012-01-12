@@ -1,0 +1,14 @@
+1. G -> H, if( G.numOfGens == 0 || H.numOfGens == 0 ) we can extent to
+   hom, right ?
+
+2. In case -> Free should I check all relators as well ?
+
+3. Can we somehow optimize the case Nilpotent -> Abelian -> Nilpotent ?
+
+02/21/96
+
+1. I should change free to free abelian, what about the title
+   "Freeness problem" ?
+
+
+

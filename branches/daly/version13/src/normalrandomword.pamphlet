@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/normalrandomword.pamphlet}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Word.h"
+#include "RandomNumbers.h"
+
+@
+<<include.c>>=
+#include "NormalRandomWord.h"
+
+@
+\section{class NormalRandomWord}
+\subsection{NormalRandomWord Constructor}
+<<NormalRandomWord Constructor.h>>=
+  NormalRandomWord(int numberOfGenerators, int meanLength, int lengthStddev,
+		   int lengthSeed, int generatorSeed)
+  : numGens(numberOfGenerators), mean(meanLength), stddev(lengthStddev),
+	 G(generatorSeed), L(lengthSeed)
+  { }
+@
+\subsection{NormalRandomWord::word}
+<<NormalRandomWord::word.h>>=
+  Word word( );
+@
+<<NormalRandomWord::word.c>>=
+Word NormalRandomWord::word( )
+{
+  int len;
+  do {
+	 len = L.rand(mean, stddev);
+  } while ( len < 1 );
+  VectorOf<Generator> v(len);
+
+  int i = 0;
+  while ( i < len ) {
+	 int gen;
+	 do {
+		gen = G.rand(-numGens, numGens);
+	 } while ( gen == 0 );
+	 if ( (i == 0) || (v[i] != -gen) ) v[i++] = gen;
+  }
+  return Word(v);
+}
+
+@
+\subsection{NormalRandomWord operator less than}
+<<NormalRandomWord operator less than>>=
+  friend ostream& operator < ( ostream& ostr, const NormalRandomWord& nRW )
+  {
+    ostr < nRW.numGens < nRW.mean < nRW.stddev < nRW.G < nRW.L;
+    return ostr;
+  }
+@
+\subsection{NormalRandomWord operator greater than}
+<<NormalRandomWord operator greater than>>=
+  friend istream& operator > ( istream& istr, NormalRandomWord& nRW )
+  {
+    istr > nRW.numGens > nRW.mean > nRW.stddev > nRW.G > nRW.L;
+    return istr;
+  }
+
+@
+\subsection{class NormalRandomWord}
+<<class NormalRandomWord>>=
+class NormalRandomWord 
+{
+public:
+<<NormalRandomWord Constructor.h>>
+<<NormalRandomWord::word.h>>
+<<NormalRandomWord operator less than>>
+<<NormalRandomWord operator greater than>>
+private:
+  int numGens, mean, stddev;
+  UniformRandom G; // For choosing letters in the word.
+  NormalRandom L;  // For choosing the length of the word.
+};
+@
+\section{NormalRandomWord.h}
+<<NormalRandomWord.h>>=
+#ifndef _NORMALRANDOMWORD_H_
+#define _NORMALRANDOMWORD_H_
+
+<<include.h>>
+<<class NormalRandomWord>>
+
+#endif
+@
+\section{normalrandomword.c}
+<<*>>=
+
+<<include.c>>
+<<NormalRandomWord::word.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

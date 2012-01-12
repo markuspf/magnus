@@ -1,0 +1,244 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/ToddCoxeter.h}
+\author{Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "CosetEnumerator.h"
+#include "File.h"
+
+@
+\section{class ToddCoxeterARCer}
+<<class ToddCoxeterARCer>>=
+class ToddCoxeterARCer : public ARCer
+{
+public:
+  ToddCoxeterARCer( ComputationManager& boss,const FPGroup& group ) 
+    : ARCer( boss ), enumerator(group),permutationRepresentation(NULL),
+    theGroup(group) { } 
+
+  ToddCoxeterARCer( ComputationManager& boss,const FPGroup& group,
+		    const VectorOf<Word>& subgroup) 
+    : ARCer( boss ), permutationRepresentation(NULL),
+    enumerator(group,subgroup), theGroup(group) { } 
+  
+  int getRetValue() const{ return retValue; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  const PermutationRepresentation& getTransversal()const;
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  CosetEnumerator enumerator;
+  FPGroup theGroup;
+  int retValue;
+  PermutationRepresentation* permutationRepresentation;
+};
+
+@
+\section{class ToddCoxeter}
+<<class ToddCoxeter>>=
+class ToddCoxeter : public ComputationManager
+{
+public:
+  ToddCoxeter(class GCM& gcm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class GCM& theGCM;
+  class SMFPGroup& theGroup;
+  ToddCoxeterARCer* arcer;
+};
+
+@
+\section{class SGIndexToddCoxeter}
+<<class SGIndexToddCoxeter>>=
+class SGIndexToddCoxeter : public ComputationManager
+{
+public:
+  SGIndexToddCoxeter(class SCM& scm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class SCM& theSCM;
+  class SMSubgroup& theSubgroup;
+  ToddCoxeterARCer arcer;
+};
+
+@
+\section{class SchreierTransversal}
+<<class SchreierTransversal>>=
+class SchreierTransversal : public Supervisor
+{
+public:
+  SchreierTransversal(class SMFPGroup& );
+  SchreierTransversal(class SMSubgroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  bool haveSchreierTransvl()const;
+  const VectorOf<Word>& getRepresentatives()const;
+  bool isInfinite()const;
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  class AlgebraicObject& theObject;
+  class SMFPGroup& theGroup;
+  MirrorSubordinate theToddCoxeter;
+};
+
+@
+\section{class PermutationRepProblem}
+<<class PermutationRepProblem>>=
+class PermutationRepProblem : public Supervisor
+{
+public:
+  PermutationRepProblem(class SMFPGroup& );
+  PermutationRepProblem(class SMSubgroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  bool haveSchreierTransvl()const;
+  bool isInfinite()const;
+  const class PermutationRepresentation& getPermutations()const;
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  class AlgebraicObject& theObject;
+  class SMFPGroup& theGroup;
+  MirrorSubordinate theToddCoxeter;
+};
+
+@
+\section{class WordRepresentativeARCer}
+<<class WordRepresentativeARCer>>=
+class WordRepresentativeARCer : public ARCer
+{
+public:
+  WordRepresentativeARCer( ComputationManager& boss ) 
+    : ARCer( boss ), permutationRepresentation(NULL)
+    { } 
+
+  void setArguments(const PermutationRepresentation&,const Word&);
+  Word getRetValue() const{ return retValue; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  Word retValue;
+  Word theWord;
+  PermutationRepresentation* permutationRepresentation;
+};
+
+@
+\section{class WordRepresentative}
+<<class WordRepresentative>>=
+class WordRepresentative : public ComputationManager
+{
+public:
+  WordRepresentative( class WordRepresentativeProblem& boss );
+  WordRepresentative( class SubgroupContainmentProblem& boss );
+  WordRepresentative( class IsSGNormal& boss );
+  bool haveSchreierTransvl( ) const;
+  bool isInfinite( ) const;
+  const class PermutationRepresentation& getPermutations( ) const;
+  VectorOf<bool> foundWordsReps( ) const { return theWordsRepsFound; }
+  VectorOf<Word> getWordsReps( ) const { return theWordsReps; }
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const class AlgebraicObject& theParent;
+  const class SMFPGroup& theGroup;
+  VectorOf<Word> theTestWords;
+  VectorOf<Word> theWordsReps;
+  VectorOf<bool> theWordsRepsFound;
+  int checkedWord;
+  WordRepresentativeARCer arcer;
+  bool arcerStarted;
+};
+
+@
+\section{class WordRepresentativeProblem}
+<<class WordRepresentativeProblem>>=
+class WordRepresentativeProblem : public Supervisor
+{
+public:
+  WordRepresentativeProblem(class SMWord& );
+  WordRepresentativeProblem(class SMSubgroup&,class SMWord& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  bool haveSchreierTransvl()const;
+  bool isInfinite()const;
+  //  const class PermutationRepresentation& getPermutations()const;
+  const class AlgebraicObject& getParent( ) const { return theParent; }
+  const class SMFPGroup& getGroup() const { return theGroup; }
+  const class SMWord& getWord( ) const { return theWord; }
+  void start( ) { }              // overrides ComputationManager
+  void terminate( ) { }          // overrides ComputationManager
+
+private:
+  class AlgebraicObject& theParent;
+  class SMFPGroup& theGroup;
+  class SMWord& theWord;
+  MirrorSubordinate theToddCoxeter;
+  Subordinate<WordRepresentativeProblem,WordRepresentative> theWordRepCM;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/ToddCoxeter.h
+#ifndef _TODD_COXETER_H_
+#define _TODD_COXETER_H_
+
+<<license>>
+<<include>>
+<<class ToddCoxeterARCer>>
+<<class ToddCoxeter>>
+<<class SGIndexToddCoxeter>>
+<<class SchreierTransversal>>
+<<class PermutationRepProblem>>
+<<class WordRepresentativeARCer>>
+<<class WordRepresentative>>
+<<class WordRepresentativeProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+
+
+
+
+
+
+

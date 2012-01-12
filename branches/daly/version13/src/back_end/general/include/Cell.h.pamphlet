@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/Cell.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Cell.h}
+Contents: Definition and implementation of utility
+template <class T> class Cell
+
+Cell is the basic component of externally linked lists.
+\section{include}
+<<include>>=
+//#include "Word.h"
+#include <iostream.h>
+#include "IPC.h"
+
+@
+\section{class Cell}
+<<class Cell>>=
+template<class T> class Cell {
+public:
+  Cell*  nextCell;
+  Cell() : nextCell(NULL), contents(NULL) { }
+
+  Cell(const Cell& C) : nextCell(NULL) {
+    if (C.contents)
+         contents = new T(*(C.contents));
+    else
+         contents = NULL;
+  }
+  Cell(const T& e, Cell* next = NULL) : nextCell(next) { contents = new T(e);}
+  ~Cell() { delete contents; } // Compiler ~'s contents.
+  friend ostream& operator < <T>( ostream& ostr, const Cell& C );
+  friend istream& operator > <T>( istream& istr, Cell& C );
+  void readContents(istream& istr);
+  void writeContents(ostream& ostr) const;
+  
+  inline T getContents() {
+        #if ( SAFETY > 0 )
+                if (contents)
+                    return *contents;
+                else
+   		    error("Reading noninicialized contents "
+						"in Cell::getContents");
+        #endif
+        return *contents;
+  }
+
+  inline void setContents(const T& t) { 
+     if (!contents) {contents = new T(t);}
+     else *contents = t;
+  }
+
+private :
+  T*     contents;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/Cell.h
+#ifndef _CELL_H_
+#define _CELL_H_
+
+<<license>>
+<<include>>
+
+template<class T> class Cell;
+
+template<class T>
+ostream& operator < ( ostream& ostr, const Cell<T>& C ) 
+{
+  C.writeContents( ostr );
+  return ostr;
+}
+
+template<class T>
+istream& operator > ( istream& istr, Cell<T>& C ) 
+{
+  C.readContents( istr );
+  return istr;
+}
+
+<<class Cell>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

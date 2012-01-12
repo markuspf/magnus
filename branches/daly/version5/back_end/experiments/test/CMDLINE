@@ -1,0 +1,6 @@
+export inc=/usr/local/magnusV1/back_end/Subgroup/include
+export inc2=/usr/local/magnusV1/back_end/general/include
+export inc3=/usr/local/magnusV1/magnus/back_end/global
+export inc4=/usr/local/magnusV1/magnus/back_end/libg++/include
+export inc5=/usr/local/magnusV1/back_end/Elt/include
+g++ -I/usr/local/magnusV1/back_end/Subgroup/include -I/usr/local/magnusV1/back_end/general/include -I/usr/local/magnusV1/magnus/back_end/global -I/usr/local/magnusV1/magnus/back_end/libg++/include -I/usr/local/magnusV1/back_end/Elt/include HNC.C

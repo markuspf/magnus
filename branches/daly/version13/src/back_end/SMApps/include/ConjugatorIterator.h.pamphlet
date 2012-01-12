@@ -1,0 +1,120 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/ConjugatorIterator.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{class ConjugatorIterator}
+<<class ConjugatorIterator>>=
+class ConjugatorIterator {
+public:
+  // No default constructor.
+  // Copy constructor, operator=, and destructor supplied by compiler.
+  ConjugatorIterator( SetOf<Word> S, SetOf<Word> conjugators );
+
+  Word value( ) const;
+  // Returns the current commutator.
+  // Calling this is a fatal error if done().
+  
+  bool next( );
+  // Advances this iterator.
+  // Returns value of done().
+
+  bool done( ) const { return bDone; }
+  // Returns TRUE iff the iteration has finished. This may
+  // be called after it returns TRUE with no side effect.
+  
+  void reset( );
+  // Resets this iterator to the state it was in after construction.
+
+private:
+  Word makeConjugate( );
+  bool bDone;
+  Word current; // current conjugate
+  SetIteratorOf<Word> theWords;
+  SetIteratorOf<Word> theConjugators;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/ConjugatorIterator.h
+#ifndef _ConjugatorIterator_h_
+#define _ConjugatorIterator_h_
+<<class ConjugatorIterator>>
+
+inline 
+ConjugatorIterator::ConjugatorIterator(SetOf<Word> S, SetOf<Word> conjugators)
+  : theWords( S ), theConjugators( conjugators ),
+    bDone( false )
+{ 
+#if SAFETY > 0
+  if( S.cardinality() <= 0 || conjugators.cardinality() < 2 )
+    error("ConjugatorIterator( SetOf<Word> S, SetOf<Word> conjugators ) : "
+	  "bad parameters.");
+#endif
+}
+
+inline
+Word ConjugatorIterator::value( ) const 
+{
+#if SAFETY > 0
+  if( done() )
+    error("tried to retrieve value from ConjugatorIterator which is done");
+#endif
+  return current;
+}
+  
+inline
+bool ConjugatorIterator::next( ) 
+{
+  if( bDone ) return false;
+  
+  if( !theConjugators.done() ) {
+    theConjugators.next();
+  }
+  else {
+    theConjugators.reset();
+      theWords.next();
+  }
+  
+  if( theWords.done() ) {
+    bDone = true;
+    return false;
+  }
+  
+  current = makeConjugate();
+  return true;
+}
+
+inline
+void ConjugatorIterator::reset( )
+{
+  theWords.reset();
+  theConjugators.reset();
+  current = makeConjugate();
+}
+
+inline
+Word ConjugatorIterator::makeConjugate( )
+{
+  Word result = theWords.value().conjugateBy( theConjugators.value() );
+  return result.freelyReduce();
+}
+
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

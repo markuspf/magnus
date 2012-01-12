@@ -1,0 +1,45 @@
+Creates temporary file 
+Creates file with specific name
+holds name of the file
+
+This is a simple deriviation from fstream, specially designed for
+reporting large amount of data ( f.e. details of algorithms work ) to
+Session Manager and Front End to make it available for the end user.
+
+
+Returns name of the file with computation details
+
+Keeps name of the file containing details of the computation.
+
+Various file handlers
+
+name of the problem which has links, by convention the following
+function must exist:
+
+name of the information file
+
+a file is dynamic if it's going to be changed during the magnus
+session
+
+True if at least one dynamic file is open
+
+The following data members exist only for dynamic files
+
+current size of the file 
+
+current seek position of the file (all characters after that position
+have not been read yet)
+
+False if there's no link with the number $lastLogLink. LogInsert
+makes it false, post_to_log_ updates it if necessary.
+
+# Returns text of the log view button matching the current view state.
+
+# Changes the current view state and returns the matching button text.
+
+# Changes state of the view button.
+
+# Appends message to the specified log and scrolls it if its
+# view is released (i.e. the autoscrolling feature is enabled)
+
+current foreground

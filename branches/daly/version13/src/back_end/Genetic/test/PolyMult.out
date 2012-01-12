@@ -1,0 +1,12 @@
+1. Integer
+
+const int iter = 100;
+
+20: Time: 2.5076
+30: Time: 6.10961
+
+
+2. Int 2
+
+20: Time: 1.25295
+30: Time: 2.93196

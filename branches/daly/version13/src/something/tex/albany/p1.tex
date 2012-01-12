@@ -1,0 +1,53 @@
+\documentclass[12pt]{slides} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+%\maketitle
+%\pagestyle{empty}
+
+%\vspace{5mm}
+\begin{center} \Large\textbf{Equations in a free group} \end{center}
+\vspace{12mm}
+
+Given a free group $G$ we define an equation in variables
+$x_1,x_2,...,x_n$ over $G$ as formal equation of the form
+\[
+g_1 x_{i_1}^{\epsilon_1} g_2 x_{i_2}^{\epsilon_2} ... x_{i_n}^{\epsilon_n} g_{n+1} = 1,
+\]
+where $g_i \in G, \epsilon_i = \pm 1, x_{i_j} \in {x_1,...,x_n}$. 
+
+\vspace{5mm}
+{\bf The problem} is to find a solution, i.e. a substitution $x_i
+\rightarrow u_i, u_i \in G$ such that the equation becomes identity in
+$G$.
+
+\newpage
+
+%\vspace{5mm}
+\begin{center} \Large\textbf{Known results} \end{center}
+
+\vspace{5mm}
+{\bf Equations with one variable.} Lyndon (1960) described all
+solutions. Appel (1968) obtained effective upper bounds. They
+are at least exponential.
+
+%\vspace{1mm}
+{\bf Quadratic equations.} Comerford and Edmunds (1981,1989) found an
+algorithm for solving quadratic equations and described all
+solutions. Their algorithm is at least exponential.
+
+%\vspace{1mm}
+{\bf General case.} Makanin (1982) showed that there exists a
+recursive function $f(u)$ such that an arbitrary equation $S = 1$
+(over a free group $F$) has a solution in $F$ if and only if it has a
+solution of length $ \le f(|S|)$, where $|S|$ is the length of
+equation $S$. It is at least exponential.
+
+%\vspace{1mm}
+{\bf Quadratic case is the principal one.} Kharlampovich and Myasnikov 
+(1998) showed that the problem of solving an arbitrary equation over a free
+group can be reduced to solving a finitely many quadratic equations.
+
+\end{document}

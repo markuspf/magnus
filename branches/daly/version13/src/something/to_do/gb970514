@@ -1,0 +1,51 @@
+1. Find an HNN-ext for an OR group:
+
+ Specify a stable letter or two generators (separated by comma) with
+non-zero exponent sum or use the default button.
+
+
+Status: done
+
+
+2.
+ G1 can be expressed as an HNN presentation with stable letter a:
+G2 = < b_-1, b_0, t ; b_-1 b_0 b_-1^-1 b_0^-1 b_-1 b_0^-1 b_-1^-1 b_0,t b_-1 t^-1 b_0^-1 >.
+
+
+The isomorphism from G1 into G2 is defined by the mapping:
+h1 = a -> t, b -> b_0.
+
+
+The inverse isomorphism from G2 to G1 is defined by:
+h2 = b_-1 -> a^-1 b a, b_0 -> b, t -> a.
+
+
+The base group of the HNN extension G2 has presentation:
+G3 = < b_-1, b_0 ; b_-1 b_0 b_-1^-1 b_0^-1 b_-1 b_0^-1 b_-1^-1 b_0 >.
+
+/*
+The isomorphism from G3, thought of a subgroup of G2, to G3 is defined by:
+h3 = b_-1 -> b_-1, b_0 -> b_0, t -> 1.
+*/
+
+The monomorphism from G3 into G2 is defined by:
+h3 = b_-1 -> b_-1, b_0 -> b_0.
+
+
+G3 is a one-relator group and so it has a solvable word problem.
+
+
+Status: done
+
+3.
+
+     "Check-in the base group and two of its subgroups, which must "
+    "have the same number of generators. The generators of the two "
+    "subgroups must be arranged so that the mapping which sends the n-th "
+    "generator of the first subgroup to the n-th generator of the second "
+    "subgroup defines an isomorphism between them. Then go to the Make "
+    "menu. (Note: HNN-extensions are, as of now, only implemented "
+    "when the base group is checked in as free.)";
+
+
+Status: done

@@ -1,0 +1,642 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/NGSubgroupProblems.h}
+\author{Dmitry Bormotov, Eugene Paderin, Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "File.h"
+#include "ARCer.h"
+#include "SMFPGroup.h"
+#include "SMWord.h"
+#include "SGOfNilpotentGroup.h"
+
+@
+\section{class SGOfNGinitPreimageARCer}
+<<class SGOfNGinitPreimageARCer>>=
+class SGOfNGinitPreimageARCer : public ARCer
+{
+public:
+  SGOfNGinitPreimageARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSNG( 0 ) { } 
+  
+  ~SGOfNGinitPreimageARCer( ) { delete theSNG; }
+
+  void setArguments(const NilpotentGroup& NG , 
+		    const VectorOf<Word>& gens);
+  const SGOfNilpotentGroup& getSubgroup() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSNG;
+};
+
+@
+\section{class SGOfNGinitPreimageProblem}
+<<class SGOfNGinitPreimageProblem>>=
+class SGOfNGinitPreimageProblem : public ComputationManager
+{
+public:
+  SGOfNGinitPreimageProblem(class SCM& scm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class SCM& theSCM;
+  class GIC& theGIC;
+  SGOfNGinitPreimageARCer arcer;
+};
+
+@
+\section{class SGOfNGinitializeARCer}
+<<class SGOfNGinitializeARCer>>=
+class SGOfNGinitializeARCer : public ARCer
+{
+public:
+  SGOfNGinitializeARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSNG( 0 ) { } 
+  
+  ~SGOfNGinitializeARCer( ) { delete theSNG; }
+
+  void setArguments(const NilpotentGroup& FNG , 
+		    const VectorOf<Word>& gens);
+  const SGOfNilpotentGroup& getSubgroup() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSNG;
+};
+
+@
+\section{class SGOfNGinitializeProblem}
+<<class SGOfNGinitializeProblem>>=
+class SGOfNGinitializeProblem : public ComputationManager
+{
+public:
+  SGOfNGinitializeProblem(class SCM& scm);
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  class SCM& theSCM;
+  class GIC& theGIC;
+  SGOfNGinitializeARCer arcer;
+  bool haveParentInited;
+};
+
+@
+\section{class SGOfNGcomputeBasisProblem}
+<<class SGOfNGcomputeBasisProblem>>=
+class SGOfNGcomputeBasisProblem : public Supervisor
+{
+public:
+  SGOfNGcomputeBasisProblem(class SMSubgroup& sg);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  MirrorSubordinate initializeSGOfNG;
+  MirrorSubordinate computeBasis;
+  class SMSubgroup& theSubgroup;
+};
+
+@
+\section{class SGOfNGDecomposeWordARCer}
+<<class SGOfNGDecomposeWordARCer>>=
+class SGOfNGDecomposeWordARCer : public ARCer
+{
+public:
+  SGOfNGDecomposeWordARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSNG(NULL) { } 
+  
+  ~SGOfNGDecomposeWordARCer() { delete theSNG; }
+
+  void setArguments( const SGOfNilpotentGroup&, const PolyWord& );
+
+  const PolyWord& decomposition() { return theDecomposition; }
+  bool contains() { return isContain; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSNG;
+  bool isContain;
+  PolyWord theDecomposition;
+  PolyWord theWord;
+};
+
+@
+\section{class SGOfNGDecomposeWordProblem}
+<<class SGOfNGDecomposeWordProblem>>=
+class SGOfNGDecomposeWordProblem : public Supervisor
+{
+public:
+  SGOfNGDecomposeWordProblem( class SMSubgroup&, const class SMWord& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+  class SMSubgroup& theSubgroup;
+  class SIC& theSIC;
+  SGOfNGDecomposeWordARCer arcer;
+  MirrorSubordinate  initializeSGOfNG;
+  MirrorSubordinate  computeBasis;
+  MirrorSubordinate  ngDecomposeWord;
+  bool started;
+};
+
+@
+\section{class SGOfNGWordContainARCer}
+<<class SGOfNGWordContainARCer>>=
+class SGOfNGWordContainARCer : public ARCer
+{
+public:
+  SGOfNGWordContainARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSubgroup(0) { } 
+  
+  ~SGOfNGWordContainARCer() { delete theSubgroup; }
+
+  void setArguments( const SGOfNilpotentGroup&, const SetOf<Word>& );
+  bool answer() { return theAnswer; }
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSubgroup;
+  bool theAnswer;
+  SetOf<Word> theTestWords;
+};
+
+@
+\section{class SGOfNGWordContain}
+<<class SGOfNGWordContain>>=
+class SGOfNGWordContain : public ComputationManager
+{
+public:
+  SGOfNGWordContain( class SGOfNGWordContainProblem& );
+  // SGOfNGWordContain( const class SubgroupContainProblem& );
+  Trichotomy answer( ) const;
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  const class SMSubgroup& theSubgroup;
+  SetOf<Word> theTestWords;
+  SGOfNGWordContainARCer arcer;
+  bool arcerStarted;
+  Trichotomy theAnswer;
+};
+
+@
+\section{class SGOfNGWordContainProblem}
+<<class SGOfNGWordContainProblem>>=
+class SGOfNGWordContainProblem : public Supervisor
+{
+public:
+  SGOfNGWordContainProblem( class SMSubgroup&, const class SMWord& );
+  const SMSubgroup& getSubgroup( ) const { return theSubgroup; }
+  const SMWord& getTestWord( ) const { return theTestWord; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMSubgroup& theSubgroup;
+  const class SMWord& theTestWord;
+  MirrorSubordinate initPreimageSGOfNG;
+  Subordinate<SGOfNGWordContainProblem, SGOfNGWordContain> sgContain;
+};
+
+@
+\section{class SGOfNGcontainSubgroupARCer}
+<<class SGOfNGcontainSubgroupARCer>>=
+class SGOfNGcontainSubgroupARCer : public ARCer
+{
+public:
+  SGOfNGcontainSubgroupARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSubgroup1( 0 ) { } 
+  
+  ~SGOfNGcontainSubgroupARCer( ) { delete theSubgroup1;}
+
+  void setArguments(const SGOfNilpotentGroup& SNG1 , 
+		    const VectorOf<Word>& SNG2);
+  bool getAnswer() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSubgroup1;
+  VectorOf<Word> theSubgroup2;
+  bool answer;
+};
+
+@
+\section{class SGOfNGcontainSubgroupProblem}
+<<class SGOfNGcontainSubgroupProblem>>=
+class SGOfNGcontainSubgroupProblem : public Supervisor
+{
+public:
+  SGOfNGcontainSubgroupProblem(class SMSubgroup& sg1,
+                               const class SMSubgroup& sg2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  MirrorSubordinate initPreimageSGOfNG;
+  class SMSubgroup& theSubgroup1;
+  const class SMSubgroup& theSubgroup2;
+  SGOfNGcontainSubgroupARCer arcer;
+  bool started;
+};
+
+@
+\section{class SGOfNGequalSubgroupProblem}
+<<class SGOfNGequalSubgroupProblem>>=
+class SGOfNGequalSubgroupProblem : public Supervisor
+{
+public:
+  SGOfNGequalSubgroupProblem(class SMSubgroup& sg1, class SMSubgroup& sg2);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  MirrorSubordinate initPreimageSGOfNG1;
+  MirrorSubordinate initPreimageSGOfNG2;
+  class SMSubgroup& theSubgroup1;
+  class SMSubgroup& theSubgroup2;
+  SGOfNGcontainSubgroupARCer arcer1;
+  SGOfNGcontainSubgroupARCer arcer2;
+  bool started1;
+  bool started2;
+};
+
+@
+\section{class SGOfNGindexARCer}
+<<class SGOfNGindexARCer>>=
+class SGOfNGindexARCer : public ARCer
+{
+public:
+  SGOfNGindexARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSNG( 0 ) { } 
+  
+  ~SGOfNGindexARCer( ) { delete theSNG; }
+
+  void setArguments(const SGOfNilpotentGroup& );
+  int getIndex() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSNG;
+  int index;
+};
+
+@
+\section{class SGOfNGindexProblem}
+<<class SGOfNGindexProblem>>=
+class SGOfNGindexProblem : public Supervisor
+{
+public:
+  SGOfNGindexProblem(class SMSubgroup& sg);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  SGOfNGindexARCer arcer;
+  MirrorSubordinate initPreimageSGOfNG;
+  class SMSubgroup& theSubgroup;
+  bool started;
+};
+
+@
+\section{class SGOfNGhirschNumberProblem}
+<<class SGOfNGhirschNumberProblem>>=
+class SGOfNGhirschNumberProblem : public Supervisor
+{
+public:
+  SGOfNGhirschNumberProblem(class SMSubgroup& sg);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  MirrorSubordinate initializeSGOfNG;
+  class SMSubgroup& theSubgroup;
+  bool started;
+};
+
+@
+\section{class SGOfNGisNormalARCer}
+<<class SGOfNGisNormalARCer>>=
+class SGOfNGisNormalARCer : public ARCer
+{
+public:
+  SGOfNGisNormalARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSNG( 0 ) { } 
+  
+  ~SGOfNGisNormalARCer( ) { delete theSNG; }
+
+  void setArguments(const SGOfNilpotentGroup& );
+  bool answer() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSNG;
+  bool theAnswer;
+};
+
+@
+\section{class SGOfNGisNormalProblem}
+<<class SGOfNGisNormalProblem>>=
+class SGOfNGisNormalProblem : public Supervisor
+{
+public:
+  SGOfNGisNormalProblem(class SMSubgroup& sg);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  SGOfNGisNormalARCer arcer;
+  MirrorSubordinate initPreimageSGOfNG;
+  class SMSubgroup& theSubgroup;
+  bool started;
+};
+
+@
+\section{class SGOfNGcomputeNClassARCer}
+<<class SGOfNGcomputeNClassARCer>>=
+class SGOfNGcomputeNClassARCer : public ARCer
+{
+public:
+  SGOfNGcomputeNClassARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSNG( 0 ) { } 
+  
+  ~SGOfNGcomputeNClassARCer( ) { delete theSNG; }
+
+  void setArguments(const NilpotentGroup&,const VectorOf<Word>& );
+  int getClass() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  SGOfNilpotentGroup* theSNG;
+  int theClass;
+};
+
+@
+\section{class SGOfNGcomputeNClassProblem}
+<<class SGOfNGcomputeNClassProblem>>=
+class SGOfNGcomputeNClassProblem : public Supervisor
+{
+public:
+  SGOfNGcomputeNClassProblem( class SMSubgroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMSubgroup& theSubgroup;
+  class GIC& theGIC;
+  SGOfNGcomputeNClassARCer arcer;
+  MirrorSubordinate computeBasis;
+  bool started;
+};
+
+@
+\section{class SGOfNGPresentationARCer}
+<<class SGOfNGPresentationARCer>>=
+class SGOfNGPresentationARCer : public ARCer
+{
+public:
+  SGOfNGPresentationARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSubgroup( 0 ), thePresentation( 0 ){ } 
+  
+  ~SGOfNGPresentationARCer() { delete theSubgroup; delete thePresentation; }
+
+  void setArguments(const SGOfNilpotentGroup& presentation);
+  const PresentationForSNG& getPresentation() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  PresentationForSNG* thePresentation;
+  SGOfNilpotentGroup* theSubgroup;
+};
+
+@
+\section{class SGOfNGbuildPresentationProblem}
+<<class SGOfNGbuildPresentationProblem>>=
+class SGOfNGbuildPresentationProblem : public Supervisor
+{
+public:
+  SGOfNGbuildPresentationProblem(class SMSubgroup& subgroup);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  SGOfNGPresentationARCer arcer;
+  class SMSubgroup& theSubgroup;
+  MirrorSubordinate initPreimageSGOfNG;
+  bool started;
+};
+
+@
+\section{class SGOfNGnormalClosureARCer}
+<<class SGOfNGnormalClosureARCer>>=
+class SGOfNGnormalClosureARCer : public ARCer
+{
+public:
+  SGOfNGnormalClosureARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSubgroup( 0 ){ } 
+  
+  ~SGOfNGnormalClosureARCer( ) { delete theSubgroup;  }
+
+  void setArguments(const SGOfNilpotentGroup& presentation);
+  const VectorOf<Word>& normalClosure() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSubgroup;
+  VectorOf<Word> nClosure;
+};
+
+@
+\section{class SGOfNGnormalClosureProblem}
+<<class SGOfNGnormalClosureProblem>>=
+class SGOfNGnormalClosureProblem : public Supervisor
+{
+public:
+  SGOfNGnormalClosureProblem(class SMSubgroup& subgroup);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  SGOfNGnormalClosureARCer arcer;
+  MirrorSubordinate initializeSGOfNG;
+  bool started;
+  class SMSubgroup& theSubgroup;
+};
+
+@
+\section{class SGOfNGnormalClosureGensARCer}
+<<class SGOfNGnormalClosureGensARCer>>=
+class SGOfNGnormalClosureGensARCer : public ARCer
+{
+public:
+  SGOfNGnormalClosureGensARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theSubgroup( 0 ){ } 
+  
+  ~SGOfNGnormalClosureGensARCer( ) { delete theSubgroup;  }
+
+  void setArguments(const SGOfNilpotentGroup& presentation);
+  const VectorOf<Word>& normalClosure() const;
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  SGOfNilpotentGroup* theSubgroup;
+  VectorOf<Word> nClosure;
+};
+
+@
+\section{class SGOfNGnormalClosureGensProblem}
+<<class SGOfNGnormalClosureGensProblem>>=
+class SGOfNGnormalClosureGensProblem : public Supervisor
+{
+public:
+  SGOfNGnormalClosureGensProblem(class SMSubgroup& subgroup);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  SGOfNGnormalClosureGensARCer arcer;
+  class SMSubgroup& theSubgroup;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/NGSubgroupProblems.h
+#ifndef _NSubroupProblems_h_
+#define _NSubroupProblems_h_
+
+<<license>>
+<<include>>
+<<class SGOfNGinitPreimageARCer>>
+<<class SGOfNGinitPreimageProblem>>
+<<class SGOfNGinitializeARCer>>
+<<class SGOfNGinitializeProblem>>
+<<class SGOfNGcomputeBasisProblem>>
+<<class SGOfNGDecomposeWordARCer>>
+<<class SGOfNGDecomposeWordProblem>>
+<<class SGOfNGWordContainARCer>>
+<<class SGOfNGWordContain>>
+<<class SGOfNGWordContainProblem>>
+<<class SGOfNGcontainSubgroupARCer>>
+<<class SGOfNGcontainSubgroupProblem>>
+<<class SGOfNGequalSubgroupProblem>>
+<<class SGOfNGindexARCer>>
+<<class SGOfNGindexProblem>>
+<<class SGOfNGhirschNumberProblem>>
+<<class SGOfNGisNormalARCer>>
+<<class SGOfNGisNormalProblem>>
+<<class SGOfNGcomputeNClassARCer>>
+<<class SGOfNGcomputeNClassProblem>>
+<<class SGOfNGPresentationARCer>>
+<<class SGOfNGbuildPresentationProblem>>
+<<class SGOfNGnormalClosureARCer>>
+<<class SGOfNGnormalClosureProblem>>
+<<class SGOfNGnormalClosureGensARCer>>
+<<class SGOfNGnormalClosureGensProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

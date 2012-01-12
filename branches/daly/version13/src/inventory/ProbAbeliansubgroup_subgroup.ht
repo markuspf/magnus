@@ -1,0 +1,75 @@
+<HTML>  <HEAD>  <TITLE>Magnus Inventory</TITLE>  </HEAD>
+<H1>Abelian groups: Algorithms involving two subgroups </H1>
+<A NAME = 1><CENTER><H3> 1. 
+	Compute the join of <B> H</B>1 and <B> H</B>2 </H3> </CENTER> </A><PRE>
+
+<B>Check-in type:</B>		abelian group
+
+<B>Objects highlighted:</B>	subgroup <B> H</B>1, subgroup <B> H</B>2 
+
+<B>Name in the menu:</B>	Compute the join of <B> H</B>1 and <B> H</B>2
+
+<B>Problem type:</B>		fast problem
+
+<B>Help file:</B>		none
+</PRE>
+<A NAME = 2><CENTER><H3> 2. 
+	Does <B> H</B>1 contain <B> H</B>2 ? </H3> </CENTER> </A><PRE>
+
+<B>Check-in type:</B>		abelian group
+
+<B>Objects highlighted:</B>	subgroup <B> H</B>1, subgroup <B> H</B>2 
+
+<B>Other objects present:</B>  group <B> A</B>
+
+<B>Name in the menu:</B>	Does <B> H</B>1 contain <B> H</B>2 ?
+
+<B>Problem type:</B>		problem object
+
+<B>Help file:</B>		AbelianSGContainmentProblem.help
+			     </PRE><CENTER><B>Algorithms:</B></CENTER><PRE>
+1. Compute abelian invariants of A/H1
+</PRE>
+<A NAME = 3><CENTER><H3> 3. 
+	Is <B> H</B>1 = <B> H</B>2 ? </H3> </CENTER> </A><PRE>
+
+<B>Check-in type:</B>		abelian group
+
+<B>Objects highlighted:</B>	subgroup <B> H</B>1, subgroup <B> H</B>2 
+
+<B>Other objects present:</B>  group <B> A</B>
+
+<B>Name in the menu:</B>	Is <B> H</B>1 = <B> H</B>2 ?
+
+<B>Problem type:</B>		problem object
+
+<B>Help file:</B>		AbelianSGEqualityProblem.help
+			     </PRE><CENTER><B>Algorithms:</B></CENTER><PRE>
+1. Compute abelian invariants of A/H1
+2. Compute abelian invariants of A/H2
+</PRE>
+<A NAME = 4><CENTER><H3> 4. 
+	Is <B> H</B>1 isomorphic to <B> H</B>2 ? </H3> </CENTER> </A><PRE>
+
+<B>Check-in type:</B>		abelian group
+
+<B>Objects highlighted:</B>	subgroup <B> H</B>1, subgroup <B> H</B>2 
+
+<B>Other objects present:</B>  group <B> A</B>
+
+<B>Name in the menu:</B>	Is <B> H</B>1 isomorphic to <B> H</B>2 ?
+
+<B>Problem type:</B>		problem object
+
+<B>Help file:</B>		AbelianIsIsomorphicSG.help
+			     </PRE><CENTER><B>Algorithms:</B></CENTER><PRE>
+1. Compute abelian invariants of <B> A</B>
+   </PRE><B>Links:</B><PRE>
+        Click here to see the generators of the canonical decomposition of <B> A</B>
+2. Compute abelian invariants of <B> H</B>1
+   </PRE><B>Links:</B><PRE>
+        Click here to see the generators of the canonical decomposition of <B> H</B>1
+3. Compute abelian invariants of <B> H</B>2
+   </PRE><B>Links:</B><PRE>
+        Click here to see the generators of the canonical decomposition of <B> H</B>2
+</PRE>

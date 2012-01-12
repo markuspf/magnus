@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/SMMap.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "AlgebraicObject.h"
+#include "SMFPGroup.h"
+#include "MIC.h"
+#include "Map.h"
+#include "AbelianProblems.h"
+
+@
+\subsection{class MCM}
+<<class MCM>>=
+class MCM : public Supervisor
+{
+public:
+  MCM( class SMMap& M );
+
+  SMMap& getMap( ) const { return theMap; }
+
+  void viewStructure(ostream& ostr) const { }
+
+  Subordinate<MCM,AbelianHomIsMonoComp> abelianHomIsMono;
+  Subordinate<MCM,AbelianHomIsEpiComp> abelianHomIsEpi;
+
+  void takeControl( );        // overrides ComputationManager
+  void start( ) { }           // overrides ComputationManager
+  void terminate( ) { }       // overrides ComputationManager
+
+private:
+  class SMMap& theMap;
+
+  bool didFastChecks;
+  // The takeControl method does some sneaky checks of obvious properties
+  // (this should be formalized, since they are not always that fast).
+  // This records the first call, so that they are not done over and over.
+
+};
+
+@
+\subsection{class SMMap}
+<<class SMMap>>=
+class SMMap : public AlgebraicObject
+{
+public:
+  SMMap(SMFPGroup& G, Map m, const Chars heritage);
+  SMMap(SMFPGroup& G, SMFPGroup& H, Map m, const Chars heritage);
+  SMMap(SMFPGroup& G);
+  SMMap(SMFPGroup& G, SMFPGroup& H);
+
+  Map getMap( ) const { return theMap; }
+  SMFPGroup& getDomain( ) const { return theDomain; }
+  SMFPGroup& getRange( ) const { return theRange; }
+  MCM& mcm() const { return *theMCM; }
+
+        InformationCenter* infoCenter()       { return &mic; }
+  const InformationCenter* infoCenter() const { return &mic; }
+
+  static const char* type( ) { return "SMMap"; }
+  const char* typeID( ) const { return type(); }        // overrides SMObject
+  const IconID iconID( ) const { return IconID::map; }  // overrides SMObject
+  void viewStructure(ostream& ostr) const;              // overrides SMObject
+  void printProperties(ostream& ostr) const;            // overrides SMObject
+  void printDefinition(ostream& ostr) const;            // overrides SMObject
+
+protected:
+  void readMessage(istream&) { }                        // overrides SMObject
+
+public:
+  MIC mic;
+
+private:
+  const Map theMap;
+  SMFPGroup& theDomain;
+  SMFPGroup& theRange;
+  MCM* theMCM;  // TheObjects removes scm when this is removed.
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/SMMap.h
+#ifndef _SMMAP_H_
+#define _SMMAP_H_
+
+<<license>>
+<<include>>
+<<class MCM>>
+<<class SMMap>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

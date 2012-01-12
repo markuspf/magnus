@@ -1,0 +1,185 @@
+From gilbert Fri Jan  5 15:45:18 1996
+Date: Fri, 5 Jan 96 15:45:17 EST
+From: gilbert ( Gilbert Baumslag)
+To: bormotov@jolly2
+Content-Length: 4577
+
+Finitely presented groups menus, latest version
+(throw out the old one which is dated January 5, 1996)
+
+The  define menu for a finitely presented group
+should read:
+
+Define a finitely presented group
+
+*****************************************************
+
+The define menu for an abelian group should read:
+
+Define an abelian group
+
+*****************************************************
+
+The define menu for a free group should read:
+
+Define a free group
+
+*****************************************************
+
+The define menu for a nilpotent group should read:
+
+Define a nilpotent group
+
+*****************************************************
+
+The define menu for a one-relator group should read:
+
+Define a one-relator group
+
+*****************************************************
+
+The define menu for a small cancellation group should 
+read:
+
+Define a small cancellation group
+
+******************************************************
+
+In checking in a finitely presented group, the help
+file should read:
+
+Here are examples of how to enter a presentation:
+
+<x,y; x^2=y^3>
+
+<a,b,c;[a,b], b^2^c=b^-3 a b = 1>.
+
+******************************************************
+
+The tools menu should read:
+
+Find the cyclic decomposition of G abelianised.
+Is the presentation of G1 metric small cancellation?
+__________________________________________________________
+
+Is G trivial?
+Is G of finite order?
+Is G abelian?
+Is G nilpotent?
+Is G polycyclic?
+Is G free?
+Is G hyperbolic?
+___________________________________________________________
+
+Find a ShortLex automatic structure for G.
+Find a rewriting system for G.
+___________________________________________________________
+
+Compute an integral homology group of G.
+Compute the center of G.
+___________________________________________________________
+
+Delete selected objects and dependencies.
+___________________________________________________________
+
+Synopsis.
+___________________________________________________________
+
+***********************************************************
+
+When a finitely presented group has been checked in, the
+define menu for checking in a word should read:
+
+Define a word in the generators of G
+
+The associated help file should read:
+
+Conventions on word notation:
+
+Generator names can be any letter, such as a, b, ...,
+x,y, ..  or any letter followed by a sequence of digits
+such as a1, b23 and so on. In putting generators together
+to form words, there must be white space between them unless
+other punctuation is used. For example we allow  a (b c) in 
+place of a b c. We sometimes use capital letters to denote 
+inverses of generators. So the inverses of a,b,c11, .. are 
+denoted by A, B, C11,... and also by a^-1, b^-1, c11^-1 and 
+so on. The ^ is used to denote exponentiation. The exponents
+are allowed to be group elements as well as integers, with 
+a^b defined to be the conjugate B a b of a by b. Thus
+
+a^b = B a b  = b^-1 a b .
+
+Our convention is that ^ is left-associative. So
+
+a^b^2 = (a^b)^2.
+
+We use square brackets to denote commutators:
+
+[a,b]= a^-1 b^-1 a b ( = A B a b ).
+
+We then define, for n > 2, 
+
+[a1,a2,...,an]= [[a1,a2],a3,...,an].
+
+Thus multiple commutators are "left-normed".
+
+**********************************************************
+
+If one selects a word in a finitely presented group, the items
+should be re-arranged:
+
+Compute the formal inverse of w
+Freely reduce w
+Cyclically reduce w
+___________________________________
+
+Is w trivial in G?
+Is w of finite order in G?
+Is w of infinite order in G?
+Is w a proper power?
+Is w central in G?
+___________________________________
+
+Compute the centraliser of w
+____________________________________
+
+Delete selected objects and dependencies
+____________________________________
+
+Synopsis
+____________________________________
+
+
+
+***********************************************************
+
+When one checks in a finitely presented group with a single
+defining relator the message that comes up should read:
+
+G is a one-relator group and so it has a solvable word problem.
+
+***********************************************************
+
+When one checks in a finitely presented group with a single
+defining relator which is a proper power, the message that 
+comes up should read:
+
+G is a one-relator group with torsion and so it has a solvable
+word and conjugacy problem and is also hyperbolic.
+
+***********************************************************
+
+If one checks in a word in a one-relator group, the word
+problem window is incorrect.
+
+Fri Jan 5, 1996, 3.50 p.m.
+**********************************************************
+
+
+
+
+
+
+
+

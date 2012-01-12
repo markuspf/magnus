@@ -1,0 +1,425 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/sgrenumerator.pamphlet}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "SMSubgroup.h"
+#include "SMEnumerator.h"
+#include "File.h"
+
+@
+<<include.c>>=
+#include "SGREnumerator.h"
+#include "SMFPGroup.h"
+#include "Subgroup.h"
+#include "OneRelatorGroup.h"
+#include "SetOfWordsChecker.h"
+#include "OutMessages.h"
+#include "viewStructure.h"
+
+@
+\section{class SGRelatorEnumeratorARCer}
+\subsection{SGRelatorEnumeratorARCer Constructor}
+This used to require only the ComputationManager in the argument
+list. However, the Enumerator call requires an SMListData reference.
+We've added that argument here.
+\begin{verbatim}
+  SGRelatorEnumeratorARCer( ComputationManager& boss ) 
+    : EnumeratorARCer( boss ),
+      firstStart(true),
+      counter( 1 ),
+      numberOfAll( 100 ){ } 
+\end{verbatim}
+<<SGRelatorEnumeratorARCer Constructor.h>>=
+  SGRelatorEnumeratorARCer( ComputationManager& boss, SMListData& d ) 
+    : EnumeratorARCer( boss, d ),
+      firstStart(true),
+      counter( 1 ),
+      numberOfAll( 100 ){ } 
+@
+\subsection{SGRelatorEnumeratorARCer::setArguments}
+<<SGRelatorEnumeratorARCer::setArguments.h>>=
+  void setArguments( const class SMFPGroup* group,
+		     const class SMSubgroup* subgroup );
+@
+<<SGRelatorEnumeratorARCer::setArguments.c>>=
+void SGRelatorEnumeratorARCer::setArguments(const  SMFPGroup* group,
+					  const SMSubgroup* subgroup )
+{
+  theGroup = group;
+  theSMSubgroup = subgroup;
+  if (firstStart){
+    file << "For this enumeration, name the generators of " 
+	 << "the subgroup as follows: ";
+    //      << Name( *theSMSubgroup ) << " as follows: ";
+    VectorOf<Word> gens = theSMSubgroup->getSubgroup().generators();
+    for( int i1 = 0; i1 < gens.length(); ++i1 ) {
+      if ( i1 > 0 ) file << ", ";
+      file << "x" << i1 + 1 << " = ";
+      theGroup->getFPGroup().printWord( file, gens[i1] );
+    }
+    file << "." << endl << ready;
+    firstStart = false;
+  }
+}
+
+@
+\subsection{SGRelatorEnumeratorARCer::writeResults}
+<<SGRelatorEnumeratorARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<SGRelatorEnumeratorARCer::writeResults.c>>=
+void SGRelatorEnumeratorARCer::writeResults( ostream& out ) 
+{
+  out < possibleRelator < counter;
+}
+
+@
+\subsection{SGRelatorEnumeratorARCer::readResults}
+<<SGRelatorEnumeratorARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<SGRelatorEnumeratorARCer::readResults.c>>=
+void SGRelatorEnumeratorARCer::readResults( istream& in )
+{
+  in > possibleRelator > counter;
+}
+
+@
+\subsection{SGRelatorEnumeratorARCer::enumerate}
+<<SGRelatorEnumeratorARCer::enumerate.h>>=
+  void enumerate();
+@  
+<<SGRelatorEnumeratorARCer::enumerate.c>>=
+void SGRelatorEnumeratorARCer::enumerate()
+{
+  // We use this to enumerate all words in the subgroup generators.
+  int numberOfSubgroupGens = 
+    theSMSubgroup->getSubgroup().generators().length();
+  Subgroup theSubgroup( theGroup->getFPGroup(),
+			theSMSubgroup->getSubgroup().generators()
+			);
+  while ( counter <= numberOfAll ) {
+    if (submitSignalRecieved()){
+      return;
+    }
+    // returns if terminate was called in parent process
+    possibleRelator =
+      possibleRelator.nextCyclicallyReduced( numberOfSubgroupGens );
+    bool ORmethod = false;
+    Trichotomy answer( dontknow );
+    Word wordToCheck(theSubgroup.eval(possibleRelator));
+    if (theGroup->gic.haveFastWordProblem()){
+      SetOfWordsChecker theChecker( wordToCheck, *theGroup );
+      answer = theChecker.isTrivial();
+    }
+    else {
+      if (theGroup->gic.isOneRelator()){
+	answer = ORisTrivial(wordToCheck);
+	ORmethod = true;
+      }
+    }
+    if ( answer == yes ) {
+      // Use this crufty old Subgroup member:
+      if ( ! theSubgroup.redundantRelator(possibleRelator) ) {
+	file << counter << ": ";
+	theSubgroup.printWord(file, possibleRelator );
+	file << endl << endl << ready;
+	counter++;
+      }
+    }
+  } 
+}
+
+@
+\subsection{SGRelatorEnumeratorARCer::ORisTrivial}
+<<SGRelatorEnumeratorARCer::ORisTrivial.h>>=
+  bool ORisTrivial(const Word&  theTestWord);
+@
+<<SGRelatorEnumeratorARCer::ORisTrivial.c>>=
+bool SGRelatorEnumeratorARCer::ORisTrivial(const Word&  theTestWord)
+{
+  if (!theGroup->gic.isOneRelator())
+   error("bool RelatorEnumeratorARCer::ORisTrivial(const Word&  theTestWord) :"
+	  " group is not one relator.");
+  Generator g1 = theGroup->gic.getOneRelator().maxOccurringGenerator();
+  Generator g2 = theTestWord.maxOccurringGenerator();
+  int numOfGens = max( abs(ord(g1)), abs(ord(g2)) );
+  OneRelatorGroup G( numOfGens, theGroup->gic.getOneRelator() );
+  return G.wordProblem( theTestWord );
+}
+
+@
+\subsection{class SGRelatorEnumeratorARCer}
+<<class SGRelatorEnumeratorARCer>>=
+class SGRelatorEnumeratorARCer : public EnumeratorARCer
+{
+public:
+<<SGRelatorEnumeratorARCer Constructor.h>>
+<<SGRelatorEnumeratorARCer::setArguments.h>>
+  Chars getFileName() const {return file.getFileName();}
+  void setNumberOfAll( int n ) { numberOfAll = n; }
+<<SGRelatorEnumeratorARCer::ORisTrivial.h>>
+<<SGRelatorEnumeratorARCer::writeResults.h>>
+<<SGRelatorEnumeratorARCer::readResults.h>>
+protected:
+<<SGRelatorEnumeratorARCer::enumerate.h>>
+private:
+  const class SMSubgroup* theSMSubgroup;
+  const class SMFPGroup* theGroup;
+  File file;
+  Word possibleRelator;
+  bool firstStart;
+  int counter;
+  int numberOfAll;
+};
+
+@
+\subsection{SGRelatorEnumerator Constructor}
+This is the original code. It will not compile because the 
+initializer for arcer requires a second argument which is a
+reference to an [[SMListData]] object. There isn't one available
+so we rewrite this constructor to force the caller to pass one.
+See the [[.tpd]] version below.
+<<SGRelatorEnumerator Constructor.h>>=
+  SGRelatorEnumerator( SMSubgroup&);
+@
+<<SGRelatorEnumerator Constructor.c>>=
+SGRelatorEnumerator::SGRelatorEnumerator(SMSubgroup& s)
+  : EnumeratorProblem< NoType >( s ),
+    theSMSubgroup( s ),
+    theGIC( s.getParent().gic ),
+    arcer(*this),
+    kbSupervisor( *this, s.getParent().gcm().kbSupervisor ),
+    agSupervisor( *this, s.getParent().gcm().agSupervisor ),
+    firstStart(true),
+    started(false),
+    resumed( false ),
+    useORwordProblem(false)
+{
+   if ( ! theGIC.haveFastWordProblem() ) {
+     if (theGIC.isOneRelator())
+       useORwordProblem = true;
+     else {
+       LogMessage msg( theSMSubgroup );
+       msg <<
+	 "The system has no fast, complete solution of the word problem "
+	 "for " << Name( theSMSubgroup.getParent() ) << 
+	 " yet. It will not try to enumerate "
+	 "relators of " << Name( theSMSubgroup ) << " until it finds one "
+	 "(a more general enumerator is in the works).";
+       msg.send();
+     }
+   }
+}
+
+@
+<<SGRelatorEnumerator Constructor.h.tpd>>=
+  SGRelatorEnumerator( SMSubgroup&, SMListData&);
+@
+<<SGRelatorEnumerator Constructor.c.tpd>>=
+SGRelatorEnumerator::SGRelatorEnumerator(SMSubgroup& s, SMListData& d)
+  : EnumeratorProblem< NoType >( s ),
+    theSMSubgroup( s ),
+    theGIC( s.getParent().gic ),
+    arcer(*this, d),
+    kbSupervisor( *this, s.getParent().gcm().kbSupervisor ),
+    agSupervisor( *this, s.getParent().gcm().agSupervisor ),
+    firstStart(true),
+    started(false),
+    resumed( false ),
+    useORwordProblem(false)
+{
+   if ( ! theGIC.haveFastWordProblem() ) {
+     if (theGIC.isOneRelator())
+       useORwordProblem = true;
+     else {
+       LogMessage msg( theSMSubgroup );
+       msg <<
+	 "The system has no fast, complete solution of the word problem "
+	 "for " << Name( theSMSubgroup.getParent() ) << 
+	 " yet. It will not try to enumerate "
+	 "relators of " << Name( theSMSubgroup ) << " until it finds one "
+	 "(a more general enumerator is in the works).";
+       msg.send();
+     }
+   }
+}
+
+@
+\section{class SGRelatorEnumerator}
+Definition of class RelatorEnumerator, an enumerator with
+an integrated general word problem.
+It allows the end user to guide the search for a general
+solution of the word problem. If and when one is found,
+it enumerates relators for a given subgroup, making some
+attempt to filter out redundant ones.
+\subsection{SGRelatorEnumerator::takeControl}
+<<SGRelatorEnumerator::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SGRelatorEnumerator::takeControl.c>>=
+void SGRelatorEnumerator::takeControl( )
+{
+  if ( (theGIC.haveFastWordProblem() || theGIC.isOneRelator() ) && 
+       freeARCs() > 0 ) {
+    if (firstStart){
+      LogMessage msg( *this, theSMSubgroup );
+      msg << Link(Text("Click here to view the relators of ")+ 
+		  Name(theSMSubgroup),
+		  "RelatorEnumerator", arcer.getFileName(),true);
+      msg.send();
+      firstStart = false;
+    }
+    if (!started){
+      arcer.setArguments(&(theSMSubgroup.getParent()),
+			 &theSMSubgroup);
+      started = true;
+    }
+    // @am if fast word problem was found and we were using one
+    // relator method then reset ARCer
+    if (theGIC.haveFastWordProblem() && useORwordProblem && started){
+      arcer.submitSignal();
+      useORwordProblem = false;
+      started = false;
+    }
+    if (arcer.takeControl()){
+      if (started && !resumed){
+	adminSuspend();
+	return;	
+      }
+      if (resumed)
+	resumed = false;
+    }
+    usedOneARC();
+  }
+}
+
+@
+\subsection{SGRelatorEnumerator::viewStructure}
+<<SGRelatorEnumerator::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SGRelatorEnumerator::viewStructure.c>>=
+void SGRelatorEnumerator::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv( oid(), "Relator enumerator",
+			     Text("Enumerate relators of") + 
+			     Name( theSMSubgroup ),
+			     helpID("RelatorEnumerator", 
+				    theSMSubgroup.getParent()),
+			     "SG Rel Enum"
+			     );
+  pv.addParameter(
+    EditInteger("numberOfAll","Number of relators",1,100,0,1000000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of this enumerator",50));
+  //@rn Dodge updating the FE database for now:
+  if ( ! theGIC.haveFastWordProblem() ) {
+    pv.addProblem( Subproblem("Sp2",kbSupervisor.arcSlotID(),
+			      Text("Seek a rewriting system for") +
+			      Name( theSMSubgroup.getParent() ),
+			      50));
+    pv.addProblem( Subproblem("Sp2",agSupervisor.arcSlotID(),
+			      Text("Seek a ShortLex automatic structure for") +
+			      Name( theSMSubgroup.getParent() ),
+			      50));
+  }
+  submit(ostr, pv);
+}
+
+@
+\subsection{SGRelatorEnumerator::getSubgroup}
+<<SGRelatorEnumerator::getSubgroup.h>>=
+  class SMSubgroup& getSubgroup() const { return theSMSubgroup;}
+@
+\subsection{SGRelatorEnumerator::getDataFileName}
+<<SGRelatorEnumerator::getDataFileName.h>>=
+  Chars getDataFileName() const { return arcer.getFileName(); }
+@
+\subsection{SGRelatorEnumerator::start}
+<<SGRelatorEnumerator::start.h>>=
+  void start( ) {       // overrides ComputationManager
+    int totalNum = getParameters().getValue("numberOfAll");
+    arcer.setNumberOfAll( totalNum );
+  }       
+@
+\subsection{SGRelatorEnumerator::terminate}
+<<SGRelatorEnumerator::terminate.h>>=
+  void terminate( ) { }       // overrides ComputationManager
+@
+\subsection{SGRelatorEnumerator::resume}
+<<SGRelatorEnumerator::resume.h>>=
+  void resume() {
+    resumed = true;
+    arcer.submitSignal();
+    int totalNum = getParameters().getValue("numberOfAll");
+    arcer.setNumberOfAll( totalNum );
+  }
+@
+\subsection{class SGRelatorEnumerator}
+<<class SGRelatorEnumerator>>=
+class SGRelatorEnumerator : public  EnumeratorProblem< NoType >
+{
+public:
+<<SGRelatorEnumerator Constructor.h>>
+<<SGRelatorEnumerator Constructor.h.tpd>>
+<<SGRelatorEnumerator::viewStructure.h>>
+<<SGRelatorEnumerator::getSubgroup.h>>
+<<SGRelatorEnumerator::takeControl.h>>
+<<SGRelatorEnumerator::getDataFileName.h>>
+<<SGRelatorEnumerator::start.h>>
+<<SGRelatorEnumerator::terminate.h>>
+<<SGRelatorEnumerator::resume.h>>
+private:
+  SMSubgroup& theSMSubgroup;
+  SGRelatorEnumeratorARCer arcer;
+  class GIC& theGIC;
+  bool started;
+  bool firstStart;  
+  bool resumed;
+  bool useORwordProblem;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+};
+
+@
+\section{SGREnumerator.h}
+<<SGREnumerator.h>>=
+#ifndef _RELATORENUMERATOR_H_
+#define _RELATORENUMERATOR_H_
+
+<<include.h>>
+<<class SGRelatorEnumeratorARCer>>
+<<class SGRelatorEnumerator>>
+#endif
+@
+\section{SGREnumerator.C}
+<<*>>=
+
+<<include.c>>
+<<SGRelatorEnumeratorARCer::setArguments.c>>
+<<SGRelatorEnumeratorARCer::writeResults.c>>
+<<SGRelatorEnumeratorARCer::readResults.c>>
+<<SGRelatorEnumeratorARCer::enumerate.c>>
+<<SGRelatorEnumeratorARCer::ORisTrivial.c>>
+
+/*<<SGRelatorEnumerator Constructor.c>>*/
+<<SGRelatorEnumerator Constructor.c.tpd>>
+<<SGRelatorEnumerator::takeControl.c>>
+<<SGRelatorEnumerator::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

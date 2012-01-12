@@ -1,0 +1,24 @@
+666
+10
+5
+777
+888
+
+
+
+100
+15
+10
+300
+500
+
+# this should not be used:
+< <a,b> * <c,d> | a = c >
+15
+10
+666
+999
+
+#
+# for random tests
+#

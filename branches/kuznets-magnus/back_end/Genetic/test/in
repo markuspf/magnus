@@ -1,0 +1,20 @@
+# Population size
+Population : 50
+
+# Number of generations
+Generations : 100
+
+# Chance of breeding
+Breeding : 50
+
+# Chance of mutation 
+Mutation : 20
+
+# Have elitist selection
+ElitistSelection : 1
+
+# Have fitness scaling
+FitnessScaling : 1
+
+# Test parameter
+TestParameter : 33

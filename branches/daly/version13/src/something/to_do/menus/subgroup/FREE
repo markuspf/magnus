@@ -1,0 +1,40 @@
+Is H1=F1?
+Is H1 of finite index in F1?
+Is H1 isolated in G1?
+Is H1 central?
+Is H1 normal?
+Is H1 subnormal?
+Is H1 malnormal?
+Is H1 characteristic?
+Is H1 fully invariant?
+
+Compute the index of H1 in F1
+Compute the rank of H1
+Compute a Schreier transversal of H1 in F1
+
+Is H1 trivial?
+Is H1 abelian?
+Is H1 nilpotent?
+Is H1 polycyclic?
+Is H1 solvable?
+Is H1 perfect?
+Is H1 finite?
+Is H1 finitely related?
+Is H1 automatic?
+Is H1 hyperbolic?
+Is H1 free?
+Is H1 a free factor of F1?
+
+Compute the order of H1
+Compute the center of H1
+Compute the canonical decomposition of H1 abelianized
+Compute a nilpotent quotient of H1
+
+Find a virtual free factor of F1 containing H1 as a subgroup
+of finite index
+Find a Nielsen basis for H1
+Find a permutation representation of G1 modulo H1 when the index
+of H1 in G1 is finite
+
+Enumerate relators of H1 in the given generators
+of H1

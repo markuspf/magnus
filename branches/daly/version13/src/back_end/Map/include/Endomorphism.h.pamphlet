@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Map/include/Endomorphism.h}
+\author{Eugene Paderin, Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Map.h"
+
+@
+\section{class Endomorphism}
+<<class Endomorphism>>=
+class Endomorphism : public Map {
+public:
+	// no default constructor: a domain group must be given
+
+	Endomorphism( const FGGroup& dom) : Map(dom, dom) {}
+	// make trivial endomorphism on given group
+
+	Endomorphism( const FGGroup& dom, 
+                      const VectorOf<Word>& generatingImages ) 
+		: Map(dom, dom, generatingImages) {}
+	// an Endomorphism with explicit generatingImages
+
+	Endomorphism( const Map& m ) : Map(m) {}
+  // cast construtor: to cast an arbitrary map as an endomorphism.
+  // NB. This rewraps the unchanged representation, hence is in general
+  // only useful for casting a map known to be an actual endomorphism.
+
+	// copy constructor, operator=, and destructor supplied by compiler
+
+	// inherited from the base class
+
+	// const FGGroup& domain( ) const;
+	// const FGGroup& range( ) const;
+	// const VectorOf<Word>& generatingImages( ) const;
+	// Word generatingImages( int i ) const;
+	// void setGeneratingImages( const VectorOf<Word>& gi );
+	// void setGeneratingImages( int i, const Word& e  );
+
+  void makeIdentity()
+	{
+		for(int i=0; i<domain().numberOfGenerators(); i++)
+			setGeneratingImages(i, Generator(i+1));
+	}
+	// turns the endomorphism into the identity automorphism. 
+
+  void reduceGenImages() 
+	{
+		for(int i = 0; i<generatingImages().length(); i++)
+		  setGeneratingImages(i, generatingImages(i).freelyReduce());
+	}
+	// freely reduce generating images to prevent its overgrowth 
+	// in composition of maps. 
+	//@ep Should be this done automatically?
+
+  bool operator ==(const Endomorphism& e) const {
+    return ( look() == e.look() || *look() == *e.look() ); 
+  }
+	//@dp this operator should be defined in Map only. But now
+	//    Map class has too simple of this one.
+
+	// inherited from the base class
+
+//    friend CondParamLvalue<Map,Word,Generator>::operator Word ( ) const;
+//    friend Word& CondParamLvalue<Map,Word,Generator>::operator =
+//        ( const Word& ) const;
+//    Word imageOf( const Word& w ) const;
+//    Word imageOf( const Generator& g ) const;
+//    CondParamLvalue<Map,Word,Generator> imageOf( const Generator& g );
+//    Word operator()( const Word& w ) const;
+//    Word operator()( const Generator& g ) const;
+//    CondParamLvalue<Map,Word,Generator> operator()( const Generator& g )
+//        { return imageOf(g); }
+
+// computing images:
+
+//    Elt evalImage( const Word& w ) const;
+//    Elt postEvalImage( const Word& w ) const;
+
+//    Trichotomy extendsToHom( ) const;
+
+//    Trichotomy isMono( ) const;
+//    Trichotomy isEpi( ) const;
+//    Trichotomy isIso( ) const;
+//    Trichotomy isTrivialMap( ) const; // @stc impl. tmp.
+
+#ifdef DEBUG
+//	friend int main( );
+
+	bool consistent( ) {
+		return Map::consistent() && domain() == range();
+	}
+#endif
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1998 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+
+@
+<<*>>=
+// src/backend/Map/include/Endomorphism.h
+#ifndef _ENDOMORPHISM_H_
+#define _ENDOMORPHISM_H_
+
+<<license>>
+<<include>>
+<<class Endomorphism>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

@@ -1,0 +1,17 @@
+C = b  b A A  1  B  A A b A A  a a B a a b a  1  a B a a B  A  A b A  A B A A b A A  1  a B a  b  a a B  1  a  a
+
+w = b  b A A  1  B  A A A A A  a a B a a b a  1  a a a a a  A  A b A  A B A A b A A  1  a B a  b  a a B  1  B  a,
+                        *                          *     *                                                  *
+    p    q    R  P      u            x        Y      U      t    z          X        y    Z    s    Q    r  S  T,
+
+p = b
+q = b A^2
+R = 1
+u = A^5
+x = a^2 B a^2 b a
+Y = 1
+t = A
+z = A b A
+s = b
+
+e3 = p q R P u x Y U t z X y Z s Q r S T,

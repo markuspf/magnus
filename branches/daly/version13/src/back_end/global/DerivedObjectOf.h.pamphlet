@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/DerivedObjectOf.h}
+\author{Stephane Collart}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{class DerivedObjectOf>
+<<class DerivedObjectOf>>=
+template <class Base, class Rep> class DerivedObjectOf : public Base
+{
+
+// This class assumes Base is itself an ObjectOf kind of class, i.e.
+// 1) Base has members look(), enhance(), change() returning some BaseRep* type
+// 2) Base has a constructor Base( BaseRep* );
+// 3) BaseRep is directly or indirectly derived from PureRep
+// 4) Rep is derived from BaseRep
+
+public:
+	// copy constructor provided by compiler
+	// destructor provided by compiler
+	// assignment operator provided by compiler
+
+protected:
+	// Shadowed representation accessors:
+	const Rep* look( ) const { return (Rep*)Base::look(); }
+	Rep* enhance( ) const { return (Rep*)Base::enhance(); }
+	Rep* change( ) { return (Rep*)Base::change(); }
+
+	DerivedObjectOf( Rep* newrep ) : Base( newrep ) { }
+	// for base class initialisation
+
+	DerivedObjectOf( const Base& b ) : Base( b ) { }
+	// for base class intialisation when cast conversion
+        // to derived is desired 
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/DerivedObjectOf.h
+#ifndef _DERIVED_OBJECT_OF_H_
+#define _DERIVED_OBJECT_OF_H_
+
+<<license>>
+<<class DerivedObjectOf>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

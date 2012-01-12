@@ -1,0 +1,460 @@
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+
+// Contents: Implementation of the Abelianization class
+//
+// Principal Authors: Dmitry Bormotov
+//
+// Status: in progress
+//
+// Revision History:
+//
+// * 7/96 Dmitry B. made porting to gcc 2.7.2.
+//
+
+
+//#include <stdio.h>
+#include "Abelianization.h"
+
+
+Abelianization::Abelianization(const FPGroup& G)
+  : doneStatus( false ),
+    startStatus( false ),
+    theGroup( G )
+{
+  makeMatrices();
+  if ( G.getRelators().cardinality() == 0 ) {
+    rankOfFreePart = G.numberOfGenerators();
+    doneStatus = true;
+  }
+}
+
+
+Abelianization::Abelianization( const Abelianization& A )
+{
+#if SAFETY > 0
+  if ( A.startStatus && !A.doneStatus )
+    error("Abelianization::Abelianization( const Abelianization& A ) : "
+	  "tried to copy abelianization before the computation "
+	  "had been finished");
+#endif
+ 
+  saveHeight = A.saveHeight;
+  saveWidth  = A.saveWidth;
+
+  newToOldGens = new (Integer*)[saveWidth];
+  oldToNewGens = new (Integer*)[saveWidth];
+  for ( int i = 0; i < saveWidth; i++ ) {
+    newToOldGens[i] = new Integer[saveWidth];
+    oldToNewGens[i] = new Integer[saveWidth];
+    for ( int j = 0; j < saveWidth; j++ ) {
+      newToOldGens[i][j] = A.newToOldGens[i][j];
+      oldToNewGens[i][j] = A.oldToNewGens[i][j];
+    }
+  }
+
+  theGroup = A.theGroup;
+  doneStatus = A.doneStatus;
+  startStatus = A.startStatus;
+  rankOfFreePart = A.rankOfFreePart;
+  saveMatrix = 0;
+  saveRow = A.saveRow;
+  saveCol = A.saveCol;
+  SmithForm = A.SmithForm;
+  Invariants = A.Invariants;
+}
+
+     
+Abelianization::~Abelianization( ) {
+  for ( int i = 0; i < saveWidth; i++ ) {
+    delete [] newToOldGens[i];
+    delete [] oldToNewGens[i];
+  }
+  delete [] newToOldGens;
+  delete [] oldToNewGens;
+}
+
+
+bool Abelianization::done( ) const {
+  return doneStatus;
+}
+
+
+int Abelianization::rankOfFreeAbelianFactor( ) const {
+
+#if SAFETY > 0
+  if ( !doneStatus )
+    error("tried to get rank of Free Abelian Factor before abelianization");
+#endif
+
+  return rankOfFreePart;
+}
+
+int Abelianization::numOfGens( ) const {
+  return saveWidth;
+}
+
+
+VectorOf<Integer> Abelianization::getSmithForm( ) const{
+
+#if SAFETY > 0
+  if ( !doneStatus )
+    error("tried to get Smith form before abelianization");
+#endif
+
+  return SmithForm;
+}  
+
+VectorOf<Integer> Abelianization::invariants( ) const {
+
+#if SAFETY > 0
+  if ( !doneStatus )
+    error("tried to get invariants before abelianization");
+#endif
+
+  return Invariants;
+}
+
+void Abelianization::calculateSmithForm( ) {
+
+  SmithForm = VectorOf<Integer>(saveWidth);
+  int size =  min(saveWidth, saveHeight);
+  for ( int i = 0; i < size; i++ )
+    SmithForm[i] = saveMatrix[i][i];
+  for ( int i = size; i < saveWidth; i++ )
+    SmithForm[i] = 0;
+}
+
+void Abelianization::calculateInvariants( ) {
+
+  int count = 0;
+  for ( int i = 0; i < saveWidth; i++ )
+    if ( SmithForm[i] > 1) count++;
+  
+  Invariants = VectorOf<Integer>(count);
+  int num = 0;
+  for( int i = 0; i < saveWidth; i++ )
+    if ( SmithForm[i] > 1)
+      Invariants[num++] = SmithForm[i];
+}
+
+
+void Abelianization::makeMatrices( )
+{
+  int height = theGroup.getRelators().cardinality();
+  int width = theGroup.numberOfGenerators();
+  saveHeight = height;
+  saveWidth  = width;
+
+  newToOldGens = new (Integer*)[width];
+  oldToNewGens = new (Integer*)[width];
+  for ( int i = 0; i < width; i++ ) {
+    newToOldGens[i] = new Integer[width];
+    oldToNewGens[i] = new Integer[width];
+    for ( int j = 0; j < width; j++ ) {
+      newToOldGens[i][j] = 0;
+      oldToNewGens[i][j] = 0;
+    }
+    newToOldGens[i][i] = 1;
+    oldToNewGens[i][i] = 1;
+  }
+}
+
+
+void Abelianization::startComputation( ) {
+
+#if SAFETY > 0
+  if ( startStatus )
+    error("the abelianization has been already started");
+#endif
+
+  SetIterator<Word> I( theGroup.getRelators() );
+  int i = 0, j;
+  Integer **matrix = new (Integer*)[saveHeight];
+  
+  // matrix[i][j] = exponent of j^{th} generator in i^{th} relation.
+  while ( !I.done() ) {
+    Word w = I.value();
+    matrix[i] = new Integer[saveWidth];
+    for ( j = 0; j < saveWidth; j++ ) {
+      Generator g(j+1);
+      matrix[i][j] = w.exponentSum( g );
+    }
+    i++;
+    I.next();
+  }
+
+  saveMatrix = matrix;
+  saveRow = saveCol = 0;
+  startStatus = true;
+  doneStatus = false;
+}  
+
+
+bool Abelianization::continueComputation( )
+{
+  
+#if SAFETY > 0
+  if ( !startStatus )
+    error("tried to continue computation before it's started");
+#endif
+
+  if( doneStatus )
+    return doneStatus;
+  
+  Integer **matrix = saveMatrix;
+  int height = saveHeight;
+  int width = saveWidth;
+  int i = saveRow;
+  int j = saveCol;
+
+  int k, l, done;
+  Integer quotient;
+  
+  if ( i < height && j < width ) {
+    
+    // Check if j^{th} generator is free of relations in abelianization.
+    k = 0;
+    if ( sign(matrix[i][j]) == 0 )
+      for ( k = i + 1; k < height; k++ )
+	if ( sign(matrix[k][j]) != 0 ) {
+	  Integer *temp = matrix[i];
+	  matrix[i] = matrix[k];
+	  matrix[k] = temp;
+	  break;
+	}
+    
+    if ( k == height ) {
+      for ( k = j + 1; k < width; k++ )
+	if ( sign(matrix[i][k]) != 0 ) {
+	  swapColumns(j,k);
+	  break;
+	}
+      if ( k == width ) {
+	saveCol++;
+	saveRow++;
+	return doneStatus;
+      }
+    }
+    done = 0;
+    while ( !done ) {
+      for ( k = i + 1; k < height; k++ )
+	while ( sign(matrix[k][j]) != 0 )
+	  if ( abs( matrix[k][j] ) < abs( matrix[i][j] ) ) {
+	    Integer *temp = matrix[i];
+	    matrix[i] = matrix[k];
+	    matrix[k] = temp;
+	  }
+	  else {
+	    quotient = matrix[k][j] / matrix[i][j];
+	    for ( l = j; l < width; l++ ) 
+	      matrix[k][l] = (Integer)matrix[k][l] - quotient*matrix[i][l];
+	  }
+
+      done = 1;
+      for ( k = j + 1; k < width; k++ )
+	while ( sign(matrix[i][k]) != 0 )
+	  if ( abs( matrix[i][k] ) < abs( matrix[i][j] ) ) {
+	    done = 0;  // Possibly we spoiled j^{th} column.
+	    quotient = ( matrix[i][j] - sign(matrix[i][j]) ) / matrix[i][k];
+	    addColumn(j, k, -quotient);
+	  }
+	  else {
+	    quotient = matrix[i][k] / matrix[i][j];
+	    addColumn(k, j, -quotient);
+	  }
+    }
+    saveRow++;
+    saveCol++;
+    return doneStatus;
+  }
+  else {
+    int size = min ( width, height);
+    rankOfFreePart = width - j;
+    
+    for (i = 0; i < size; i++)
+      matrix[i][i] = abs(matrix[i][i]);
+    
+    int pos = 0;
+    for ( i = pos; i < size; i++ )
+      if ( sign(matrix[i][i]) == 0) {
+	swapInvariants(pos, i);
+	pos++;
+      }
+    
+    rankOfFreePart += pos;
+    for ( i = pos; i < size; i++ )
+      if ( matrix[i][i] == 1) {
+	swapInvariants(pos, i);
+	pos++;
+      }
+    
+    // m_i | m_{i+1}
+    for ( i = pos; i < size - 1; i++ )
+      for ( j = i + 1; j < size; j++ )
+	canoniseInvariants(i, j);
+
+    calculateSmithForm();
+    calculateInvariants();
+    for ( i = 0; i < saveHeight; i++ ) delete [] saveMatrix[i];
+    delete [] saveMatrix;
+     
+    doneStatus = true;
+    return doneStatus;
+  }
+}
+
+
+Integer **Abelianization::newToOldGenerators( ) const {
+  return newToOldGens;
+}
+
+
+Integer **Abelianization::oldToNewGenerators( ) const {
+  return oldToNewGens;
+}
+
+
+VectorOf<Integer> Abelianization::rewriteInNewGens( const Word& w ) const {
+
+#if SAFETY > 0
+  if ( !doneStatus )
+    error("tried to call rewriteInNewGens before abelianization");
+#endif
+
+  VectorOf<Integer> v(saveWidth);
+
+  for ( int i = 0; i < saveWidth; i++) v[i] = 0;
+  for ( int i = 0; i < saveWidth; i++ ) {
+    int power = w.exponentSum(i+1);
+    for ( int j = 0; j < saveWidth; j++)
+      v[j] = v[j] + Integer(power) * oldToNewGens[i][j];
+  }
+
+  for ( int i = 0; i < saveWidth; i++ ) {
+    Integer order = SmithForm[i];
+    if ( order != 0) {
+      v[i] = v[i] % order;
+      if ( v[i] < 0 ) v[i] = order + v[i];
+     }
+  }
+  
+  return v;
+}
+
+
+VectorOf<Integer> Abelianization::evaluate( const Word& w ) const
+{
+  VectorOf<Integer> form = getSmithForm();
+  VectorOf<Integer> v = rewriteInNewGens(w);
+  int len = v.length();
+  int count = 0;
+  for( int i = 0; i < len; ++i )
+    if( form[i] != 1 )
+      ++count;
+
+  VectorOf<Integer> result(count);
+//  for (i = 0; i < rankOfFreePart; ++i)
+//    result[i] = 0;
+  
+  int FCount = 0;
+  int TCount = rankOfFreePart;
+  for( int i = 0; i < len; ++i )
+    if( sign(form[i]) == 0 )
+      result[FCount++] = v[i];
+    else
+      if( form[i] != 1 )
+	result[TCount++] = v[i];
+  
+  return result;
+}
+
+  
+void Abelianization::addColumn(int i, int j, Integer k) {
+
+  for ( int l = 0; l < saveHeight; l++ )
+    saveMatrix[l][i] += k * saveMatrix[l][j];
+  
+  for ( int l = 0; l < saveWidth; l++ ) {
+    newToOldGens[j][l] -= k * newToOldGens[i][l];
+    oldToNewGens[l][i] += k * oldToNewGens[l][j];
+  }
+}
+
+
+void Abelianization::swapGenColumns( int i, int j ) {
+
+  for ( int l = 0; l < saveWidth; l++ ) {
+    Integer temp = oldToNewGens[l][i];
+    oldToNewGens[l][i] = oldToNewGens[l][j];
+    oldToNewGens[l][j] = temp;
+  }
+
+  Integer *tmp = newToOldGens[i];
+  newToOldGens[i] = newToOldGens[j];
+  newToOldGens[j] = tmp;
+}
+
+
+void Abelianization::swapColumns( int i, int j ) {
+
+  for ( int l = 0; l < saveHeight; l++ ) {
+    Integer temp = saveMatrix[l][i];
+    saveMatrix[l][i] = saveMatrix[l][j];
+    saveMatrix[l][j] = temp;
+  }
+  swapGenColumns(i, j);
+}
+
+
+void Abelianization::swapInvariants( int i, int j ) {
+
+  Integer temp = saveMatrix[i][i];
+  saveMatrix[i][i] = saveMatrix[j][j];
+  saveMatrix[j][j] = temp;
+  swapGenColumns(i, j);
+}
+
+
+void Abelianization::canoniseInvariants(int i, int j) {
+
+  Integer quotient;
+  addColumn(i, j, 1);
+  while ( saveMatrix[i][i] != saveMatrix[j][i]) {
+    if ( saveMatrix[i][i] > saveMatrix[j][i]) {
+      quotient = (saveMatrix[i][i] - 1) / saveMatrix[j][i];
+      saveMatrix[i][i] -= quotient * saveMatrix[j][i];
+      saveMatrix[i][j] -= quotient * saveMatrix[j][j];
+    }
+    else {
+      quotient = (saveMatrix[j][i] - 1) / saveMatrix[i][i];
+      saveMatrix[j][i] -= quotient * saveMatrix[i][i];
+      saveMatrix[j][j] -= quotient * saveMatrix[i][j];
+    }
+  }
+  saveMatrix[j][i] -= saveMatrix[i][i];
+  saveMatrix[j][j] -= saveMatrix[i][j];
+
+  quotient = saveMatrix[i][j] / saveMatrix[i][i];
+  addColumn(j, i, -quotient);
+  saveMatrix[j][j] = abs(saveMatrix[j][j]);
+}
+
+
+// Debugging stuff:
+
+#ifdef DEBUG
+
+void Abelianization::printMatrix(char *name, Integer **A, int height, int width) {
+  cout << name << endl;
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++)
+//      cout << " " << A[i][j];
+      A[i][j].printon(cout,10,7);
+      
+    cout << endl;
+  }
+  cout << endl;
+}
+ 
+#endif

@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/ORWordProblem.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{ORWordProblem.h}
+You need only one object in this class, since the program it talks to
+accepts arbitrarily many pairs of relators and test words.
+
+Multiplexing is not a problem now, since BlackBox communication is
+strictly synchronous.
+
+First call findAnswer(const Word& relator, const Word& testWord)
+to compute the result.
+Then call goodStatus( ) to see if anything went wrong.
+If that returns true, get the result from isTrivial( ),
+otherwise this effectively shuts down forever.
+\section{include}
+<<include>>=
+#include "BlackBox.h"
+#include "Word.h"
+
+@
+\section{class ORWordProblem}
+<<class ORWordProblem>>=
+class ORWordProblem {
+public:
+  ORWordProblem(const Word& relator);
+
+  ~ORWordProblem( ) { delete orwp; }
+
+  void findAnswer(const Word& testWord);
+  // This will not return until it has the answer.
+
+  bool goodStatus( ) { return status; }
+
+  bool isTrivial( );
+
+private:
+  BlackBox* orwp;
+  // Wraps the orwp executable.
+
+  const Word theRelator;
+
+  bool status;
+  // True until something goes wrong, then we give up altogether.
+
+  bool result;
+  // The last answer computed.
+
+  void printWord(const Word& w, ostream& ostr);
+  // Output w in Dion's format.
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/ORWordProblem.h
+#ifndef _OR_WORD_PROBLEM_H_
+#define _OR_WORD_PROBLEM_H_
+
+<<license>>
+<<include>>
+<<class ORWordProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

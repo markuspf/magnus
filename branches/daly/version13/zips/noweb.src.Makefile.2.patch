@@ -1,0 +1,19 @@
+--- Makefile.tpd2	2003-09-26 15:54:54.000000000 -0400
++++ Makefile	2003-09-26 15:58:31.000000000 -0400
+@@ -18,12 +18,12 @@
+ # MAN7EXT is the extension for the nowebstyle man page (usually 7)
+ # TEXINPUTS is the directory for TeX macro files
+ # ELISP is the directory for emacs lisp files, or ${TMP}/null not to install
+-BIN=/usr/local/noweb
+-LIB=/usr/local/noweb/lib
+-MAN=/usr/local/noweb/man
++BIN=${MNT}/${SYS}/bin
++LIB=${MNT}/${SYS}/bin/lib
++MAN=${MNT}/${SYS}/bin/man
+ MANEXT=1
+ MAN7EXT=7
+-TEXINPUTS=/usr/local/tex/inputs
++TEXINPUTS=${MNT}/${SYS}/bin/tex/inputs
+ ELISP=${TMP}/null
+ 
+ # change WEAVE if you want a different version of noweave to be installed

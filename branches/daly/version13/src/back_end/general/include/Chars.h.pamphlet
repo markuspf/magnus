@@ -1,0 +1,159 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/Chars.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include <string.h>
+#include "RefCounter.h"
+#include "ObjectOf.h"
+
+@
+\section{Chars.h}
+Contents: Definition of Chars and CharsRep classes
+
+Chars is a char* which knows its length, wrapped up as a user class.
+\section{class CharsRep}
+<<class CharsRep>>=
+class CharsRep : public RefCounter
+{
+public:
+  CharsRep( );  // Gives empty string
+  CharsRep( const char* s );
+  CharsRep( char c );
+  CharsRep( const CharsRep& CR );
+  CharsRep( int num );
+  virtual ~CharsRep( );
+  int len( ) const { return length; }
+  const char* getChars( ) const { return theChars; }
+  
+   // for reference access
+  char& ref(int i);
+  
+  // for value access
+  char val(int i) const;
+  
+  CharsRep* clone( ) const { return new CharsRep( *this ); }
+  void concat( const char*, int len );
+  void readFrom(istream& istr);
+  virtual void write( ostream& ostr ) const;
+  virtual void read( istream& istr );
+
+private:
+  CharsRep operator = ( const CharsRep& );  // Hide this
+  int length;
+  char* theChars;
+  char special[2];
+  // To not use the heap even more in the special cases of the
+  // empty string, and the one char string.
+
+};
+
+@
+\section{class Chars}
+<<class Chars>>=
+class Chars : public ObjectOf<CharsRep>
+{
+public:
+  // copy constructor supplied by compiler.
+  Chars( ) : ObjectOf<CharsRep>( new CharsRep() ) { }  // Gives empty string
+  Chars( const char* s ) : ObjectOf<CharsRep>( new CharsRep(s) ) { }
+  Chars( const char c ) : ObjectOf<CharsRep>( new CharsRep(c) ) { }
+  Chars ( int num ) : ObjectOf<CharsRep>( new CharsRep(num) ) { }
+  // destructor supplied by compiler.
+  int length( ) const { return look()->len(); }
+  // assignment operator supplied by compiler.
+
+  inline friend int operator == ( const Chars& l, const Chars& r ) {
+    return ( ! strcmp(l.look()->getChars(), r.look()->getChars()) );
+  }
+
+  bool operator == ( const char * s) const {
+    return ! strcmp( look()->getChars(), s );
+  }
+ 
+  inline friend int operator != ( const Chars& l, const Chars& r ) {
+    return ( !(l == r) );
+  }
+
+  inline friend int operator != ( const Chars& l, const char* r ) {
+    return ( !(l == r) );
+  }
+  // op == and op != global to permit symmetric promotion of arguments.
+  
+  Chars operator + (const Chars&) const;
+  Chars operator + (const char*) const;
+  Chars operator + (char) const;
+  Chars& operator += (const Chars&);
+  Chars& operator += (const char*);
+  Chars& operator += (char);
+  operator const char*( ) const { return look()->getChars(); }
+  char operator [] ( int i ) const { return look()->val(i); }
+  char& operator [] ( int i ) { return change()->ref(i); }
+
+  friend ostream& operator << ( ostream& ostr, const Chars& C ) {
+    ostr << C.look()->getChars();
+    return ostr;
+  }
+  
+  friend istream& operator >> ( istream& istr, Chars& C ) {
+	 C.change()->readFrom(istr);
+	 return istr;
+  }
+  // This reads a whitespace-delimited string which cannot be
+  // longer than 2^15.
+
+  friend ostream& operator < ( ostream& ostr, const Chars& c )
+  {
+    c.look()->write(ostr);
+    return ostr;
+  }
+  
+  friend istream& operator > ( istream& istr, Chars& c )
+  {
+    c.change()->read(istr);
+    return istr;
+  }
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/Chars.h
+#ifndef _CHARS_H_
+#define _CHARS_H_
+ 
+<<license>>
+<<include>>
+<<class CharsRep>>
+<<class Chars>>
+
+Chars ordinalPostfix(int num);
+// returns ordinal postfix for given number, i.e. "st", "nd", "rd" or "th"
+
+Chars encodeSpaces( const Chars& s );
+// Encodes all spaces with escape char. The original escape char is encoded
+// with double escape.
+
+Chars decodeSpaces( const Chars& s );
+// Decodes string restoring spaces.
+
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,427 @@
+\documentclass[12pt]{article}
+
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{epsfig}
+
+\parindent=0pt
+\parskip=8pt
+
+
+\begin{document}
+
+\begin{center}
+\bf\LARGE MAGNUS' Package Mechanism:   \\ User manual
+\end{center}
+\medskip
+
+MAGNUS' Package Mechanism was developed to provide a simple and
+convenient way of integrating second party software into MAGNUS'
+graphical user interface.
+Integrated packages communicate with MAGNUS by writing simple
+messages to  the standard output and reading messages from the
+standard input.
+
+Packages are required to  understand simplified
+descriptions (representations) of algebraic  objects accepted in
+MAGNUS software package. The formats existing in MAGNUS were
+slightly changed in order to simplify parsing of the descriptions
+of objects sent to a package from MAGNUS.
+For example, many kinds of brackets are eliminated when sent to a
+package so that one can read definitions symbol by symbol.
+
+The following is a description of conventions used to represent 
+different objects in MAGNUS and in messages as well: 
+
+\textbf{ Algebraic objects:}
+\begin{enumerate}
+\item \textbf{Word}:
+There are a number of conventions concerning word notation.
+Generator names can be any letter, such as 
+\verb+a, b, ..., x, y, z+
+or any letter followed by a sequence of digits such as 
+\verb+a1, b23 +
+and so on. In putting generators together to form words, there
+must be white space between them unless other punctuation is
+used. The \verb+^+ is used to denote exponentiation. By default, the
+exponents are integers only.
+
+Example: \verb+a b^2 c c d^-4 a^3+
+
+{\em Note}: When sending a word definition to MAGNUS the
+following additional conventions are accepted: we allow \verb+a (b c)+
+in place of \verb+ a b c+. We sometimes use capital letters to denote
+inverses of generators. So the inverses of \verb+a, b, c11, ..+ are
+denoted by \verb+A, B, C11,...+ and also by \verb+a^-1, b^-1, c11^-1 +and so
+on.  The exponents are allowed to be group elements as well as
+integers, with \verb+a^b+ is defined to be the conjugate \verb+B a b+ of 
+\verb+a+ by \verb+b+.
+Thus \verb+ a^b = B a b = b^-1 a b+.
+
+Our convention is that \verb+^+ is left-associative. So 
+\verb+ a^b^2 = (a^b)^2+.
+
+We use square brackets to denote commutators:\\ 
+\verb+    [a,b]= a^-1 b^-1 a b = A B a b+.\\
+We then define, for $n > 2$, \\
+\verb+    [a1,a2,...,an]= [[a1,a2],a3,...,an]+.\\
+Thus multiple commutators are "left-normed".
+
+\item \textbf{Tuple} :
+Words in a tuple are separated  with
+commas and the list is enclosed in \{\}'s. For
+example:
+
+\verb+{a, a, a^2, b^a, a, b^2}+.
+
+
+\item \textbf{Subgroup} : 
+A subgroups is described by listing its generators, each such
+generator given by a word in the generators of the supergroup. We
+separate these words by commas. For example, the subgroup of a
+group with generators \verb+a+ and \verb+b+ generated 
+by \verb+a^2 b+ and \verb+[a,b]+ is
+described by
+
+\verb+    { a^2 b, a^-1 b^-1 a b }+
+
+
+\item \textbf{ Map}:
+To define a map from the generators
+\verb+{ x, y, ... }+
+of a group G to a group H with generators
+\verb+{ a, b, ... }+
+assign to each of \verb+x, y, ...+ its image as a word in the generators
+of $H$, enclosing the description by \verb+{}+'s. For example:
+\begin{verbatim}
+{
+  x -> a^b,
+  y -> b^-1
+}
+\end{verbatim}
+If you omit the image of a generator, Magnus assigns its image to
+be the identity.
+
+\item \textbf{Group} : 
+We use customary notation in describing a group by means of a
+presentation : $< x_1, ..., x_n ; r_1, ..., r_n>$, where $x_i$ -
+generators of a group ant $r_i$ - relators.
+
+In case of a free group, symbol ``;'' is ommited. Presentation of
+a nilpotent group starts with a nilpotency class, followed by a
+presentation in the form described above.
+
+Here are some examples of how to enter a presentation:
+
+\begin{verbatim}
+< x, y; x^2  y^3, x y x y >
+
+<a,b; a^-1 b^-1 a b >
+
+< b, t ; t b^2 t^-1 = b b b >
+
+< a,b,c,d,e>
+
+4 <a,b; a b c >
+\end{verbatim}
+\end{enumerate}
+
+
+Detailed description of the messages' format together with
+examples of their use are given below.
+
+\textbf{How to add a package}
+
+When MAGNUS is started, you will see ``Packages" item in the main
+menu. It has two sub-items: ``Add a package" and ``Edit the list of packages".
+
+When ``Add a package" menu is selected a Dialog Window (Figure
+\ref{fig:addwin}) will pop-up. This is the window where all
+information required to add a package is entered. There are 5
+fields that must be filled in:
+
+
+\begin{figure}[htbp]
+%\centerline{\epsfig{file=addwindow.eps}}
+\caption{``Add a new  package''  dialog window.}
+\label{fig:addwin}
+\end{figure}
+
+
+\begin{enumerate}
+\item \emph{Enter project name}: enter a name of the package. This
+string will appear as an item in the menu. There is a limit of
+20 characters.
+\item \emph{Command line}: enter the command which will invoke
+the package. You can type it in the text window or select an
+executable from the "Open File" dialog window by clicking
+"Browse" button. This field is limited to 128 characters.
+\item \emph{Select checkin type}: select the type of a group
+your package will work with. Together with selected algebraic
+objects, this field defines conditions for packages menu item to
+appear (see below for details).
+\item \emph{Select object}: select algebraic objects
+that your package will be applied to. When you  highlight
+selected in this field objects which also belong to a group of the
+type selected in the previous field the menu item for you package
+will appear in the ``Packages" menu. Then you can run the package
+by selecting corresponding menu item.
+\item \emph{Parameters}: You can define a list of parameters that
+can be edited and sent to the package before it is started. Press
+``Parameters" button for the ``List of parameters" dialog window. It is
+empty at the beginning. You can add a new parameter by pressing
+``Add" button. Two fields have to be filled: the {\em name} of the parameter
+which will appear as a parameter description in the package's
+problem window, and the parameter {\em type} (integer, text or boolean).
+\end{enumerate}
+
+
+The example in Figure \ref{fig:addwin} shows package named 
+\verb+Coset Enumerator (PEACE)+ 
+which is invoked with \verb+peace -h+ command (here we assume that 
+\verb+peace+ lies in the search path and so that the full path name is not 
+needed). 
+This package is applied to a ``Finitely Presented" group
+
+
+\textbf{Messages description}: 
+Usually communication between Magnus and an integrated package 
+starts by sending a description of selected objects and values
+of parameters (if necessary )  from Magnus to the package.
+After that, the package sends its output to Magnus using messages as
+specified below. Notice that if no special command precedes the output
+string, it will be shown in the linked file and its link is automatically 
+called ``Click here to see the details from \emph{package\_name}''.
+
+
+The following is a list of messages currently available for
+interchange between external packages and Magnus together with examples of
+their use.
+
+\textbf{From Magnus to a package}:
+
+The following describes messages Magnus can send to a package.
+All messages of this type are of the following format:
+\begin{quote}\em
+object\_description ( oid\_number )
+\end{quote}
+where \emph{object\_description} is a string which describes the
+object (group presentation, word definition and so on ) as
+described above. \emph{oid\_number} is a unique integer
+identifier, automatically assigned to each object created in the
+Magnus workspace. One can use \emph{oid\_number} to
+refer to a particular object, when sending messages to Magnus
+Session Manager (see below).
+
+\begin{enumerate}
+\item \textbf{Group}: MAGNUS sends a presentation of a group which 
+the package should read: \\
+ \emph{ group\_presentation ( oid ) }.\\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+\end{verbatim}
+\item \textbf{Nilpotent Group}: \\
+\emph{ nilpotency\_class group\_presentation   ( oid ) } \\
+Example:
+\begin{verbatim}
+5 <a,b,c,d ; a^2, b c > (3)
+\end{verbatim}
+\item \textbf{Word}:  \\
+ \emph{ group\_presentation ( oid ) } \\
+\emph{  word ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+a^-1 b^-1 a b; (12)
+\end{verbatim}
+\item \textbf{Subgroup} : \\
+ \emph{ group\_presentation ( oid ) } \\
+\emph{  subgroup\_generators ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+{a^-1 b^-1 a b, a^2 c^2}; (12)
+\end{verbatim}
+\item \textbf{Tuple} : \\
+ \emph{ group\_presentation ( oid ) } \\
+\emph{  words\_in\_tuple ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+{a^-1 b^-1 a b, a^2 c^2}; (12)
+\end{verbatim}
+\item \textbf{Map} : \\
+ \emph{ domain\_group\_presentation ( oid ) } \\
+ \emph{ range\_group\_presentation ( oid ) } \\
+\emph{  map  ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+<a,b,c,d ; a^2, b c > (3)
+{ a->b, b->c, c->d, d->a } (15)
+\end{verbatim}
+\item \textbf{Homomorphism} : \\
+ \emph{ domain\_group\_presentation ( oid ) } \\
+ \emph{ range\_group\_presentation ( oid ) } \\
+\emph{  homomorphism ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c > (0)
+<x,y,z > (3)
+{ a->x, b->y, c->z } (15)
+\end{verbatim}
+\item \textbf{Two words (w1,w2)} :  \\
+ \emph{ group\_presentation ( oid ) } \\
+\emph{  word\_w1 ; ( oid ) } \\
+\emph{  word\_w2 ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+a^-1 b^-1 a b; (12)
+a^-1; (11)
+\end{verbatim}
+\item \textbf{Two subgroups (H1,H2)} :  \\
+ \emph{ group\_presentation ( oid ) } \\
+\emph{  subgroup\_H1 ; ( oid ) } \\
+\emph{  subgroup\_H2 ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+{a^-1 b^-1,  a b }; (12)
+{a^-1, b}; (11)
+\end{verbatim}
+\item \textbf{Word and Subgroup (w,H)} :  \\
+ \emph{ group\_presentation ( oid ) } \\
+\emph{  subgroup\_H ; ( oid ) } \\
+\emph{  word\_w ; ( oid ) } \\
+Example:
+\begin{verbatim}
+<a,b,c,d ; a^2, b c > (3)
+{a^-1 b^-1,  a b }; (12)
+a^-1 (11)
+\end{verbatim}
+\item \textbf{Parameters} : \\
+\emph{Integer ( name ) (value) } \\
+\emph{String ( name ) (value) } \\
+\emph{Boolean ( name ) (value) } \\
+Example:
+\begin{verbatim}
+Integer (Maximal number of elements) (1000)
+Boolean (Enumerate all) (1)
+\end{verbatim}
+\end{enumerate}
+
+\textbf{ From Package to Magnus }
+\begin{enumerate}
+\item Output text into session log : \\
+\emph{Text \{ text \} } \\
+Example:
+\begin{verbatim}
+. . .
+printf(``Text { Package has started its work } \n'');
+. . .
+\end{verbatim}
+
+\item Create a link to a file : \\
+\emph{Link \{ link\_name , file\_name \} } \\
+Example:
+\begin{verbatim}
+. . .
+printf(``Link { Click to see some details , /tmp/detail_file } \n'');
+. . .
+\end{verbatim}
+\item Create a group object in the Workspace : \\
+\emph{Create Group \{ group\_presentation \} } \\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Group { <a,b,c,d ; a^2, b^3 c a > } \n'');
+. . .
+\end{verbatim}
+\item Create a word object for a group in the Workspace : \\
+\emph{Create Word \{ word $|$ group\_oid \} } \\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Word { a B c b | 3 } \n'');
+. . .
+\end{verbatim}
+\item Create a subgroup in the Workspace : \\
+\emph{Create Subgroup \{ list\_of\_subgroup\_generators $|$ group\_oid \} }\\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Subgroup { a b, b c , a d, c^7 | 5 } \n'');
+. . .
+\end{verbatim}
+\item Create a tuple in the Workspace : \\
+\emph{Create Tuple \{ words\_in\_tuple $|$ group\_oid \} }\\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Tuple { a b, b c , a d, c^7 | 5 } \n'');
+. . .
+\end{verbatim}
+\item Create a map : \\
+\emph{Create Map \{ map $|$ domain\_group\_oid $|$ range\_group\_oid \} }\\
+Example:
+\begin{verbatim}
+. . .
+printf(``Create Map { a - > x, b->y^2 | 8 | 14 } \n'');
+. . .
+\end{verbatim}
+\end{enumerate}
+
+
+Here is an example of a simple package which is written in Perl.
+It takes a word from Magnus and returns its $n$-th power where
+$n$ is a parameter to be specified.
+
+First the package is added to the ``Packages" menu in Magnus. The name,
+command to invoke the package, the type and the fact that an integer
+parameter is required are all entered via a dialog window.
+
+To use the package, check-in a finitely presented group and a word.
+With the word highlighted, select the package from the menu. Enter
+the power as a parameter via the menu in the ``Start" dialog window 
+that appears.
+
+Here is the Perl script which returns the appropriate results:
+
+\begin{verbatim}
+#!/usr/bin/perl
+
+#
+#  Expect 3 lines on STDIN as follows:
+#
+# <a, b, c ; a^2, b^3 c^-4 >  (5)       # presentation and its oid
+# a^-1 b^-1 a^2 b^3;  (12)              # word with its oid
+# Integer (power) (17)                  # power to be raised
+#
+
+$lineone = <STDIN>;
+@parts = split(/\D+/, $lineone);        # split line into numbers
+$groupoid = $parts[$#parts];            # oid = the last number
+
+$linetwo = <STDIN>;
+@parts = split(/;/,$linetwo);           # split line at semi-colon ;
+$theword = $parts[0];                   # initial part is the word
+
+$linethree = <STDIN>;
+@parts = split(/\D+/,$linethree);       # split line into numbers
+$power = $parts[$#parts];               # power = the last number
+
+print "Text {About to compute the ${power}-th power of $theword } \n";
+
+$powerstr = "";
+
+for ( $i = 0; $i < $power; $i++ ){
+   $powerstr = $powerstr." $theword";
+}
+
+print "Create Word {$powerstr | $groupoid } \n";
+\end{verbatim}
+
+\end{document}
+

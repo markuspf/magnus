@@ -1,0 +1,145 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/REnumerator.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SMEnumerator.h"
+#include "File.h"
+#include "Word.h"
+#include "SMFPGroup.h"
+#include "OutMessages.h"
+
+@
+\section{class NCEnumerateTotalARCer}
+<<class NCEnumerateTotalARCer>>=
+class NCEnumerateTotalARCer : public EnumeratorARCer
+{
+public:
+  NCEnumerateTotalARCer( ComputationManager& boss,const FPGroup& group ) 
+    : EnumeratorARCer( boss ), 
+      theGroup(group),
+      numberOfAll(100),
+      counter(0) { } 
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  // Inherited from EnumeratorARCer:
+  // void runComputation( );
+  void setTotalNumber(int n) { numberOfAll = n; }
+  Chars getFileName() { return file.getFileName(); }
+
+  void writeResults( ostream& ostr ) 
+    {
+      ostr < currentWord < counter;
+    }
+
+  void readResults( istream& istr) 
+    {
+      istr > currentWord > counter;
+    }
+  
+protected:
+  void enumerate();
+
+private:
+  FPGroup theGroup;
+  File file;
+  int numberOfAll;
+  Word currentWord;
+  int counter;
+};
+
+@
+\section{class NCEnumerateRandomARCer}
+<<class NCEnumerateRandomARCer>>=
+class NCEnumerateRandomARCer : public EnumeratorARCer
+{
+public:
+  NCEnumerateRandomARCer( ComputationManager& boss,const FPGroup& group ) 
+    : EnumeratorARCer( boss ), 
+    theGroup(group),
+    numberOfAll(100),
+    maxConjLength(100),
+    typeIsUniform( true ),
+    numberOfFactors( 10 ),
+    counter(0) { } 
+ 
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void setTotalNumber(int n) { numberOfAll = n; }
+  void setConjL(int n) { maxConjLength = n; }
+  void setNumOfFactors(int n) { numberOfFactors = n; }
+  void setTypeUniform() { typeIsUniform = true; }
+  void setTypeNormal() { typeIsUniform = false; }
+  Chars getFileName() { return file.getFileName(); }
+  // void runComputation( );
+  void writeResults( ostream& o ) { o < counter; }
+  void readResults( istream& i ) { i > counter; }
+
+protected:
+  Word getRelConj();
+  void enumerate();
+
+private:
+  FPGroup theGroup;
+  File file;
+  int numberOfAll;
+  int maxConjLength;
+  bool typeIsUniform;
+  int counter;
+  int numberOfFactors;
+  UniformRandom ur; 
+  NormalRandom nr; 
+};
+
+@
+\section{class NCRelatorEnumerator}
+<<class NCRelatorEnumerator>>=
+class NCRelatorEnumerator : public EnumeratorProblem< Word >
+{
+public:
+  NCRelatorEnumerator(SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  Chars getDataFileName() const;
+  void start( ) ;                // overrides ComputationManager  
+  void terminate( ) { }          // overrides ComputationManager
+  void resume( );                // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  EnumeratorARCer* arcer;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/REnumerator.h
+#ifndef _REnumerator_H_
+#define _REnumerator_H_
+
+<<license>>
+<<include>>
+<<class NCEnumerateTotalARCer>>
+<<class NCEnumerateRandomARCer>>
+<<class NCRelatorEnumerator>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

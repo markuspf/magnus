@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Equations/include/PermutationParser.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Permutation.h"
+
+@
+\section{class PermutationParser}
+We represent permutation by it's bottom row, i.e., { 3 1 2 }
+means 1 -> 3, 2 -> 1, 3 -> 2. It should be a list of integers
+separated by spaces and enclosed in braces. The list must define
+a permutation, i.e., it must be a list of integers without holes,
+contain no integer twice, contain no integer not in the range
+from 1 to the length of the list. Also, we assume that i -> i for
+all i greater than the length of the list.
+<<class PermutationParser>>=
+class PermutationParser
+{
+public:
+  PermutationParser(istream &str) : istr(str) { }
+  // Initialize the parser with the istream from which to read.
+    
+  Permutation parsePermutation( Chars& errMesg );
+  // Read permutation from istream; errMesg explain errors if any, or
+  // empty otherwise.
+
+  int cursorPos( ) const { return pos; }
+  // returns the current cursor position while parsing; useful
+  // when error has occured to show where the error was
+
+private:
+  istream& istr;  // istream from which to read
+  int pos;        // error position when possible
+
+  bool isDigit( char c );
+  // true if c is digit and not zero, i.e., 1..9
+
+  bool isSpace( char c );
+  // returns true if c is a space character or \t or \n
+
+  void eatWhite( );
+  // skips white space
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Equations/include/PermutationParser.h
+#ifndef _PermutationParser_h_
+#define _PermutationParser_h_
+
+<<license>>
+<<include>>
+<<class PermutationParser>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+

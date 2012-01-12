@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Utility class TietzeTrekker</TITLE>
+<META NAME="description" CONTENT="Utility class TietzeTrekker">
+<META NAME="keywords" CONTENT="manual">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="manual.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00314600000000000000">
+Utility class <TT>TietzeTrekker</TT></A>
+</H3>
+
+<P>
+<BR>
+<BR><EM>What and Where
+<BR>
+<BR></EM>
+
+<P>
+The class <TT>class TietzeTrekker</TT>
+<BR>
+is defined in <TT>magnus/back_end/Group/include/TietzeTrekker.h</TT>.
+<BR>
+<P>
+A TietzeTrekker is a wrapper for a BlackBox which invokes
+Frank Rimlinger's TietzeTrek with a group presentation.
+
+<P>
+<BR>
+<BR><EM>Special Notes
+<BR>
+<BR></EM>
+
+<P>
+Revision 1.2 is still in a state of flux.
+
+<P>
+Usage:
+
+<P>
+Instantiate a TietzeTrekker within, e.g., a FPGroup
+method by
+
+<P>
+<PRE>
+   TietzeTrekker( look() ) TT;
+</PRE>
+
+<P>
+Make sure that <TT>TT.sanityCheck()</TT> returns <TT>TRUE</TT>.
+There is now an asynchronous process associcated with <TT>TT</TT> which is
+continuously generating presentations, along with statements of
+certain facts (factoids) which can readily be deduced from certain
+presentations.
+Get the `next' presentation from <TT>getPresentation()</TT>.
+To be `notified' of any factoids, first call <TT>getFactoid</TT> (see comment
+thereon), then call <TT>knownTo*</TT>. If you don't like the answer, call
+<TT>getFactoid</TT> again, etc.
+
+<P>
+<BR>
+<BR><EM>Public Members
+<BR>
+<BR></EM>
+
+<P>
+
+  <TT>TietzeTrekker (const FPGroupRep&amp;)</TT>Constructor
+<BR>  <IMG
+ WIDTH="700" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+Fire up {\tt TietzeTrek} with the given ...
+...Passing a {\tt FPGroupRep} instead of a {\tt FPGroup}
+is a (temporary?) hack.
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>Bool sanityCheck( )</TT>Method
+<BR>  <IMG
+ WIDTH="558" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+Says whether this {\tt TietzeTrekker}
+thinks its initialization was successful.
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>Bool getFactoid(Bool <TT>queuePresentations</TT>, long <TT>giveUpLimit</TT> = 100)</TT>Method
+<BR>  <IMG
+ WIDTH="700" HEIGHT="98" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+The first argument says whether to save ...
+...up and returning.
+The return value says whether a new factoid was discovered.
+}$">
+<BR>
+<BR>
+
+<P>
+<BR>
+<BR>
+The following indicate what facts have been discovered so far by 0
+or more calls to <TT>getFactoid</TT> (<TT>FALSE</TT> means ``don't know (yet)''):
+<BR>
+<BR>
+
+<P>
+
+  <TT>Bool knownToBeTrivial( )</TT>Method
+<BR>  <IMG
+ WIDTH="4" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>Bool knownToBeCyclic( )</TT>Method
+<BR>  <IMG
+ WIDTH="4" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>Bool knownToHaveFreeFactor( )</TT>Method
+<BR>  <IMG
+ WIDTH="4" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>Bool knownToBeFinite( )</TT>Method
+<BR>  <IMG
+ WIDTH="4" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>Bool knownToBeFree( )</TT>Method
+<BR>  <IMG
+ WIDTH="4" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>int getOrder( )</TT>Method
+<BR>  <IMG
+ WIDTH="700" HEIGHT="73" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+Returns the order of the group in \lq stand...
+...r is -1, you can
+call {\tt getFactoid} (again) for another throw of the dice.
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>int getRank( )</TT>Method
+<BR>  <IMG
+ WIDTH="700" HEIGHT="52" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+Returns the rank of the group AFTER {\tt...
+...\tt TRUE}.
+It is a fatal error if this is called when {\tt !knownToBeFree()}.
+}$">
+<BR>
+<BR>
+
+<P>
+
+  <TT>FPGroup getPresentation( )</TT>Method
+<BR>  <IMG
+ WIDTH="700" HEIGHT="56" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.gif"
+ ALT="$\textstyle \parbox{\memberdescrwidth}{
+Returns another presentation of the fini...
+...used to instantiate this {\tt TietzeTrekker}, in the form
+of a {\tt FPGroup}.
+}$">
+<BR>
+<BR>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

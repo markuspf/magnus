@@ -1,0 +1,16 @@
+   i   a   b   A   B   a2   ba   ab   Ba   Ab   bA   aB   BA   AB   B2
+i  i   a   b   A   B   a2   ba   ab   Ba   Ab   bA   aB   BA   AB   B2
+a  a   a2  ab  i   aB  a3   ba2  aba  Ba2  Aba  b    aBa  B    ABa  B2a
+b  b   ba  b2  bA  i   a2b  bab  ab2  Bab  Ab2  bAb  a    BAb  A    B
+A  A   i   Ab  A2  AB  a    b    abA  B    AbA  bA2  aBA  BA2  ABA  B2A
+B  B   Ba  i   BA  B2  a2B  baB  a    BaB  A    bAB  aB2  BAB  AB2  B3
+a2 a2  a3  ba2 a   Ba2 a4   ba3  aba2 Ba3  Aba2 ba   aBa2 Ba   ABa2 B2a2
+ba ba  aba b2a Aba a   a2ba baba abba Baba Abba bAba aBba BAba ABba B2ba
+ab ab  a2b bab b   Bab a3b  ba2b abab Baab Abab bAab aBab BAab ABab B2ab
+Ba Ba  aBa a   ABa B2a a2Ba baBa abBa BaBa AbBa bABa aBBa BABa ABBa B2Ba
+Ab Ab  b   bAb A2b BAb ab   b2   abAb BaAb AbAb bAAb aBAb BAAb ABAb B2Ab
+bA bA  abA b2A AbA A   a2bA babA abbA BabA AbbA bAbA aBbA BAbA ABbA B2bA
+aB aB  a2B baB B   BaB a3B  ba2B abaB BaaB AbaB bAaB aBaB BAaB ABaB B2aB
+BA BA  aBA A   ABA B2A a2BA baBA abBA BaBA AbBA bABA aBBA BABA ABBA B2BA
+AB AB  B   bAB A2B BAB aB   i    abAB BaAB AbAB bAAB aBAB BAAB ABAB B2AB
+B2 B2  aB2 B   AB2 B3  a2B2 baB2 abB2 BaB2 AbB2 bAB2 aBB2 BAB2 ABB2 B2B2

@@ -1,0 +1,1509 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>fullAnalysis</TITLE>
+<META NAME="description" CONTENT="fullAnalysis">
+<META NAME="keywords" CONTENT="fullAnalysis">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="fullAnalysis.css">
+
+</HEAD>
+
+<BODY >
+<DIV ALIGN="CENTER">
+<B>THE FULL DATA ANALYSIS TOOL</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+The <B>Full Data Analysis Tool</B> will calculate all the basic descriptive measures for a given
+data set.  The measures included are the <B>mean, variance, standard deviation,median, range,
+first quartile, third quartile, measure of skewness</B> and <B>number of measurements</B>.  A
+description of each of these is given below.  Clicking on any of these objects in the full data
+analysis output box will bring up the description of that measure.
+
+<P>
+A full statistical analysis of a one variable data set involves computing from the data set various
+<B>statistical measures</B> or <B>statistical descriptions</B>. These <B>Statistical Measures</B> are
+numbers which can be applied to either populations or samples {usually computed for samples}
+which provide information about the population or sample.
+
+<P>
+The statistical measures which will be used can either be descriptions of whole populations or
+descriptions of samples.  Descriptions of whole populations are called <B>parameters</B> while descriptions of samples are called <B>statistics</B>.  
+
+<P>
+Generally the statistical analyst is interested in descriptions of whole populations, that is <B>parameters</B>. However it is usually impossible or impractical to observe and measure the
+whole population.  Hence measures of samples, that is <B>statistics</B> are computed.  These 
+statistics  should be considered as <B>estimators</B> of the parameters.  In a numerical framework
+the whole statistical inference procedure can be described as:
+
+<P><P>
+<BR>
+
+<P>
+<B>Statistical Inference</B> - using statistics (meaning descriptions of samples) which have been
+computed on collected data, to obtain conclusions about parameters (meaning descriptions of
+populations). 
+<P><P>
+<BR>
+
+<P>
+From the above discussion it is clear that the study of Statistics is generally broken up into
+two areas.
+
+<P><P>
+<BR>
+
+<P>
+<B>DESCRIPTIVE STATISTICS</B>  - study of descriptive measures and their interpretations for both
+samples and populations.
+
+<P><P>
+<BR>
+
+<P>
+<B>INFERENTIAL STATISTICS</B> - study of the procedures used to go from descriptive statistics on
+samples to inferences about populations. 
+
+<P><P>
+<BR>
+
+<P>
+In addition to distinguishing between parameters and statistics, the statistical measures that 
+will used can be further classified into two broad categories - <B>measures of location</B> and 
+<B>measures of variation</B>.  <B>Measures of location</B> locate positions - for example the center
+- in the data.  For example the <B>average</B> or <B>mean</B> is a measure of location.  <B>Measures
+of variation</B> then give a measure of how the data varies about some measure of location.  It must be
+realized that a statistical analysis is <B>not complete without including both measures of
+location and measures of variation</B>.  
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B> THE MEAN OF A ONE VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+The <B>mean</B> or <B>average</B> is a measure of central tendency for a continuous data set. This
+measure can either be computed for a population or for a sample.  The <B>sample mean</B> is denoted
+<!-- MATH
+ $\overline{X}$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.gif"
+ ALT="$ \overline{X}$"> while a population mean is denoted <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">.  For a given set of data <!-- MATH
+ $\overline{X}$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.gif"
+ ALT="$ \overline{X}$">
+should be considered as an estimate for the corresponding <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">.  
+
+<P>
+For a given data set
+<!-- MATH
+ \begin{displaymath}
+X_1,...,X_n
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="74" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.gif"
+ ALT="$\displaystyle X_1,...,X_n$">
+</DIV><P></P>
+the sample mean is computed by adding up all the data and dividing by the total number of data
+points.  Symbolically this is given by
+<!-- MATH
+ \begin{displaymath}
+\overline{X} = \frac{\sum_{i=1}^n X_i}{n}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="103" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$\displaystyle \overline{X} = \frac{\sum_{i=1}^n X_i}{n} $">
+</DIV><P></P>
+
+<P>
+The mean conveys a great deal of information.  First
+of all it is a <B>central value</B>.  This signifies that the mean will be located towards the
+center of the data.  As will be seen shortly the mean balances the total value above it and below
+it.  Secondly it is a <B>clustering value</B>.  This indicates that the measurements tend to cluster
+about the average.  The actual extent of this clustering can be measured in terms of measures of
+variation. In line with this idea of clustering we would say that the mean is an <B>expected
+value</B>.  That is, if a value is picked randomly from a set of data we would expect it to be close
+to the mean.  This concept is used quite often in the way many everyday occurrences are viewed. 
+For example if a basketball player averages 24 points per game then the value we would expect this
+player to score in his next game would be 24.   Finally the mean has the
+mathematical significance that the <B>deviations</B> from the mean sum to zero.  This is the
+technical way of describing  that the mean balances the total value above and below it.  A
+deviation of a measurement <IMG
+ WIDTH="23" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$ X_i$"> from the mean is the difference <!-- MATH
+ $X_i - \overline {X}$
+ -->
+<IMG
+ WIDTH="57" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$ X_i - \overline {X}$">.  Thus a
+deviation is positive if the measurement is larger than the mean and negative if it is smaller than
+the mean.  That the sum of these is always zero can be expressed as ;
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\sum_{i=1}^n (X_i - \overline{X}) = 0
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="121" HEIGHT="60" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.gif"
+ ALT="$\displaystyle \sum_{i=1}^n (X_i - \overline{X}) = 0$">
+</DIV><P></P>
+
+<P>
+<B>EXAMPLE</B> Suppose the sample data
+consisted of the five measurements 86,81,73,85,80 then the mean would be computed as 
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\overline {X} = \frac{86+73+81+85+80}{5} = 81 .
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="242" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$\displaystyle \overline {X} = \frac{86+73+81+85+80}{5} = 81 .$">
+</DIV><P></P>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>THE VARIANCE AND STANDARD DEVIATION OF A</B></DIV>
+<DIV ALIGN="CENTER">
+<B>ONE VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+The <B>variance </B> and its squareroot the <B>standard deviation</B> are the fundamental measures
+of variation for a continuous data set. These measures can either be computed for a
+population or for a sample.  The <B>sample standard deviation</B> is denoted <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> while the
+population standard deviation is denoted <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \sigma$">. <IMG
+ WIDTH="22" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ S^2$"> and <IMG
+ WIDTH="21" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.gif"
+ ALT="$ \sigma^2$"> respectively are the
+sample variance and population variance.  For a given set of data <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> should be
+considered as an estimate for the corresponding <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \sigma$">.  
+
+<P>
+The <B>sample standard deviation</B> <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> is defined by the following formula:
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+S = \sqrt{\frac{\sum_{i=1}^n (X_i - \overline{X})^2}{n-1}}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="166" HEIGHT="72" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$\displaystyle S = \sqrt{\frac{\sum_{i=1}^n (X_i - \overline{X})^2}{n-1}} $">
+</DIV><P></P>
+
+<P><P>
+<BR>
+
+<P>
+In the formula, <!-- MATH
+ $X_1,....,X_n$
+ -->
+<IMG
+ WIDTH="78" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ X_1,....,X_n$"> are the sample data and <!-- MATH
+ $\overline{X}$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.gif"
+ ALT="$ \overline{X}$"> is the sample mean. The
+standard deviation is a type of average of squared deviations from the mean and therefore measures
+dispersion about the mean.
+
+<P>
+If <!-- MATH
+ $X_1,....,X_n$
+ -->
+<IMG
+ WIDTH="78" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.gif"
+ ALT="$ X_1,....,X_n$"> are all the measurements in a population and <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$"> is the population
+mean then the population standard deviation <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \sigma$"> is 
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\sigma = \sqrt{\frac{\sum_{i=1}^n (X_i - \mu)^2}{n}} .
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="164" HEIGHT="63" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.gif"
+ ALT="$\displaystyle \sigma = \sqrt{\frac{\sum_{i=1}^n (X_i - \mu)^2}{n}} .$">
+</DIV><P></P>
+
+<P><P>
+<BR>
+
+<P>
+Why we divide by <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ n-1$"> rather than <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ n$"> can be explained as follows. Generally <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> is used to
+estimate <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \sigma$"> just as <!-- MATH
+ $\overline{X}$
+ -->
+<IMG
+ WIDTH="19" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.gif"
+ ALT="$ \overline{X}$"> is used to estimate the population mean <IMG
+ WIDTH="14" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.gif"
+ ALT="$ \mu$">. The fact
+that <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> is used to estimate <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.gif"
+ ALT="$ \sigma$"> is the reason why we divide by <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ n-1$"> rather than <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ n$"> in the
+formula.  Technically this is to make the sample variance <IMG
+ WIDTH="22" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ S^2$"> an unbiased estimator for the
+population variance, that is so that <IMG
+ WIDTH="22" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.gif"
+ ALT="$ S^2$"> will average out over all possible samples to the
+population variance.  Non-technically the reason why we divide by <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ n-1$"> can be explained in the
+following manner.  If the data <!-- MATH
+ $X_1,...,X_n$
+ -->
+<IMG
+ WIDTH="74" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$ X_1,...,X_n$"> consisted of the whole population we would divide by
+<IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ n$">. Generally, however,there will be more variation in a whole population
+than in a sample. If we divide by <IMG
+ WIDTH="14" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.gif"
+ ALT="$ n$"> with sample data we will generally underestimate the
+population variation.  Dividing by <IMG
+ WIDTH="41" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.gif"
+ ALT="$ n-1$"> makes the estimate larger, and in fact just large enough
+so that it will average out to the population variation.     
+
+<P>
+The standard deviation measures how closely a set of data clusters about its mean.  However it can
+be used to give even more information.  Using the standard deviation we can actually predict what
+percentages of the total data or population will fall into prescribed intervals about the mean.  
+
+<P>
+There are two results which allow us to do this type of percentage prediction.  The first of these
+is known as <B>Chebyshev's Rule</B>  or <B>Chebyshev's Theorem</B> after the Russain mathematician
+P.Chebyshev who first discovered it.  It is a mathematical theorem and therefore is true for any
+set of data and for any population.  The rule is as follows:
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom {xxxx}$
+ -->
+<IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.gif"
+ ALT="$ \hphantom {xxxx}$"> <B>CHEBYSHEV'S RULE:</B>
+
+<P>
+If <IMG
+ WIDTH="42" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$ k &gt; 1$"> then at least <!-- MATH
+ $1 - \frac{1}{k^2}$
+ -->
+<IMG
+ WIDTH="49" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ 1 - \frac{1}{k^2}$"> of the total data fall within <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ k$"> standard deviations
+of the mean.
+
+<P><P>
+<BR>
+
+<P>
+In the above statement, <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ k$"> is a number and the rule leads to a fraction <!-- MATH
+ $1-\frac{1}{k^2}$
+ -->
+<IMG
+ WIDTH="49" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$ 1 - \frac{1}{k^2}$">.  This
+fraction indicates a guaranteed fraction of the data which will be found within the interval given
+by the mean minus <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ k$"> standard deviations to the mean plus <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.gif"
+ ALT="$ k$"> standard deviations. Chebyshev's
+Theorem is true for both samples and populations.  For <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$ k = 2$"> the corresponding fraction is
+<!-- MATH
+ $\frac{3}{4}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \frac{3}{4}$"> and hence within two standard deviations of the mean there are always at least
+<!-- MATH
+ $\frac{3}{4}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$ \frac{3}{4}$"> of all the data.  For <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.gif"
+ ALT="$ k = 3$"> the corresponding fraction is <!-- MATH
+ $\frac{8}{9}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ \frac{8}{9}$"> and hence
+within three standard deviations of the mean there are always at least <!-- MATH
+ $\frac{8}{9}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ \frac{8}{9}$"> of all the
+data.  We picture this below.
+
+<P>
+
+<P></P>
+
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="405" HEIGHT="173" ALIGN="MIDDLE" BORDER="0"
+ SRC="appImg1.gif"
+ > </DIV>
+
+<P></P>
+
+<DIV ALIGN="CENTER">
+Chebyshev's Rule for <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$ k = 2$"> and <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.gif"
+ ALT="$ k = 3$"></DIV>
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 
+
+<P>
+Suppose a medical study has an average weight of <IMG
+ WIDTH="32" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ 14.2$"> grams with a
+process standard deviation of 1.6 grams for certain tissue samples.  If <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$ k = 2$"> then two standard
+deviations would be <!-- MATH
+ $(2)(1.6) = 3.2$
+ -->
+<IMG
+ WIDTH="99" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.gif"
+ ALT="$ (2)(1.6) = 3.2$"> grams.  Therefore a two standard deviation interval about the
+mean would be <!-- MATH
+ $14.2 \pm 3.2$
+ -->
+<IMG
+ WIDTH="72" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.gif"
+ ALT="$ 14.2 \pm 3.2$"> grams or equivalently <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ 11.0$"> grams to <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ 17.4$"> grams.  Using Chebyshev's
+rule with <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.gif"
+ ALT="$ k = 2$"> it would then be predicted that at least 
+<!-- MATH
+ $1 - \frac{1}{2^2} =   1-\frac{1}{4} = \frac{3}{4}$
+ -->
+<IMG
+ WIDTH="138" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.gif"
+ ALT="$ 1 - \frac{1}{2^2} = 1-\frac{1}{4} = \frac{3}{4}$"> of all the tissue samples would fall within
+this interval.   Therefore at least 75% of the tissue samples would be between <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.gif"
+ ALT="$ 11.0$"> grams and
+<IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ 17.4$"> grams.  Similarly if <IMG
+ WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.gif"
+ ALT="$ k = 3$"> then three standard deviations would be <!-- MATH
+ $(3)(1.6) = 4.8$
+ -->
+<IMG
+ WIDTH="99" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.gif"
+ ALT="$ (3)(1.6) = 4.8$">
+grams.  The corresponding three standard deviation interval about the mean would then be <IMG
+ WIDTH="24" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ 9.4$">
+grams to <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ 19.0$"> grams.  The corresponding fraction from Chebyshev's rule is <!-- MATH
+ $1 - \frac{1}{3^2} =
+\frac{8}{9}$
+ -->
+<IMG
+ WIDTH="79" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.gif"
+ ALT="$ 1 - \frac{1}{3^2} =
+\frac{8}{9}$">.  Therefore <!-- MATH
+ $\frac{8}{9}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.gif"
+ ALT="$ \frac{8}{9}$"> or 89% of the tissue samples would weigh in the interval
+<IMG
+ WIDTH="24" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.gif"
+ ALT="$ 9.4$"> grams to <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.gif"
+ ALT="$ 19.0$"> grams.  This is pictured graphically below
+
+<P>
+
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="398" HEIGHT="160" ALIGN="MIDDLE" BORDER="0"
+ SRC="appImg2.gif"
+ > </DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+Chebyshev's Rule for Tissue Samples</DIV>
+
+<P><P>
+<BR>
+
+<P>
+Usually, Chebyshev's rule underpredicts the percentage within a given interval.  That is the
+actual percentage is higher than what is predicted by the rule.  For example by Chebyshev's rule
+we would predict that at least 75% of all the data fall within a two standard deviation interval
+about the mean.  In practice, however, for most cases there will be closer to 96% in a two
+standard deviation interval.  Looking at the data below which again comes from the collection of
+pediatric weights this underprediction shows up very clearly.
+
+<P>
+EXAMPLE 
+
+<P>
+For the data on pediatric weights given in Example 2.2.1 the mean was computed to be
+<!-- MATH
+ $\overline{X} = 151.17$
+ -->
+<IMG
+ WIDTH="84" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.gif"
+ ALT="$ \overline{X} = 151.17$"> while the sample standard deviation was <IMG
+ WIDTH="72" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img38.gif"
+ ALT="$ S = 17.81$">.  The table below lists
+various intervals about the mean in terms of the sample standard deviation and then a comparison
+of what would be predicted by Chebyshev's rule (which must be true) together with the actual
+observed percentage.
+
+<P>
+
+<P></P>
+<!-- MATH
+ $\hphantom{xxxxxx}k\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.gif"
+ ALT="$ \hphantom{xxxxxx}k\hphantom{xxx}$">Interval<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">Chebyshev<!-- MATH
+ $\hphantom{xxxxx}$
+ -->
+<IMG
+ WIDTH="50" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.gif"
+ ALT="$ \hphantom{xxxxx}$">Actual   
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxx}$
+ -->
+<IMG
+ WIDTH="59" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.gif"
+ ALT="$ \hphantom{xxxxxx}$">2<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">115.6-186.8<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">at least 75%<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">98%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxx}$
+ -->
+<IMG
+ WIDTH="59" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.gif"
+ ALT="$ \hphantom{xxxxxx}$">3<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">97.7-204.6<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">at least 89%<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">100%
+
+<P>
+<!-- MATH
+ $\hphantom{xxxxxx}$
+ -->
+<IMG
+ WIDTH="59" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.gif"
+ ALT="$ \hphantom{xxxxxx}$">4<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">79.9-222.4<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">at least 94%<!-- MATH
+ $\hphantom{xxx}$
+ -->
+<IMG
+ WIDTH="31" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.gif"
+ ALT="$ \hphantom{xxx}$">100%
+
+<P><P>
+<BR>
+
+<P>
+A more accurate percentage prediction can be obtained from what is known as the <B>Empirical
+Rule</B>.  This is a rule which has been observed experimentally and is based theoretically on the
+<B>normal distribution</B>.  The drawback to using
+this rule is that it can only be applied with confidence if there is a "large" number of
+measurements and these measurements are "fairly" symmetrical.  What is meant by "large" is that
+the predictions based on the empirical rule become more accurate as the number of measurements
+increases.  Thus our confidence in predictions made using the empirical rule increases with the
+number of observed measurements.  The empirical rule is as follows:
+
+<P><P>
+<BR>
+
+<P>
+<!-- MATH
+ $\hphantom{xx}$
+ -->
+<IMG
+ WIDTH="22" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.gif"
+ ALT="$ \hphantom{xx}$"> <B>EMPIRICAL RULE:</B>
+
+<P>
+In a "large" set of fairly symmetrical measurements approximately 68% fall within one standard
+deviation of the mean, 96% fall within two standard deviations of the mean and over 99% fall
+within three.
+
+<P><P>
+<BR>
+
+<P>
+If the data is completely symmetrical we obtain a finer percentage breakdown as pictured below:
+
+<P>
+
+<P></P>
+
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="467" HEIGHT="86" ALIGN="MIDDLE" BORDER="0"
+ SRC="appImg3.gif"
+ > </DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+ Empirical Rule</DIV>
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 
+
+In the previous exmaplethere was a tissue sample average weight of <IMG
+ WIDTH="32" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ 14.2$">
+grams with a  standard deviation of <IMG
+ WIDTH="24" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img44.gif"
+ ALT="$ 1.6$"> grams.  A predicted statistical breakdown of tissue
+sample weights based on the empirical rule would be given as below.
+
+<P>
+
+<P></P>
+
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="460" HEIGHT="74" ALIGN="MIDDLE" BORDER="0"
+ SRC="appImg4.gif"
+ > </DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+Figure 2.6.4 Empirical Rule for Tissue Samples</DIV>
+
+<P><P>
+<BR>
+
+<P>
+That is 34% of all the tissue sample should weigh between <IMG
+ WIDTH="32" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.gif"
+ ALT="$ 14.2$"> grams and <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img45.gif"
+ ALT="$ 15.8$"> grams, 14%
+between <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img45.gif"
+ ALT="$ 15.8$"> grams and <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.gif"
+ ALT="$ 17.4$"> grams and so on.  In using the empirical rule in this case we
+would have to assume that tissue sample weight is symmetrical.  This is usually the case with most
+biological data.  
+
+<P>
+From the empirical rule we have that 96% of a set of measurements fall within two standard
+deviations of the mean while 99% will fall within three.  Therefore in the first case 96% of the
+data will fall within a range of four standard deviations  (two on either side of the mean) while
+in the second 99% will fall within a range of six standard deviations (three on either side of the
+mean).  It follows that for most large sets of data the range <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.gif"
+ ALT="$ R$"> of this data will be between <IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img47.gif"
+ ALT="$ 4$">
+and <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.gif"
+ ALT="$ 6$"> times the magnitude of the standard deviation. This relationship can be used to give a
+rough estimate of the standard deviation.  <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> would be estimated as being between <!-- MATH
+ $\frac{R}{6}$
+ -->
+<IMG
+ WIDTH="18" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.gif"
+ ALT="$ \frac{R}{6}$">
+and <!-- MATH
+ $\frac{R}{4}$
+ -->
+<IMG
+ WIDTH="18" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.gif"
+ ALT="$ \frac{R}{4}$"> where <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.gif"
+ ALT="$ R$"> is the range. 
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+\frac{R}{6} \le S \le \frac{R}{4} \text { for most large data sets}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="89" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.gif"
+ ALT="$\displaystyle \frac{R}{6} \le S \le \frac{R}{4}$">
+
+</DIV><P></P>
+
+<P>
+ for most large data sets
+<P>
+<BR>
+
+<P>
+EXAMPLE 
+
+<P>
+A sample of <IMG
+ WIDTH="28" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img53.gif"
+ ALT="$ 300$"> ball bearings had a range of <IMG
+ WIDTH="32" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img54.gif"
+ ALT="$ 0.13$"> cm in measuring the diameter.  Estimate the
+standard deviation. 
+
+<P>
+From the discussion above <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> would be estimated to be between <!-- MATH
+ $\frac{0.13}{6} = .0217$
+ -->
+<IMG
+ WIDTH="88" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.gif"
+ ALT="$ \frac{0.13}{6} = .0217$"> and
+<!-- MATH
+ $\frac{0.13}{4} = .0325$
+ -->
+<IMG
+ WIDTH="88" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img56.gif"
+ ALT="$ \frac{0.13}{4} = .0325$">. 
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B> THE RANGE A ONE VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+The simplest measure of variation for a one variable data set is the <B>range</B>. This is denoted
+by <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.gif"
+ ALT="$ R$"> for both a population and a sample.  The range is defined as the difference between the
+largest value in a set of data and the smallest value.  That is ; 
+<P></P>
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+R  =  \text {Range  =  (Largest - Smallest)}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="33" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img57.gif"
+ ALT="$\displaystyle R =$"><IMG
+ WIDTH="222" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img58.gif"
+ ALT="$\displaystyle \text {Range = (Largest - Smallest)} $">
+</DIV><P></P>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+Suppose that in a sample of pediatric weights the largest weight was 188
+and the smallest weight was 111.   It follows that the range was R = (188 - 111) = 77.  
+
+<P>
+Clearly the larger the range the more dispersed the data is.  However the range does not provide a
+great deal of information and therefore a more powerful and useful measure is used. 
+
+<P>
+The most commonly used measure of variation and the one from which the most information can be
+obtained is the <B>standard deviation</B> (see standard deviation).  
+
+<P>
+Based on the empirical rule ( and the normal distribution) it occurs that for most large samples the
+sample range <IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.gif"
+ ALT="$ R$"> is between four and six times the magnitude of the standard deviation <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> (see
+standard deviaiton).  That is for a large sample most of the time we would have
+
+<P>
+<!-- MATH
+ \begin{displaymath}
+4 \le \frac{R}{S} \le 6 \implies \frac{R}{6} \le S \le \frac{R}{4}
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="164" HEIGHT="51" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.gif"
+ ALT="$\displaystyle 4 \le \frac{R}{S} \le 6 \implies \frac{R}{6} \le S \le \frac{R}{4} $">
+</DIV><P></P>
+
+<P>
+This gives a convenient method for determining a rough estimate of the size of <IMG
+ WIDTH="15" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.gif"
+ ALT="$ S$"> for a large
+sample.  We illustrate this from a collection of pediatric weights.
+
+<P>
+EXAMPLE 
+
+<P>
+Consider the 60 pediatric weights which have a range of  <IMG
+ WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.gif"
+ ALT="$ R = 77$">.  The
+standard deviation would then be estimated as being between <!-- MATH
+ $\frac{R}{6} = \frac{77}{6} = 12.83$
+ -->
+<IMG
+ WIDTH="113" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.gif"
+ ALT="$ \frac{R}{6} = \frac{77}{6} = 12.83$">
+and <!-- MATH
+ $\frac{R}{4} = \frac{77}{4} = 19.25$
+ -->
+<IMG
+ WIDTH="113" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.gif"
+ ALT="$ \frac{R}{4} = \frac{77}{4} = 19.25$">.
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B> THE MEDIAN OF A ONE VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+The <B>median</B> is another measure of central tendency for a continuous data set. This
+measure can either be computed for a population or for a sample.  The <B>sample median</B> is denoted
+<!-- MATH
+ $\overset \sim \to {X}$
+ -->
+<IMG
+ WIDTH="10" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img63.gif"
+ ALT="$ \overset \sim \to {X}$"> while a population median is denoted <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img64.gif"
+ ALT="$ M$">.  For a given set of data
+<!-- MATH
+ $\overset \sim \to {X}$
+ -->
+<IMG
+ WIDTH="10" HEIGHT="22" ALIGN="BOTTOM" BORDER="0"
+ SRC="img63.gif"
+ ALT="$ \overset \sim \to {X}$"> should be considered as an estimate for the corresponding <IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img64.gif"
+ ALT="$ M$">.  
+
+<P>
+The <B>median</B> of a set of data is the value so that 50% of the measurements are less than or
+equal to it.  Thus the median can be interpreted as the exact middle value.  To compute the
+median, the data must first be arranged in ascending order.  After this is done the middle value is
+located.  There are two differing situations in locating the median for samples - if there are an
+odd number of measurements or an even number of measurements.  In the former case the median is
+chosen as the exact middle value while  in the latter case the median is taken as the average of
+the two middle most values.  We illustrate this distinction in the next two examples.
+
+<P><P>
+<BR>
+
+<P>
+EXAMPLE 
+
+<P>
+Consider the data 86,73,81,85,80 and let us compute the median.
+
+<P></P>
+We first arrange the data in ascending order
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{XXXXXXXXX}$
+ -->
+<IMG
+ WIDTH="134" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img65.gif"
+ ALT="$ \hphantom{XXXXXXXXX}$"> 73, 80,  81,  85,  86 
+
+<P>
+
+<P></P>
+
+<P>
+Here there are an odd number of measurements and therefore an exact middle value which is 81.
+Thus here the median is 81. This is a sample median so here <!-- MATH
+ $\overset \sim \to {X} =81$
+ -->
+<IMG
+ WIDTH="88" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img66.gif"
+ ALT="$ \overset \sim \to {X} =81$">. 
+
+<P>
+EXAMPLE 
+
+<P>
+Consider the data 86,73,81,85,80, 82  and let us compute the median.
+
+<P></P>
+
+<P>
+In ascending order we have
+
+<P></P>
+
+<P>
+<!-- MATH
+ $\hphantom{XXXXXXXXX}$
+ -->
+<IMG
+ WIDTH="134" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img65.gif"
+ ALT="$ \hphantom{XXXXXXXXX}$">73, 80,  81, 82,  85,  86
+
+<P>
+
+<P></P>
+
+<P>
+Here there are an even  number of measurements and therefore no exact middle value.   
+Thus here the median is computed as the average of the two middle values which are 81 and 82. 
+Then    
+<!-- MATH
+ \begin{displaymath}
+\overset \sim \to {X} = \frac{81+82}{2}  =  81.5.
+\end{displaymath}
+ -->
+<P></P>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="182" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img67.gif"
+ ALT="$\displaystyle \overset \sim \to {X} = \frac{81+82}{2} = 81.5.$">
+</DIV><P></P>
+
+<P>
+If there are an odd number of measurements, say n of them, then there is an exact middle value. 
+If the data is arranged in ascending order this exact middle value is located in the
+<!-- MATH
+ $\frac{n+1}{2}$
+ -->
+<IMG
+ WIDTH="32" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img68.gif"
+ ALT="$ \frac{n+1}{2}$"> position.  In the first example there were 5 measurements so the position of the
+median was the (5+1 /2) = 3 rd measurement.  If there had been 75 measurements the median would
+have been located in the 38 th position.  If there are an even number of measurements the median
+is the average of the two middle values.  If n is even these are the values in the <!-- MATH
+ $\frac{n}{2}$
+ -->
+<IMG
+ WIDTH="16" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img69.gif"
+ ALT="$ \frac{n}{2}$"> nd
+and <!-- MATH
+ $\frac{n}{2}+1$
+ -->
+<IMG
+ WIDTH="43" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img70.gif"
+ ALT="$ \frac{n}{2}+1$">st positions.  In the second example  there were 6 measurements so the median
+was the average of the third and fourth.  If there were 80 measurements the median would be the
+average of the 40 th and 41 st after arranging in order. 
+
+<P>
+The median has much the same significance as the mean - a central clustering value.  It is not as
+heavily affected by extreme values as the mean but it can be shown that it is not as "reliable"
+either.  That is there is in general more variation in medians of samples drawn from a large
+population than in means of samples drawn from the same population - assuming the same sample
+sizes are used.  For this reason most statistical analyses will use the mean as the primary
+measure of central tendency.  The median is used when there are extreme outliers.
+
+<P>
+The relationship between the mean and the median is governed by the symmetry of the data (see
+measures of skewness). An important characteristic of a population is its symmetry   or  lack of
+symmetry .  A lack of symmetry is called skew.  Many inferential statistical
+procedures depend on the data being fairly symmetrical and therefore the presence of skew becomes
+an important concept. The relationship betwen the mean and median can be used to describe these
+concepts.
+
+<P>
+If the population (or data) is symmetrical or balanced there is no skew.  In this case the mean
+and median are approximately equal. Data which has a longer tail to the right hand side is called 
+skewed right  or   positively skewed.  Personal incomes would generally be skewed right.  Most of a
+population would tend to have personal incomes towards the lower end of the scale, however there
+would be a significant long tail towards the upper end .  In this situation the mean will exceed
+the median - that is <IMG
+ WIDTH="52" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$ \mu &gt; M$">.  Lifetimes, of either produced items or living things, tend also
+to be skewed right. This is not obvious but can be shown to hold.  In general the mean lifetime of
+an item will exceed the median lifetime.  The median lifetime would be the time when 50% of the
+items have failed or died. The final case is where there is a longer tail to the left hand side, that is skewed left 
+or negatively skewed.  College grades,  in most cases, are somewhat skewed left.  In this case
+the median exceeds the mean -  <IMG
+ WIDTH="52" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.gif"
+ ALT="$ \mu &lt; M$">. 
+
+<P>
+The median is also a special case of a fractile (see first or third quartiles) which are
+measures which divide the data into fractional pieces.  In the case of the median this fraction
+is <!-- MATH
+ $\frac{1}{2}$
+ -->
+<IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img73.gif"
+ ALT="$ \frac{1}{2}$">.  
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B> FRACTILES OR QUANTILES FOR  A ONE VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+The mean and the median are measures of central tendency. That is they located, in one way or
+another, the center of the data. Often it is desired to locate other positions as well.  A class of
+measures which accomplishes this are the <B>fractiles</B>  or <B>quantiles</B>.  These are measures
+which divide the total data into fractional sections.  The simplest quantile is the median which
+divides the data in half.  That is the median is the measurement which is located so that 50% of
+the data is less than or equal to it. 
+
+<P>
+If the data is divided into four parts we get the <B>quartiles</B>.  There are three quartiles
+usually denoted <!-- MATH
+ $Q_1,Q_2,Q_3$
+ -->
+<IMG
+ WIDTH="77" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img74.gif"
+ ALT="$ Q_1,Q_2,Q_3$">.  The first quartile  <IMG
+ WIDTH="24" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img75.gif"
+ ALT="$ Q_1$"> is defined as that measurement located
+so that 25% of the data is less than or equal to it.  The second quartile  <IMG
+ WIDTH="24" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img76.gif"
+ ALT="$ Q_2$"> is the same as
+the median.  The third quartile  <IMG
+ WIDTH="24" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img77.gif"
+ ALT="$ Q_3$"> is the measurement located so that 75% of the data is less
+than or equal to it. 
+
+<P>
+EXAMPLE 
+
+<P></P>
+
+<P>
+A demographic survey in a certain state indicates the the first and third quartiles in height for
+adult women are 62 inches and 67 inches respectively.  This indicates that 25% of the adult women
+in this state are 62 inches or less while 75% are 67 inches or less.
+
+<P><P>
+<BR>
+
+<P>
+The median used the 50% point to define it while the quartiles used 25% pieces, but any fraction
+or percent could be used to define a fractile.  Two common fractiles that are employed are the
+<B>deciles</B> which divide the data into 10% chunks and the <B>percentiles</B> which divide the
+data into 1% pieces.  In the former case there are nine deciles <!-- MATH
+ $D_1,D_2,...,D_9$
+ -->
+<IMG
+ WIDTH="99" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img78.gif"
+ ALT="$ D_1,D_2,...,D_9$">.  For
+example, <IMG
+ WIDTH="24" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img79.gif"
+ ALT="$ D_6$"> would be the measurement located so that 60% of the data lies less than or equal
+to it.  The others would be defined analagously.  <IMG
+ WIDTH="24" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img80.gif"
+ ALT="$ D_5$"> would coincide with the median.  For the
+percentiles there are 99 such measurements denoted <!-- MATH
+ $P_1,....P_99$
+ -->
+<IMG
+ WIDTH="72" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img81.gif"
+ ALT="$ P_1,....P_99$">.  The 86th percentile, <IMG
+ WIDTH="28" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img82.gif"
+ ALT="$ P_{86}$">
+would be located so that 86% of the data is less than or equal to it.  It should be noted that 
+<IMG
+ WIDTH="28" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img83.gif"
+ ALT="$ P_{25}$"> is the same as the first quartile and <IMG
+ WIDTH="28" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img84.gif"
+ ALT="$ P_{75}$"> is the same as the third quartile.  
+
+<P>
+EXAMPLE 
+
+<P></P>
+
+<P>
+In the same study cited in the previous example it was found that the 95th percentile in height
+was 70 inches.  This would indicate that 95% of the adult women were 70 inches or less. 
+Equivalently only 5% were above this height.
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>SYMMETRY AND SKEWNESS A ONE VARIABLE DATA SET</B></DIV>
+
+<P><P>
+<BR>
+
+<P>
+An important characteristic of a population is its <B>symmetry </B>   or  lack of symmetry . 
+Lack of symmetry is called <B>skew</B>.  Many inferential statistical procedures depend
+on the data being fairly symmetrical and therefore the presence of skew becomes an important
+concept. The relationship betwen the mean and median can be used to describe these concepts.
+
+<P>
+If the population (or data) is symmetrical or balanced there is no skew.  In this case the mean
+and median are approximately equal.  We picture a symmetrical population with the relation
+between the mean and the median in figure 1. 
+
+<P>
+
+<P></P>
+
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="404" HEIGHT="195" ALIGN="MIDDLE" BORDER="0"
+ SRC="appImg5.gif"
+ > </DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+Figure 1 Symmetrical Population - Mean = Median</DIV>
+
+<P><P>
+<BR>
+
+<P>
+Data which has a longer tail to the right hand side is <B>skewed right</B>  or  
+<B>positively skewed</B>.  Personal incomes would generally be skewed right.  Most of a population
+would tend to have personal incomes towards the lower end of the scale, however there would be a
+significant long tail towards the upper end .  In this situation the mean will exceed the median -
+that is <IMG
+ WIDTH="52" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.gif"
+ ALT="$ \mu &gt; M$">.  Lifetimes, of either produced items or living things, tend also to be skewed
+right. This is not obvious but can be shown to hold.  In general the mean lifetime of an item will
+exceed the median lifetime.  The median lifetime would be the time when 50% of the items have
+failed or died.   A skewed right population with the relation
+between the mean and the median is pictured in figure 2.
+
+<P>
+
+<P></P>
+
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="386" HEIGHT="190" ALIGN="MIDDLE" BORDER="0"
+ SRC="appImg6.gif"
+ > </DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+Figure 2 Skewed Right - Mean <IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img85.gif"
+ ALT="$ &gt;$"> Median</DIV>
+
+<P><P>
+<BR>
+
+<P>
+The final case is where there is a longer tail to the left hand side. This is called <B>skewed
+left</B>  or <B>negatively skewed</B>.  College grades,  in most cases, are somewhat skewed left.  In
+this case the median exceeds the mean -  <IMG
+ WIDTH="52" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.gif"
+ ALT="$ \mu &lt; M$">.  We picture a skewed left population in figure
+3.
+
+<P>
+
+<P></P>
+
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="414" HEIGHT="198" ALIGN="MIDDLE" BORDER="0"
+ SRC="appImg7.gif"
+ > </DIV>
+
+<P></P>
+<DIV ALIGN="CENTER">
+Figure 3 Skewed Left - Mean <IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img86.gif"
+ ALT="$ &lt;$"> Median</DIV>
+
+<P><P>
+<BR>
+
+<P>
+The measure of skewness that is used is....  
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<DIV ALIGN="CENTER">
+<B>SAMPLE SIZE OF A ONE VARIABLE DATA SET</B></DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+The <B>sample size</B> of a one variable data set is simply the number of measurements in that data
+set. Many statistical procedures differ depending on whether there is a <B>large sample</B> or a
+<B>small sample</B>.  The <B>central limit theorem</B> which is a cornerstone of both applied
+statistics and theoretical statistics says that many if not most populations can be approximated
+for large sample size by a normal distribution.  Hence if the sample is <I>large enough</I> the
+normal distribution approximation can be used. <I>Large enough</I> here means just that the results
+gets better as the sample size gets larger.  In practice <IMG
+ WIDTH="51" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img87.gif"
+ ALT="$ n = 30$"> is taken as the cutoff between
+large and small samples.  Thus a sample with <IMG
+ WIDTH="51" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img88.gif"
+ ALT="$ n \ge 30$"> can be consiidered a large sample and the
+normal approximation used while if <IMG
+ WIDTH="51" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img89.gif"
+ ALT="$ n &lt; 30$"> it is a small sample and different procedures (
+depending on the population itself) must be used.
+
+<BR><HR>
+
+</BODY>
+</HTML>

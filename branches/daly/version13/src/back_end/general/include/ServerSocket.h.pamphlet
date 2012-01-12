@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/ServerSocket.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "config.h"
+#include "Socket.h"
+
+@
+\subsection{class ServerSocket}
+<<class ServerSocket>>=
+class ServerSocket : public Socket
+{
+ public:
+  ServerSocket (){};
+
+#ifdef LINUX
+  ServerSocket ( int port );
+  virtual ~ServerSocket();
+  void accept ( ServerSocket& );
+#endif
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/ServerSocket.h
+#ifndef ServerSocket_class
+#define ServerSocket_class
+
+<<license>>
+<<include>>
+<<class ServerSocket>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

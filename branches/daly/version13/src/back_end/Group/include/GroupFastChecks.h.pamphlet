@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/GroupFastChecks.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{class GroupFastChecks}
+<<class GroupFastChecks>>=
+class GroupFastChecks {
+public:
+  GroupFastChecks( const FPGroup& G ) : 
+    theGroup( G ),
+    numOfGens( G.numberOfGenerators() ),
+    relators( G.getRelators() )
+  { }
+
+  // Default & copy contructors, operator = provided by compiler.
+
+  bool hasTrivialPresentation( ) {
+    return ( numOfGens == 0 && relators.cardinality() == 0 );
+  }
+  // True if the entered presentation has form < ; >.
+
+
+  bool numOfRelsLessNumOfGens( ) { 
+    return ( relators.cardinality() < numOfGens ); 
+  }
+  // True if the number of relators is less than the number of generators.
+
+  bool existsGenWithExpSumZeroInEveryRelator( Generator& );
+  // True if there's such generator exponent sum of which is equal to
+  // zero in every relator. The generator'll be return as well.
+
+  VectorOf<int> getExpSumOfGen( const Generator& g);
+  // Return exponent sums of g in the group relators.
+
+  int GCDOfExpSumOfGen( const Generator& g );
+  // Return the GCD of exponent sums of g in the group relators.
+
+private:
+  FPGroup theGroup;     // the group to work with
+  int numOfGens;        // number of generators of the group
+  SetOf<Word> relators; // group relators 
+};
+
+@
+\section{include}
+<<include>>=
+#include "FPGroup.h"
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/GroupFastChecks.h
+#ifndef _GroupFastChecks_h_
+#define _GroupFastChecks_h_
+
+<<license>>
+<<include>>
+<<class GroupFastChecks>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

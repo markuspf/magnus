@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/AlgebraicObject.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Chars.h"
+#include "SMObject.h"
+#include "InformationCenter.h"
+
+@
+\section{class AlgebraicObject}
+<<class AlgebraicObject>>=
+class AlgebraicObject : public SMObject
+{
+public:
+  AlgebraicObject(const Chars heritage) : myRoots( heritage ) { }
+  Chars heritage( ) const { return myRoots; }
+
+  virtual       InformationCenter* infoCenter()       { return 0; }
+  virtual const InformationCenter* infoCenter() const { return 0; }
+
+private:
+  const Chars myRoots;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/AlgebraicObject.h
+#ifndef _ALGEBRAICOBJECT_H_
+#define _ALGEBRAICOBJECT_H_
+
+<<license>>
+<<include>>
+<<class AlgebraicObject>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

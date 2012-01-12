@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/SMSetOfWords.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "AlgebraicObject.h"
+#include "SMFPGroup.h"
+#include "conversions.h"
+
+@
+\subsection{class SMSetOfWords}
+<<class SMSetOfWords>>=
+class SMSetOfWords : public AlgebraicObject
+{
+public:
+  SMSetOfWords(SMFPGroup& G, const SetOf<Word>& V, const Chars heritage);
+  //@ep changed
+
+  SMSetOfWords(SMFPGroup& G)
+    : AlgebraicObject(""), theGroup(G), theWords(0)
+  { }
+
+  VectorOf<Word> getWords( ) const { return makeVectorOf(theWords); }
+  SMFPGroup& getParent( ) const { return theGroup; }
+
+  static const char* type( ) { return "SMSetOfWords"; }
+  const char* typeID( ) const { return type(); }          // overrides SMObject
+  const IconID iconID( ) const { return IconID::SetOfWords; }
+  // overrides SMObject
+  void viewStructure(ostream& ostr) const;                // overrides SMObject
+  void printProperties(ostream& ostr) const;              // overrides SMObject
+  void printDefinition(ostream& ostr) const;              // overrides SMObject
+
+protected:
+  void readMessage(istream&) { }                        // overrides SMObject
+
+private:
+  const SetOf<Word> theWords;
+  SMFPGroup& theGroup;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/SMSetOfWords.h
+#ifndef _SMSetOfWords_H_
+#define _SMSetOfWords_H_
+
+<<license>>
+<<include>>
+<<class SMSetOfWords>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

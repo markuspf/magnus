@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\title{\bf{Research project 9 \\ Alternating directions method}}
+\author{\bf Dmitry Bormotov}
+\date{}
+\begin{document}
+\maketitle
+
+The classical parabolic differential equation for a function
+$u(x,y,t)$ of the two space variables $x,y$ and the time variable $t$
+is
+
+\begin{equation}
+u_{t} = u_{xx} + u_{yy}.  \label{10.95}
+\end{equation}
+A solution is required in a region $G \subset R^{2}$ of the $(x,y)$
+plane with boundary $\Gamma$ for times $t>0$. The solution of
+(\ref{10.95}) is subject to an {\em initial condition} 
+\begin{equation}
+u(x,y,0) = f(x,y) \ in \ G  \label{10.96}
+\end{equation}
+and to similar {\em boundary conditions} on the boundary $\Gamma$ as for
+elliptic boundary value problems. The function $u(x,y,t)$ depends on
+the time, thus the functions occurring in the Dirichlet, Neumann and
+Cauchy conditions may also depend on t. The set of values $(x,y,t)$
+for which the solution is sought consists of the half cylinder $R^{3}$
+above the region $G$. 
+
+To discretize the initial boundary value problem we use a regular
+three-dimensional net which is generated from a regular net in the
+region $G$ with the mesh size $h$ by translating it by multiples of k
+in the time direction. Then we look for approximations $u_{\mu,v,j}$
+of the solution $u(x,y,t)$ at the grid points $P(x_{\mu},y_{v},t_{j})$.
+
+The approximation of the differential equation (\ref{10.95}) is done
+in two stages.  The expression $u_{xx}+u_{yy}$ with partial
+derivatives with respect to the space variables is approximated for a
+fixed time layer $j$ at each grid point by an appropriate difference
+expression. For the simplest case of a regular interior point
+$P(x_{\mu},y_{v},t_{j})$ we use 
+\[ (u_{xx}+u_{yy})_{P} \approx \frac{1}{h^2}
+(u_{\mu,v+1,j}+u_{\mu-1,v,j}+u_{\mu,v-1,j}+u_{\mu+1,v,j}-4u_{\mu,v,j}).
+\]
+
+The partial derivative with respect to the time t may, for instance,
+be approximated by means of the forward difference quotient in P
+\[ u_{t} \approx \frac{1}{k}(u_{\mu,v,j+1}-u_{\mu,v,j}).\]
+This defines the {\em explicit Richardson method} with the
+computational scheme for a regular interior grid point
+\begin{equation}
+u_{\mu,v,j+1} = u_{\mu,v,j} +
+r(u_{\mu,v+1,j}+u_{\mu-1,v,j}+u_{\mu,v-1,j}+u_{\mu+1,v,j}-4u_{\mu,v,j}).
+ \label{10.97}
+\end{equation}
+Again we use the quantity $r = k/h^2$. In order to simplify the index
+notation we number the grid points with unknown value $u$ in each time
+layer from 1 to n. Then we combine the approximate values of the $j$th
+time layer, with $t_{j} = jk$, in the vector
+\begin{equation}
+u_{j} = (u_{1,j}, u_{2,j}, \ldots , u_{n,j})^T \in R^n  \label{10.98}
+\end{equation}
+where the first index $i$ of $u_{i,j}$ refers to the number of the
+grid point. The computational scheme (\ref{10.97}) can be written as
+\begin{equation}
+u_{j+1} = (I - rA)u_j + b_{j} \ \ (j = 0,1,2,\ldots). \label{10.99}
+\end{equation}
+The matrix $A \in R^{n \times n}$ is the coefficient matrix of the
+system of difference equations which discretizes the Poisson equation
+in the region $G$, and $b_j$ contains the constants that originate
+form the boundary conditions.
+
+The explicit method satisfies the condition of absolute stability if
+and only if the absolute values of the eigenvalues of the matrix
+$(I-rA)$ are less than one. The resulting condition for $r$ can in
+general only be given for symmetric and positive definite matrices
+$A$. In this case the eigenvalues $\lambda_v$ of $(I-rA)$ are related
+to the eigenvalues $\mu_v$ of $A$ by
+\[ \lambda_v = 1 - r \mu_v \ \ (v = 1,2,\ldots,n) \ \ \mu_v > 0. \] 
+As $1-r\mu_v>-1$ must be satisfied for all $v$ we deduce that
+\begin{equation}
+r < 2/\max_v(\mu_v).  \label{10.100}
+\end{equation}
+
+For this reason the {\em implicit Crank-Nicholson method} must be
+applied. In (\ref{10.97}) the expression in parentheses simply
+replaced by the arithmetic mean of the expressions of the $j$th and
+$(j+1)$th time layer. Instead of (\ref{10.99}) we obtain a computational
+scheme  of the form
+\begin{equation}
+(2I + rA )u_{j+1} = (2I - rA)u_j + b_j \ \ (j = 0,1,2,\ldots). \label{10.102}
+\end{equation}
+This method is absolutely stable for symmetric and positive definite
+matrices $A$ and for nonsymmetric matrices $A$ whose eigenvalues $\mu_v$
+all have a positive real part, because the eigenvalues $\lambda_v$ of
+$(2I + rA)^{-1} (2I-rA)$ are then in absolute value less than one for
+all $r>0$.
+
+The computation of the values $u_{j+1}$ at the grid points of the
+$(j+1)$th time layer requires the solution of a system of linear
+equations, (\ref{10.102}), with the matrix $(2I+rA)$ that is constant
+for all time steps and usually diagonally dominant. Thus the $LR$
+decomposition has to be performed just once, and then the processes of
+the forward and backward substitution have to be applied to the known
+right-hand side of (\ref{10.102}). In the case of a small mesh
+size,$h$, the order of the matrix $(2I+rA)$ as well as the bandwidth
+is large, so that the storage requirement and the computational effort
+per time step is considerable.
+
+In order to substantially reduce the mentioned requirements, Peaceman
+and Rachford(1955) proposed a discretization so that in each step a
+sequence of tridiagonal systems of equations has to be solved. The
+idea consists of combining two different difference approximations per
+step. For this reason the time step k is halved, and the auxiliary
+values $u_{\mu,v,j+\frac{1}{2}} = u_{\mu,v}^\ast$ for the time $t_j+k/2 =
+t_{j+\frac{1}{2}}$ are defined as the solution of the difference equations
+\begin{eqnarray}
+\frac{2}{k}(u_{\mu,v}^\ast - u_{\mu,v,j}) =
+\frac{1}{h^2}(u_{\mu+1,v}^\ast - 2u_{\mu,v}^\ast + u_{\mu-1,v}^\ast)
+\nonumber \\ \\ + \frac{1}{h^2}(u_{\mu,v+1,j} - 2u_{\mu,v,j} + u_{\mu,v-1,j}).
+\nonumber \label{10.103}
+\end{eqnarray}
+To approximate $u_{xx}$ the second difference quotient is used with
+the auxiliary values of the time layer $t_{j+\frac{1}{2}}$. The second
+partial derivative $u_{yy}$, however, is approximated by means of,
+known, approximations of the time layer $t_j$. The derivative $u_t$ is
+approximated by the usual forward difference quotient with the half
+step size $k/2$, of course. In the next step we take the auxiliary
+values $u_{\mu,v}^\ast$ for fixed $v$ together, that is those values
+that correspond to grid points along a net line parallel to the $x$
+axis. For each such group of values the set of equations
+(\ref{10.103}) is a tridiagonal system with the typical
+representative
+\begin{eqnarray}
+-ru_{\mu-1,v}^\ast+(2+2r)u_{\mu,v}^\ast-ru_{\mu+1,v}^\ast \nonumber
+ \\ = ru_{\mu,v-1,j}+(2-2r)u_{\mu,v,j}+ru_{\mu,v+1,j} \ \ r = k/h^2.
+\label{10.104} 
+\end{eqnarray}
+The determination of all the auxiliary values $u_{\mu,v}^\ast$
+requires the solution of a set of tridiagonal systems of equations,
+each corresponding to a line of the net that is parallel to the $x$
+axis. With these auxiliary values, the approximations $u_{\mu,v,j+1}$
+of the time layer $t_{j+1}$ are determined from the difference
+equations
+\begin{eqnarray}
+\frac{2}{k}(u_{\mu,v,j+1}-u_{\mu,v}^\ast) =
+\frac{1}{h^2}(u_{\mu+1,v}^\ast - 2 u_{\mu,v}^\ast + u_{\mu-1,v}^\ast)
+\nonumber \\ +\frac{1}{h^2}(u_{\mu,v+1,j+1} - 2u_{\mu,v,j+1} +
+u_{\mu,v-1,j+1}).
+\label{10.105} 
+\end{eqnarray}
+Now $u_{xx}$ is approximated by means of the known auxiliary values
+and $u_{yy}$ by means of the desired approximations of the $(j+1)$th
+time layer. For this part it is important that we unite the unknown
+values $u_{\mu,v,j+1}$ for fixed $\mu$ in (\ref{10.105}), that is
+those values that correspond to grid points on a net line parallel to
+the $y$ axis. Each of these groups of unknowns, (\ref{10.105}), is the
+solution of another tridiagonal system of equations whose typical
+representative is
+\begin{eqnarray}
+-ru_{\mu,v-1,j+1}+(2+2r)u_{\mu,v,j+1}-ru_{\mu,v+1,j+1} \nonumber
+\\ = ru_{\mu-1,v}^\ast+(2-2r)u_{\mu,v}^\ast+ru_{\mu+1,v}^\ast \ \ r = k/h^2.
+\label{10.106} 
+\end{eqnarray}
+Once again we have to solve a sequence of tridiagonal systems of
+linear equations for the unknowns $u_{\mu.v.j+1}$, each corresponding
+to grid points on net lines parallel the $y$ axis. Due to change of
+direction in which the grid points are grouped, the Peaceman and
+Rachford procedure is usually called the {\bf alternating directions
+method}.
+
+\vspace{5mm}
+\begin{center} \Large\textbf{Sources} \end{center}
+\vspace{5mm}
+1. H.R.Schwartz, Numerical Analysis, 1989 
+
+\end{document}
+
+

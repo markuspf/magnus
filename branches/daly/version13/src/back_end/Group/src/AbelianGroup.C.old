@@ -1,0 +1,466 @@
+// Copyright (C) 1995 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+
+// Contents: Implementation of the AbelianGroup class.
+//
+// Principal Author: Dmitry Bormotov
+//
+// Status: in progress
+//
+// Revision History:
+//
+// 96/01/06 @db added new functions:
+//   Word abelianForm( const Word& w ) const;
+//   Word inverseInAbelianForm( const Word& w ) const;
+//
+// * 7/96 Dmitry B. made porting to gcc 2.7.2.
+//
+// Special Notes:
+//
+
+
+#include "AbelianGroup.h"
+
+
+//------------------------------ AbelianGroup -------------------------------//
+
+
+AbelianGroup::AbelianGroup( const Abelianization& A, bool bMakeFile ) 
+  : abelianizator( A )
+{
+  if( bMakeFile ) {
+
+    File file;
+    VectorOf<Integer> form = abelianizator.getSmithForm();
+    int formLen = form.length();
+    int rank = rankOfFreeAbelianFactor();
+    int num = 1;
+
+    for( int i = 0; i < formLen; ++i )
+      if( sign(form[i]) == 0 ) { // form[i] == 0, i.e. it's free generator
+	file << "f" << num++ << " = ";
+	abelianizator.theGroup.printWord
+	  ( file, evaluateBackwards( Word(Generator(i+1)) ) );
+	file << endl << endl;
+      }
+
+    num = 1;
+    
+    for( int i = 0; i < formLen; ++i )
+      if( form[i] > 1 ) { // i.e. it's torsion generator
+	file << "t" << num++ << " = ";
+	abelianizator.theGroup.printWord
+	  ( file, evaluateBackwards( Word(Generator(i+1)) ) );
+	file << endl << endl;
+      }
+
+    file << end;
+    theFileName = file.getFileName();
+  }
+}
+
+
+AbelianGroup::AbelianGroup( const AbelianGroup& A,
+			    bool bMakeCyclicDecomposition )
+  : abelianizator( A.abelianizator ),
+    theFileName( A.theFileName )
+{
+  if( !bMakeCyclicDecomposition ) return;
+
+  // Make a presentation of the cyclic decomposition.
+
+  // Prepare generators.
+
+  Abelianization& abel =  (Abelianization&) abelianizator;
+  int invLen = abel.Invariants.length();
+  int len = invLen + abel.rankOfFreePart;
+  VectorOf<Chars> genNames(len);
+  int i;
+  
+  for( i = 0; i < abel.rankOfFreePart; ++i ) {
+    char s[10];
+    sprintf(s, "%d", i+1);
+    genNames[i] = Chars("f") + s;
+  }
+
+  int j = 0;
+  for( ; i < len; ++i ) {
+    char s[10];
+    sprintf(s, "%d", ++j);
+    genNames[i] = Chars("t") + s;
+  }
+
+  // Prepare relators.
+
+  SetOf<Word> relators;
+
+  for( i = 0; i < invLen; ++i ) {
+    Word w;
+    for( j = 0; j < abel.Invariants[i]; ++j )
+      w *= Word( Generator( i+1 ) );
+    relators |= w;
+  }
+
+  // The presentation is ready.
+
+  abel.theGroup = FPGroup(genNames, relators);
+
+  abel.makeMatrices();
+
+  // Build the smith normal form
+
+  abel.SmithForm = VectorOf<Integer>(abel.saveWidth);
+  j = 0;
+  
+  for( i = 0; i < abel.rankOfFreePart; ++i )
+    abel.SmithForm[i] = 0;
+  for( ; i < abel.saveWidth; ++i )
+    abel.SmithForm[i] = abel.Invariants[j++];
+}
+
+
+Word AbelianGroup::evaluateWord( const Word& w ) const
+{
+  Word result;
+  VectorOf<Integer> v = evaluate(w);
+  int vLen = v.length();
+  int rank = abelianizator.rankOfFreePart;
+
+  for( int i = 0; i < vLen; ++i )
+    if( v[i] >= 0 )
+      for( int j = 0; j < v[i]; ++j )
+	result *= Word( Generator( i+1 ) );
+    else
+      for( int j = 0; j < -v[i]; ++j )
+	result *= Word( Generator( -(i+1) ) );
+
+  return result;
+}
+
+
+VectorOf<Word> AbelianGroup::oldToNewGens() const
+{
+  int numOfGens = abelianizator.theGroup.numberOfGenerators();
+  VectorOf<Word> result(numOfGens);
+
+  for( int i = 0; i < numOfGens; ++i )
+    result[i] = evaluateWord( Word( Generator( i+1 ) ) );
+
+  return result;
+}
+
+
+VectorOf<Word> AbelianGroup::newToOldGens() const
+{
+  int numOfGens = abelianizator.rankOfFreePart
+    + abelianizator.Invariants.length();
+  VectorOf<Word> result(numOfGens);
+
+  for( int i = 0; i < numOfGens; ++i )
+    result[i] = evaluateWordBackwards( Word( Generator( i+1 ) ) );
+
+  return result;
+}
+
+
+Word AbelianGroup::evaluateWordBackwards( const Word& w ) const
+{
+  int wLen = w.length();
+  Word result( w );
+
+  for( int i = 0; i < wLen; ++i ) {
+
+    int gen = ord( result[i] );
+    
+    // very temporary computation of the generator number in SmithForm
+    
+    int a = abs( gen ) - 1;
+    int n;
+    
+    if( a < abelianizator.rankOfFreePart ) {
+      
+      for( n = 0; n < abelianizator.saveWidth; ++n )
+	if( abelianizator.SmithForm[n] == 0 ) 
+	  if( a-- )
+	    break;
+    }
+    else {
+      
+      a -= abelianizator.rankOfFreePart;
+      
+      for( n = 0; n < abelianizator.saveWidth; ++n )
+	if( abelianizator.SmithForm[n] > 1 ) 
+	  if( a-- )
+	    break;
+    }
+    
+    gen = ( ( gen < 0 ) ? -n : n );
+    result[i] = Generator( gen );
+  }
+  
+  return evaluateBackwards(result);
+}
+
+
+Word AbelianGroup::evaluateBackwards( const Word& w ) const
+{
+  int wLen = w.length();
+  Word result;
+  
+  for( int i = 0; i < wLen; ++i ) {
+
+    int gen = ord(w[i]);
+
+    for( int j = 0; j < abelianizator.saveWidth; ++j ) {
+
+      int power;
+      if( gen < 0 )
+	power = -abelianizator.newToOldGens[-gen-1][j].as_long();
+      else
+	power = abelianizator.newToOldGens[gen-1][j].as_long();
+
+      if( power < 0 )
+	for( int k = 0; k < -power; ++k )
+	  result *= Word(Generator(-(j+1)));
+      else
+	for( int k = 0; k < power; ++k )
+	  result *= Word(Generator(j+1));
+    }
+  }
+
+  return result;
+}
+
+
+bool AbelianGroup::wordProblem( const Word& w ) const
+{
+  VectorOf<Integer> v = eval(w);
+  int vLen = v.length();
+  for ( int i = 0; i < vLen; i++ )
+    if ( sign(v[i]) != 0 ) return false;
+  return true;
+}
+
+
+Integer AbelianGroup::orderOfElt(const Word& w) const
+{
+  VectorOf<Integer> v = eval(w);
+  VectorOf<Integer> form = abelianizator.getSmithForm();
+
+  int numOfGens = abelianizator.numOfGens();
+  for ( int i = 0; i < numOfGens; i++)
+    if ( sign(form[i]) == 0 && sign(v[i]) != 0 ) return 0; // Infinity
+  
+  for ( int i = 0; i < numOfGens; i++) {
+    if ( sign(form[i]) == 0 || form[i] == Integer(1) || sign(v[i]) == 0 )
+      v[i] = 0;
+    else
+      v[i] = form[i] / gcd(form[i], v[i]);
+  }
+  
+  Integer LCM = 1;
+  int vLen = v.length();
+  for (int i = 0; i < vLen; i++)
+    if ( sign(v[i]) != 0 ) LCM = lcm(LCM,v[i]);
+  return LCM;
+}
+
+
+Integer AbelianGroup::orderOfTheTorsionSubgroup() const
+{
+  VectorOf<Integer> form = abelianizator.getSmithForm();
+  Integer order = 1;
+  int formLen = form.length();
+  for ( int i = 0; i < formLen; i++ )
+    if ( sign(form[i]) != 0 && form[i] != 1 ) order *= form[i];
+  return order;
+}
+
+
+Integer AbelianGroup::order() const
+{
+  if( abelianizator.rankOfFreeAbelianFactor() != 0 )
+    return 0;
+  else
+    return orderOfTheTorsionSubgroup();
+}
+
+   
+bool AbelianGroup::isTrivial() const
+{
+  VectorOf<Integer> v = abelianizator.getSmithForm();
+  int vLen = v.length(); 
+  for (int i = 0; i < vLen; i++)
+    if ( v[i] != 1) return false;
+  return true;
+}
+
+
+bool AbelianGroup::isFree() const
+{
+  VectorOf<Integer> v = abelianizator.getSmithForm();
+  int vLen = v.length();
+  for (int i = 0; i < vLen; i++)
+    if ( v[i] > 1) return false;
+  return true;
+}
+
+/*
+SetOf<Word> AbelianGroup::getRelators( ) const
+{
+  SetOf<Word> S(abelianizator.getRelators());
+  int numOfGens = abelianizator.numOfGens();
+  VectorOf<Generator> v(4);
+  for ( int i = 1; i < numOfGens; i++ )
+    for ( int j = i+1; j <= numOfGens; j++ ) {
+      v[0] = i;  v[1] = j; v[2] = -i; v[3] = -j;
+      S |= Word(v);
+    }
+  return S;
+}
+*/
+
+bool AbelianGroup::isomorphicProblem( const Abelianization& A ) const
+{
+  return ( abelianizator.rankOfFreeAbelianFactor() ==
+	   A.rankOfFreeAbelianFactor() &&
+	   abelianizator.Invariants == A.Invariants );
+}
+
+
+void AbelianGroup::printOn(ostream& ostr) const
+{
+  int rank = abelianizator.rankOfFreeAbelianFactor();
+  VectorOf<Integer> invariants = abelianizator.invariants();
+  int len = invariants.length();
+  bool bFirst = true;
+
+  if( rank > 0 ) {
+    bFirst = false;
+    ostr << " Z";
+    if( rank > 1 )
+      ostr << "^" << rank;
+  }
+
+  for( int i = 0; i < len; ++i ) {
+    if( !bFirst )
+      ostr << " x";
+    ostr << " Z_" << invariants[i];
+    bFirst = false;
+  }
+
+  if( bFirst )
+    ostr << " 1";
+}
+
+
+void AbelianGroup::printWordInNewGens( ostream& ostr, const Word& w ) const
+{
+  int rank = abelianizator.rankOfFreeAbelianFactor();
+  VectorOf<Integer> form = abelianizator.evaluate(w);
+  int len = form.length();
+  bool bFirst = true;
+  
+  for( int i = 0; i < rank; ++i ) {
+
+    Integer coef = form[i];
+
+    if ( coef > 0 ) {
+      if ( ! bFirst )
+	ostr << " +";
+      bFirst = false;
+      if( coef > 1 )
+	ostr << " " << coef;
+      ostr << " f" << i + 1;
+    }
+    else
+      if ( coef < 0 ) {
+	ostr << " -";
+	bFirst = false;
+	if( coef < -1 )
+	  ostr << " " << - coef;
+	ostr << " f" << i + 1;
+      }
+    
+  }
+
+  for( int i = rank; i < len; ++i ) {
+
+    Integer coef = form[i];
+
+    if ( coef > 0 ) {
+      if ( ! bFirst )
+	ostr << " +";
+      bFirst = false;
+      if( coef > 1 )
+	ostr << " " << coef;
+      ostr << " t" << i + 1 - rank;
+    }
+    else
+      if ( coef < 0 ) {
+	ostr << " -";
+	bFirst = false;
+	if( coef < -1 )
+	  ostr << " " << - coef;
+	ostr << " t" << i + 1 - rank;
+      }
+    
+  }
+  
+  if ( bFirst )
+    ostr << " 0";
+}
+
+
+// ---------------------------- AbelianForm -------------------------------- //
+
+
+Word AbelianForm::abelianForm( const Word& w ) const
+{
+  int wLen = w.length();
+  VectorOf<Generator> v(wLen);
+  int numOfGens = theGroup.numberOfGenerators();
+  int vCurrent = 0;
+
+  for ( int i = 0; i < numOfGens; i++ ) {
+
+    int sum = w.exponentSum(i+1);
+    int aSum = abs(sum);
+    Generator filler;
+    if( sum > 0 )
+      filler = i+1;
+    else
+      filler = -i-1;
+
+    for( int j = 0; j < aSum; ++j )
+      v[vCurrent++] = filler;
+  }
+
+  v.shrink(vCurrent);
+  return Word(v);
+}
+
+
+Word AbelianForm::inverseInAbelianForm( const Word& w ) const
+{
+  Word W( abelianForm(w) );
+  int WLen = W.length();
+  for( int i = 0; i < WLen; ++i )
+    W[i] = inv(W[i]);
+  return W;
+}
+
+
+SetOf<Word> AbelianForm::getRelators( ) const
+{
+  SetOf<Word> S(theGroup.getRelators());
+  int numOfGens = theGroup.numberOfGenerators();
+  VectorOf<Generator> v(4);
+  for ( int i = 1; i < numOfGens; i++ )
+    for ( int j = i+1; j <= numOfGens; j++ ) {
+      v[0] = i;  v[1] = j; v[2] = -i; v[3] = -j;
+      S |= Word(v);
+    }
+  return S;
+}
+

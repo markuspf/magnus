@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/AProducts/include/Range.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{struct Range}
+<<struct Range>>=
+struct Range {
+
+  int low, high;
+  bool Default;
+  
+  Range() : low(0), high(0), Default(true) { }
+
+  Range( int lo, int hi ) : low(lo), high(hi), Default(false) { }
+
+  bool operator == ( Range r ) const 
+  {
+    if( low == r.low && high == r.high && Default == r.Default )
+      return true;
+    return false;
+  }
+};
+
+@
+\section{include}
+<<include>>=
+#include <iostream.h>
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/AProducts/include/Range.h
+#ifndef __RANGE_H__
+#define __RANGE_H__
+
+<<license>>
+<<include>>
+<<struct Range>>
+
+void operator < ( ostream& ostr, const Range& g );
+void operator > ( istream& istr, Range& g );
+
+ostream& operator << ( ostream& ostr, const Range& g );
+istream& operator >> ( istream& istr, Range& g );
+
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

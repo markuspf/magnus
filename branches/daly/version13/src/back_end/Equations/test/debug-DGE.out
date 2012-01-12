@@ -1,0 +1,74 @@
+#2
+18: 
+The solution is: 
+p = a^-2 b a^-1 b^-1
+q = a b
+r = b^-1
+u = b^-1
+x = a^-2
+y = b a^-1
+t = a^-1 b
+s = a b^-1
+z = b a^2 b^-1 a^2 b
+
+Time elapsed: 427.094
+
+#3
+18: 
+The solution is: 
+p = a^-2 b a^-1 b^-1
+q = a b
+r = b^-1
+u = b^-1
+x = a^-2
+y = b a^-1
+t = a^-1 b
+z = a^-1
+s = b a^2 b^-1 a^2 b
+
+Time elapsed: 87.2012
+
+#6
+18: 
+The solution is: 
+s = a^-2 b a^-1 b^-1
+x = a b
+y = b
+z = b
+p = b^-1
+t = a^-2
+u = b a^-1
+q = a^-1 b
+r = b^-1 a^-2 b a^-2 b^-1
+
+Time elapsed: 416.294
+
+#8
+18: 
+The solution is: 
+s = a^-2 b a^-1 b^-1
+x = a b
+y = b
+z = b
+r = b^-1
+u = a^2
+t = b a^-1
+q = a^-1 b
+p = b^-1 a^-2 b a^-2 b^-1
+
+Time elapsed: 250.337
+
+#9
+18: 
+The solution is: 
+p = a^-2 b a^-1 b^-1
+q = a b
+r = a b
+x = a^2
+u = a b^-1 a
+z = a b^-1 a
+y = a b^-1
+s = b^-1 a
+t = b^-1 a^-2 b a^-2 b^-1
+
+Time elapsed: 74.6276

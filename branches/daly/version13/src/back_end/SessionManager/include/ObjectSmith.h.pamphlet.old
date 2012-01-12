@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/ObjectSmith.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Includes}
+<<include>>=
+#include "Menu.h"
+
+@
+\section{class ObjectSmith}
+<<class ObjectSmith>>=
+class ObjectSmith : protected Menu
+{
+public:
+  static void outputPackagesMenuDefns(ostream& ostr);
+private:
+
+  ObjectSmith( );
+  // No ctors for this static class; not to be implemented.
+
+  friend class SessionManager;
+  friend class Menu;     //@rn Hackery, so it can call registerCallBack.
+
+  static void outputCheckinMenuDefns(ostream& ostr);
+  static void outputToolsMenuDefns(ostream& ostr);
+  static void outputMakeMenuDefns(ostream& ostr);
+  static void outputTestingMenuDefns(ostream& ostr);
+  // These methods are implemented in the file "menuDefns.C".
+  // Used by class SessionManager.
+
+  static void readMessage(istream& istr);
+  // Used by class SessionManager.
+
+  static int registerCallBack(Ctor* ctor);
+
+  static int theCallBacksLen;
+  static Ctor** theCallBacks;
+  static Ctor** freeCallBack;
+  static const int jumpSize = 64;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/ObjectSmith.h
+#ifndef _OBJECTSMITH_H_
+#define _OBJECTSMITH_H_
+
+<<include>>
+<<license>>
+<<class ObjectSmith>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,427 @@
+%% This is AMSLaTeX source.
+
+\title{Abelian Groups Specification}
+\author{The New York Group Theory Cooperative}
+\date{27 November, 1995}
+
+\documentstyle[11pt]{article}
+
+\input{../include/plan_macros}
+
+\begin{document}
+
+\maketitle
+
+
+%%--------------------------------------------------------------------
+\section{Introduction}
+
+Let
+
+$$\langle x_1,\dots, x_n\;;\; R \rangle$$
+
+\noindent be an abelian presentation of an abelian group $G$. Then $G$ has an
+abelian presentation of the form
+
+$$\langle f_1,\dots, f_r, t_1,\dots, t_k\;;\; t_1^{p_1},\dots, t_k^{p_k}\rangle$$
+
+\noindent where $0\le r\le n$, $0\le k\le n$, $r+k\le n$, and $p_i\mid
+p_{i+1}$ for $1\le i<k$. Let $H$ be the group given by this
+presentation, and let $\alpha:G\to H$ be the isomorphism given by
+$x_i\mapsto w_i(\tilde{f},\tilde{t})$ for $1\le i\le n$.
+
+\lskip
+
+The minimum data needed to represent $G$ efficiently is $r$, the
+vector $\hat{p}$, and the maps $\alpha$, $\alpha^{-1}$.
+
+These data are found by the familiar integer matrix computation. It
+can happen in practice that, even given `nice' input with a `nice
+answer', the computation produces very large integers, and may exhaust
+the resources of the machine or the patience of the user for this
+reason.
+
+Therefore we would like to extract partial information from a
+computation which might fail or be too expensive. These may include
+whether $G$ is finite, the torsion-free rank of $G$, and possibly {\em
+any} cyclic decomposition of $G$ (not necessarily a canonical
+one). The first two can be done as separate computations over the
+rationals, for especially bad $G$.
+
+
+%%--------------------------------------------------------------------
+\section{Implementation}
+
+We will need classes to encapsulate the computations of the Smith
+normal form and the torsion-free rank over the rationals. We will need
+classes to represent abelian group structure, words
+$w(\tilde{f},\tilde{t})$, and subgroups defined by sets of such words.
+
+%%....................................................................
+\subsection{Class {\tt AbelianWord}}
+
+A word $w(\tilde{f},\tilde{t})$ could be represented internally as a
+{\tt VectorOf<Integer>} of length $r+k$. We should not use a `raw'
+{\tt VectorOf}, for these reasons:
+
+\begin{itemize}
+
+\item
+A {\tt VectorOf<Integer>} could be anything; the compiler cannot
+detect cases where an inappropriate {\tt VectorOf<Integer>} is
+mistakenly `interpreted' as a word.
+
+\item
+{\tt VectorOf} has public members which should be hidden.
+
+\item
+We may wish to allow for transparently compressed words, e.g., for
+$k>10^3$ the word $2t_{692}-t_5$ could be represented by the vector
+$[5,-1,692,2]$.
+
+\end{itemize}
+
+Therefore we derive a class {\tt AbelianWord} (private or protected)
+from {\tt VectorOf}, and provide {\tt Word}-like members as
+needed. This class could also have heuristics for automatically
+compressing the {\tt VectorOf} representation.
+
+
+%%....................................................................
+\subsection{The Maps $\alpha$, $\alpha^{-1}$}
+
+The maps $\alpha$ and $\alpha^{-1}$ can be thought of as inherently
+part of the abelian group structure, so therefore should have no
+formal existence outside of it. Thus it is adequate to represent
+$\alpha^{-1}$ as a {\tt VectorOf<Word>}, and $\alpha$ as a {\tt
+VectorOf<AbelianWord>}.
+
+
+%%....................................................................
+\subsection{Class {\tt Abelianization}}
+
+The utility class {\tt Abelianization} represents the Smith normal
+form computation. It has these public members:
+
+\begin{enumerate}
+
+\item
+A constructor {\tt Abelianization(const FPGroup)}.
+
+\item
+The standard computation members
+
+\begin{itemize}
+\item
+{\tt void startComputation( )}
+\item
+{\tt bool continueComputation( )}
+\item
+{\tt bool done( ) const}
+\end{itemize}
+
+\item
+Accessors for partial results
+
+\begin{itemize}
+\item
+{\tt Trichotomy knownToBeInfinite( ) const}
+\item
+{\tt bool haveTorsionFreeRank( ) const}
+
+{\tt int getTorsionFreeRank( ) const}
+\end{itemize}
+
+\item
+Accessors for final results
+
+\begin{itemize}
+\item
+{\tt VectorOf<Integer> invariants( ) const}
+\item
+{\tt VectorOf<AbelianWord> getIsomorphism( ) const}
+\item
+{\tt VectorOf<Word> getInverseIsomorphism( ) const}
+\end{itemize}
+
+\end{enumerate}
+
+All accessors throw an error when they are called prematurely.
+
+We would like to be able to reuse this in cases where, e.g., we
+already have a integer matrix, and want it's Smith normal form. This
+is complicated by the fact that $\alpha$, $\alpha^{-1}$ may not be
+necessary. Consider how to factor this functionality out.
+
+%%....................................................................
+\subsection{Class {\tt AbelianTorsionFreeRank}}
+
+This is just a partial version of {\tt Abelianization}, which works
+over the rationals.
+
+
+%%....................................................................
+\subsection{Class {\tt AbelianGroup}}
+
+The utility class {\tt AbelianGroup} implicitly represents the data
+$G$, $H$, $\alpha$.  It has these public members:
+
+\begin{enumerate}
+
+\item
+A constructor {\tt AbelianGroup(const Abelianization\&)}.
+
+This extracts $r$, $\hat{p}$, $\alpha$, and $\alpha^{-1}$ from the
+{\tt Abelianization}.
+
+\item
+{\tt int torsionFreeRank( ) const}
+
+\item
+{\tt VectorOf<Integer> invariants( ) const}
+
+\item
+{\tt Integer order( ) const}
+
+\item
+{\tt AbelianWord reinterpret(const Word) const}
+
+\item
+{\tt Word reinterpret(const AbelianWord) const}
+
+\item
+{\tt Word maximalRoot(const Word) const}
+
+\item
+{\tt void printBasisOn( ostream\& )}
+
+Outputs something like $f_i\mapsto u_i(\tilde{x})$, $t_j\mapsto v_j(\tilde{x})$.
+
+\end{enumerate}
+
+
+%%....................................................................
+\subsection{Class {\tt AbelianSubgroup}}
+
+Class {\tt AbelianSubgroup} could derive publicly from class {\tt
+Subgroup}. It could have additional helping members, such as an {\tt
+Abelianization*} and {\tt AbelianGroup*} to represent $G/N$, where $N$
+is the subgroup.
+
+
+
+%%--------------------------------------------------------------------
+\section{End User Functionality}
+
+The following are to be reflected in front end menu items. All of them
+require data (e.g., the {\tt AbelianGroup}) which may not have been
+computed yet. In this case, they must present problem views.
+
+
+%%....................................................................
+\subsection{Elements}
+
+\begin{enumerate}
+
+\ckitem{\notick}{}{}{
+Word problem.
+
+Use {\tt AbelianGroup::reinterpret}.
+}
+
+\ckitem{\notick}{}{}{
+Equality problem.
+
+Use {\tt AbelianGroup::reinterpret}.
+}
+
+\ckitem{\notick}{}{}{
+Power problem.
+
+Use {\tt AbelianGroup::maximalRoot}.
+}
+
+\ckitem{\notick}{}{}{
+Maximal root.
+
+Use {\tt AbelianGroup::maximalRoot}.
+}
+
+\ckitem{\notick}{}{}{
+Rewrite $u(\tilde{x})$ as $v(\tilde{f},\tilde{t})$.
+
+Use {\tt AbelianGroup::reinterpret}.
+}
+
+\ckitem{\notick}{}{}{
+Rewrite $u(\tilde{f},\tilde{t})$ as $v(\tilde{x})$.
+
+Use {\tt AbelianGroup::reinterpret}.
+}
+
+\end{enumerate}
+
+
+%%....................................................................
+\subsection{Elements in Subgroups}
+
+\begin{enumerate}
+
+\ckitem{\notick}{}{}{
+Subgroup membership problem.
+
+Possibly map into $G/N$.
+}
+
+\ckitem{\notick}{}{}{
+Power in a subgroup.
+
+Possibly map into $G/N$, and do some division.
+}
+
+\ckitem{\notick}{}{}{
+Rewriting an element of a subgroup in the generators of the subgroup.
+
+(Need details)
+}
+
+\end{enumerate}
+
+
+%%....................................................................
+\subsection{Subgroups}
+
+Subgroups may be generated by words $u(\tilde{x})$ or by words
+$v(\tilde{f},\tilde{t})$, but not both kinds.
+
+\begin{enumerate}
+
+\ckitem{\notick}{}{}{
+Subgroup containment problem.
+
+This is an iterated subgroup membership problem.
+}
+
+\ckitem{\notick}{}{}{
+Subgroup equality problem.
+
+This is two containment problems.
+}
+
+\ckitem{\notick}{}{}{
+Index of a subgroup.
+
+The order of $G/N$.
+}
+
+\ckitem{\notick}{}{}{
+Intersection.
+
+(Need details)
+}
+
+\ckitem{\notick}{}{}{
+Join.
+
+Trivial.
+}
+
+\ckitem{\notick}{}{}{
+Does the subgroup coincide with the group?
+
+Index = 1.
+}
+
+\ckitem{\notick}{}{}{
+Enumerate relations of the subgroup.
+
+(What is meant? Do anything special for finite index?)
+}
+
+\ckitem{\notick}{}{}{
+Find a virtual free abelian complement of the subgroup.
+
+(Need details)
+}
+
+\ckitem{\notick}{}{}{
+Find a basis for the group compatible with the one for the subgroup.
+
+(Need details)
+}
+
+\end{enumerate}
+
+
+%%....................................................................
+\subsection{The Group}
+
+\begin{enumerate}
+
+\ckitem{\notick}{}{}{
+The torsion-free rank.
+
+Output {\tt AbelianGroup::torsionFreeRank()}.
+}
+
+\ckitem{\notick}{}{}{
+The invariants.
+
+Output {\tt AbelianGroup::invariants()}.
+}
+
+\ckitem{\notick}{}{}{
+A basis.
+
+Call {\tt AbelianGroup::printBasisOn(ostream\&)}.
+}
+
+\ckitem{\notick}{}{}{
+Is the group free?
+
+Iff {\tt AbelianGroup::invariants().length() == 0}.
+}
+
+\ckitem{\notick}{}{}{
+The order problem.
+
+By means of selectively running {\tt AbelianTorsionFreeRank} and/or
+{\tt Abelianization}.
+}
+
+\ckitem{\notick}{}{}{
+The isomorphism problem.
+
+By means of selectively running {\tt AbelianTorsionFreeRank} and/or
+{\tt Abelianization}.
+
+We may consider allowing for {\tt Abelianization} to be told to
+`pause' when it has its relation matrix in Hermite normal form (as
+defined by Sims). Or, a compressed form of the Hermite normal form
+could be part of an {\tt AbelianGroup}, for use in difficult
+isomorphism tests.
+}
+
+\ckitem{\notick}{}{}{
+The integral homology.
+
+(Need formula)
+}
+
+\end{enumerate}
+
+
+
+%%....................................................................
+\subsection{I/O}
+
+A word $w(\tilde{f},\tilde{t})$ may be written by the end user in the
+usual form, such as ``{\tt 0}'', ``{\tt f\_2 - 3 t\_1}'', etc.
+
+Therefore, we may as well have a parser for `integer linear
+combination of `named things' which are indexed by non-zero integers
+(the $f$'s and $t$'s, in this case)'. Then {\tt AbelianGroup} can have
+members to read such words, and (ordered) sets of them.
+
+
+\end{document}

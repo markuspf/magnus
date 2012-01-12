@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/SMMagnusBreakdown.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "SMFPGroup.h"
+
+@
+\section{class SMMagnusBreakdown}
+SMMagnusBreakdown's object is responsible to send to front-end
+some extra parameters on Magnus breakdown of one-relator group.
+Then it wait for reply from FE with selected generator to be
+stable letter. After that, it creates fast CM and destroys itself
+by calling TheObjects::remove().
+<<class SMMagnusBreakdown>>=
+class SMMagnusBreakdown : public SMObject
+{
+public:
+  SMMagnusBreakdown( const SMFPGroup& G );
+  static const char* type( ) { return "SMMagnusBreakdown"; }
+  const IconID iconID( ) const 
+    { return IconID::do_not_display; }  // overrides SMObject
+  const char* typeID( ) const { return type(); }          // overrides SMObject
+  void viewStructure(ostream& ostr) const {}              // overrides SMObject
+  void printProperties(ostream& ostr) const {}            // overrides SMObject
+  void printDefinition(ostream& ostr) const {}            // overrides SMObject
+  bool displayInFE( ) const { return false; }             // overrides SMObject
+
+protected:
+  enum TagMessage { ACCEPT };
+  void readMessage(istream&);                          // overrides SMObject
+
+private:
+  const SMFPGroup& theGroup;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/SMMagnusBreakdown.h
+#ifndef _SM_MAGNUS_BREAKDOWN_H_
+#define _SM_MAGNUS_BREAKDOWN_H_
+
+<<license>>
+<<include>>
+<<class SMMagnusBreakdown>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Equations/include/GAPManager.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "GAP.h"
+
+@
+\section{class GAPManager}
+<<class GAPManager>>=
+class GAPManager
+{
+private:
+  const int maxNumOfGaps; // max num of GAPs allowed
+  int theNumOfGaps;       // size of gap below
+  GAP* gap;               // array of running copies of GAP
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Equations/include/GAPManager.h
+#ifndef _GAPManager_h_
+#define _GAPManager_h_
+
+<<license>>
+<<include>>
+<<class GAPManager>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+

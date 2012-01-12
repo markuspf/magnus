@@ -1,0 +1,56 @@
+Magnus version 1.3.1.
+
+1. This version of Magnus works under tcl7.4/tk4.0 nicely, I think I
+   finished the porting at last.
+
+2. Amalgamated Products:
+
+   For a group:
+
+     Is G1 trivial ?
+     Is G1 finite ?
+     Is G1 abelian ?
+     Compute the order of G1
+
+     * This four algorithms can be eliminated easily, but I want to
+       discuss this first, because we keep many such menu items for
+       another kind of groups.
+
+   For a word:
+ 
+     Compute the reduced form of w1
+     Compute the normal form of w1
+     Compute the cyclic normal form of w1
+     Is w1 trivial ?
+
+
+   For a subgroup:
+
+     Is S1 trivial ?
+
+
+   For two words:
+     
+     Is w1 equal to w2 ?
+
+3. Subgroup triviality problem object was implemented for abelian,
+   small cancellation and finitely presented groups. Also I made such
+   fast problem object for a free group, but maybe it doesn't make too
+   much sence (need to discuss). This problem is alredy done for
+   nilpotent groups.
+
+   * I need to discuss the order and structure of all subgroup menu
+     items.
+
+4. Fixing.
+
+  1) Normal Closure was removed from the order of an element problem for
+     abelian groups.
+
+  2) A couple of items was removed or commented out.
+
+  3) The menu item that allows to check in an amalgamated product is
+     available now.
+
+
+	

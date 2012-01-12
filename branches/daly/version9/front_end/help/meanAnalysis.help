@@ -1,0 +1,18 @@
+@@How Mean Analysis Works
+
+THE ANALYSIS OF THE MEAN TOOL
+
+
+The Analysis of the Mean Tool will perform two standard inference procedures for a population mean of the population from which the given one variable data set has been drawn. 
+
+The first procedure is to construct a confidence interval for the population mean from the sample mean and standard deviation of the given one variable data set. If the sample size is over 30 a large sample procedure will be used and for a sample size under 30 a small sample procedure will be employed. In the latter case theoretically the parent population must be normal (see below) so it is best to check for normality and/or symmetry of the data in the case of a small sample. 
+
+The second procedure is to evaluate a hypothesis test testing a user supplied null hypothesis ( given in the form of a target mean) against a user supplied alternative hypothesis. The P-value of the given data (see below) will be computed and teh output box will indicate whether the results are significant relative to a user supplied level of significance. As with the confidence interval procedure if the sample size is over 30 a large sample procedure will be used and for a sample size under 30 a small sample procedure will be employed. 
+
+
+
+        @For more information click here@html/meanTool/index.html::Mean Analysis Help@
+
+
+
+

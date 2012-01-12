@@ -1,0 +1,18 @@
+# Population size
+Population : 50
+
+# Number of generations
+Generations : -1
+
+# Chance of crossover
+Crossover : 95
+
+# Chance of mutation 
+Mutation : 95
+
+# Type of elitist selection
+ElitistSelection : 2
+
+# Have fitness scaling
+FitnessScaling : 1
+

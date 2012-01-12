@@ -1,0 +1,138 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Matrix/include/RingParser.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "WordParser.h"
+#include "Polynomial.h"
+
+@
+\section{class RingEltParser}
+<<class RingEltParser>>=
+template <class R> class RingEltParser : public WordParser 
+{
+public:
+  RingEltParser(istream &istr) : WordParser(istr) { }
+  // Initialize the parser with the istream from which to read.
+  // Destructor supplied by compiler.
+  void parseWhiteSpace( );
+  R parseRingElt( Chars& errMesg );
+
+private:
+#ifdef DEBUG
+  //friend int main(...);
+#endif
+
+};
+
+@
+\section{class MatrixParser}
+The matrices must have the form like 
+\begin{verbatim}
+ [
+   [ x11, x12, x13 ],
+   [ x21, x22, x23 ],
+   [ x31, x32, x33 ]
+ ]
+\end{verbatim}
+<<class MatrixParser>>=
+template <class R> class MatrixParser : public RingEltParser<R> {
+public:
+  MatrixParser(istream &istr) : RingEltParser<R>(istr) { }
+  // Initialize the parser with the istream from which to read.
+  // Destructor supplied by compiler.
+  bool parseMatrix( Chars& errMesg, R ***M, int& MSize );
+
+private:
+  VectorOf<R> parseMatrixRow( Chars& errMesg );
+  void deleteMatrix( R ***M, int MSize );
+
+#ifdef DEBUG
+  //friend int main( );
+#endif
+};
+
+@
+\section{class MonomialParser}
+<<class MonomialParser>>=
+template <class R> class MonomialParser : public RingEltParser<R> 
+{
+  friend class PolynomialParser<R>;
+public:
+  MonomialParser(istream &istr) : RingEltParser<R>(istr) { }
+  // Initialize the parser with the istream from which to read.
+  // Destructor supplied by compiler.
+    
+  Monomial<R> parseMonomial( Chars& errMesg )
+  {
+    bool isLastMonomial;
+    return getMonomial(errMesg, isLastMonomial);
+  }
+
+private:
+  static const int maxNumberOfVariables = 100;
+  Monomial<R> getMonomial( Chars& errMesg, bool& isLastMonomial );
+
+#ifdef DEBUG
+  //friend int main( );
+#endif
+};
+
+@
+\section{class PolynomialParser}
+<<class PolynomialParser>>=
+template <class R> class PolynomialParser : public MonomialParser<R> 
+{
+public:
+  PolynomialParser(istream &istr) : MonomialParser<R>(istr) { }
+  // Initialize the parser with the istream from which to read.
+  // Destructor supplied by compiler.
+  Polynomial<R> parsePolynomial( Chars& errMesg );
+
+private:
+
+#ifdef DEBUG
+  //friend int main( );
+#endif
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Matrix/include/RingParser.h
+#ifndef _RING_PARSER_H_
+#define _RING_PARSER_H_
+
+<<license>>
+<<include>>
+
+template <class R> class PolynomialParser;
+template <class R> class Monomial;
+template <class R> class Polynomial;
+
+<<class RingEltParser>>
+<<class MatrixParser>>
+<<class MonomialParser>>
+<<class PolynomialParser>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+

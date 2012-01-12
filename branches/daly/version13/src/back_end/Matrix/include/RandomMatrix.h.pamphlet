@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Matrix/include/RandomMatrix.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Matrix.h"
+
+@
+\section{class RandomMatrix}
+<<class RandomMatrix>>=
+template <class R> class RandomMatrix 
+{
+public:
+  RandomMatrix( int n = 0 ) 
+  {
+  #if SAFETY > 0
+    if( n < 0 )
+      error("RandomMatrix::RandomMatrix( int ) : "
+	    "incorrect matrix size.");
+  #endif  
+    size = n;
+  }
+
+  int getSize() const { return size; }  
+  Matrix<R> getRandomMatrix( );  
+
+private:
+  int size;
+  int coefficient( );
+  Matrix<R> getAtomicMatrix( );
+
+#ifdef DEBUG
+  //friend int main( );
+#endif
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Matrix/include/RandomMatrix.h
+#ifndef _RANDOM_MATRIX_H_
+#define _RANDOM_MATRIX_H_
+
+<<license>>
+<<include>>
+<<class RandomMatrix>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+

@@ -1,0 +1,8 @@
+src/obj/WordRep.o src/obj/WordRep.d: src/WordRep.C include/WordRep.h include/EltRep.h \
+ ../global/GenericObject.h ../global/PureRep.h ../global/RefCounter.h \
+ ../global/global.h ../global/Afx.h ../global/error.h ../global/IPC.h \
+ ../global/Trichotomy.h ../global/BaseObjectOf.h ../global/ObjectOf.h \
+ include/Type.h include/WordData.h include/Generator.h include/List.h \
+ include/Cell.h include/Vector.h include/Chars.h \
+ ../global/ExtendedIPC.h ../libg++/include/Integer.h \
+ ../libg++/include/Rational.h

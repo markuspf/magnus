@@ -1,0 +1,23 @@
+@@Description of One Variable Data Set Tools
+
+CAISS-STAT has the following tools for use with a one variable data set.  It also has the ability to generate a random sample from the given one variable data set.  The available tools are 
+ 
+ 
+     Data Summary
+
+     Full Data Analysis
+
+     Analysis of the Mean
+
+     Analysis of the Variance
+
+     Goodness of Fit
+
+     Graphical Analysis
+
+     Report
+
+
+         @For more information click here@html/oneVariableDataset/DescriptionOfOneVariableDataSetTools.html::Description of One Variable DataSet Tools@
+
+

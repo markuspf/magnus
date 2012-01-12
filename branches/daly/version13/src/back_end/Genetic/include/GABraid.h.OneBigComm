@@ -1,0 +1,403 @@
+// Copyright (C) 1999 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+//
+// Contents: Definition of class PMQESol
+//
+// Principal Author: Dmitry Bormotov
+//
+// Status: in progress
+//
+// Description:
+//
+// Revision History:
+//
+
+
+#ifndef _GABraid_H_
+#define _GABraid_H_
+
+
+#include "PMWord.h"
+#include "PMArray.h"
+#include "GA.h"
+#include "FreeGroup.h"
+/*
+
+// ------------------------------- PMQESol --------------------------------- //
+
+
+class PMQESol : public PM 
+{
+
+public:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Constructors:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+  
+  PMQESol( UniformRandom& R, int NumOfBS, int NumOfGS, 
+	   const PMWord& pm, int bsnum ) 
+    : numOfBS( NumOfBS ), 
+      numOfGS( NumOfGS ),
+      gsWord( pm ),
+      BSNum( bsnum ),
+      r( R )
+    { }
+
+  // copy constructor, destructor and operators =, == supplied by compiler.
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Hook functions:                                                     //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  void crossover( const PM*, PM*, PM* );
+
+  PM* mutate( );
+
+  PM* randomPM( ); 
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Accessors:                                                          //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  const PMWord* getPMWord( ) { return &gsWord; }
+  
+  int getBSNum() { return BSNum; }
+
+
+private:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Private functions:                                                  //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  int randomGen( );
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Data members:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  int numOfBS, numOfGS;
+  PMWord* gsWord;
+  int BSNum;
+  UniformRandom& r;
+};
+*/
+
+/*
+// ----------------------------- PM2ComConfig ------------------------------ //
+
+
+class PM2ComConfig 
+{
+
+public:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Constructors:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+  
+  PM2ComConfig( UniformRandom& R,  
+		const VectorOf<Map>& BS, 
+		const VectorOf<Map>& GS
+		) 
+    : r( R ), bs( BS ), gs( GS ) { }
+
+  // copy constructor, destructor and operators =, == supplied by compiler.
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Accessors:                                                          //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  UniformRandom& rng( ) const { return r; }
+
+  Map basicSolution( int i ) const {
+  #if( SAFETY > 0 )
+    if( i < 0 || i >= bs.length() )
+      error("Map basicSolution( int i ) : "
+	    "index is out of bounds");
+  #endif
+    return bs[i];
+  }
+
+  Map stabGenerator( int i ) const {
+  #if( SAFETY > 0 )
+    if( i < 0 || i >= gs.length() )
+      error("Map stabGenerator( int i ) : "
+	    "index is out of bounds");
+  #endif
+    return gs[i];
+  }
+
+private:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Private functions:                                                  //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Data members:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  UniformRandom& r;
+  VectorOf<Map> bs, gs;
+};
+*/
+
+
+// ---------------------------- PM2ComConfig ------------------------------- //
+
+
+class PM2ComConfig: public PMWordConfig 
+{
+
+public:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Constructors:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+  
+  PM2ComConfig( UniformRandom& R,  
+		int NumOfGens, 
+		int WordMaxLen,
+		bool allowTrivialWords,
+		VectorOf<Word> BGens
+		) 
+    : PMWordConfig( R, NumOfGens, WordMaxLen, allowTrivialWords ),
+      bGens( BGens )
+    { }
+
+  // copy constructor, destructor and operators =, == supplied by compiler.
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Accessors:                                                          //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  int getNumOfBGens( ) const { return bGens.length(); }
+
+  VectorOf<Word> getBGens( ) const { return bGens; }
+
+ 
+private:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Private functions:                                                  //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Data members:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  VectorOf<Word> bGens;
+};
+
+
+// ------------------------------- PM2Com ---------------------------------- //
+
+
+class PM2Com : public PM 
+{
+
+public:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Constructors:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  PM2Com( const PM2ComConfig& CFG, PMWord* W1, PMWord* W2 );
+
+  PM2Com( const PM2ComConfig& CFG );
+
+  PM2Com( const PM2Com& pm );
+  
+  ~PM2Com( );
+  
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Overriden abstract functions:                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  PM* clone( ) const { return new PM2Com(*this); }
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Overriden hook functions:                                           //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  PM* crossover( const PM* );
+
+  PM* mutate( );
+
+  PM* randomPM( ); 
+
+  void printOn( ostream& ostr ) const
+  {
+    ostr << "[" << *w1 << ", " << *w2 << "]";
+  }
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Accessors:                                                          //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  PM2Com& operator = ( const PM2Com& pm );
+
+  bool operator == ( const PM& p ) const
+  { 
+    const PM2Com& pm = (const PM2Com&) p;
+    return *w1 == *(pm.w1) && *w2 == *(pm.w2);
+  }
+
+  const PMWord* getW1( ) const { return w1; }
+
+  const PMWord* getW2( ) const { return w2; }
+
+
+private:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Private functions:                                                  //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  Word commutator( const PMWord* u, const PMWord* v );
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Data members:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  const PM2ComConfig& cfg;
+  PMWord *w1,*w2;
+};
+
+
+// --------------------------- GABurauSolver ------------------------------- //
+
+
+class GABurauSolver : public GA
+{
+
+public:
+  
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Constructors:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+  
+  GABurauSolver( const GAConfig& GAC, const FreeGroup& G, int NumOfVars, 
+		 const FreeGroup& B, VectorOf<Word> BGens );
+  
+  // copy constructor supplied by compiler.
+  
+  // destructor supplied by compiler.
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Overriden abstract functions:                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  void initPopulation( );
+
+  int fitness( const PM* pm );
+  
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Accessors:                                                          //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  Map getSolution( const Word& u, ostream* o = NULL );
+  // returns a solution for equation u found by genetic algorithm
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // OI:                                                                 //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+
+private:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Private functions:                                                  //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+  
+  void reworkEquation( );
+  
+  void init( );
+    
+  Word PMtoG( const PM* pm, int k );
+
+  bool checkForSolution( Map& res );
+
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Data members:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+  
+  FreeGroup theGroup, B;
+  int numOfVars, numOfGens, numOfConsts, g;
+  bool keepDetails;
+  VectorOf<Word> bGens;
+  Map M,MB;
+  Word w;
+  ostream* out;
+  PM2ComConfig PM2CC;
+  PMArrayConfig PMAC;
+};
+
+
+#endif

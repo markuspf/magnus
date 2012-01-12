@@ -1,0 +1,30 @@
+Compute the freely reduced form of w1
+Compute a cyclically reduced form of w1
+Compute the freely reduced form of the inverse of w1
+Compute the length of the freely reduced form of w1
+Compute the i-th initial segment of the freely reduced form of w1
+Compute the j-th terminal segment of the freely reduced form of w1
+---
+Compute the representative of w1 in a Schreier system of representatives for
+G1
+
+Rewrite w1 as a product of squares
+Rewrite w1 as a product of its canonical form modulo the derived group
+and an element of the derived group
+Rewrite w1 as a product of commutators
+Rewrite w1 as a product of n-fold commutators
+
+Is w1 trivial in G1?
+Is w1 central in G1?
+Is w1 of finite order in G1?
+Is w1 a proper power in G1?
+Is w1 a commutator in G1?
+Is w1 a product of squares?
+Is w1 a product of commutators?
+
+Compute the order of w1
+---
+Compute the centralizer of w1
+Compute the normalizer of w1
+Compute the canonical decomposition of w1 modulo the derived
+group of G1

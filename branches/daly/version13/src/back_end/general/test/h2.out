@@ -1,0 +1,50 @@
+The running time for the extractMax: 
+d - arity of the heap, 
+time is in seconds, 
+the array contained 1 million numbers in reversed order, 
+namely 999999, 999998, ..., 0,
+extractMax has been called 100000 times: 
+
+d = 2    time elapsed: 0.563652
+d = 3    time elapsed: 0.436172
+d = 4    time elapsed: 0.393798    The best time
+d = 5    time elapsed: 0.484299
+d = 6    time elapsed: 0.461851
+d = 7    time elapsed: 0.464351
+d = 8    time elapsed: 0.479125
+d = 9    time elapsed: 0.47891
+d = 10   time elapsed: 0.469805
+d = 11   time elapsed: 0.482382
+d = 12   time elapsed: 0.493437
+d = 13   time elapsed: 0.500535
+d = 14   time elapsed: 0.50854
+d = 15   time elapsed: 0.512837
+d = 16   time elapsed: 0.513829
+d = 17   time elapsed: 0.512724
+d = 18   time elapsed: 0.51666
+d = 19   time elapsed: 0.529707
+d = 20   time elapsed: 0.544394
+
+
+Same experiment except that the array is filled with random values
+from 0 to 999999 (still d = 4 is the best):
+
+d = 2    time elapsed: 0.601835
+d = 3    time elapsed: 0.503277
+d = 4    time elapsed: 0.453177    The best time
+d = 5    time elapsed: 0.544464
+d = 6    time elapsed: 0.52148
+d = 7    time elapsed: 0.524222
+d = 8    time elapsed: 0.515534
+d = 9    time elapsed: 0.544836
+d = 10   time elapsed: 0.544615
+d = 11   time elapsed: 0.563901
+d = 12   time elapsed: 0.572443
+d = 13   time elapsed: 0.590613
+d = 14   time elapsed: 0.600558
+d = 15   time elapsed: 0.604601
+d = 16   time elapsed: 0.592821
+d = 17   time elapsed: 0.627564
+d = 18   time elapsed: 0.646315
+d = 19   time elapsed: 0.665627
+d = 20   time elapsed: 0.680557

@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/MSCProblems.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "MSCGroup.h"
+#include "FPGroup.h"
+
+@
+\section{class MSCLambdaARCer}
+<<class MSCLambdaARCer>>=
+class MSCLambdaARCer : public ARCer
+{
+public:
+  MSCLambdaARCer( ComputationManager& boss ) 
+    : ARCer( boss ), theLambda( -1 ) { } 
+
+  void setArguments( const FPGroup& );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  int lambda() { return theLambda; }
+  // returns MSC lambda or -1 if it is not yet computed
+  
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  FPGroup G;
+  int thelambda;
+};
+
+@
+\section{class MSCLambda}
+<<class MSCLambda>>=
+class MSCLambda : public ComputationManager
+{
+public:
+  MSCLambda(class GCM& gcm);
+  void viewStructure(ostream& ostr) const { }  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+  
+private:
+  SMFPGroup& theGroup;
+  MSCLambdaARCer arcer;
+};
+
+@
+\section{class MSCLambdaProblem}
+<<class MSCLambdaProblem>>=
+class MSCLambdaProblem : public Supervisor
+{
+
+public:
+  MSCLambdaProblem( class SMFPGroup& G );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+
+private:
+  SMFPGroup& theGroup;
+  MirrorSubordinate MSCLambda;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/MSCProblems.h
+#ifndef _MSCProblems_h_
+#define _MSCProblems_h_
+
+<<license>>
+<<include>>
+<<class MSCLambdaARCer>>
+<<class MSCLambda>>
+<<class MSCLambdaProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/EqSystemParser.h}
+\author{Denis Serbin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "EquationParser.h"
+#include "PresentationParser.h"
+#include "conversions.h"
+
+@
+\section{class EqSystemParser}
+<<class EqSystemParser>>=
+class EqSystemParser : protected PresentationParser
+{
+public:
+  EqSystemParser(istream &istr) : PresentationParser(istr) { }
+  // Initialize the parser with the istream from which to read.
+
+  // Destructor supplied by compiler.
+
+  VectorOf<Word> parseEqSystem( const VectorOf<Chars>& names,
+				VectorOf<Chars>& new_names,
+				Chars& errMesg
+				);
+  // Reads a system equations and returns it as a vector of words. 
+  // The new vector of print names (generators first, then variables) is 
+  // returned in new_names.
+  // As usual, if there is a parse error, the description is returned in
+  // errMesg.
+
+  Word parseEquation( const VectorOf<Chars>& names,
+		      VectorOf<Chars>& new_names,
+		      Chars& errMesg
+		      );
+  
+  virtual void getToken( );
+  virtual Word parseRelator( const VectorOf<Chars>&, Chars& );
+  
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/EqSystemParser.h
+#ifndef _EqSystemParser_h_
+#define _EqSystemParser_h_
+
+<<license>>
+<<include>>
+<<class EqSystemParser>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

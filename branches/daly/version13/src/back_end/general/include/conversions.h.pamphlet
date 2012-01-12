@@ -1,0 +1,112 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/conversions.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{conversions.h}
+Contents: Global template functions for converting between container classes.
+\begin{list}{}
+\item We use global functions to both break circular dependence, and to
+avoid clashes between different requirements on the element types
+of the various container classes.
+
+\item The functions are inlined to work around the lack of template
+repositories in gcc 2.6.3.
+\end{list}
+\section{include}
+<<include>>=
+#include "List.h"
+#include "Set.h"
+#include "Vector.h"
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/conversions.h
+#ifndef _CONVERSIONS_H_
+#define _CONVERSIONS_H_
+
+<<license>>
+<<include>>
+
+template <class T> VectorOf<T> makeVectorOf(const ListOf<T>& L)
+{
+  VectorOf<T> result( L.length() );
+  int i = 0;
+  ListIterator< ListOf<T> > I(L);
+  while ( !I.done() ) {
+    result[i++] = I.value();
+    I.next();
+  }
+  return result;
+}
+
+
+template <class T> VectorOf<T> makeVectorOf(const SetOf<T>& S)
+{
+  VectorOf<T> result( S.cardinality() );
+  int ii = 0;
+  SetIterator<T> I(S);
+  while ( !I.done() ) {
+    result[ii++] = I.value();
+    I.next();
+  }
+  return result;
+}
+
+
+template <class T> SetOf<T> makeSetOf(const VectorOf<T>& V)
+{
+  int ii = V.length();
+  SetOf<T> result( ii );
+  while( --ii >= 0 ) result.adjoinElement( V[ii] );
+  return result;
+}
+
+template <class T> SetOf<T> makeSetOf(const ListOf<T>& L)
+{
+  SetOf<T> result( L.length() );
+  ListIterator< ListOf<T> > I( L );
+  while ( !I.done() ) {
+    result.adjoinElement( I.value() );
+    I.next();
+  }
+  return result;
+}
+
+template <class T> ListOf<T> makeListOf(const VectorOf<T>& V)
+{
+  ListOf<T> result;
+  int i = V.length();
+  while ( --i >= 0 ) result.prepend( V[i] );
+  return result;
+}
+
+template <class T> ListOf<T> makeListOf(const SetOf<T>& S)
+{
+  ListOf<T> result;
+  SetIterator<T> I(S);
+  while ( !I.done() ) {
+    result.append( I.value() );
+    I.next();
+  }
+  return result;
+}
+
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

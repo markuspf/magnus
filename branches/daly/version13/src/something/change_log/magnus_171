@@ -1,0 +1,8 @@
+1. Aleksei's experiment.
+
+2. Implementation of IPC tools.
+
+3. Fixing bug in composition of two homs: the result of porting to
+   2.7.2.
+
+

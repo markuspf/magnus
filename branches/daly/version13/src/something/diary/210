@@ -1,0 +1,71 @@
+@am:
+
+------------------------
+2.3.97
+------------------------
+1. Changed files. Magnus transcripts and Session log copies  now creating 
+in ~/.magnus/ and only the last 10 are remaining.
+2. Tmp files are creating in tmp_directory, defining in Configure or aConfigure
+files. ( Changed: KBmagPackage.C, RKBPackage.C, Homology.C, BlackBox.h and 
+BlackBox.C).
+3. Computing NilpotentStructure, NilpotentQuotients. Word probelm for nilpotent
+structure and for quotients. 
+4. Added Nilpotent Quptients in: WordProblem, AreEltsEqual, IsEltCentral,
+	OrderOfElt,IsTrivial,IsAbelian,IsNilpotent,IsSGAbelian,IsSGCentral,
+	IsSGNilpotent,IsSGTrivial,ExtendToHomProblem.
+5. Changed Makefiles for black boxes. So they are not recompiling every time 
+now.
+6.Compute the centrolizer in free Group.
+7.Conjugasy problem. Now conjugater is swown.
+8.For subgroups of free groups:
+	8.1 Conjugasy problem.
+	8.2 Contains conjugator.
+9.Fixed bug in SubgroupGraph. For index of subgroup in free group.
+---------------------------
+3.3.97
+---------------------------
+1. Fixed block copy.
+2. Fixed suspending when problem window is closed.
+3. Fixed deleting of working supervisors.
+4. Pechking promised to make a check are two subgroups isomorphic
+   when building AProdact
+5. For abelian groups:
+	5.1 Does w generate a direct summand
+	5.2 An enumerator for the automorphisms
+6. Added order in enumerator of automorphisms for free groups.
+7. Conjugasy problem continues to work if small cancelation method fails.
+
+
+@dp:
+
+
+Eta versija vkljuchaet v sebja (osnovnye algoritmy)
+
+OR word problem (vmesto Dionovskoj) 
+OR extended word problem (aka Magnus subgroup containment problem)
+HNNofFree  reduced, normal, cyclically reduced normal forms
+HNNofFree  conjugacy problem (cyclic case)
+
+Enhanced `TheObjects.C' -- Ja dovol'no dolgo razbiralsja s dispetcherom
+CMs, poproboval paru drugix variantov, no oni trebovali bol'shoy pravki
+Session Manager'a. Posledniy variant poluchilsja dovol'no izjaschnyj.
+U menja magnus normal'no s etim fix'om rabotaet, zapuskaet parallel'nye
+processy, i *SPIT* kogda aktivnyx zadach net. Glukov poka osobyx ne
+zametil. 
+
+Iz OR with torsion (gotovuju pervuju chast' zadach)ja ne vstavil,
+poskol'ku voznikli somnenija ideologicheskogo porjadka. 
+Eto podsluchaj ORGroup, no vrjad li nado zavodit' flag
+   SMFPGroup::OR_WITH_TORSION
+Navernoje nado vstavljat' vyzovy moix programm v te Problems, kotorye
+opredeleny dlja ONE_RELATOR, esli gruppa s krucenijem ? 
+Togda, naprimer, problems "Is G a non-trivial free-product?" budet
+reshat'sja tol'ko dlja OR_WITH_TORSION, a punkt menu budet dostupen
+dlja luboj ONE_RELATOR grouppy. Poetomu mne kazhetsja, chto est' smysl
+obsudit' sledujuschee:
+   punkt menu zapuskaet problemy, kazhdaja iz problem imeet dopolnitel'nyj
+   description: polnota realizacii algoritma - complete/partial cases/..
+Eto kak v AProducts: conjugacy problem tam reshena tol'ko dlja cyclic
+case, user dolzhen ob etom imet' vozmozhnost' uznat'. Mozhet byt'
+poluchit' polnyj spisok realizovannyx algoritmov. Ili eto vse budet v
+manuale ?

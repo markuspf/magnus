@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/ARC.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include <iostream.h>
+
+@
+\section{class ARC}
+<<class ARC>>=
+class ARC
+{
+public:
+
+  ARC( ) : theARC( 0 ) { }
+
+  operator int ( ) const { return theARC; }
+
+  ARC operator + ( const ARC& arc ) const {
+	 return ARC( theARC + arc.theARC );
+  }
+
+  ARC operator - ( const ARC& arc ) const {
+	 return ARC( theARC - arc.theARC );
+  }
+
+  ARC operator += ( const ARC& arc ) {
+	 theARC += arc.theARC;
+	 return *this;
+  }
+
+  ARC operator -= ( const ARC& arc ) {
+	 theARC -= arc.theARC;
+	 return *this;
+  }
+
+  inline friend ostream& operator << ( ostream& ostr, const ARC& arc ) {
+	 return ostr << arc.theARC;
+  }
+
+protected:
+
+  friend class ComputationManager;
+  friend class Supervisor;
+
+  ARC( int i ) : theARC( i ) { }
+  // Used by classes ComputationManager, Supervisor.
+
+private:
+
+  int theARC;
+
+};
+
+struct ZeroARC : public ARC { ZeroARC( ) : ARC( 0 ) { } };
+
+struct OneARC : public ARC { OneARC( ) : ARC( 1 ) { } };
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/ARC.h
+#ifndef _ARC_H_
+#define _ARC_H_
+
+<<license>>
+<<include>>
+<<class ARC>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

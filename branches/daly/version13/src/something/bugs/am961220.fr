@@ -1,0 +1,58 @@
+From alexei@rio Fri Dec 20 22:51 EST 1996
+From: alexei@rio (Alexei Myasnikov)
+Subject: bug
+To: bormotov@rio (Dmitry Bormotov)
+Date: Fri, 20 Dec 1996 22:45:59 -0500 (EST)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+           Magnus Version 1.9.4 beta,
+         Release date: December 20, 1996
+            Copyright (C) 1994-1996 
+     The New York Group Theory Cooperative.
+    Magnus comes with ABSOLUTELY NO WARRANTY.
+
+    This is free software, and you are welcome to redistribute it under certain conditions; choose `Show GNU General Public License' in the `Help' menu for details.
+
+    See `Release Notes' in the `Help' menu for information about this version of Magnus.
+
+
+Magnus session started on
+Fri Dec 20 21:52:15 EST 1996
+by alexei at giraffe.
+
+Session Manager started.
+
+Bootstrap complete.
+
+User defined free group:
+F1 = < a,b,c  >.
+
+
+Deleted F1.
+
+User defined free group:
+F1 = < c1,c2,c3  >.
+
+
+User defined equation in F1:
+E1 = c1^z1 c2^z2 = c1 c2.
+
+
+Checked in the problem "Solving  E1".
+
+The problem "Solving  E1" started
+Fri Dec 20 21:54:06 EST 1996.
+
+Click here to view basic solutions found so far.
+
+Click here to view RegStab generators found so far.
+
+Click here to view random solutions generated so far.
+
+Solving the equation is finished. Found 9 basic solutions and 4 REgStab generators.
+
+Rank of the equation is 5
+
+
+

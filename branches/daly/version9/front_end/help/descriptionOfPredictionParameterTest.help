@@ -1,0 +1,12 @@
+@@Description of Prediction and Parameter Testing
+
+Description of Prediction and Parameter Testing
+
+   The Prediction and Parameter Testing Tool will allow the user to perform statistical tests on the fitted regression parameters - including confidence intervals and hypothesis tests for the regression parameters, that is the regression slope and the regression intercept. This tool will also allow the user to construct prediction intervals based on the fitted regression model. Finally this tool will allow the user to do a test of mdoel fit, that is test whether the fitted regression model is adequate or not. To use the
+regression analysis tools the data must be paired data (Xi,Yi). If the samples are not the same size an error message will be outputted. 
+
+           @For further information click here@html/predictionParameter/index.html::Description of Prediction and Parameter@   
+
+
+
+

@@ -1,0 +1,48 @@
+From gilbert@rio Wed Mar 13 12:00 EST 1996
+Date: Wed, 13 Mar 1996 12:00:11 -0500
+From: gilbert@rio ( Gilbert Baumslag)
+
+
+Status: to print and discuss
+
+
+1.
+
+Domain is free:
+
+m1 extends to a homomorphism: this follows from the fact that the given 
+generators freely generate F1.
+
+Otherwise:
+
+m1 doesn't extend to a homomorphism: the images of the generators do not 
+satisfy the given relations.
+
+Status:
+	 
+
+
+2.
+
+h1 is the homomorphism of F1 to F1, defined on the generators of F1 as
+follows:  a -> a^2, b -> b^2.
+
+h1 is the extension of m1 to a homomorphism of F1 to F1, defined on the 
+generators of F1 as follows:  a -> a^2, b -> b^2.
+
+Status: done, but needs a discussion
+Changed to "The extension of m1 to a homomorphism of F1 to F1:..."
+
+
+
+/*
+m1 doesn't extend to a homomorphism: the cyclic  decomposition shows
+that the images of the generators do not satisy the given relations. 
+
+m1 m1 doesn't extend to a homomorphism: the cyclic  decomposition shows
+that the images of the generators do not satisy the given relations. 
+
+m1 doesn't extend to a homomorphism: this follows by making use of
+the cyclic  decomposition.
+*/
+

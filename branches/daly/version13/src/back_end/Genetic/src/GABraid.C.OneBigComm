@@ -1,0 +1,289 @@
+// Copyright (C) 1999 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+// 
+// Contents: Implementation of PMWord class
+//
+// Principal Author: Dmitry Bormotov
+//
+// Status: in progress
+//
+// Revision History:
+//
+//
+
+
+#include "GABraid.h"
+
+/*
+// ------------------------------- PMQESol --------------------------------- //
+
+
+void PMQESol::crossover( const PM* u, PM* r1, PM* r2 )
+{
+  const PMQESol* i = u;
+  PMWord* c = gsWord.crossover(i->getPMWord());
+  r1 = new PMQESol(r, numOfBS, numOfGS, *c, BSNum );
+  r2 = new PMQESol(r, numOfBS, numOfGS, *c, i->getBSNum() );
+  delete c;
+}
+
+
+PM* PMQESol::mutate( )
+{
+  float op = r.rand();
+  if( op <= 0.15 ) { 
+    int num = int(r.rand() * numOfBS);
+    return new PMQESol(r, numOfBS, numOfGS, gsWord, num);
+  } else {
+    PMWord* m = gsWord.mutate();
+    PMQESol* sol = new PMQESol(r, numOfBS, numOfGS, *m, BSNum);
+    delete m;
+    return sol;
+  }
+}
+*/
+
+
+// ------------------------------- PM2Com ---------------------------------- //
+
+
+PM2Com::PM2Com( const PM2ComConfig& CFG, PMWord* W1, PMWord* W2 )
+  : cfg( CFG ), w1( W1 ), w2( W2 ) 
+{ }
+
+PM2Com::PM2Com( const PM2ComConfig& CFG )
+  : cfg( CFG ), w1( new PMWord(CFG) ), w2( new PMWord(CFG) ) 
+{ }
+
+
+
+PM2Com::PM2Com( const PM2Com& pm )
+  : cfg( pm.cfg ), 
+    w1( new PMWord(*pm.w1) ),
+    w2( new PMWord(*pm.w2) )
+{ }
+
+
+PM2Com& PM2Com::operator = ( const PM2Com& pm )
+{ 
+  delete w1;
+  delete w2;
+  w1 = new PMWord(*pm.w1);
+  w2 = new PMWord(*pm.w2);
+}
+
+
+PM2Com::~PM2Com( ) 
+{
+  delete w1; 
+  delete w2;
+}
+
+
+Word PM2Com::commutator( const PMWord* u, const PMWord* v )
+{
+  Word u1 = u->getWord();
+  Word u2 = v->getWord();
+  Word w = (u1.inverse() * u2.inverse() * u1 * u2).freelyReduce();
+  FreeGroup F(cfg.getNumOfGens());
+  FreeGroup B(cfg.getNumOfBGens());
+  Map M(B,F,cfg.getBGens());
+  return M.imageOf(w).freelyReduce();
+}
+
+
+PM* PM2Com::crossover( const PM* u )
+{
+  PMWord *p1 = 0, *p2 = 0;
+  do {
+    delete p1; delete p2;
+    const PM2Com* uu = (PM2Com*)u;
+    p1 = (PMWord*)( w1->crossover( uu->w1 ) );
+    p2 = (PMWord*)( w2->crossover( uu->w2 ) );
+  } while( !cfg.allowTrivialWords() && commutator(p1,p2).length() == 0 );
+
+  return new PM2Com( cfg, p1, p2 );
+}
+
+
+PM* PM2Com::mutate( )
+{
+  PMWord *p1 = 0, *p2 = 0;
+  do {
+    delete p1; delete p2;
+    float op = cfg.rng().rand();
+    if( op <= 0.5 ) {
+      p1 = (PMWord*)(w1->mutate());
+      p2 = new PMWord(*w2); 
+    }
+    else {
+      p1 = new PMWord(*w1);
+      p2 = (PMWord*)(w2->mutate());
+    }
+  } while( !cfg.allowTrivialWords() && commutator(p1,p2).length() == 0 );
+  
+  return new PM2Com( cfg, p1, p2 ); 
+}
+ 
+
+PM* PM2Com::randomPM( )
+{
+  PMWord *p1 = 0, *p2 = 0;
+  do {
+    delete p1; delete p2;
+    p1 = (PMWord*)w1->randomPM();
+    p2 = (PMWord*)w2->randomPM();
+  } while( !cfg.allowTrivialWords() && commutator(p1,p2).length() == 0 );
+  
+  return new PM2Com( cfg, p1, p2 ); 
+}
+
+
+// --------------------------- GABurauSolver ------------------------------- //
+  
+GABurauSolver::GABurauSolver( const GAConfig& GAC, const FreeGroup& G, 
+			      int NumOfVars, const FreeGroup& Br, 
+			      VectorOf<Word> BGens )
+  : GA( GAC ),
+    theGroup( G ), 
+    numOfVars( NumOfVars ), 
+    numOfGens( G.numberOfGenerators() ),
+    numOfConsts( G.numberOfGenerators() - NumOfVars ),
+    B( Br ),
+    bGens( BGens ),
+    out( 0 ),
+    PM2CC(r,numOfConsts,20,false,bGens),
+    PMAC(r,numOfVars,gac)
+{ 
+  VectorOf<Chars> names = theGroup.namesOfGenerators();
+  VectorOf<Chars> v(numOfGens);
+  for( int i = 0; i < numOfConsts; ++i )
+    v[i] = names[numOfVars+i];
+  for( int i = 0; i < numOfVars; ++i )
+    v[i+numOfConsts] = names[i];
+  theGroup = FreeGroup(v);
+}
+
+
+void GABurauSolver::reworkEquation( )
+{
+  int wLen = w.length();
+  for( int i = 0; i < wLen; ++i ) {
+    int p = power(w[i]);
+    int a = abs(w[i]); 
+    if( a <= numOfVars )
+      w[i] = Generator(p * (a + numOfConsts));
+    else
+      w[i] = Generator(p * (a - numOfVars));
+  }
+}
+
+
+void GABurauSolver::initPopulation( )
+{
+  PM2Com c(PM2CC);
+
+  for( int i = 0; i < popSize; ++i ) {
+    PM** X = new PM*[numOfVars];
+    for( int j = 0; j < numOfVars; ++j )
+      X[j] = c.randomPM();
+    pop[i] = new PMArray(PMAC,X);
+  }
+}
+
+
+Word GABurauSolver::PMtoG( const PM* pm, int k ) 
+{
+  const PM2Com* c  = (const PM2Com*)((PMArray*)pm)->value(k);
+  Word w1 = c->getW1()->getWord();
+  Word w2 = c->getW2()->getWord();
+  Word com = (w1.inverse() * w2.inverse() * w1 * w2).freelyReduce();
+  Word im = MB.imageOf(com).freelyReduce();
+  return im;
+}
+
+
+int GABurauSolver::fitness( const PM* pm )
+{
+  for( int k = 0; k < numOfVars; ++k ) {
+    M.setGeneratingImages(numOfConsts+k, PMtoG(pm,k));
+  }
+  return M.imageOf(w).freelyReduce().length();
+}
+
+
+void GABurauSolver::init( )
+{
+  if( out != 0 ) {
+    (*out) << "The algorithm tries to substitute variables with genetically "
+      "produced words to reduce the length of an equation. "
+      "The fitness value below is the lowest length of the equation produced "
+      "on the current generation. " << endl << endl << ready;
+  }
+
+  reworkEquation( );
+
+  VectorOf<Word> im(numOfGens);
+  for( int i = 0; i < numOfGens; ++i )
+    im[i] = Word(Generator(i+1));
+  M = Map(theGroup,theGroup,im);
+  MB = Map(B,theGroup,bGens);
+}
+
+
+bool GABurauSolver::checkForSolution( Map& res )
+{
+  // print current results
+  if( out && g % 100 == 0) {
+    *out << "Generation: " << g << "   Fitness: " << minFit << endl << ready;
+  }
+  if( minFit == 0 || g % 1000 == 0 )
+    cout << "pop[minFitInd] : " << *pop[minFitInd] << endl;
+
+  // exit if found a solution
+  if( minFit == 0 ) {
+   // prepare and return found solution
+    VectorOf<Chars> names = theGroup.namesOfGenerators();
+    VectorOf<Chars> ret(numOfVars);
+    for( int i = 0; i < numOfVars; ++i )
+      ret[i] = names[i+numOfConsts];
+    FreeGroup F(ret);
+
+    VectorOf<Word> v(numOfVars);
+    for( int i = 0; i < numOfVars; ++i )
+      v[i] =  PMtoG( pop[minFitInd], i );
+    
+    VectorOf<Chars> c(numOfConsts);
+    for( int i = 0; i < numOfConsts; ++i )
+      c[i] = names[i];
+    FreeGroup F2(c);
+    
+    res = Map(F,F2,v);
+    if( out ) {
+      *out << "Solution: " << res << endl << end;
+    }
+    return true;
+  }
+  return false;
+}
+
+
+Map GABurauSolver::getSolution( const Word& u, ostream* o )
+{
+  out = o;
+  w = u;
+  Map res;
+  init();
+  initPopulation();
+  int numOfGenerations = gac.numOfGenerations();
+
+  for( g = 0; numOfGenerations < 0 || g < numOfGenerations; ++g ) {
+    computeFitness();
+    if( checkForSolution(res) ) return res;
+    adjustFitness();
+    doCrossover();
+    doMutation();
+    doReplacement();
+  }
+}
+

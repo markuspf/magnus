@@ -1,0 +1,71 @@
+--> -2 0 A1 < a,b ;  >
+debug point 4-1
+debug point 4-2
+--> -1 2 0 A1
+--> -2 24 0
+debug point 4-1
+debug point 4-2
+debug point 6-1
+debug point 6-4
+debug point 6-3
+debug point 6-2
+debug point 5-1
+debug point 4
+debug point 1
+debug point 3
+--> -2 25 0
+debug point 4-1
+debug point 4-2
+debug point 2-1
+debug point 2-2
+debug point 2-4
+--> -2 26 0
+debug point 4-1
+debug point 4-2
+--> -1 2 2 {A1 free ?}
+--> 2 1 1 15
+3 is accepting 15 ARCs from 2 for ARCSlotID 1 (overrides)
+
+--> 2 2
+debug point 6-1
+debug point 6-4
+debug point 6-3
+debug point 6-2
+tmp file1:/tmp/MagnusTmp3315/results.3328
+tmp file 2:/tmp/MagnusTmp3315/results.3328
+--> -2 27 0
+debug point 4-1
+debug point 4-2
+--> -2 28 0
+debug point 4-1
+debug point 4-2
+--> -2 3 F1 < a,b  >
+debug point 4-1
+debug point 4-2
+--> -1 2 3 F1
+--> -2 61 3
+debug point 4-1
+debug point 4-2
+--> -1 2 5 {word en1}
+--> 5 1 0 40
+5 is accepting 40 ARCs from 5 for ARCSlotID 0 (overrides)
+
+--> 5 2
+tmp file 2:/tmp/MagnusTmp3315/results.3331
+
+Here are all Resources in ResourceManager::usedARCs, for 5:
+
+From: 5
+ASI: 0
+ARCs: 40
+State: Frozen
+
+--> -2 59 3
+--> -2 30 0
+debug point 4-1
+debug point 4-2
+--> -2 32 0
+debug point 4-1
+debug point 4-2
+--> -2 1
+--> -1 0

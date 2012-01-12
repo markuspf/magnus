@@ -1,0 +1,153 @@
+Magnus 1.0.0 beta
+release date: 9 November 1995
+Copyright (C) 1995 The New York Group Theory Cooperative
+Magnus comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it under certain conditions; choose `Show GNU General Public License' in the `Help' menu for details.
+
+See `Release Notes' in the `Help' menu for information about this version of Magnus.
+
+
+Magnus session started on
+Mon Dec 18 17:35:12 EST 1995
+by alexei at giraffe.
+
+Session Manager started.
+
+Bootstrap complete.
+
+User defined nilpotent group:
+G1 =   3 <a,b,c,d  ; d^2 >.
+
+
+User defined subgroup of G1:
+H1 = {[a,b,c]
+
+}.
+
+
+User defined subgroup of G1:
+H2 = {B^3, [a,b]
+
+}.
+
+
+Checked in Problem_1
+
+Problem_1 started
+Mon Dec 18 17:38:18 EST 1995
+
+Problem_1 suspended
+Mon Dec 18 17:38:56 EST 1995
+
+Problem_1 resumed
+Mon Dec 18 17:39:11 EST 1995
+
+Problem_1 resumed
+Mon Dec 18 17:39:11 EST 1995
+
+Computed the nilpotent structure of G1; This allows for solving the word problem, computing the center, and computing centralizers.
+
+Checked in Problem_2
+
+Problem_2 started
+Mon Dec 18 17:40:04 EST 1995
+
+Problem_2 suspended
+Mon Dec 18 17:40:17 EST 1995
+
+Problem_2 resumed
+Mon Dec 18 17:40:24 EST 1995
+
+Problem_2 resumed
+Mon Dec 18 17:40:24 EST 1995
+
+Problem_2 suspended
+Mon Dec 18 17:40:30 EST 1995
+
+Problem_2 resumed
+Mon Dec 18 17:40:38 EST 1995
+
+Problem_2 resumed
+Mon Dec 18 17:40:38 EST 1995
+
+Problem_2 suspended
+Mon Dec 18 17:41:30 EST 1995
+
+Problem_2 resumed
+Mon Dec 18 17:41:45 EST 1995
+
+Problem_2 resumed
+Mon Dec 18 17:41:45 EST 1995
+
+Problem_2 suspended
+Mon Dec 18 17:42:49 EST 1995
+
+Problem_2 resumed
+Mon Dec 18 17:43:03 EST 1995
+
+Problem_2 resumed
+Mon Dec 18 17:43:03 EST 1995
+
+These generate the center of G1: c^-1 d^-1 c d d^-2 c^-1 d c d, c^-1 d^-1 c d c^-1 d^-1 c^-1 d c^2, b^-1 d^-1 b d^-1 b^-1 d b d, b^-1 d^-1 b d c^-1 d^-1 b^-1 d b c, b^-1 d^-1 b d b^-1 d^-1 b^-1 d b^2, a^-1 d^-1 a d^-1 a^-1 d a d, a^-1 d^-1 a d c^-1 d^-1 a^-1 d a c, a^-1 d^-1 a d b^-1 d^-1 a^-1 d a b, a^-1 d^-1 a d a^-1 d^-1 a^-1 d a^2, d^-1 a^-1 d a d^-1 a^-1 d a, b^-1 c^-1 b c d^-1 c^-1 b^-1 c b d, b^-1 c^-1 b c^-1 b^-1 c b c, b^-1 c^-1 b c b^-1 c^-1 b^-1 c b^2, a^-1 c^-1 a c d^-1 c^-1 a^-1 c a d, d^-1 c^-1 d c d^-1 c^-1 d c, a^-1 c^-1 a c^-1 a^-1 c a c, a^-1 c^-1 a c b^-1 c^-1 a^-1 c a b, a^-1 c^-1 a c a^-1 c^-1 a^-1 c a^2, a^-1 b^-1 a b d^-1 b^-1 a^-1 b a d, d^-1 b^-1 d b d^-1 b^-1 d b, a^-1 b^-1 a b c^-1 b^-1 a^-1 b a c, a^-1 b^-1 a b^-1 a^-1 b a b, a^-1 b^-1 a b a^-1 b^-1 a^-1 b a^2, d^2
+
+Problem_2 finished
+Mon Dec 18 17:44:02 EST 1995
+
+Problem_1 finished
+Mon Dec 18 18:28:15 EST 1995
+
+User defined word in the generators of G1:
+w1 = a b^10 a b c.
+
+
+Checked in Problem_3
+
+Problem_3 started
+Mon Dec 18 18:31:29 EST 1995
+
+The word w1 is not trivial in G1
+
+Problem_3 finished
+Mon Dec 18 18:31:30 EST 1995
+
+Deleted Problem_3
+
+Deleted Problem_1
+
+Checked in Problem_1
+
+Problem_1 started
+Mon Dec 18 18:32:12 EST 1995
+
+Problem_1 suspended
+Mon Dec 18 18:32:16 EST 1995
+
+Problem_1 resumed
+Mon Dec 18 18:32:43 EST 1995
+
+Problem_1 suspended
+Mon Dec 18 18:41:14 EST 1995
+
+Problem_1 resumed
+Mon Dec 18 18:41:25 EST 1995
+
+Deleted Problem_2
+
+Problem_1 suspended
+Mon Dec 18 19:15:51 EST 1995
+
+Problem_1 resumed
+Mon Dec 18 19:15:58 EST 1995
+
+Problem_1 suspended
+Mon Dec 18 19:24:59 EST 1995
+
+Problem_1 resumed
+Mon Dec 18 19:25:12 EST 1995
+
+The centralizers of w1 are: c^-1 d^-1 c d d^-2 c^-1 d c d, c^-1 d^-1 c d c^-1 d^-1 c^-1 d c^2, b^-1 d^-1 b d^-1 b^-1 d b d, b^-1 d^-1 b d c^-1 d^-1 b^-1 d b c, b^-1 d^-1 b d b^-1 d^-1 b^-1 d b^2, d^-1 b^-1 d b d^-1 b^-1 d b, a^-1 d^-1 a d^-1 a^-1 d a d, a^-1 d^-1 a d c^-1 d^-1 a^-1 d a c, a^-1 d^-1 a d b^-1 d^-1 a^-1 d a b, d^-1 a^-1 d a d^-1 a^-1 d a, a^-1 d^-1 a d a^-1 d^-1 a^-1 d a^2, b^-1 c^-1 b c d^-1 c^-1 b^-1 c b d, d^-1 c^-1 d c d^-1 c^-1 d c, b^-1 c^-1 b c^-1 b^-1 c b c, b^-1 c^-1 b c b^-1 c^-1 b^-1 c b^2, a^-1 c^-1 a c d^-1 c^-1 a^-1 c a d, a^-1 c^-1 a c^-1 a^-1 c a c, a^-1 c^-1 a c b^-1 c^-1 a^-1 c a b, a^-1 c^-1 a c a^-1 c^-1 a^-1 c a^2, c^-1 a^-1 c a c^-1 a^-1 c a c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b c^-1 b^-1 c b^-10 a^-2 c^-1 a^-1 b^-1 a b a^-1 b^-1 a b a^-1 b^-1 a b a^-1 b^-1 a b a^-1 b^-1 a b a^-1 b^-1 a b a^-1 b^-1 a b a^-1 b^-1 a b a^-1 b^-1 a b a^-1 b^-1 a b, a^-1 b^-1 a b d^-1 b^-1 a^-1 b a d, a^-1 b^-1 a b c^-1 b^-1 a^-1 b a c, a^-1 b^-1 a b^-1 a^-1 b a b, a^-1 b^-1 a b a^-1 b^-1 a^-1 b a^2, d^2
+
+Problem_1 finished
+Mon Dec 18 19:30:19 EST 1995
+
+

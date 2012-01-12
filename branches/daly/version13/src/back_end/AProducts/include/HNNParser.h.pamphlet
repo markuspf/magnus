@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/AProducts/include/HNNParser.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "PresentationParser.h"
+#include "HNNExtOfFreeGroup.h"
+
+@
+\section{class HNNExtensionParser}
+The grammar for an HNN-extension of Free Group (see the Word grammar):
+\begin{verbatim}
+ <HNNExtOfFreeGroup> ::= '<' generator ',' <free group>
+         ('|' | ';' | ':') (<word> '=' <word>)* '>'
+\end{verbatim}
+<<class HNNExtensionParser>>=
+class HNNExtensionParser : public PresentationParser {
+public:  
+  HNNExtensionParser( istream& istr ) : PresentationParser(istr) { }
+  // Initialize the parser with the istream from which to read.
+  
+  // Destructor supplied by compiler.
+  
+  HNNExtOfFreeGroupRep* parseHNNExtensionOfFreeGroup( Chars& );
+  // Read a group presentation and return it as a new group rep object.
+  
+protected:
+  
+  void parseHNNRelator( const VectorOf<Chars>& names, Word& left, Word& right, 
+			Chars& errMesg);
+  
+  VectorOf<Word> parseHNNRelatorsList( const VectorOf<Chars>& names,
+				       Chars& errMesg, int maxRelators );
+
+  void parseBasisFreeGroupAndRelations( FreeGroup& F, Chars& stableGenName, 
+					VectorOf<Word>& A, VectorOf<Word>& B, 
+					int maxRelators, Chars& errMesg );
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/AProducts/include/HNNParser.h
+#ifndef _HNN_EXTENSION_PARSER_H_
+#define _HNN_EXTENSION_PARSER_H_
+
+<<license>>
+<<include>>
+<<class HNNExtensionParser>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

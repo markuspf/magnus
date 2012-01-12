@@ -1,0 +1,39 @@
+\documentclass[12pt]{slides} 
+\title{Genetic algorithms for solving
+equations in free groups and semigroups.  Genus problem.}
+
+\author{Dmitry Bormotov} \date{}
+\begin{document}
+%\maketitle
+\pagestyle{empty}
+
+%\vspace{5mm}
+\begin{center} \Large\textbf{Structure of GA} \end{center}
+%\vspace{2mm}
+
+{\bf 1}. Start with a randomly generated population of $n$ chromosomes
+  (candidate solutions) 
+
+{\bf 2}. Calculate the fitness $f(x)$ of each chromosome $x$ in the population. 
+
+{\bf 3}. Repeat the following steps until $n$ offspring have been created:
+
+{\bf a)} select a pair of parent chromosomes from the current population,
+the probability of selection being an increasing function of fitness;\\
+{\bf b)} with probability $p_c$ cross over the pair at a randomly chosen
+point to form two offspring;\\
+{\bf c)} mutate the two offspring with probability $p_m$ and place the
+resulting cromosomes in the new population.
+
+{\bf 4}. Replace the current population with the new population.
+
+{\bf 5}. Go to step 2.
+
+\end{document}
+
+
+
+
+
+
+

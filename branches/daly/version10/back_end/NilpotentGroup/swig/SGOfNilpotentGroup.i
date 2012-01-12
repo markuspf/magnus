@@ -1,0 +1,261 @@
+%module Magnus
+
+%{
+#include "SGOfNilpotentGroup.h"
+%}
+
+class SGOfNilpotentGroup {
+
+public:
+
+  //---------------------------------------------------------------------
+  //   Constructors / Initializers:
+  //---------------------------------------------------------------------
+
+  SGOfNilpotentGroup(const NilpotentGroup& ng, const VectorOf<Word>& gens);
+  // constructs the subgroup of nilpotent group ng
+
+
+  void initPreimage( ) const;
+  // the initialization of the preimage
+
+  void initParent( ) const ;
+  // The initialization of the parent group
+  
+  void initBasis( ) const ;
+  // Finding the basis of the subgroup.
+  // Performs initPreimage and initParent before initialization
+  // After this, the subgroup is completely initialized
+  
+
+  //---------------------------------------------------------------------
+  //  Accessors/modifiers:
+  //---------------------------------------------------------------------
+
+
+  const class NilpotentGroup& parentGroup() const ;
+  // returns the parent group
+
+
+//  const class VectorOf<Word>& generators() const ;
+  // returns the generators
+
+
+  const class MalcevSet& preimageBasis() const ;
+  // returns the basis of subgroup's full preimage
+
+  bool preimageIsInitialized( ) const ;
+  // returns true iff the preimage is initialized
+
+  bool parentIsInitialized( ) const ;
+  // returns true iff the parent group is initialized
+
+  bool basisIsInitialized( ) const ;
+  // returns true iff the subgroup basis is computed
+
+  Type type( ) ;
+
+  Type actualType( ) const;
+
+  VectorOf<PolyWord> basis() const;
+  // returns the basis of the subgroup in terms of the group basis
+  // Fast, requires the basis
+
+  VectorOf<Chars> basisNames() const ;
+  // returns the names of basis words
+  // Fast, requires the basis
+
+  //---------------------------------------------------------------------
+  // Methods dealing with subgroup properties:
+  //---------------------------------------------------------------------
+
+  int theHirschNumber() const ;
+  // returns the Hirsch number of the subgroup
+  // not implemented
+
+  int index() const ;
+  // Returns the index of this subgroup in its parent group
+  // 0 if infinite
+  // Slow, requires theParentGroup to be initialized
+
+  //bool isAFreeFactor() const;
+  // Returns true iff this subgroup is a free factor of the parent group
+  // not implemented
+
+  bool isTrivial() const;
+  // Returns true iff this subgroup is trivial
+  // fast, but requires theParentGroup to be initialized
+
+  bool isCentral() const ;
+  // Returns true iff this subgroup is central
+  // **time consuming, requires theParentGroup to be initialized
+
+  bool isNormal() const ;
+  // Returns true iff this subgroup is normal
+  // **time consuming, requires thePreimage to be initialized
+
+  bool isAbelian() const ;
+  // Returns true iff this subgroup is abelian
+  // **time consuming, requires theParentGroup to be initialized
+
+  int subgroupClass() const ;
+  // returns the class of subgroup
+  // **time consuming, requires theParentGroup to be initialized
+
+  int order() const ;
+  // returns the order of subgroup (0 means infinite).
+  // Fast, requires initialization of the parent group and the basis
+
+  //---------------------------------------------------------------------
+  //  Methods producing related structures
+  //---------------------------------------------------------------------
+
+  //SGOfNilpotentGroup centraliser() const {
+  // returns the centralizer of the subgroup
+  
+
+  //SGOfNilpotentGroup normaliser() const {
+  // returns the normalizer of the subgroup
+
+  //SGOfNilpotentGroup isolator() const {
+  // returns the isolator of the subgroup
+
+  VectorOf<Word> normalClosureBasis() const ;
+  // returns a basis of normal closure of the subgroup
+  // words are in terms of the group generators
+
+  VectorOf<Word> normalClosureGens() const ;
+  // returns the generators of normal closure of the subgroup
+  // words are in terms of the group generators
+
+  PresentationForSNG makePresentation() const ;
+  // produces FP presentation of the subgroup
+  // requires the preimage basis to be built
+
+  //---------------------------------------------------------------------
+  //  Methods dealing with other subgroups
+  //---------------------------------------------------------------------
+
+  VectorOf<Word> join(const SGOfNilpotentGroup& SGR) const ;
+  // Returns the join of this subgroup and the argument.
+  // no intialization is necessary
+
+  %name(joinFromVector) VectorOf<Word> join(const VectorOf<Word>& V) const ;
+  // Returns the join of this subgroup and the argument.
+  // no intialization is necessary
+  // words are in terms of the group generators
+
+  //SGOfNilpotentGroup intersection(SGOfNilpotentGroup& SGR) const {
+  // Returns the intersection of this subgroup and the argument.
+
+  bool contains(const VectorOf<Word>& V) const ;
+  // Returns true iff this subgroup contains the subgroup generated by `V'.
+  // ** time consuming, requires theFullPreimage initialization
+
+  %name(containsFromSGOfNilpotentGroup) bool contains(const SGOfNilpotentGroup& SG) const ;
+  // Returns true iff this subgroup contains `SG'.
+  //@ep add validity check and explanation
+  // ** time consuming, requires theFullPreimage initialization
+
+  bool equalTo(const SGOfNilpotentGroup& SG) const ;
+  //Returns true iff this subgroup and SG are equal.
+  //@ep add explanation
+  // ** time consuming, requires theFullPreimage initialization
+
+  //bool conjugateTo(const SetOf<Word>& S) const {
+  // Returns true iff this subgroup and the argument are conjugate.
+
+  //bool conjugateTo(const SGOfNilpotentGroup& S) const {
+  // Returns true iff this subgroup and the argument are conjugate.
+
+
+  //---------------------------------------------------------------------
+  // Methods dealing with group elements:
+  //---------------------------------------------------------------------
+
+  %name(containsFromWord) bool contains(const Word& w) const ;
+  // Returns true iff this subgroup contains `w'.
+  // Slow, requires theFullPreimage initialization
+  // w is in terms of the group generators
+
+  bool decompose(const PolyWord& w, PolyWord& decomp) const ;
+  // Finds decomposition of the subgroup element w
+  // returns true iff w is an element of the subgroup
+  // Input: w, in terms of the group basis
+  // Output: decomp, in terms of the subgroup basis
+
+  //bool conjugateInSubgroup(const Word& w, Word& conjugator) const {
+  // Returns true iff some conjugate of `w' is in the subgroup.
+  // If true, `conjugator' is set to the conjugator.
+
+  //int powerInSubgroup( const Word& w ) const {
+  // returns `the minimal power' or 0 if there are no powers of the
+  // element w in H.
+
+
+  //---------------------------------------------------------------------
+  // I/O:
+  //---------------------------------------------------------------------
+ 
+//  void printBasis(ostream& s) const ;
+
+//  ostream& writeIPC(ostream& s) const ;
+
+  istream& readIPC(istream& s) const ;
+
+  Chars asDecomposition( const PolyWord& p ) const;
+  // Produces string presentation of decomposed subgroup element
+  // Input: word in terms of the subgroup basis
+
+//  void printBasis(ostream& s) const ;
+
+//  ostream& writeIPC(ostream& s) const ;
+   %addmethods{
+ 	char* printBasis() const {
+		strstream *s=new strstream();
+		self->printBasis(*s);
+		(*s) << '\0' << flush;
+		return s->str();
+	}
+ 	char* writeIPC() const {
+		strstream *s=new strstream();
+		self->writeIPC(*s);
+		(*s) << '\0' << flush;
+		return s->str();
+	}
+
+   }
+
+
+  //---------------------------------------------------------------------
+  // Internal methods:
+  //---------------------------------------------------------------------
+/*
+private:
+
+  static SGOfNilpotentGroupRep* makeRep(const NilpotentGroup& ng,
+					const VectorOf<Word>& gens);
+  //Produces a representation depending on group's type
+
+*/
+};
+
+/*
+//======================================================================
+//======================= Global functions =============================
+//======================================================================
+
+inline ostream& operator < (ostream& s, const SGOfNilpotentGroup& g) {
+  return g.writeIPC(s);
+}
+// IPC output
+
+
+inline istream& operator > (istream& s, const SGOfNilpotentGroup& g) {
+  return g.readIPC(s);
+}
+// IPC intput
+
+
+#endif
+*/

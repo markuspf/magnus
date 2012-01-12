@@ -1,0 +1,48 @@
+###this is a test file by xuxw(xuxw76@yahoo.com)
+import Magnus
+w1=Magnus.Word()
+w2=Magnus.Word()
+ws=[w1,w2]
+g1=Magnus.FreeGroup(2)
+g2=Magnus.FreeGroup(3)
+sg=Magnus.SGofFreeGroup( g1, ws) 
+g=Magnus.Group()
+####
+a=Magnus.LocalWord()
+lw=Magnus.LocalWord()
+a=Magnus.LocalWordFromWord(w1,Magnus.LEFT_FACTOR)
+x=a.freelyReduce()
+x=a.theWord
+x=a.theFactor
+x=a*a
+x=a.__invert__()
+####
+a=Magnus.AmalgProductOfFreeGroups() 
+b=AmalgProductOfFreeGroupsFromFreeGroup(g1, g2,ws,ws )
+c=AmalgProductOfFreeGroupsFromSGofFreeGroup(sg,sg)
+d=AmalgProductOfFreeGroupsFromGroup(g)
+x=a.type( );
+x=a.factor( 1 )  
+x=a.subgroup( 1)  
+x=a.isFree( )  
+x=a.decompose(w1)  
+x=a.reducedDecomposition(w1)  
+x=a.reducedFormOf(w1)  
+x=a.normalDecomposition(w1)  
+x=a.normalFormOf(w1)  
+a.cyclicDecomposition(w1, ws,w1)  
+a.cyclicReduction(w1, w1, w2)  
+x=a.numberOfSubstitutions( w1 )  
+x=a.factorOfFormalWord(w1)  
+x=a.factorOfElement(w1)  
+x=a.localToGlobal(lw)  
+x=a.globalToLocal(w1)  
+x=a.isHyperbolic()  
+a.maximalRoot(w1, w2, 1)  
+x=a.isProperPower(w1)  
+x=a.isProperPowerOfSecond(w2, w1, 1)  
+x=a.commute(w2, w1)  
+x=a.isSubgroupAbelian(ws)  
+x=a.isSubgroupTrivial(ws)  
+x=a.isSubgroupCyclic(ws)  
+a.printDecomposition(ws)

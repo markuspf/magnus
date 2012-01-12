@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/RefCounter.h}
+\author{Stephane Collart}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "global.h"
+
+@
+\section{class RefCounter}
+Questions:
+
+Should some SAFETY level check for overflow of the reference
+count? The problem is the quite high computational cost
+
+Would it ever be necessary to provide for reference counts of more than
+an unsigned int?
+
+Lippman says that this makes every instance of ObjectOf a friend,
+but gcc 2.6.3 refuses it and all obvious permutations.
+
+template <class T> friend class ObjectOf;
+  
+<<class RefCounter>>=
+class RefCounter {
+public:
+  typedef unsigned int refCounterType;
+
+  RefCounter( ) : xrefs(0) { }
+  // a new reference counter is initialised
+  // with a ref count of 1 (ie 0 extra refs)
+
+  RefCounter( const RefCounter& rc ) : xrefs(0) { }
+  // for derived representation classes whose copy constructor is generated
+  // by the compiler: a new (copied) representation also has an initial
+  // extra ref count of 0
+
+  // Destructor provided by compiler
+
+  bool lastRef( ) const { return xrefs == 0; }
+  bool sharedRef( ) const { return xrefs != 0; }
+  void addRef( ) const { ++((RefCounter*)this)->xrefs; }
+  // addRef is logically const
+  
+  void delRef( ) const { --((RefCounter*)this)->xrefs; }
+  // delRef is logically const
+
+  #ifdef DEBUG
+  refCounterType nxrefs( ) const { return xrefs; }
+  #endif
+  
+private:
+  refCounterType xrefs; // extra references (ie 0 means one ref)
+
+  RefCounter& operator = ( const RefCounter& );
+  // disable assignment: normally representations are never assigned
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/RefCounter.h
+#ifndef _REF_COUNTER_H_
+#define _REF_COUNTER_H_
+
+<<license>>
+<<include>>
+<<class RefCounter>>
+#endif
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

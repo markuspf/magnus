@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/AProducts/include/ORProblems.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "FPGroup.h"
+
+@
+\section{class ORProblems}
+<<class ORProblems>>=
+class ORProblems {
+public:
+  ORProblems( int numOfGens, const Word& relator ) 
+    : numberOfGenerators( numOfGens ), 
+      theRelator( relator )
+  { }
+  
+  bool isTrivial( ) const;
+  bool isAbelian( ) const;
+  bool isFinite( ) const;
+  bool isFree( ) const;
+  int order( ) const;
+  
+private:
+  int numberOfGenerators;
+  Word theRelator;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/AProducts/include/ORProblems.h
+#ifndef _OR_PROBLEMS_H_
+#define _OR_PROBLEMS_H_
+
+<<license>>
+<<include>>
+<<class ORProblems>>
+
+inline bool ORProblems::isFinite( ) const
+{
+  return numberOfGenerators == 1;
+}
+
+inline int ORProblems::order( ) const
+{
+  if( isFinite() )
+    return theRelator.length();
+  else
+    return 0;
+}
+
+#endif
+

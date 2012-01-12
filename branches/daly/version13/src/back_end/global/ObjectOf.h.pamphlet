@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/ObjectOf.h}
+\author{Stephane Collart}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include <iostream.h>
+#include "RefCounter.h"
+
+@
+\section{class ObjectOf}
+Description:
+
+A representation pointer wrapper.
+This class is provided for backward compatibility.
+
+Usage:
+
+ObjectOf<MyClassRep> assumes that
+\begin{list}{}
+\item 1) MyClassRep is derived from RefCounter
+\item 2) MyClassRep has a member MyClassRep* clone(); returning a (logical)
+deep copy of *this
+\end{list}
+Derive MyClass from ObjectOf<MyClassRep>
+
+Bugs:
+
+ObjectOf does not prevent abuse by e.g. deriving further classes and reusing
+them to wrap derived representations
+
+Questions:
+
+Class A has pseudo-virtual method m(...)
+
+The actual effect of a.m() is not known at the time
+of calling. This effect may be
+\begin{list}{}
+\item 1) create a new representation for a to adopt in lieu of the old one
+\item 2) take some extant representation for a to adopt in lieu of its old one
+\item 3) modify the representation of a in place
+\end{list}
+\begin{list}{}
+\item 1) means a single call of delref() on the old rep
+\item 2) means delref() on the old rep and addref() on the new
+\item 3) means a's rep must if necessary be replaced by an unshared
+clone before modification begins
+\end{list}
+<<class ObjectOf>>=
+template<class Rep> class ObjectOf
+{
+public:
+  ObjectOf( const ObjectOf& o ) { theRep = o.theRep; theRep->addRef(); }
+  ~ObjectOf() { if (theRep->lastRef()) delete theRep; else theRep->delRef(); }
+
+  ObjectOf& operator = ( const ObjectOf& o )
+  {
+	o.theRep->addRef();
+    if ( theRep->lastRef() ) delete theRep; else theRep->delRef();
+    theRep = o.theRep;
+    return *this;
+  }
+
+  #ifdef DEBUG
+  void debugPrint( ostream& ostr ) {
+	ostr << "this : " << this << "; theRep : " << theRep << "; xrefs : "
+		 << look()->nxrefs();
+  }
+
+  //friend int main( );
+  #endif
+
+protected:
+  const Rep* look( ) const { return theRep; }
+  // For safe read-only access.
+
+  Rep* enhance( ) const { return theRep; }
+  // DANGEROUS: for altering an object without triggering cloning.
+  // Use to change theRep without altering semantics.
+
+  Rep* change( ) {
+    if ( theRep->lastRef() ) return theRep;
+    else { theRep->delRef(); return theRep = (Rep*)theRep->clone(); }
+  }
+  // For safe read/write access.
+
+  void acquireRep( const Rep* rep )
+  {
+    ((Rep*&)rep)->addRef();
+        // cast away physical constness to permit logically const
+        // incrementation of ref count
+    if ( theRep->lastRef() ) delete theRep; else theRep->delRef();
+    theRep = ((Rep*&)rep);
+        // cast away physical constness of representation for
+        // acquisition through new object; semantics of look() and
+        // and change() guarantee that logical constness is maintained
+  }
+  // special `assignment-like' member: to permit an object to acquire
+  // another's representation consistently
+  // useful in delegation of object-level methods
+
+  ObjectOf( Rep* newrep ) { theRep = newrep; }
+  // To wrap new representations
+
+private:
+  Rep* theRep;
+
+  void force_derivation( ) { RefCounter* rc = theRep; }
+  // With this member RefCounter is forced to be 
+  // an accessible base class of Rep
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/ObjectOf.h
+#ifndef _OBJECT_OF_H_
+#define _OBJECT_OF_H_
+
+<<license>>
+<<include>>
+<<class ObjectOf>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

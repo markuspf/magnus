@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Introduction</TITLE>
+<META NAME="description" CONTENT="Introduction">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00311000000000000000">
+Introduction</A>
+</H2>
+
+<P>
+The back end is comprised of C++ classes, and global functions which
+act on objects in these classes.
+
+<P>
+We divide the classes into three conceptual types: user, utility, and
+private.
+
+<P>
+<BR>
+<BR>
+User classes wrap pointers to object representations
+(&#167;<A HREF="node24.html#obj_reps">2.1.1.1</A>). They are intended as high-level constructs with
+fixed interfaces and intuitive semantics.  As objects in such classes
+occupy only as much memory as a pointer, they can be efficiently
+copied and assigned.  The typical use of objects in a user class is
+through automatic variables and class data members. Only in
+extraordinary circumstances would one have a pointer to such an
+object; the object itself takes no more space, and construction,
+assignment, and destruction are handled automatically.
+
+<P>
+<BR>
+<BR>
+Utility classes are those which do useful, general things, but which
+would not reasonably use wrapped object representations.  For example,
+a <TT>Cell</TT> class might have two data members: an object of a user
+class and a pointer to a <TT>Cell</TT>; this could be used for
+externally linked lists. To be reusable, utility class interfaces and
+semantics are fixed.
+
+<P>
+<BR>
+<BR>
+Private classes are those which the implementer uses to hide data
+representations or perform other hidden tasks. As they are not
+intended to be reusable, their interfaces and functionality are
+subject to change without notice.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html472"
+  HREF="node24.html">Object Representations</A>
+</UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+
+</BODY>
+</HTML>

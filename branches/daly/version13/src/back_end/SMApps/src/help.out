@@ -1,0 +1,139 @@
+Presenations for the group :  TTProblem.help
+Conjugacy problem :  ConjugacyProblem.help
+Integral homology :  HomologyProblem.help
+Freeness problem :  ORIsFreeProblem.help
+Freeness problem :  IsFreeProblem.help
+Seek rewriting system :  KBProblem.help
+Is element central problem :  IsEltCentral.help
+Is element of finite order problem :  OrderOfElt.help
+Word problem :  WordProblem.help
+Seek automatic structure :  AGProblem.help
+Enumerate normal closure of relators :  NCProblem.help
+Temporary :  .help
+Elements equality problem :  AreEltsEqual.help
+Schreier representatives :  SchreierTransversal.help
+Permutation representation :  PermutationRepProblem.help
+Schreier representative of a word :  WordRepresentativeProblem.help
+Find the order :  NGorderOfEltProblem.help
+Compute the Hirsch number :  NGHirschNumberProblem.help
+Compute the nilpotency class :  NGcomputeNClassProblem.help
+Is the group free nilpotent? :  NGisFreeNilpotentProblem.help
+Decompose word in terms of a basis :  NGdecomposeWordProblem.help
+Decide if word is in the commutator subgroup :  
+	NGisWordInCommutatorSGProblem.help
+Term of the lower central series problem :  NGweightOfWordProblem.help
+Find the order of the torsion subgroup :  NGorderOfTorsionSubgroupProblem.help
+Compute the presentation :  NGbuildPresentationProblem.help
+Test for an automorphism being an IA-automorphism :  NGAutoIsIAAut.help
+Central element problem :  NGisCentralProblem.help
+Compute the maximal root of element :  NGMaximalRootProblem.help
+Is element a proper power :  NGIsProperPower.help
+Find inverse of an automorphism :  NGInverseAuto.help
+Compute the centralizer of element :  NGcentralizer.help
+Nilpotent isomorphism problem :  IsomorphismProblem.help
+Extended word problem :  ExtendedWordProblem.help
+Compute the canonical decomposition :  AbelInvariantsProb.help
+Compute the primary decomposition :  AbelianPrimeDecomp.help
+Extend to an homomorphism problem :  ExtendToHomProblem.help
+Triviality problem :  IsTrivialProblem.help
+Find solution :  GAEquations.help
+Is product of two commutators ? :  TwoCommProblem.help
+Compute a basis of the group  :  NGcomputeBasisProblem.help
+Is abelian problem :  IsAbelianProblem.help
+Solving a quadratic equation :  EquationProblem.help
+Quick solving a quadratic equation :  QuickEquationProblem.help
+Is nilpotent problem :  IsNilpotentProblem.help
+Finiteness problem :  IsFiniteProblem.help
+Subgroup containment problem :  none.help
+Is normal problem :  none.help
+Is subgroup abelian problem :  IsSGAbelian.help
+Is subgroup central problem :  IsSGCentral.help
+Is subgroup nilpotent problem :  IsSGNilpotent.help
+Subgroup triviality problem :  IsSGTrivial.help
+Index of a subgroup problem :  SGIndexProblem.help
+Subgroup presentation problem :  SGPresentationProblem.help
+Rewriting of a word in terms of Schreier generators :  
+	SGRewriteWordProblem.help
+Compute a basis :  SGOfNGcomputeBasisProblem.help
+Decompose word in terms of a basis :  SGOfNGDecomposeWordProblem.help
+Containment problem :  SGOfNGWordContainProblem.help
+Subgroup containment problem :  SGOfNGcontainSubgroupProblem.help
+Subgroup equality problem :  SGOfNGequalSubgroupProblem.help
+Index of subgroup :  SGOfNGindexProblem.help
+Compute the Hirsch number :  SGOfNGhirschNumberProblem.help
+Is :  SGOfNGisNormalProblem.help
+Compute the class :  SGOfNGcomputeNClassProblem.help
+Compute a presentation :  SGOfNGbuildPresentationProblem.help
+Find the normal closure :  SGOfNGnormalClosureProblem.help
+Find the normal closure :  SGOfNGnormalClosureGensProblem.help
+Find Andrews-Curtis reduction :  ACConjectureProblem.help
+Is part of free basis problem :  FreeIsPartOfBasisProblem.help
+Is part of free basis problem :  FreeGeneralIsPartOfBasisProblem.help
+Order problem :  OrderProblem.help
+Find a Whitehead minimal :  FindWhiteheadMinimalProblem.help
+Compute the canonical decomposition of a word :  AbelianWordProblem.help
+Abelian isomorphism problem :  AbelianIsomProblem.help
+Find the torsion-free rank :  TorsionFreeRankProblem.help
+Find the order of the torsion subgroup :  
+	AbelianOrderOfTheTorsionSubgroupProblem.help
+Compute the order :  AbelianOrderProblem.help
+Find the order :  AbelianOrderOfEltProblem.help
+Equality problem :  AbelianEqualityProblem.help
+Subgroup membership problem :  WordInSGOfAbelian.help
+Is a subgroup equal to a group ? :  AbelianIsSGEqualToTheGroup.help
+Index of a subgroup problem :  AbelianSGIndexProblem.help
+Isolation problem :  AbelianIsSGIsolatedProblem.help
+Subgroup containment problem :  AbelianSGContainmentProblem.help
+Find the p-height :  AbelianPHeightOfEltProblem.help
+Compute the torsion subgroup of  :  AbelianComputeTorsionSubgroup.help
+Compute the order of an element modulo a subgroup :  AbelianEltPowerSubgr.help
+Is element a proper power :  AbelianPowerProblem.help
+Compute the canonical decomposition of a subgroup :  
+	AbelianSGCyclicDecomposition.help
+Compute the primary decomposition of a subgroup :  
+	AbelianSGPrimesDecomposition.help
+Compute the order of a subgroup :  AbelianSGOrder.help
+Compute the maximal root of element :  AbelianMaximalRoot.help
+Isomorphism problem :  AbelianIsIsomorphicSG.help
+Find the torsion-free rank of a subgroup :  AbelianTorsionFreeRankOfSG.help
+Compute the order of the torsion subgroup :  
+	AbelianOrderOfTheTorsionSubgroupOfSG.help
+Compute the primary decomposition of an element :  EltPrimeForm.help
+Find a virtual free complement of a subgroup. :  virtualFreeComp.help
+Find subgroup isolator. :  SubgroupIsolator.help
+Is the subgroup pure :  AbelianSGPurityProblem.help
+Does the word generate a direct summand :  AbelianDoesGensSummand.help
+Is the subgroup generated by a word pure :  
+	AbelianSGGenedByWordPurityProblem.help
+Subgroup equality problem :  AbelianSGEqualityProblem.help
+Is a word a power of another :  IsAbelianWordPowerOfSecond.help
+Is a monomorphism :  AbelianHomIsMono.help
+Is an epimorphism :  AbelianHomIsEpi.help
+Is an automorphism :  AbelianHomIsAuto.help
+Is isomorphism :  AbelianHomIsIso.help
+Compute the order of an automorphism :  AbelianOrderOfAuto.help
+Find inverse of an automorphism :  AbelianInverseAuto.help
+Compute the subgroup of fixed points :  AbelianFixedPointsOfAutoProblem.help
+Find the intersection of two subgroups in abelian group :  
+	AbelianSGIntersectionProblem.help
+Integral homology for abelian group :  AbelianHomologyProblem.help
+Finding solutions for the system of equations :  EquationsInAbelianProblem.help
+Finding solutions for the equation :  EquationInAbelianProblem.help
+Is an HNN-extension of free group free :  HNNofFreeFreeness.help
+Is an amalgamated product of free groups free :  APofFreeFreeness.help
+Is an amalgamated product of free groups perfect :  APofFreePerfect.help
+Integral homology of an amalgamated product of free groups :  
+	APofFreeHomology.help
+New presentation problem :  FPNewPresentationProblem.help
+Kernel presentation problem :  FPKernelPresentationProblem.help
+Rewriting of a word as a product of commutators :  
+	CommutatorRewriteProblem.help
+Rewriting of a word as a product of squares :  SquareRewriteProblem.help
+Is finite automorphism :  AutoInFreeIsFinite.help
+Does contain a conjugate :  SGOfFreeContainsConjugate.help
+Are conjugate ? :  SGOfFreeConjugateTo.help
+Enumerate automorphisms :  AutEnumerator.help
+Conjugacy problem :  ConjugacyProblem.help
+Is APE :  IsWordAPEProblem.help
+Rank :  RankOfSubgroupProblem.help
+Rank :  RankOfElementProblem.help

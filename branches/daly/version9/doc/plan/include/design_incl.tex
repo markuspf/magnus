@@ -1,0 +1,546 @@
+%% This is AMSLaTeX source, included by plan.tex.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Design}
+
+
+%%--------------------------------------------------------------------
+\section{The System}\update{08/15/95}
+
+There are four abstraction layers in the design of \magnus:
+
+\begin{enumerate}
+
+\item
+The system as a whole.
+
+\item
+The primary modules: the front end and session manager.
+
+\item
+The session manager subsystems, such as computation managers.
+
+\item
+The algorithms and procedures which \magnus\ supports.
+
+\end{enumerate}
+
+The highest layer is shown in Figure~\ref{arch}.
+
+\begin{figure}[htbp]
+\epsfbox{ps/arch.ps}
+\caption{The System}\label{arch}
+\end{figure}
+
+The front end (\FE) and session manager (\SM) run as separate
+processes, and communicate with each other via named pipes with
+non-blocking I/O. The black boxes are separate processes, usually
+`foreign' programs contributed to \magnus. They are wrapped by native
+\magnus\ code which monitors and controls them, according to their
+API's, via named pipes with non-blocking I/O connected to their
+standard I/O.  Some of these programs expect to do additional I/O via
+ordinary files.
+
+The other layers are treated in the following sections.
+
+
+%%--------------------------------------------------------------------
+\section{The Primary Modules}\update{08/15/95}
+
+We strive to keep the communication protocol adhered to by the \SM\
+and \FE\ as simple as possible, for the obvious reasons which include
+robustness and maintainability.
+
+Our primary leverage on this goal is for the \SM\ to `bootstrap' the
+\FE\ with templates for the messages expected by the \SM. For each of
+a fairly small number of end user events, the \SM\ supplies the \FE\
+with a template to be filled in with the details of the event (such
+as, which objects are selected). Thus, the \FE\ knows as little as
+possible about what it says to the \SM. Conversely, the \SM\ does not
+give detailed instructions about the `look and feel' of the \FE, but
+communicates abstractly about what is to be displayed.
+
+In the following sections we will need these `forward declarations':
+
+An {\em algebraic object} (\S\ref{algebraic_objects}) is an entity
+which represents a word, matrix, group, etc, and the information known
+about it. It exists in the \SM, and is represented graphically in some
+form by the \FE.
+
+A {\em computation manager} (\S\ref{computation_managers}) is an
+entity which represents and manages the state of a lengthy
+computation. It may manage other computation managers; in some cases,
+that is its only purpose. Only those computation managers
+corresponding to a direct end user query (the {\em problem objects} of
+\S\ref{Artificial_Objects}) are represented graphically by the \FE.
+
+
+%%....................................................................
+\subsection{The Front End}\update{08/15/95}
+
+The responsibilities of the \FE\ are:
+
+\begin{itemize}
+
+\item
+To start the \SM\ upon startup, attaching pipes to its {\tt stdin} and
+{\tt stdout}, and to kill it on exit.
+
+\item
+To manage the graphic location and manipulation of each object in the
+workspace.
+
+\item
+To keep track of which objects are selected.
+
+\item
+To decide which menu items should be posted for a given selection.
+
+This requires more information from the \SM\ than the simple types of
+the selected objects in some cases. For example, composition of maps,
+and testing a hom for being an automorphism require comparing domains
+and ranges.  Subgroup operations like containment, equality,
+conjugacy, and computing joins and intersections require comparing
+supergroups.
+
+Therefore, the \FE\ maintains a `blind' database, in the form of an
+associative array, on behalf of the \SM. The database can be updated
+at any time, and contains such information as `object 12 is an
+explicit subgroup of object 7', and `object 7 is known to be abelian'.
+The \SM\ can attach {\em conditions} to the posting of a menu item,
+expressed in terms of the database keys and a few operators like {\tt
+==} and {\tt \&\&}.  The \FE\ resolves these conditions by extracting
+the corresponding data, without knowing what it means.
+
+\item
+To forward the end user's menu choices to the \SM.
+
+\item
+To manage view windows for all algebraic objects, and for those
+computation managers which export views.
+
+At present, the \FE\ provides a small number of predefined, generic
+views. The \SM\ can specify, at the time an object is created, which
+of these generic views to use for the object, and what the contents of
+certain variable fields should be.
+
+As the objects which these views represent become richer in structure
+relevant to the end user, it may be necessary to extend the \FE\
+$\leftrightarrow$ \SM\ protocol to allow the \SM\ to build views out
+of a small number of graphical components predefined by the \FE.
+
+\end{itemize}
+
+
+%%....................................................................
+\subsection{The Session Manager}\update{09/11/95}
+
+The primary responsibilities of the \SM\ in aggregate are to:
+
+\begin{enumerate}
+
+\item
+Manage the physical storage of algebraic objects and computation
+managers.
+
+Each algebraic object and computation manager class derives from an
+abstract base, {\tt SMObject}. Each {\tt SMObject} has an {\em object
+id} (OID) which is unique during a session, but is not necessarily
+persistent across sessions. The OIDs are the definitive means by which
+the \FE\ and \SM\ talk about the same objects.
+
+{\tt TheObjects} permits {\tt AlgObjSmith}, {\tt ToolSmith}, and {\tt
+SMObjects} to enroll new {\tt SMObjects}. It requires a list of those
+{\tt SMObjects} to which the enrolled one can store a reference; this
+is so that the deletion of objects does not leave dangling references.
+See Figure~\ref{sm1}.
+
+\begin{figure}[htbp]
+\epsfbox{ps/sm1.ps}
+\caption{Object enrollment and storage}\label{sm1}
+\end{figure}
+
+\item
+Supply information to the \FE, either spontaneously or upon request.
+There is a separate class for each kind of message to the \FE, in
+order to hide the message protocol and ease coding. Some are sketched
+in Figure~\ref{sm3}.
+
+\begin{figure}[htbp]
+\epsfbox{ps/sm3.ps}
+\caption{Outgoing messages}\label{sm3}
+\end{figure}
+
+Messages to the \FE\ include:
+
+\begin{itemize}
+
+\item
+A computation manager has significantly changed state.
+
+{\tt OutMessage} may queue such messages in static storage until, say,
+some time has elapsed, if the end user wants to reduce message traffic
+for efficiency (a session running overnight does not need to clog
+pipes with up-to-the-second info when the end user is asleep).
+
+\item
+A computation manager has discovered interesting information.
+
+{\tt LogMessage} could derive from {\tt ostrstream} to allow for
+maximally flexible construction of log messages.
+
+\item
+Export a view description for an object.
+
+All concrete {\tt SMObjects} should be potentially viewable by the end
+user, but in practice some views may be empty.
+
+When a workspace object is created, its view description is included
+in the message to the \FE\ which says that the object now exists. But,
+for example, not all {\tt ComputationManagers} are workspace objects.
+However, the end user will eventually have the ability to navigate
+through supervising {\tt ComputationManagers} and request views on
+subordinate ones. Thus, {\tt SMObject} has a pure virtual method for
+supplying a view description.
+
+\end{itemize}
+
+\item
+Initialize the \FE.
+
+On startup, {\tt SessionManager} calls methods of {\tt AlgObjSmith}
+and {\tt ToolSmith} to output menu definitions to the \FE. These
+definitions contain the templates for the message the \FE\ should send
+back when the end user chooses the corresponding menu item.
+
+{\tt SessionManager} outputs global message templates itself.
+
+There is no need for message classes here, since it is done exactly
+once.
+
+\item
+Execute an incoming message.
+
+{\tt SessionManager} periodically checks whether there is a message
+from the \FE\ to read. It decides from each message header who the
+recipient is, and passes the rest of the message to the appropriate
+{\tt MessageHandler} (See Figure~\ref{sm2}). A pure virtual method of
+{\tt MessageHandler} is overridded to do the reading.
+
+\begin{figure}[htbp]
+\epsfbox{ps/sm2.ps}
+\caption{Receiving messages}\label{sm2}
+\end{figure}
+
+The message might say to:
+
+\begin{itemize}
+
+\item
+Create an algebraic object.
+
+{\tt AlgObjSmith} parses the ASCII definition of the object (supplied
+in the message), and may have to pass a parse error message back to
+the \FE. In this case, the \FE\ is responsible for resending the
+message if the end user desires; {\tt AlgObjSmith} need not keep a
+record. Otherwise, {\tt AlgObjSmith} uses {\tt CreateMsg} to tell the \FE\
+that the object was successfully created.
+
+\item
+Do a computation.
+
+{\tt ToolSmith} enrolls a {\tt ComputationManager} with {\tt
+TheObjects} to do the computation.
+
+\item
+Update the state of a computation manager.
+
+The end user has made generic state changes to the computation
+manager: changed ARC values, or started/suspended/resumed it; or, the
+end user has made state changes which are specific to the type of the
+manager. A virtual member of {\tt ComputationManager} handles the
+generic case, and derivates can read the update message as needed.
+
+\item
+Delete some objects.
+
+When {\tt TheObjects} deletes a {\tt SMObject}, all of its {\em
+dependencies}, i.e. {\tt SMObjects} which store a reference to it,
+must be deleted also. For this purpose, {\tt TheObjects} stores a
+partial order $\succ$, such that $A\succ B$ iff $B$ stores a reference
+to $A$.
+
+For greater safety, the enroll method of {\tt TheObjects} might
+require a constructor wrapper and a list of the OIDs of the arguments,
+rather than trust that the caller will be honest about which {\tt
+SMObjects} were passed to the constructor of the {\tt SMObject} to be
+enrolled. Certainly {\tt TheObjects} does not grant access to {\tt
+SMObjects} via OIDs, to preclude rogue reference storing.
+
+\item
+Quit.
+
+The destructors of derivatives of {\tt ComputationManager} should
+insure that any pipes, temporary files, and subprocesses are cleaned
+up. Thus {\tt TheObjects} should call these destructors, even though
+{\tt exit} will free the memory anyway.
+
+\end{itemize}
+
+\item
+Pass control to computation managers in a way which guarantees fair
+multitasking.
+
+{\tt TheObjects} knows which of the {\tt SMObjects} it stores are {\tt
+ComputationManagers}. During `idle' periods, i.e., when there are no
+incoming messages to process, it passes control to a {\tt
+ComputationManager}. Each {\tt ComputationManager} is responsible for
+returning control after a short time, but in some cases this
+requirement may be too impractical to meet.
+
+\end{enumerate}
+
+
+
+
+%%--------------------------------------------------------------------
+\section{The \SM\ Subsystems}
+
+%%....................................................................
+\subsection{Computation Managers}\label{computation_managers}\update{08/20/95}
+
+Almost every computation attempted by \magnus\ is so complex, and
+possibly non-terminating, that it is encapsulated by a class object.
+These objects are called {\em computation managers} (\CMs). They
+preserve the state of a computation, so that it can be cleanly
+interrupted and continued. The most important property of a
+\CM\ is that it tries to use CPU time within limits set
+by its supervising manager, via ARCs.  Later, we will also limit the
+memory used by a \CM\ in a similar way.
+
+\CMs\ can interact with each other in three ways:
+
+\begin{enumerate}
+
+\item
+One \CM\ may {\em allocate} some of its resources to another.
+
+When end users initiate a computation in \magnus, they allocate
+resources to it (currently just ARCs, but later a memory bound), so
+that it does not get out of control. The corresponding \CM\ may, for
+convenience or out of necessity, want the services of one or more
+other \CMs. The end user may indicate which of these to use (see
+\S\ref{Artificial_Objects}). Also, a \CM\ may make autonomous decisions
+to create subordinate \CMs; this is the {\em supervision} interaction,
+below. In both cases, resources must be passed from one \CM\ to
+another. The details of resource allocation are discussed in
+\S\ref{resource_manager}.
+
+\item
+One \CM\ may {\em supervise} another.
+
+For example, the end user may wish to compute some nilpotent quotients
+of a group (perhaps to prove that a word is not trivial), but has no
+particular preference as to {\em which} quotients. A \CM\ could exist
+which a) checks which quotients have already been computed, b) decides
+which one to do next, c) autonomously creates a subordinate \CM\ to
+compute the desired quotient. Of course, there would be an {\em
+allocation} interaction between these \CMs.
+
+\item
+One \CM\ may {\em query} another for partial results.
+
+This is a rare interaction. In some cases, e.g., the \CM\ which seeks
+a confluent rewrite system, even partial results (a rewrite system
+which is not known to be confluent) can reasonably used by another
+\CM. Therefore, such \CMs\ permit others to access the partial
+results in a useful way.
+
+\end{enumerate}
+
+These three interactions are illustrated in Figures~\ref{gcm}
+and \ref{wordprob1}.
+
+
+%% . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+\subsubsection{The Resource Manager}\label{resource_manager}
+
+Each \CM\ has a {\em resource manager}, which is responsible for
+
+\begin{itemize}
+
+\item
+Recording the resources allocated to the \CM, along with where they
+came from.
+
+\item
+Recording which \CMs\ have been given resources by this one.
+
+\item
+When the \CM\ is suspended or terminated (\S\ref{Artificial_Objects}),
+informing the resource manager of each \CM\ which has been given
+resources that those resources may not be used.
+
+\item
+When the \CM\ is resumed after suspension, informing the resource
+manager of each \CM\ which has been given resources that those
+resources may now be used.
+
+\item
+Announcing to the \FE\ that the state of the \CM\ has changed as each
+unit of each resource is used.
+
+\end{itemize}
+
+
+%%....................................................................
+\subsection{The Group Computation Manager}\update{08/20/95}
+
+The mother of all \CMs\ is the {\em group computation manager}
+(\GCM). Many computations produce information which is useful for many
+different things; e.g., a rewrite system which is not even known to be
+confluent can sometimes be used to prove that a given word is trivial,
+and also that the group is finite. Such computations must be shared.
+The \GCM\ does no actual computation itself; it merely supervises all
+shared computations of information about a group.
+
+\begin{figure}[hbtp]
+\epsfbox{ps/gcm.ps}
+\caption{A \GCM}\label{gcm}
+\end{figure}
+
+An example is sketched in Figure~\ref{gcm}. The arrows indicate the
+supervision interactions.
+
+
+%%....................................................................
+\subsection{The Group Information Center}\label{gic}\update{08/20/95}
+
+The {\em group information center} (\GIC) contains all information
+known about a finitely presented group. This can be as simple as a
+{\tt Trichotomy} which indicates whether the group is abelian, or as
+complex as a rewrite system or automatic structure.
+
+Fundamentally, we do not distinguish the various algebraic classes of
+finitely presented groups. An abelian or nilpotent group is
+represented by \magnus\ in exactly the same way as an arbitrary
+finitely presented group; they have an associated \GCM, and a \GIC\
+which (dynamically) records abelianness or the nilpotentcy class.
+
+The reason is twofold: an arbitrary finitely presented group might be
+discovered to be abelian during a session, and we do not want to
+change its internal representation when this happens. Also, a group
+may have been entered by the end user as nilpotent of class 12, but
+there is no practical way to use our nilpotent algorithms on it; in
+effect, for our purposes, the group is {\em not} nilpotent, and we
+have to use other procedures on it.
+
+The design automatically allows for any procedure for finitely
+presented groups to be applied, and automatically handles `promotion'
+to a better algebraic class in a uniform way.
+
+For any given piece of information which might be known about a
+finitely presented group, the \GIC\ has four interacting kinds of
+members:
+
+\begin{enumerate}
+
+\item
+A data member which can store the information, when and if it is
+found.
+
+\item
+A method by which the information can be supplied (usually by a \CM).
+This method also reports the discovery of the information to the \FE.
+
+\item
+A method which says whether the information exists.
+
+\item
+An accessor for the information, which must trigger an error if it is
+called when the information does not exist.
+
+\end{enumerate}
+
+
+
+%%....................................................................
+\subsection{Algebraic Objects}\label{algebraic_objects}\update{08/20/95}
+
+An {\em algebraic object} is really just a container for the actual
+data which represents the object, the data which represents what is
+known about the object, and housekeeping information required by the
+\SM.
+
+Thus an {\tt SMWord} has a {\tt Word} as a data member, perhaps a {\tt
+Trichotomy} indicating whether it is known to be trivial (etc), and an
+OID.
+
+An {\tt SMFPGroup} has a {\tt FPGroup}, a \GIC, an OID, and a
+reference to the \GCM\ which was created by the {\tt SMFPGroup}
+constructor.
+
+Figure~\ref{subsystems} shows some of the subsystems we have
+discussed.
+
+\begin{figure}[hbtp]
+\epsfbox{ps/subsys.ps}
+\caption{Some \SM\ subsystems}\label{subsystems}
+\end{figure}
+
+
+%%....................................................................
+\subsection{A Scenario}\update{08/20/95}
+
+Figure~\ref{wordprob1} shows a {\tt WordProblem} interacting with a
+group's \GCM\ and \GIC. The abelian quotient has already been computed,
+and the result passed to the \GIC. The {\tt WordProblem} has mapped
+its word into this quotient, but the image was trivial, and the group
+itself is not abelian. The class 2 nilpotent quotient has also been
+computed, but was of no use for the same reason. Thus the {\tt
+WordProblem} continues to allocate resources to nilpotent quotients
+(two simultaneously, in this case), and to finding a rewrite system.
+Two incarnations of Knuth-Bendix, with different orderings, are
+running.  Since an answer may be found by even a non-confluent rewrite
+system, the {\tt WordProblem} directly queries the Knuth-Bendix
+manager for these.
+
+\begin{figure}[hbtp]
+\epsfbox{ps/wordprob1.ps}
+\caption{A {\tt WordProblem} in progress}\label{wordprob1}
+\end{figure}
+
+In Figure~\ref{wordprob2}, one of the Knuth-Bendices has completed,
+passed its rewrite system to the \GIC, and terminated itself. The {\tt
+WordProblem} discovers this upon its next activation, and gets its
+answer.
+
+\begin{figure}[hbtp]
+\epsfbox{ps/wordprob2.ps}
+\caption{A {\tt WordProblem} finishing}\label{wordprob2}
+\end{figure}
+
+
+%%--------------------------------------------------------------------
+\section{Algorithms and Procedures}\update{08/22/95}
+
+Coders in this layer need only provide for the computation to cleanly
+save its state (preferably after a few seconds), so that it can be
+continued later. An appropriate \CM\ can then wrap it for cooperation
+with the \SM.
+
+
+%%--------------------------------------------------------------------
+\section{Other Functionality}\update{08/22/95}
+
+%%....................................................................
+\subsection{Save and Restore}
+
+It may involve more programming than it is worth to save and restore
+ongoing computations. But at the very least, we must save and restore
+algebraic objects, and the contents of each \GIC. This means that all
+classes of objects which a \GIC\ uses to store information must have
+robust ASCII I/O. A side-benefit of this is that it gives us a
+ready-made way to present `technical' views of internal data to the
+end user, provided that the ASCII representation is human-readable.

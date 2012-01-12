@@ -1,0 +1,746 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/homenumerator.pamphlet}
+\author{Denis Serbin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "SMEnumerator.h"
+#include "WordEnumerator.h"
+#include "File.h"
+#include "Word.h"
+#include "SMFPGroup.h"
+#include "RandomNumbers.h"
+#include "OutMessages.h"
+
+@
+<<include.c>>=
+#include "HomEnumerators.h"
+#include "SMEnumerator.h"
+#include "SMListIterator.h"
+#include "OutMessages.h"
+#include "SMFPGroup.h"
+#include "SMMap.h"
+#include "viewStructure.h"
+#include <signal.h>
+
+@
+\section{class HomEnumeratorARCer1}
+\subsection{HomEnumeratorARCer1 Constructor}
+<<HomEnumeratorARCer1 Constructor.h>>=
+  HomEnumeratorARCer1( ComputationManager& boss , SMListData& d , GIC& gic ) 
+    : EnumeratorARCer( boss , d ), 
+      rangeGIC( gic ),
+      current( 0 ),
+      number( 0 ),
+      avgLength( 0 ),
+      lengthPicker(2112),                        
+      genPicker(1812)
+    { }
+@  
+\subsection{HomEnumeratorARCer1::setArguments}
+<<HomEnumeratorARCer1::setArguments.h>>=
+  void setArguments( FPGroup g , FPGroup h ,  
+		     int avgNumbers , int n );
+@
+<<HomEnumeratorARCer1::setArguments.c>>=
+void HomEnumeratorARCer1::setArguments( FPGroup g , FPGroup h ,
+					int avgNumbers , int n )
+{
+  number = n;
+  G = g;
+  H = h;
+  avgLength = avgNumbers;
+}
+
+@
+\subsection{HomEnumeratorARCer1::setParams}
+<<HomEnumeratorARCer1::setParams.h>>=
+  void setParams( int k , int n )
+    {
+      number = n;
+      avgLength = k;
+    } 
+@
+\subsection{HomEnumeratorARCer1::getMap}
+<<HomEnumeratorARCer1::getMap.h>>=
+  Map getMap();
+@
+<<HomEnumeratorARCer1::getMap.c>>=
+Map HomEnumeratorARCer1::getMap()
+{
+  int HRank = H.numberOfGenerators();
+  int GRank = G.numberOfGenerators();
+  VectorOf<Word> images(GRank);
+  for( int i1 = 0 ; i1 < images.length() ; i1++ )
+    {
+      int length;
+      do {
+	length = lengthPicker.rand(avgLength, avgLength >> 1);
+      } while ( length < 1 );
+      Word w;
+      for( int j = 0 ; j < length ; j++ )
+	while( true )
+	  {
+	    int gen = genPicker.rand( 1 , 2 * HRank );
+	    Word tmp;
+	    if( gen % 2 )
+	      tmp = Word( Generator( gen / 2 + 1 ) );
+	    else
+	      tmp = Word( Generator( gen / 2 ) ).inverse(); 
+	    if( (w * tmp).freelyReduce().length() > w.length() )
+	      {
+		w *= tmp;
+		break;
+	      }
+	  }	
+      images[i1] = w;
+    }
+  return Map(G,H,images);
+}
+
+@
+\subsection{HomEnumeratorARCer1::extendToHom}
+<<HomEnumeratorARCer1::extendToHom.h>>=
+  bool extendToHom( Map& );
+@
+<<HomEnumeratorARCer1::extendToHom.c>>=
+bool HomEnumeratorARCer1::extendToHom( Map& m )
+{
+  int numOfGensG = G.numberOfGenerators();
+  int numOfGensH = H.numberOfGenerators();
+  SetOf<Word> GRels = G.getRelators();
+  SetIterator<Word> I(GRels);
+  if ( rangeGIC.haveConfluentKBMachine() ) 
+    for( I.reset() ; !I.done() ; I.next() ) 
+      {
+	Word tmp( ( m.imageOf( I.value() ) ).freelyReduce() );
+	rangeGIC.getConfluentKBMachine().rewrite( tmp );
+	if( tmp.length() != 0 )
+	  return false;
+      }
+  if ( rangeGIC.haveAutomatic() ) 
+    for( I.reset() ; !I.done() ; I.next() ) 
+      {
+	Word tmp( ( m.imageOf( I.value() ) ).freelyReduce() );
+	rangeGIC.getDiffMachine().rewrite( tmp );
+	if( tmp.length() != 0 )
+	  return false;
+      }
+  return true;
+}
+
+@
+\subsection{HomEnumeratorARCer1::enumerate}
+<<HomEnumeratorARCer1::enumerate.h>>=
+  void enumerate( );
+@
+<<HomEnumeratorARCer1::enumerate.c>>=
+void HomEnumeratorARCer1::enumerate( )
+{
+  Map m;
+  while (current < number) 
+    {
+      if (submitSignalRecieved()){
+	return;
+      }
+      m = getMap();
+      if( extendToHom( m ) )
+	{
+	  current++;
+	  theData << current << ": ";
+	  theData << EnumWriteMap( m ) << "\n";
+	}
+    }
+  theData << "\n\n";
+}
+
+@
+\subsection{HomEnumeratorARCer1::writeResults}
+<<HomEnumeratorARCer1::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<HomEnumeratorARCer1::writeResults.c>>=
+void HomEnumeratorARCer1::writeResults( ostream& out ) 
+{
+  out < current < theData;
+}
+
+@
+\subsection{HomEnumeratorARCer1::readResults}
+<<HomEnumeratorARCer1::readResults.h>>=
+  void readResults( istream& );
+@
+<<HomEnumeratorARCer1::readResults.c>>=
+void HomEnumeratorARCer1::readResults( istream& in )
+{
+  in > current > theData;
+}
+
+@
+\subsection{class HomEnumeratorARCer1}
+<<class HomEnumeratorARCer1>>=
+class HomEnumeratorARCer1 : public EnumeratorARCer
+{
+public:
+<<HomEnumeratorARCer1 Constructor.h>>
+<<HomEnumeratorARCer1::setArguments.h>>
+<<HomEnumeratorARCer1::setParams.h>>
+<<HomEnumeratorARCer1::getMap.h>>
+<<HomEnumeratorARCer1::extendToHom.h>>
+<<HomEnumeratorARCer1::enumerate.h>>
+<<HomEnumeratorARCer1::writeResults.h>>
+<<HomEnumeratorARCer1::readResults.h>>
+private:
+  int  current;
+  int avgLength;
+  int number;
+  NormalRandom lengthPicker;
+  UniformRandom genPicker;
+  GIC& rangeGIC;
+  FPGroup G;
+  FPGroup H;
+};
+
+@
+\section{class RandHomEnumeratorProblem}
+\subsection{RandHomEnumeratorProblem Constructor}
+<<RandHomEnumeratorProblem Constructor.h>>=
+  RandHomEnumeratorProblem( SMFPGroup& , SMFPGroup& );
+@
+<<RandHomEnumeratorProblem Constructor.c>>=
+RandHomEnumeratorProblem::RandHomEnumeratorProblem( SMFPGroup& g,
+						    SMFPGroup& h )
+  : EnumeratorProblem< Map >( g ),
+    G( g ),
+    H( h ),
+    kbSupervisor( *this, H.gcm().kbSupervisor ),
+    agSupervisor( *this, H.gcm().agSupervisor ),
+    init( false ),
+    arcer( *this , theData , H.gic )
+{ }
+
+@
+\subsection{RandHomEnumeratorProblem::viewStructure}
+<<RandHomEnumeratorProblem::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<RandHomEnumeratorProblem::viewStructure.c>>=
+void RandHomEnumeratorProblem::viewStructure(ostream& ostr) const 
+{
+  
+   EnumertatorProblemView pv(oid(),"Homomorphism enumerator",
+			     Text("Randomly enumerate homomorphisms from ")+
+			     Name( G ) + Text(" to ") + Name( H ),
+			     helpID("RandHomEnumeratorProblem",G),
+			     Text("Hom en")
+			     );
+   pv.addParameter(EditInteger("P1","Number of homomorphisms",1,10,0,10000));
+   pv.addParameter(EditInteger("P2","Average length of image",0,10,0,50));
+   pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			     "For the use of enumerator",100));
+   pv.addProblem( Subproblem("Sp2",kbSupervisor.arcSlotID(),
+			     Text("Seek a rewriting system for") + Name( H ),
+			     100));
+   pv.addProblem( Subproblem("Sp3",agSupervisor.arcSlotID(),
+	     Text("Seek a ShortLex automatic structure for") + Name( H ),
+			     100));
+   submit(ostr, pv);
+}
+
+@
+\subsection{RandHomEnumeratorProblem::takeControl}
+<<RandHomEnumeratorProblem::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<RandHomEnumeratorProblem::takeControl.c>>=
+void RandHomEnumeratorProblem::takeControl( )
+{
+  if( !init && 
+      ( H.gic.haveConfluentKBMachine() || H.gic.haveAutomatic() ) )
+    {
+      if( H.gic.haveConfluentKBMachine() )
+	agSupervisor.getWorker()->adminTerminate();
+      else
+	kbSupervisor.getWorker()->adminTerminate();
+      int num = getParameters().getValue("P1");
+      int avgNumGens = getParameters().getValue("P2");
+      arcer.setArguments( G.getFPGroup() , H.getFPGroup() ,
+			  avgNumGens , num );
+      LogMessage msg( *this , G , H );
+      msg << Link( Chars( "Click here to see the random homomorphisms of ") + 
+                Text( Name( G ) ) + Chars( " to " ) + Text( Name( H ) ) ,
+		   "RandomHomomorphisms" ,
+		   theData.getDataFileName() , true );
+      msg.send();
+      init = true;
+    }
+  if( !fastResult() && init )
+    if( freeARCs() > 0 )
+      {
+	if( arcer.takeControl() )
+	  {
+	    adminSuspend();
+	    return;	
+	  }
+	usedOneARC();
+      }
+    else
+      adminTerminate();
+}
+
+@
+\subsection{RandHomEnumeratorProblem::getDataFileName}
+<<RandHomEnumeratorProblem::getDataFileName.h>>=
+  Chars getDataFileName() const { return theData.getDataFileName(); }
+@
+\subsection{RandHomEnumeratorProblem::start}
+<<RandHomEnumeratorProblem::start.h>>=
+  void start( );
+@
+<<RandHomEnumeratorProblem::start.c>>=
+void RandHomEnumeratorProblem::start( ) 
+{   
+  LogMessage msg( *this , G , H );
+  if( G.getFreePreimage().numberOfGenerators() == 0 )
+    {
+      msg <<  Name( G ) << " is trivial, so it has only one homomorphism to " 
+          << Name( H ) << " : 1->1.";
+      msg.send();
+      resultIsFast();
+    }
+  else
+    if( H.getFreePreimage().numberOfGenerators() == 0 )
+      { 
+	msg <<  Name( G ) << " has only one homomorphism to " << Name( H ) 
+            << " that maps all generators to 1.";
+	msg.send();
+	resultIsFast();
+      }
+    else
+      if( !init && 
+	  ( H.gic.haveConfluentKBMachine() || H.gic.haveAutomatic() ) )
+	{
+	  if( H.gic.haveConfluentKBMachine() )
+	    agSupervisor.getWorker()->adminTerminate();
+	  else
+	    kbSupervisor.getWorker()->adminTerminate();	      
+	  int num = getParameters().getValue("P1");
+	  int avgNumGens = getParameters().getValue("P2");
+	  arcer.setArguments( G.getFPGroup() , H.getFPGroup() ,
+			      avgNumGens , num );
+	  msg << Link( Chars( "Click here to see the random homomorphisms of ")
+                 + Text( Name( G ) ) + Chars( " to " ) + Text( Name( H ) ) ,
+		       "RandomHomomorphisms" ,
+		       theData.getDataFileName() , true );
+	  msg.send();
+	  init = true;
+	}
+}
+
+@
+\subsection{RandHomEnumeratorProblem::terminate}
+<<RandHomEnumeratorProblem::terminate.h>>=
+  void terminate( ) {  }          // overrides ComputationManager
+@
+\subsection{RandHomEnumeratorProblem::resume}
+<<RandHomEnumeratorProblem::resume.h>>=
+  void resume( ) {              // overrides ComputationManager
+    arcer.submitSignal();
+    int num = getParameters().getValue("P1");
+    int avgNumGens = getParameters().getValue("P2");
+    arcer.setParams( avgNumGens , num );
+  }
+@
+\subsection{class RandHomEnumeratorProblem}
+<<class RandHomEnumeratorProblem>>=
+class RandHomEnumeratorProblem : public EnumeratorProblem< Map >
+{
+public:
+<<RandHomEnumeratorProblem Constructor.h>>
+<<RandHomEnumeratorProblem::viewStructure.h>>
+<<RandHomEnumeratorProblem::takeControl.h>>
+<<RandHomEnumeratorProblem::getDataFileName.h>>
+<<RandHomEnumeratorProblem::start.h>>
+<<RandHomEnumeratorProblem::terminate.h>>
+<<RandHomEnumeratorProblem::resume.h>>
+private:
+  SMFPGroup& G;
+  SMFPGroup& H;
+  HomEnumeratorARCer1 arcer;
+  bool init;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+};
+
+@
+\section{class HomEnumeratorARCer2}
+\subsection{HomEnumeratorARCer2 Constructor}
+<<HomEnumeratorARCer2 Constructor.h>>=
+  HomEnumeratorARCer2( ComputationManager& boss , SMListData& d , GIC& gic ) 
+    : EnumeratorARCer( boss , d ), 
+      rangeGIC( gic ),
+      current( 0 ),
+      number( 0 ),
+      we( FreeGroup() )
+    { }
+@
+\subsection{HomEnumeratorARCer2::setArguments}
+<<HomEnumeratorARCer2::setArguments.h>>=
+  void setArguments( FPGroup G , FPGroup H , int n );
+@
+<<HomEnumeratorARCer2::setArguments.c>>=
+void HomEnumeratorARCer2::setArguments( FPGroup g, 
+					FPGroup h,
+					int n )
+{
+  number = n;
+  G = g;
+  H = h;
+  we = WordEnumerator( FreeGroup( H.namesOfGenerators() ) , 
+		       G.numberOfGenerators() ); 
+}
+
+@
+\subsection{HomEnumeratorARCer2::setParam}
+<<HomEnumeratorARCer2::setParam.h>>=
+  void setParam( int k )
+    {
+      number = k;
+    }
+@
+\subsection{HomEnumeratorARCer2::nextMap}
+<<HomEnumeratorARCer2::nextMap.h>>=
+  Map nextMap();
+@
+<<HomEnumeratorARCer2::nextMap.c>>=
+Map HomEnumeratorARCer2::nextMap()
+{
+  VectorOf<Word> images = we.getWords();
+  we.next();
+  
+  return Map(G,H,images);  
+}
+
+@
+\subsection{HomEnumeratorARCer2::extendToHom}
+<<HomEnumeratorARCer2::extendToHom.h>>=
+  bool extendToHom( Map& );
+@
+<<HomEnumeratorARCer2::extendToHom.c>>=
+bool HomEnumeratorARCer2::extendToHom( Map& m )
+{
+  int numOfGensG = G.numberOfGenerators();
+  int numOfGensH = H.numberOfGenerators();
+  SetOf<Word> GRels = G.getRelators();
+  SetIterator<Word> I(GRels);
+  if ( rangeGIC.haveConfluentKBMachine() ) 
+    for( I.reset() ; !I.done() ; I.next() ) 
+      {
+	Word tmp( ( m.imageOf( I.value() ) ).freelyReduce() );
+	rangeGIC.getConfluentKBMachine().rewrite( tmp );
+	if( tmp.length() != 0 )
+	  return false;
+      }
+  if ( rangeGIC.haveAutomatic() ) 
+    for( I.reset() ; !I.done() ; I.next() ) 
+      {
+	Word tmp( ( m.imageOf( I.value() ) ).freelyReduce() );
+	rangeGIC.getDiffMachine().rewrite( tmp );
+	if( tmp.length() != 0 )
+	  return false;
+      }
+  return true;
+}
+
+@
+\subsection{HomEnumeratorARCer2::enumerate}
+<<HomEnumeratorARCer2::enumerate.h>>=
+  void enumerate( );
+@
+<<HomEnumeratorARCer2::enumerate.c>>=
+void HomEnumeratorARCer2::enumerate( )
+{
+  Map m;
+  while (current < number) 
+    {
+      if (submitSignalRecieved()){
+	return;
+      }
+      m = nextMap();
+      if( extendToHom( m ) )
+	{
+	  current++;
+	  theData << current << ": ";
+	  theData << EnumWriteMap( m ) << "\n";
+	}
+    }
+ theData << "\n\n";
+}
+
+@
+\subsection{HomEnumeratorARCer2::writeResults}
+<<HomEnumeratorARCer2::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<HomEnumeratorARCer2::writeResults.c>>=
+void HomEnumeratorARCer2::writeResults( ostream& out ) 
+{
+  out < current < theData;
+}
+
+@
+\subsection{HomEnumeratorARCer2::readResults}
+<<HomEnumeratorARCer2::readResults.h>>=
+  void readResults( istream& );
+@
+<<HomEnumeratorARCer2::readResults.c>>=
+void HomEnumeratorARCer2::readResults( istream& in )
+{
+  in > current > theData;
+}
+
+@
+\subsection{class HomEnumeratorARCer2}
+<<class HomEnumeratorARCer2>>=
+class HomEnumeratorARCer2 : public EnumeratorARCer
+{
+public:
+<<HomEnumeratorARCer2 Constructor.h>>
+<<HomEnumeratorARCer2::setArguments.h>>
+<<HomEnumeratorARCer2::setParam.h>>
+<<HomEnumeratorARCer2::nextMap.h>>
+<<HomEnumeratorARCer2::extendToHom.h>>
+<<HomEnumeratorARCer2::enumerate.h>>
+<<HomEnumeratorARCer2::writeResults.h>>
+<<HomEnumeratorARCer2::readResults.h>>
+private:
+  WordEnumerator we;
+  int number;
+  int current;
+  FPGroup G;
+  FPGroup H;
+  class GIC& rangeGIC;
+};
+
+@
+\section{class TotalHomEnumeratorProblem}
+\subsection{TotalHomEnumeratorProblem Constructor}
+<<TotalHomEnumeratorProblem Constructor.h>>=
+  TotalHomEnumeratorProblem( SMFPGroup& , SMFPGroup& );
+@
+<<TotalHomEnumeratorProblem Constructor.c>>=
+TotalHomEnumeratorProblem::TotalHomEnumeratorProblem( SMFPGroup& g,
+						      SMFPGroup& h )
+  : EnumeratorProblem< Map >( g ),
+    G( g ),
+    H( h ),
+    kbSupervisor( *this, H.gcm().kbSupervisor ),
+    agSupervisor( *this, H.gcm().agSupervisor ),
+    init( false ),
+    arcer( *this , theData , H.gic )
+{ }
+
+@
+\subsection{TotalHomEnumeratorProblem::viewStructure}
+<<TotalHomEnumeratorProblem::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<TotalHomEnumeratorProblem::viewStructure.c>>=
+void TotalHomEnumeratorProblem::viewStructure(ostream& ostr) const
+{
+   EnumertatorProblemView pv(oid(),"Homomorphism enumerator",
+			     Text("Totally enumerate homomorphisms from ")+
+			     Name( G ) + Text(" to ") + Name( H ),
+			     helpID("TotalHomEnumeratorProblem",G),
+			     Text("Hom en")
+			     );
+   pv.addParameter(EditInteger("P","Number of homomorphisms",1,10,0,10000));
+   pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			     "For the use of enumerator",100));
+   pv.addProblem( Subproblem("Sp2",kbSupervisor.arcSlotID(),
+			     Text("Seek a rewriting system for") + Name( H ),
+			     100));
+   pv.addProblem( Subproblem("Sp3",agSupervisor.arcSlotID(),
+	     Text("Seek a ShortLex automatic structure for") + Name( H ),
+			     100));
+   submit(ostr, pv);
+}
+
+@
+\subsection{TotalHomEnumeratorProblem::takeControl}
+<<TotalHomEnumeratorProblem::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<TotalHomEnumeratorProblem::takeControl.c>>=
+void TotalHomEnumeratorProblem::takeControl( )
+{
+  if( ( H.gic.haveConfluentKBMachine() || H.gic.haveAutomatic() ) 
+      && !init )
+    {
+      if( H.gic.haveConfluentKBMachine() )
+	agSupervisor.getWorker()->adminTerminate();
+      else
+	kbSupervisor.getWorker()->adminTerminate();
+      int num = getParameters().getValue("P");
+      arcer.setArguments( G.getFPGroup() , 
+			  H.getFPGroup() , num );
+      LogMessage msg( *this , G , H );
+      msg << Link( Chars( "Click here to see the homomorphisms of ") + 
+		   Text( Name( G ) ) + Chars( " to " ) + 
+		   Text( Name( H ) ) ,
+		   "TotalHomomorphisms" ,
+		   theData.getDataFileName() , true );
+      msg.send();
+      init = true;
+    }
+  
+  if( !fastResult() && init )
+    if( freeARCs() > 0 )
+      {
+	if( arcer.takeControl() )
+	  {
+	    adminSuspend();
+	    return;	
+	  }
+	usedOneARC();
+      }
+    else
+      adminTerminate();
+}
+
+@
+\subsection{TotalHomEnumeratorProblem::getDataFileName}
+<<TotalHomEnumeratorProblem::getDataFileName.h>>=
+  Chars getDataFileName() const { return theData.getDataFileName(); }
+@
+\subsection{TotalHomEnumeratorProblem::start}
+<<TotalHomEnumeratorProblem::start.h>>=
+  void start( );
+@
+<<TotalHomEnumeratorProblem::start.c>>=
+void TotalHomEnumeratorProblem::start( ) 
+{   
+  LogMessage msg( *this , G , H );
+  if( G.getFreePreimage().numberOfGenerators() == 0 )
+    {
+      msg <<  Name( G ) << " is trivial, so it has only one homomorphism to " 
+          << Name( H ) << " : 1->1.";
+      msg.send();
+      resultIsFast();
+    }
+  else
+    if( H.getFreePreimage().numberOfGenerators() == 0 )
+      { 
+	msg <<  Name( G ) << " has only one homomorphism to " << Name( H ) 
+            << " that maps all generators to 1.";
+	msg.send();
+	resultIsFast();
+      }
+    else
+      if( !init && 
+	  ( H.gic.haveConfluentKBMachine() || H.gic.haveAutomatic() ) )
+	{
+	  if( H.gic.haveConfluentKBMachine() )
+	    agSupervisor.getWorker()->adminTerminate();
+	  else
+	    kbSupervisor.getWorker()->adminTerminate();	      
+	  int num = getParameters().getValue("P");
+	  arcer.setArguments( G.getFPGroup() , 
+			      H.getFPGroup() , num );
+	  msg << Link( Chars( "Click here to see the homomorphisms of ") + 
+		       Text( Name( G ) ) + Chars( " to " ) + 
+		       Text( Name( H ) ) ,
+		       "TotalHomomorphisms" ,
+		       theData.getDataFileName() , true );
+	  msg.send();
+	  init = true;
+	}
+}
+
+@
+\subsection{TotalHomEnumeratorProblem::terminate}
+<<TotalHomEnumeratorProblem::terminate.h>>=
+  void terminate( ) {  }          // overrides ComputationManager
+@
+\subsection{TotalHomEnumeratorProblem::resume}
+<<TotalHomEnumeratorProblem::resume.h>>=
+  void resume( ) {              // overrides ComputationManager
+    arcer.submitSignal();
+    arcer.setParam( getParameters().getValue("P") );
+  }
+@
+\subsection{class TotalHomEnumeratorProblem}
+<<class TotalHomEnumeratorProblem>>=
+class TotalHomEnumeratorProblem : public EnumeratorProblem< Map >
+{
+public:
+<<TotalHomEnumeratorProblem Constructor.h>>
+<<TotalHomEnumeratorProblem::viewStructure.h>>
+<<TotalHomEnumeratorProblem::takeControl.h>>
+<<TotalHomEnumeratorProblem::getDataFileName.h>>
+<<TotalHomEnumeratorProblem::start.h>>
+<<TotalHomEnumeratorProblem::terminate.h>>
+<<TotalHomEnumeratorProblem::resume.h>>
+private:
+  SMFPGroup& G;
+  SMFPGroup& H;
+  HomEnumeratorARCer2 arcer;
+  bool init;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+};
+
+@
+\section{HomEnumerators.h}
+<<HomEnumerators.h>>=
+#ifndef _HomEnumerators_h_
+#define _HomEnumerators_h_
+
+<<include.h>>
+<<class HomEnumeratorARCer1>>
+<<class RandHomEnumeratorProblem>>
+<<class HomEnumeratorARCer2>>
+<<class TotalHomEnumeratorProblem>>
+#endif
+@
+\section{homenumerators.c}
+<<*>>=
+
+<<include.c>>
+<<HomEnumeratorARCer1::setArguments.c>>
+<<HomEnumeratorARCer1::getMap.c>>
+<<HomEnumeratorARCer1::extendToHom.c>>
+<<HomEnumeratorARCer1::enumerate.c>>
+<<HomEnumeratorARCer1::writeResults.c>>
+<<HomEnumeratorARCer1::readResults.c>>
+
+<<RandHomEnumeratorProblem Constructor.c>>
+<<RandHomEnumeratorProblem::start.c>>
+<<RandHomEnumeratorProblem::takeControl.c>>
+<<RandHomEnumeratorProblem::viewStructure.c>>
+
+<<HomEnumeratorARCer2::setArguments.c>>
+<<HomEnumeratorARCer2::nextMap.c>>
+<<HomEnumeratorARCer2::extendToHom.c>>
+<<HomEnumeratorARCer2::enumerate.c>>
+<<HomEnumeratorARCer2::writeResults.c>>
+<<HomEnumeratorARCer2::readResults.c>>
+
+<<TotalHomEnumeratorProblem Constructor.c>>
+<<TotalHomEnumeratorProblem::start.c>>
+<<TotalHomEnumeratorProblem::takeControl.c>>
+<<TotalHomEnumeratorProblem::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

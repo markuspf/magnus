@@ -1,0 +1,501 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="description" content="varianceTool">
+   <meta name="keywords" content="varianceTool">
+   <meta name="resource-type" content="document">
+   <meta name="distribution" content="global">
+   <meta name="Generator" content="LaTeX2HTML v2K.1beta">
+   <meta http-equiv="Content-Style-Type" content="text/css">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (X11; U; Linux 2.4.7-10smp i686) [Netscape]">
+   <title>varianceTool</title>
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<link REL="STYLESHEET" HREF="varianceTool.css">
+</head>
+<body>
+&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<center><b>CONFIDENCE INTERVAL FOR THE VARIANCE</b></center>
+
+<center><b>OF A ONE VARIABLE DATA SET</b></center>
+
+<center><b>(1) GENERAL ESTIMATION THEORY</b></center>
+
+<p>Estimates in statistics are most often expressed in terms of <b>confidence
+intervals</b>. Roughly these are intervals of numbers with <b>confidence
+levels</b> attached indicating the probability that what is being estimated
+actually falls within the interval. A formal definiiton is presented below.
+First we give a discussion of the estimation procedure in general.
+<p>In most standard statistical analyses the parameters that are of most
+interest are <b>means</b>,&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>,
+<b>standard deviations</b> or <b>variances</b>,&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+or&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>
+and <b>proportions&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER></b>.
+Eachof these has a fairly standard statistic that is used to estimate it.
+For means we have&nbsp;<!-- MATH
+ $\overline
+X$
+ --><img SRC="img6.gif" ALT="$ \overlineX$" BORDER=0 height=17 width=19 align=BOTTOM>,
+the sample mean; for standard deviations,&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>,
+the sample standard deviation; and for proportions&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>,
+the sample proportion&nbsp;<!-- MATH
+ $\frac{x}{n}$
+ --><img SRC="img8.gif" ALT="$ \frac{x}{n}$" BORDER=0 height=29 width=16 align=CENTER>,
+where&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+is the number of items observed and&nbsp;<img SRC="img10.gif" ALT="$ x$" BORDER=0 height=14 width=13 align=BOTTOM>
+is the number of items observed of the characteristic of interest. Each
+of these statistics is called an <b>estimator</b> for the corresponding
+parameter; hence&nbsp;<!-- MATH
+ $\overline{X}$
+ --><img SRC="img11.gif" ALT="$ \overline{X}$" BORDER=0 height=17 width=19 align=BOTTOM>
+is an estimator for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>,<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+is an estimator for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+and&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>
+is an estimator for&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>.
+In general if&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+(theta) stands for a parameter, (it is no harm to think of this as either&nbsp;<img SRC="img13.gif" ALT="$ \mu,s$" BORDER=0 height=28 width=28 align=CENTER>
+or<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>),
+then&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+will stand for an estimator for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>.
+Any particular value of an estimator is called a <b>point estimate</b>
+for the corresponding parameter.
+<p>In general, in statistics we do not use point estimates. There is no
+confidence in a point estimate and in most cases the probability that a
+point estimate is correct is zero. Rather <b>interval estimates</b> are
+used. Interval estimates are ranges of numbers which hopefully contain
+the parameter we are trying to estimate. For example if we are trying to
+estimate the mean completion time for the surgical procedure of the last
+section, 151 minutes would be a point estimate. A typical interval estimate
+might be 143 to 159 minutes. In most cases we use a special type of interval
+estimate called a <b>confidence interval estimate</b> or <b>confidence
+interval</b>. We will give a formal definition below but roughly a confidence
+interval estimate for a parameter is an interval estimate with a confidence
+level attached. The confidence level gives the probability that the parameter
+being estimated actually falls within the interval.
+<br>&nbsp;
+<br>&nbsp;
+<p>EXAMPLE Suppose that a 95% confidence interval for the mean completion
+time of the surgical procedure is given by 143 minutes to 159 minutes.
+This is interpreted in the following manner. The true mean completion time
+is a number. There is a 95% probability that it falls in the interval 143
+to 159.
+<br>&nbsp;
+<br>&nbsp;
+<p>Notice that in using a confidence interval estimate there are two concepts
+of how good this estimate is, <b>confidence</b> and <b>accuracy</b>. The
+confidence of the estimate is given by the confidence level while the accuracy
+is given by the width of the interval. A narrow interval indicates greater
+accuracy than a wider interval. On an intuitive level it is clear that
+these two ideas are <b>inversely related</b>, that is for fixed sample
+size raising the confidence lowers the accuracy and vice versa. We will
+see this computationally in section 5.4. However we note that if we want
+a given confidence and wish to improve the accuracy we must take a larger
+sample size. In the real world this translates into cost and often the
+sample size chosen is a compromise between what the theory requires and
+what the budget of the study dictates.
+<p>If&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+is a parameter for a population&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+and&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an estimator for it, then as one goes from random sample to random sample
+from&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+the values of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+will vary. Hence&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+has its own distribution of values over all possible samples taken from&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+(we assume here the same sample size in each case). This is called the
+<b>sampling distribution</b> of the estimator&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>.
+Hence for a given sample size&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+and a given population&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+with mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+there will be a sampling distribution for&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>,
+consisting of all possible sample means of samples of size&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+drawn from&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>.
+Similarly there will be a sampling distribution for the sample standard
+deviation&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+and a sampling distribution for the sample proportion&nbsp;<img SRC="img5.gif" ALT="$ p$" BORDER=0 height=28 width=12 align=CENTER>.
+The sampling distribution of an estimator&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+will have its own mean and own standard deviation. We will denote these
+by&nbsp;<img SRC="img17.gif" ALT="$ \mu_{\th}$" BORDER=0 height=28 width=15 align=CENTER>
+and&nbsp;<!-- MATH
+ $\sigma_{\th}$
+ --><img SRC="img18.gif" ALT="$ \sigma_{\th}$" BORDER=0 height=28 width=14 align=CENTER>.
+<p><!-- MATH
+ \begin{displaymath}
+\mu_{\th} = \text{ mean of the sampling distribution of } \th \text { and }
+\end{displaymath}
+ -->
+<center><img SRC="img19.gif" ALT="$\displaystyle \mu_{\th} =$" BORDER=0 height=28 width=31 align=CENTER>&nbsp;&nbsp;&nbsp;
+mean of the sampling distribution of&nbsp;<img SRC="img20.gif" ALT="$\displaystyle \th$" BORDER=0 height=28 width=4 align=CENTER><img SRC="img21.gif" ALT="$\displaystyle \text { and }$" BORDER=0 height=29 width=30 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+\sigma_{\th} = \text{ standard deviation of the sampling distribution of } \th .
+\end{displaymath}
+ -->
+<center><img SRC="img22.gif" ALT="$\displaystyle \sigma_{\th} =$" BORDER=0 height=28 width=31 align=CENTER>&nbsp;&nbsp;&nbsp;
+standard deviation of the sampling distribution of&nbsp;<img SRC="img23.gif" ALT="$\displaystyle \th .$" BORDER=0 height=28 width=8 align=CENTER></center>
+If&nbsp;<!-- MATH
+ $\mu_{\th} = \theta$
+ --><img SRC="img24.gif" ALT="$ \mu_{\th} = \theta$" BORDER=0 height=29 width=44 align=CENTER>,
+that is the mean of the sampling distribution is equal to the parameter
+it is supposed to estimate, then&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+is called an <b>unbiased estimator</b> for<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>.
+In general&nbsp;<!-- MATH
+ $\sigma_{\th}$
+ --><img SRC="img18.gif" ALT="$ \sigma_{\th}$" BORDER=0 height=28 width=14 align=CENTER>
+is called the <b>standard error</b> of the estimator.
+<p>We examine these ideas relative to sample means.
+<p>For any population with mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+and standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+the sample mean&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an unbiased estimator for&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>.
+This means that&nbsp;<!-- MATH
+ $\mu_{\th} = \mu$
+ --><img SRC="img25.gif" ALT="$ \mu_{\th} = \mu$" BORDER=0 height=28 width=45 align=CENTER>
+where&nbsp;<img SRC="img17.gif" ALT="$ \mu_{\th}$" BORDER=0 height=28 width=15 align=CENTER>
+is the mean of the sampling distribution of&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>.
+Further the <b>standard error of the mean</b> is given by&nbsp;<!-- MATH
+ \begin{displaymath}
+\sigma_{\X} = \frac{\sigma}{\sqrt{n}}.
+\end{displaymath}
+ -->
+<center><img SRC="img26.gif" ALT="$\displaystyle \sigma_{\X} = \frac{\sigma}{\sqrt{n}}.$" BORDER=0 height=43 width=66 align=CENTER></center>
+It follows that for any population the sample means vary much less than
+the original population (notice that we are dividing by&nbsp;<img SRC="img27.gif" ALT="$ \sqrt{n}$" BORDER=0 height=33 width=27 align=CENTER>
+in finding the standard deviation of the sampling distribution for&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>).
+<br>&nbsp;
+<br>&nbsp;
+<p>EXAMPLE Suppose the discussed surgical procedure has a mean of&nbsp;<img SRC="img28.gif" ALT="$ \mu = 150$" BORDER=0 height=28 width=59 align=CENTER>
+and a standard deviation of&nbsp;<!-- MATH
+ $\sigma = 12$
+ --><img SRC="img29.gif" ALT="$ \sigma = 12$" BORDER=0 height=14 width=51 align=BOTTOM>.
+What is the mean and standard deviation of the sampling distribution of&nbsp;<img SRC="img16.gif" ALT="$ \X$" BORDER=0 height=14 width=4 align=BOTTOM>
+for samples of size 25.
+<p>The mean of the sampling distribution is the same as the original mean.
+Therefore&nbsp;<!-- MATH
+ $\mu_{\X} =
+\mu = 150$
+ --><img SRC="img30.gif" ALT="$ \mu_{\X} =\mu = 150$" BORDER=0 height=28 width=90 align=CENTER>.
+The standard deviation of the sampling distribution or the standard error
+is the original standard deviation divided by the squareroot of the sample
+size. Therefore<!-- MATH
+ \begin{displaymath}
+\sigma_{\X} = \frac{\sigma}{\squareroot{n}} = \frac{12}{5} = 2.4.
+\end{displaymath}
+ -->
+<center><img SRC="img31.gif" ALT="$\displaystyle \sigma_{\X} = \frac{\sigma}{\squareroot{n}} = \frac{12}{5} = 2.4.$" BORDER=0 height=49 width=136 align=CENTER></center>
+
+<p>The idea of an estimator and its sampling distribution is used to give
+a formal definition of a confidence interval. Suppose&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an estimator for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+and&nbsp;<!-- MATH
+ $h(\th),g(\th)$
+ --><img SRC="img32.gif" ALT="$ h(\th),g(\th)$" BORDER=0 height=31 width=53 align=CENTER>
+are functions of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+with&nbsp;<!-- MATH
+ $h(\th) < g(\th)$
+ --><img SRC="img33.gif" ALT="$ h(\th) < g(\th)$" BORDER=0 height=31 width=67 align=CENTER>
+for all values of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>.
+Then&nbsp;<!-- MATH
+ $[h(\th),g(\th)]$
+ --><img SRC="img34.gif" ALT="$ [h(\th),g(\th)]$" BORDER=0 height=31 width=62 align=CENTER>
+forms a <b>random interval</b>, that is an interval of numbers which arises
+randomly. If for some value&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+we have that&nbsp;<!-- MATH
+ \begin{displaymath}
+Prob\{h(\th) \le \theta \le g(\th)\} = \alpha,
+\end{displaymath}
+ -->
+<center><img SRC="img36.gif" ALT="$\displaystyle Prob\{h(\th) \le \theta \le g(\th)\} = \alpha,$" BORDER=0 height=31 width=183 align=CENTER></center>
+then<!-- MATH
+ $[h(\th),g(\th)]$
+ --><img SRC="img34.gif" ALT="$ [h(\th),g(\th)]$" BORDER=0 height=31 width=62 align=CENTER>
+is called an&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%-<b>confidence
+interval for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM></b>.
+This means that in repeated sampling there is a probability of&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+that the random interval&nbsp;<!-- MATH
+ $[h(\th),g(\th)]$
+ --><img SRC="img34.gif" ALT="$ [h(\th),g(\th)]$" BORDER=0 height=31 width=62 align=CENTER>
+will contain the parameter&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>.
+For a particular value of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+we get a particular interval and this gives a <b>confidence interval estimate</b>
+for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>.
+<p>Summarizing all this we have that an&nbsp;<!-- MATH
+ $\alpha  \%$
+ --><img SRC="img37.gif" ALT="$ \alpha \%$" BORDER=0 height=31 width=28 align=CENTER>-<b>confidence
+interval</b> for a paramter&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+is a random interval&nbsp;<!-- MATH
+ $[h(\th),g(\th)]$
+ --><img SRC="img34.gif" ALT="$ [h(\th),g(\th)]$" BORDER=0 height=31 width=62 align=CENTER>,
+where&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+is an estimator of&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+and<!-- MATH
+ $h(\th),g(\th)$
+ --><img SRC="img32.gif" ALT="$ h(\th),g(\th)$" BORDER=0 height=31 width=53 align=CENTER>
+are functions of&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+such that<!-- MATH
+ \begin{displaymath}
+Prob\{h(\th) \le \theta \le g(\th)\} = \alpha.
+\end{displaymath}
+ -->
+<center><img SRC="img38.gif" ALT="$\displaystyle Prob\{h(\th) \le \theta \le g(\th)\} = \alpha.$" BORDER=0 height=31 width=183 align=CENTER></center>
+
+<center><b>(2) ESTIMATION OF VARIANCES AND STANDARD DEVIATIONS</b></center>
+
+<p>We now look at the particular case where the parameter of interest is
+the population variance<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>
+and the estimator is the sample variance&nbsp;<img SRC="img39.gif" ALT="$ s^2$" BORDER=0 height=17 width=19 align=BOTTOM>.
+Estimating the variance&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>
+is equivalent to estimating the standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>.
+As with the estimation procedures for population means the procedures used
+with variances are separated into small and large sample procedures.
+<p>Crucial to estiamtion procedures for variances is the <b>chi-square
+distribution</b>. If&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+is a positive integer a <b>chi-square distribution with n degrees of freedom</b>
+is a continuous distribution whose density curve has the equation&nbsp;<!-- MATH
+ \begin{displaymath}
+f(x) = C(n) x^{\frac{n}{2} -1}e^{-x/2}
+\end{displaymath}
+ -->
+<center><img SRC="img40.gif" ALT="$\displaystyle f(x) = C(n) x^{\frac{n}{2} -1}e^{-x/2}$" BORDER=0 height=37 width=166 align=CENTER></center>
+where&nbsp;<img SRC="img41.gif" ALT="$ C(n)$" BORDER=0 height=31 width=39 align=CENTER>
+is a constant depending on&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+and&nbsp;<img SRC="img42.gif" ALT="$ x > 0$" BORDER=0 height=28 width=42 align=CENTER>.
+As with t-distributions there is a chi-square distribution for each positive
+integer&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>.
+The integer&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+that it depends upon is called its <b>degrees of freedom</b> abbreviated
+d.f.. In distinction to the t-distributions the chi-square distributions
+are not symmetric.
+<p>There are tabled values listed for the chi-square distribution which
+put given percentages in the tails for given degrees of freedom. Thus a
+tail entry given by<!-- MATH
+ $\chi^2_{\alpha,n}$
+ --><img SRC="img43.gif" ALT="$ \chi^2_{\alpha,n}$" BORDER=0 height=33 width=35 align=CENTER>
+is the value which puts&nbsp;<img SRC="img37.gif" ALT="$ \alpha \%$" BORDER=0 height=31 width=28 align=CENTER>
+in the right hand tail for a chi-square distribution with&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+degrees of freedom. For example the value for&nbsp;<!-- MATH
+ $\chi^2_{.025,8} =
+17.535$
+ --><img SRC="img44.gif" ALT="$ \chi^2_{.025,8} =17.535$" BORDER=0 height=33 width=113 align=CENTER>.
+This indicates that for a chi-square distribution with 8 d.f. the value
+17.535 has 2.5% to the right of it. In MAGNUSSTAT the appropriate chi-square
+values for estimation are computed automatically.
+<p>The chi-square distribution plays a role in the estimation of standard
+deviations through the following fundamental result.
+<p>Sampling Distribution of&nbsp;<img SRC="img39.gif" ALT="$ s^2$" BORDER=0 height=17 width=19 align=BOTTOM>
+If&nbsp;<img SRC="img39.gif" ALT="$ s^2$" BORDER=0 height=17 width=19 align=BOTTOM>
+is the sample variance based on&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+observations from a normal population with standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+then&nbsp;<!-- MATH
+ \begin{displaymath}
+\chi^2 = \frac{(n-1)s^2}{\sigma^2}
+\end{displaymath}
+ -->
+<center><img SRC="img45.gif" ALT="$\displaystyle \chi^2 = \frac{(n-1)s^2}{\sigma^2}$" BORDER=0 height=55 width=110 align=CENTER></center>
+has a chi-square distribution with&nbsp;<img SRC="img46.gif" ALT="$ n-1$" BORDER=0 height=28 width=41 align=CENTER>
+degrees of freedom.
+<p>Notice that this result is in terms of the variances. However estimating
+variances is equivalent to estimating standard deviations. Using this result
+we can derive a <b>confidence interval</b> for&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>
+and hence for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+when sampling is done from a normal population.
+<p>For a given&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>,
+find the chi-square values&nbsp;<!-- MATH
+ $\chi^2_{\alpha/2}$
+ --><img SRC="img47.gif" ALT="$ \chi^2_{\alpha/2}$" BORDER=0 height=33 width=36 align=CENTER>
+and&nbsp;<!-- MATH
+ $\chi^2_{1-\alpha/2}$
+ --><img SRC="img48.gif" ALT="$ \chi^2_{1-\alpha/2}$" BORDER=0 height=33 width=52 align=CENTER>
+so that for a chi square distribution with the given degrees of freedom&nbsp;<img SRC="img49.gif" ALT="$ \alpha/2$" BORDER=0 height=31 width=30 align=CENTER>%
+is in the right hand tail and&nbsp;<img SRC="img49.gif" ALT="$ \alpha/2$" BORDER=0 height=31 width=30 align=CENTER>%
+is in the left hand tail. The reason we need two different values is that
+the chi-square distribution is not symmetrical. We indicate this is figure
+1.
+<center><img SRC="Anal_Var_1.gif" BORDER=0 height=195 width=336 align=CENTER></center>
+
+<center>Figure 1 Chi-Square Confidence Coefficients</center>
+
+<p>From the chi-square distribution and the way we chose the chi-square
+values we have the following inequality on chi-square values occurring&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+of the time<!-- MATH
+ \begin{displaymath}
+\chi^2_{1-\alpha/2} \le \chi^2 \le \chi^2_{\alpha/2} .
+\end{displaymath}
+ -->
+<center><img SRC="img50.gif" ALT="$\displaystyle \chi^2_{1-\alpha/2} \le \chi^2 \le \chi^2_{\alpha/2} .$" BORDER=0 height=35 width=148 align=CENTER></center>
+We can apply the sampling distribution result to the chi-square value<!-- MATH
+ \begin{displaymath}
+\chi^2 = \frac{(n-1)s^2}{\sigma^2}
+\end{displaymath}
+ -->
+<center><img SRC="img45.gif" ALT="$\displaystyle \chi^2 = \frac{(n-1)s^2}{\sigma^2}$" BORDER=0 height=55 width=110 align=CENTER></center>
+to get the following inequality which must occur&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+of the time<!-- MATH
+ \begin{displaymath}
+\chi^2_{1-\alpha/2} \le \frac{(n-1)s^2}{\sigma^2} \le \chi^2_{\alpha/2}  \tag 1
+\end{displaymath}
+ -->
+<center><img SRC="img51.gif" ALT="$\displaystyle \chi^2_{1-\alpha/2} \le \frac{(n-1)s^2}{\sigma^2} \le \chi^2_{\alpha/2} \tag 1$" BORDER=0 height=55 width=202 align=CENTER></center>
+Solving this inequality for&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>,
+the value which we are trying to estimate, we get the following inequality
+which must occur&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+of the time.<!-- MATH
+ \begin{displaymath}
+\frac{(n-1)s^2}{\chi^2_{\alpha/2}} \le \sigma^2 \le \frac{(n-1)s^2}{\chi^2_{1-\alpha/2}}
+\tag 2
+\end{displaymath}
+ -->
+<center><img SRC="img52.gif" ALT="$\displaystyle \frac{(n-1)s^2}{\chi^2_{\alpha/2}} \le \sigma^2 \le \frac{(n-1)s^2}{\chi^2_{1-\alpha/2}}\tag 2$" BORDER=0 height=55 width=207 align=CENTER></center>
+The inequality in (2) defines a random interval containing&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>
+which must occur&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+of the time and thus defines an&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>-percent
+confidence interval for&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>.
+Particular values for the variables will give a confidence interval estimate.
+Taking the square root of these values will give a confidence interval
+for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>.
+<p>Confidence Intervals for&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>
+If&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+is a normal population with standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+then an&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+confidence interval for&nbsp;<img SRC="img4.gif" ALT="$ \sigma^2$" BORDER=0 height=17 width=21 align=BOTTOM>
+is given by<!-- MATH
+ \begin{displaymath}
+\frac{(n-1)s^2}{\chi^2_{\alpha/2}} \le \sigma^2 \le \frac{(n-1)s^2}{\chi^2_{1-\alpha/2}}
+\tag 2
+\end{displaymath}
+ -->
+<center><img SRC="img52.gif" ALT="$\displaystyle \frac{(n-1)s^2}{\chi^2_{\alpha/2}} \le \sigma^2 \le \frac{(n-1)s^2}{\chi^2_{1-\alpha/2}}\tag 2$" BORDER=0 height=55 width=207 align=CENTER></center>
+where&nbsp;<!-- MATH
+ \begin{displaymath}
+s = \text { sample standard deviation}
+\end{displaymath}
+ -->
+<center><img SRC="img53.gif" ALT="$\displaystyle s =$" BORDER=0 height=28 width=28 align=CENTER><img SRC="img54.gif" ALT="$\displaystyle \text { sample standard deviation}$" BORDER=0 height=29 width=185 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+\chi^2_{\alpha/2},\chi^2_{1-\alpha/2} = \alpha\% \text { confidence coefficients based on n-1 d.f.
+}
+\end{displaymath}
+ -->
+<center><img SRC="img55.gif" ALT="$\displaystyle \chi^2_{\alpha/2},\chi^2_{1-\alpha/2} = \alpha\%$" BORDER=0 height=35 width=136 align=CENTER><img SRC="img56.gif" ALT="$\displaystyle \text { confidence coefficients based on n-1 d.f.}$" BORDER=0 height=29 width=290 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+n = \text { sample size }.
+\end{displaymath}
+ -->
+<center><img SRC="img57.gif" ALT="$\displaystyle n =$" BORDER=0 height=28 width=30 align=CENTER><img SRC="img58.gif" ALT="$\displaystyle \text { sample size }. $" BORDER=0 height=29 width=87 align=CENTER></center>
+EXAMPLE A study was done to determine the mean time to toleration of solid
+food after a stomach surgery. A random sample of 16 patients had a sample
+mean of 6.2 days with a sample standard deviation of 1.2 days. Determine
+a 95% confidence interval estimate for the standard deviation of time.
+<p>Here&nbsp;<img SRC="img59.gif" ALT="$ n = 16$" BORDER=0 height=14 width=51 align=BOTTOM>
+Assuming that the time follows a normal distribution we can apply the above
+results. First we must find the 95% chi-square confidence coefficients.
+Since a 95% interval will leave a total of 5% in the tails there is 2.5%
+in each tail. There are 16 observations so 15 d.f. Therefore the appropriate
+chi-square confidence coefficients are
+<p><!-- MATH
+ \begin{displaymath}
+\chi^2_{.975,15} = 6.262 \text{ and } \chi^2_{.025,15} = 27.488.
+\end{displaymath}
+ -->
+<center><img SRC="img60.gif" ALT="$\displaystyle \chi^2_{.975,15} = 6.262$" BORDER=0 height=35 width=112 align=CENTER>&nbsp;&nbsp;&nbsp;
+and&nbsp;<img SRC="img61.gif" ALT="$\displaystyle \chi^2_{.025,15} = 27.488.$" BORDER=0 height=35 width=124 align=CENTER></center>
+The remaining computed information is that&nbsp;<img SRC="img62.gif" ALT="$ s = 1.2$" BORDER=0 height=14 width=53 align=BOTTOM>
+Therefore the confidence interval estimate is<!-- MATH
+ \begin{displaymath}
+\frac{(15)1.2^2}{27.488} \le \sigma^2 \le \frac{(15)1.2^2}{6.262}
+\end{displaymath}
+ -->
+<center><img SRC="img63.gif" ALT="$\displaystyle \frac{(15)1.2^2}{27.488} \le \sigma^2 \le \frac{(15)1.2^2}{6.262}$" BORDER=0 height=55 width=182 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+.786 \le \sigma^2 \le 3.449
+\end{displaymath}
+ -->
+<center><img SRC="img64.gif" ALT="$\displaystyle .786 \le \sigma^2 \le 3.449$" BORDER=0 height=35 width=128 align=CENTER></center>
+Taking the squareroots of these values will give a 95% confidence interval
+for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM><!-- MATH
+ \begin{displaymath}
+.887 \le \sigma \le 1.857.
+\end{displaymath}
+ -->
+<center><img SRC="img65.gif" ALT="$\displaystyle .887 \le \sigma \le 1.857.$" BORDER=0 height=28 width=125 align=CENTER></center>
+Therefore a 95% confidence interval for the standard deviation of time
+to tolerate solid food is .887 days to 1.857 days.
+<br>&nbsp;
+<br>&nbsp;
+<p>There is a central limit theorem for the chi-square distribution from
+which a large sample confidence interval for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+can be derived. For large sample sizes&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+from a normal distribution we obtain the following:
+<p>Large Sample Sampling Distribution of&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+If&nbsp;<img SRC="img7.gif" ALT="$ s$" BORDER=0 height=14 width=12 align=BOTTOM>
+is the sample standard deviation based on<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM>
+observations from a normal population with standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+then for large&nbsp;<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM><!-- MATH
+ \begin{displaymath}
+z = \frac{s - \sigma}{\frac{\sigma}{\sqrt{2n}}}
+\end{displaymath}
+ -->
+<center><img SRC="img66.gif" ALT="$\displaystyle z = \frac{s - \sigma}{\frac{\sigma}{\sqrt{2n}}}$" BORDER=0 height=47 width=74 align=CENTER></center>
+has an approximate normal distribution.
+<p>Using this we can derive a large sample confidence interval for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+using confidence coefficients from the normal distribution.
+<p>Large Sample Confidence Intervals for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+If&nbsp;<img SRC="img15.gif" ALT="$ P$" BORDER=0 height=14 width=16 align=BOTTOM>
+is a normal population with standard deviation&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+then a large sample&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>%
+confidence interval for&nbsp;<img SRC="img3.gif" ALT="$ \sigma$" BORDER=0 height=14 width=14 align=BOTTOM>
+is given by&nbsp;<!-- MATH
+ \begin{displaymath}
+\frac{s}{1+\frac{z_{\alpha/2}}{\sqrt{2n}}} \le \sigma \le
+ \frac{s}{1-\frac{z_{\alpha/2}}{\sqrt{2n}}}
+\tag 3
+\end{displaymath}
+ -->
+<center><img SRC="img67.gif" ALT="$\displaystyle \frac{s}{1+\frac{z_{\alpha/2}}{\sqrt{2n}}} \le \sigma \le\frac{s}{1-\frac{z_{\alpha/2}}{\sqrt{2n}}}\tag 3$" BORDER=0 height=49 width=185 align=CENTER></center>
+where&nbsp;<!-- MATH
+ \begin{displaymath}
+z_{\alpha/2} = \alpha\% \text { normal confidence coefficient
+}
+\end{displaymath}
+ -->
+<center><img SRC="img68.gif" ALT="$\displaystyle z_{\alpha/2} = \alpha\%$" BORDER=0 height=31 width=78 align=CENTER><img SRC="img69.gif" ALT="$\displaystyle \text { normal confidence coefficient}$" BORDER=0 height=29 width=217 align=CENTER></center>
+
+<p>EXAMPLE Suppose in the toleration of solid food study there was a random
+sample of 60 patients an there was a standard deviation of 1.2 days. Determine
+a 95% confidence interval for the population standard devaition.
+<p>Here&nbsp;<img SRC="img70.gif" ALT="$ n = 60$" BORDER=0 height=14 width=51 align=BOTTOM>,
+so assuming that the time follows a normal distribution we can apply the
+large sample results. We have&nbsp;<!-- MATH
+ $s = 1.2, n = 60$
+ --><img SRC="img71.gif" ALT="$ s = 1.2, n = 60$" BORDER=0 height=28 width=107 align=CENTER>
+and an appropriate 95% normal confidence coefficient is 1.96. Therefore
+the computed confidence interval estimate is
+<p><!-- MATH
+ \begin{displaymath}
+\frac{1.2}{1 + \frac{1.96}{\sqrt{120}}} \le \sigma \le \frac{1.2}{1 - \frac{1.96}{\sqrt{120}}}
+\end{displaymath}
+ -->
+<center><img SRC="img72.gif" ALT="$\displaystyle \frac{1.2}{1 + \frac{1.96}{\sqrt{120}}} \le \sigma \le \frac{1.2}{1 - \frac{1.96}{\sqrt{120}}}$" BORDER=0 height=49 width=185 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+1.018 \le \sigma \le 1.461
+\end{displaymath}
+ -->
+<center><img SRC="img73.gif" ALT="$\displaystyle 1.018 \le \sigma \le 1.461$" BORDER=0 height=28 width=129 align=CENTER></center>
+Therefore a 95% confidence interval for the standard deviation of time
+to tolerate solid food is 1.018 days to 1.461 days.
+<p>Notice that this is a more accurate estimate than the one derived in
+the first example as to be expected, since a larger sample size was used.
+<br>&nbsp;
+<p>
+<hr>
+</body>
+</html>

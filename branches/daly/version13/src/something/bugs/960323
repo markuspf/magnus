@@ -1,0 +1,2 @@
+1. Rewr sys doesn't work properly:
+<a,b  ; [ (b a^2 b a b a^2 b a b a^2 b a^2 b a b a^2 b a^2 b a b a^2 b a^2 b a b a^2 b a b a^2 b a^2 b a b a^2 )^5, b ]^3   >

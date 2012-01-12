@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/config.h}
+\author{Jon Lennox}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/config.h
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+
+<<license>>
+
+#define MAGNUS_HOME "/usr/local/magnus"
+// We keep this compiled-in value to ease debugging.
+// Use MagnusHome::magnusHome() in back_end/general/ for
+// the Magnus root directory.
+
+#define LINUX
+
+#define MAGNUS_TMP "/tmp"
+
+#endif /* _CONFIG_H_ */
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

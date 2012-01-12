@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/NormalClosure.h}
+\author{Dmitry Bormotov, Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "ComputationManager.h"
+#include "SubgroupGraph.h"
+#include "FPGroup.h"
+
+@
+\section{class NormalClosureARCer}
+<<class NormalClosureARCer>>=
+class NormalClosureARCer : public ARCer2
+{
+public:
+  NormalClosureARCer( ComputationManager& boss );
+  ~NormalClosureARCer( );
+
+  void setArguments( const FPGroup&, const VectorOf<Word>& sgens );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  class DecomposeInSubgroupOfFPGroup& getDecomposer() const { 
+    return *theDecomposer; 
+  }
+
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& ) { }
+  bool readResults2( istream& );
+
+private:
+  class DecomposeInSubgroupOfFPGroup* theDecomposer;
+  class DecomposeInSubgroupOfFPGroup* tempDecomposer;
+};
+
+@
+\section{class NormalClosure}
+<<class NormalClosure>>=
+class NormalClosure : public ComputationManager
+{
+public:
+  NormalClosure(class GCM& gcm);
+  NormalClosure(class SCM& scm);
+  Trichotomy isTrivial(const Word& w) const;
+  DecomposeInSubgroupOfFPGroup& getDecomposer( );
+  SubgroupGraph getSubgroupGraph( ) const;
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  void putHaveWordDecomposer( const DecomposeInSubgroupOfFPGroup& D );
+  void putHaveCompleteCayleyGraph( const SubgroupGraph& S );
+  NormalClosureARCer arcer;
+  class ComputationManager& theCM;
+  class SMFPGroup& theGroup;
+  class SMObject& theObject;
+  //  class GCM& theGCM;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/NormalClosure.h
+#ifndef _NORMALCLOSURE_H_
+#define _NORMALCLOSURE_H_
+
+<<license>>
+<<include>>
+<<class NormalClosureARCer>>
+<<class NormalClosure>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,302 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/smmap.pamphlet}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "AlgebraicObject.h"
+#include "SMFPGroup.h"
+#include "MIC.h"
+#include "Map.h"
+#include "AbelianProblems.h"
+
+@
+<<include.c>>=
+#include "SMMap.h"
+
+@
+\section{class MCM}
+\subsection{MCM Constructor}
+<<MCM Constructor.h>>=
+  MCM( class SMMap& M );
+@
+<<MCM Constructor.c>>=
+MCM::MCM( class SMMap& M )
+  : Supervisor( false ),
+    theMap( M ),
+    abelianHomIsMono( *this ),
+    abelianHomIsEpi( *this )
+{
+  adminStart();
+}
+
+@
+\subsection{MCM::getMap}
+<<MCM::getMap.h>>=
+  SMMap& getMap( ) const { return theMap; }
+@
+\subsection{MCM::viewStructure}
+<<MCM::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const { }
+@
+\subsection{MCM::takeControl}
+The takeControl method does some sneaky checks of obvious properties
+(this should be formalized, since they are not always that fast).
+The variable [[didFastChecks]] records the first call, 
+so that they are not done over and over.
+<<MCM::takeControl.h>>=
+  void takeControl( );        // overrides ComputationManager
+@
+Cheat and do some quickie checks here without reporting ARC consumption.
+<<MCM::takeControl.c>>=
+void MCM::takeControl( )
+{
+  if ( ! didFastChecks ) {
+    didFastChecks = true;
+  }
+}
+
+@
+\subsection{MCM::start}
+<<MCM::start.h>>=
+  void start( ) { }           // overrides ComputationManager
+@
+\subsection{MCM::terminate}
+<<MCM::terminate.h>>=
+  void terminate( ) { }       // overrides ComputationManager
+@
+\subsection{class MCM}
+The takeControl method does some sneaky checks of obvious properties
+(this should be formalized, since they are not always that fast).
+The variable [[didFastChecks]] records the first call, 
+so that they are not done over and over.
+<<class MCM>>=
+class MCM : public Supervisor
+{
+public:
+<<MCM Constructor.h>>
+<<MCM::getMap.h>>
+<<MCM::viewStructure.h>>
+<<MCM::takeControl.h>>
+<<MCM::start.h>>
+<<MCM::terminate.h>>
+  Subordinate<MCM,AbelianHomIsMonoComp> abelianHomIsMono;
+  Subordinate<MCM,AbelianHomIsEpiComp> abelianHomIsEpi;
+private:
+  class SMMap& theMap;
+  bool didFastChecks;
+};
+
+@
+\section{class SMMap}
+\subsection{SMMap Constructor}
+<<SMMap Constructor.h.1>>=
+  SMMap(SMFPGroup& G, Map m, const Chars heritage);
+@
+<<SMMap Constructor.c.1>>=
+SMMap::SMMap(SMFPGroup& G, Map m, const Chars heritage)
+  : AlgebraicObject( heritage ),
+	 theMap( m ),
+	 theDomain( G ),
+	 theRange( G ),
+	 mic( oid() ),
+         theMCM( new MCM( *this ) )
+{
+  addDependent( *theMCM );
+}
+
+@
+<<SMMap Constructor.h.2>>=
+  SMMap(SMFPGroup& G, SMFPGroup& H, Map m, const Chars heritage);
+@
+<<SMMap Constructor.c.2>>=
+SMMap::SMMap(SMFPGroup& G, SMFPGroup& H, Map m, const Chars heritage)
+  : AlgebraicObject( heritage ),
+    theMap( m ),
+    theDomain( G ),
+    theRange( H ),
+    mic( oid() ),
+    theMCM( new MCM( *this ) )
+{
+  addDependent( *theMCM );
+}
+
+@
+<<SMMap Constructor.h.3>>=
+  SMMap(SMFPGroup& G);
+@
+<<SMMap Constructor.c.3>>=
+SMMap::SMMap(SMFPGroup& G)
+: AlgebraicObject(""), theMap( *((Map*)0) ), theDomain( G ), theRange( G ),
+    mic( oid() ),theMCM( new MCM( *this ) )
+{
+  addDependent( *theMCM );
+} 
+
+@
+<<SMMap Constructor.h.4>>=
+  SMMap(SMFPGroup& G, SMFPGroup& H);
+@
+<<SMMap Constructor.c.4>>=
+SMMap::SMMap(SMFPGroup& G, SMFPGroup& H)
+: AlgebraicObject(""), theMap( *((Map*)0) ), theDomain( G ), theRange( H ),
+  mic( oid() ),theMCM( new MCM( *this ) )
+{
+  addDependent( *theMCM );
+} 
+
+@
+\subsection{SMMap::getMap}
+<<SMMap::getMap.h>>=
+  Map getMap( ) const { return theMap; }
+@
+\subsection{SMMap::getDomain}
+<<SMMap::getDomain.h>>=
+  SMFPGroup& getDomain( ) const { return theDomain; }
+@
+\subsection{SMMap::getRange}
+<<SMMap::getRange.h>>=
+  SMFPGroup& getRange( ) const { return theRange; }
+@
+\subsection{SMMap::mcm}
+<<SMMap::mcm.h>>=
+  MCM& mcm() const { return *theMCM; }
+@
+\subsection{SMMap::infoCenter}
+<<SMMap::infoCenter.h.1>>=
+        InformationCenter* infoCenter()       { return &mic; }
+@
+<<SMMap::infoCenter.h.2>>=
+  const InformationCenter* infoCenter() const { return &mic; }
+@
+\subsection{SMMap::type}
+<<SMMap::type.h>>=
+  static const char* type( ) { return "SMMap"; }
+@
+\subsection{SMMap::typeID}
+<<SMMap::typeID.h>>=
+  const char* typeID( ) const { return type(); }        // overrides SMObject
+@
+\subsection{SMMap::iconID}
+<<SMMap::iconID.h>>=
+  const IconID iconID( ) const { return IconID::map; }  // overrides SMObject
+@
+\subsection{SMMap::viewStructure}
+<<SMMap::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;              // overrides SMObject
+@
+<<SMMap::viewStructure.c>>=
+void SMMap::viewStructure(ostream& ostr) const
+{
+  ostr
+	 << "viewBuilder objectView viewParameters {viewID "
+	 << oid()
+	 << " heritage {"
+	 << heritage()
+	 << "}}";
+}
+
+@
+\subsection{SMMap::printProperties}
+<<SMMap::printProperties.h>>=
+  void printProperties(ostream& ostr) const;            // overrides SMObject
+@
+<<SMMap::printProperties.c>>=
+void SMMap::printProperties(ostream& ostr) const
+{
+  ostr << DataPair( Domain( *this ), Object( theDomain ) )
+		 << DataPair( Range( *this ), Object( theRange ) );
+}
+
+@
+\subsection{SMMap::printDefinition}
+<<SMMap::printDefinition.h>>=
+  void printDefinition(ostream& ostr) const;            // overrides SMObject
+@
+<<SMMap::printDefinition.c>>=
+void SMMap::printDefinition(ostream& ostr) const
+{
+  ostr << "{ ";
+  theMap.printOn( ostr );
+  ostr << " } ";
+}
+
+@
+\subsection{SMMap::readMessage}
+<<SMMap::readMessage.h>>=
+  void readMessage(istream&) { }                        // overrides SMObject
+@
+\subsection{class SMMap}
+<<class SMMap>>=
+class SMMap : public AlgebraicObject
+{
+public:
+<<SMMap Constructor.h.1>>
+<<SMMap Constructor.h.2>>
+<<SMMap Constructor.h.3>>
+<<SMMap Constructor.h.4>>
+<<SMMap::getMap.h>>
+<<SMMap::getDomain.h>>
+<<SMMap::getRange.h>>
+<<SMMap::mcm.h>>
+<<SMMap::infoCenter.h.1>>
+<<SMMap::infoCenter.h.2>>
+<<SMMap::type.h>>
+<<SMMap::typeID.h>>
+<<SMMap::iconID.h>>
+<<SMMap::viewStructure.h>>
+<<SMMap::printProperties.h>>
+<<SMMap::printDefinition.h>>
+  MIC mic;
+protected:
+<<SMMap::readMessage.h>>
+private:
+  const Map theMap;
+  SMFPGroup& theDomain;
+  SMFPGroup& theRange;
+  MCM* theMCM;  // TheObjects removes scm when this is removed.
+};
+
+@
+\section{license}
+Copyright (C) 1994-2004 The New York Group Theory Cooperative
+See license/NYGTC for the full notice
+\section{SMMap.h}
+<<SMMap.h>>=
+// src/smmap.pamphlet
+#ifndef _SMMAP_H_
+#define _SMMAP_H_
+
+<<include.h>>
+<<class MCM>>
+<<class SMMap>>
+#endif
+@
+\section{smmap.c}
+<<*>>=
+<<include.c>>
+<<MCM Constructor.c>>
+<<MCM::takeControl.c>>
+
+<<SMMap Constructor.c.1>>
+<<SMMap Constructor.c.2>>
+<<SMMap Constructor.c.3>>
+<<SMMap Constructor.c.4>>
+<<SMMap::printProperties.c>>
+<<SMMap::viewStructure.c>>
+<<SMMap::printDefinition.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+

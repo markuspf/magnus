@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Checking in an Object</TITLE>
+<META NAME="description" CONTENT="Checking in an Object">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00331100000000000000"></A><A NAME="checking_in"></A>
+<BR>
+Checking in an Object
+</H3>
+
+<P>
+The <I>SM</I> can pass a message which tells the <I>FE</I> to create an image in
+the workspace of an object which exists in the <I>SM</I>. The message has
+the form
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>objectID typeID iconID name dependencies properties viewStructure
+definition</EM>
+<BR>
+<BR>
+
+<P>
+An <EM>objectID</EM> is a unique positive integer assigned to the object
+by the <I>SM</I>. It is the only definitive reference to the object shared
+by the <I>FE</I> and <I>SM</I>.
+
+<P>
+A <EM>typeID</EM> is a positive integer assigned to the object by the
+<I>SM</I>. It is used to identify what actions may be taken on a set of objects.
+
+<P>
+An <EM>iconID</EM> is one of the symbols: <TT>group</TT>, <TT>subgroup</TT>,
+<TT>elt</TT>, <TT>map</TT>, <TT>enumerator</TT>, <TT>problem</TT>.
+
+<P>
+A <EM>name</EM> is the text which is to be displayed beneath the icon in
+the workspace. It must be delimited by <TT>{}</TT> if it contains
+whitespace.
+
+<P>
+The <EM>dependencies</EM> is a list of the form
+<TT>{</TT><EM>objectID</EM><TT>*}</TT>. In this case <EM>objectID</EM> is not a
+keyword identifier.
+
+<P>
+The <EM>properties</EM> is a list of the form <TT>{{</TT><EM>key</EM>
+<EM>datum</EM><TT>}+}</TT>, where <EM>key</EM> and <EM>datum</EM> are strings
+matching <TT>'[a-zA-Z0-9(), ]+'</TT>.  By convention, all spaces are
+stripped out by the <I>FE</I>.  The <EM>key-datum</EM> pairs are stored by the
+<I>FE</I> on behalf of the <I>SM</I> for later use. The purpose is to allow the
+<I>SM</I> to endow the <I>FE</I> with certain knowledge (about objects, in this
+case), which the <I>FE</I> can use as directed without knowing anything
+about it.  See &#167;<A HREF="node56.html#hottext">2.3.1.2</A> for how to use this stored information.
+
+<P>
+A <EM>viewStructure</EM> has the form: <TT>{</TT><EM>viewBuilder</EM>
+<EM>viewParameters</EM><TT>}</TT>.  A <EM>viewBuilder</EM> is the name of a
+predefined view window builder (&#167;<A HREF="node63.html#predefined_views">2.3.3</A>). The
+<EM>viewParameters</EM> are the parameters expected by the
+<EM>viewBuilder</EM>. The <EM>viewBuilder</EM> may be <TT>{}</TT> if no view
+is defined.
+
+<P>
+The <EM>definition</EM> is supplied only when the <EM>name</EM> is the
+empty string, and the object is not a problem object. This is the case
+when a new object is constructed by the <I>SM</I> in response to an end
+user query.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

@@ -1,0 +1,106 @@
+%  Typeset this with amstex and amsppt version 2.0.
+\input amstex
+\documentstyle{amsppt}
+\NoBlackBoxes
+
+
+\tolerance 10000
+\magnification\magstep1
+\loadeusm  %for portability, we do this automatically
+\font\Gfont=eusm10 
+
+%John's super-duper definitions
+
+\catcode`\@=11  %John's brilliant way to update for the 1991 classification
+\def\subjclass{\nofrills@{{\rm1991 {\it Mathematics Subject
+   Classification\/}.\enspace}}\subjclass@
+ \DNii@##1\endsubjclass{\def\thesubjclass@{\def\usualspace
+  {{\rm\enspace}}\eightpoint\subjclass@\ignorespaces##1\unskip.}}%
+ \FN@\next@}
+\catcode`\@=\active
+
+       
+
+
+%% The following code eliminates the "Typeset by Amstex" logo from page 1
+\catcode`\@=11
+\output={\output@}
+\def\output@{\shipout\vbox{%
+ \iffirstpage@ \global\firstpage@false
+  \pagebody
+\makefootline%
+ \else \ifrunheads@ \makeheadline \pagebody
+       \else \pagebody \makefootline \fi
+ \fi}%
+ \advancepageno \ifnum\outputpenalty>-\@MM\else\dosupereject\fi}
+\catcode`\@=\active
+%%  End of Stallings's stuff
+
+\def\picture#1 by #2 (#3){\vbox to #2
+      {\vfill\special{picture #3}
+        \hrule width #1 height 0pt depth 0pt
+        }}
+\def\midpicture#1 by #2 (#3)#4{\goodbreak\midinsert
+\hrule width #1 height 0pt depth 0pt
+\hbox to\hsize{\hfill%
+\picture#1 by #2 (#3)\hfill}%
+\centerline{\rm #4}\endinsert}
+
+\def\figA{
+\hfil\picture 5.19 truein by 3.13truein (Hyptest1 scaled 850)\hfil}
+\def\figB{
+\hfil\picture 4.69truein by 2.18truein (Legal scaled 850)\hfil}
+\def\figC{
+\hfil\picture 3.56truein by 1.76truein (Reject1 scaled 850)\hfil} 
+\def\figD{
+\hfil\picture 3.21truein by 1.79truein (Reject2 scaled 850)\hfil}
+\def\figE{
+\hfil\picture 5.64truein by 3.64truein (ParamBox scaled 850)\hfil}
+\def\figF{
+\hfil\picture 3.81truein by 1.82truein (Reject3 scaled 850)\hfil}
+\def\figG{
+\hfil\picture 4.43truein by 2.06truein (Reject4 scaled 850)\hfil}
+\def\figH{
+\hfil\picture 3.49truein by 1.83truein (Reject5 scaled 850)\hfil}
+\def\figI{
+\hfil\picture 3.64truein by 1.78truein (Reject6 scaled 850)\hfil}    
+
+
+
+\pagewidth{ 4.5in}
+\pageheight{7in}
+\hcorrection {.3in}
+\define\im{\bold  i}
+\define\to{\rightarrow}
+\define\N{\Bbb N}
+\define\Z{\Bbb Z}
+\define\C{\Bbb C}
+\define\R{\Bbb R}
+\define\V{\Cal V}
+\define\U{\cal U}
+
+
+
+\topmatter
+
+
+\endtopmatter
+
+
+\document
+
+
+
+$\vphantom{xxx}$
+
+\centerline{\bf THE COMPARISON OF VARIANCES TOOL}
+
+\bigskip
+
+The {\bf Comparison of Variances Tool} will evaluate a hypothesis test for
+the difference of two independent population variances.  A standard F-test will be used.
+\bigskip
+
+\centerline{ For further information click here}
+
+    

@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Menu Definitions</TITLE>
+<META NAME="description" CONTENT="Menu Definitions">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00331300000000000000"></A><A NAME="menu_defn"></A>
+<BR>
+Menu Definitions
+</H3>
+
+<P>
+This section describes the messages accepted by the <I>FE</I> for defining
+workspace menus. We need a number of preliminaries first.
+
+<P>
+Given a selection in the workspace, the front end provides the end
+user with a (possibly hierarchical) menu of actions which are
+appropriate to that selection.
+
+<P>
+A given action has a <EM>signature</EM>, which is a bag of <EM>typeIDs</EM>
+<!-- MATH
+ $\{t_1,\dots t_n\}$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\{t_1,\dots t_n\}$">. Let the bag of the <EM>typeIDs</EM> of the selected
+objects be <!-- MATH
+ $\{t'_1,\dots t'_n\}$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.gif"
+ ALT="$\{t'_1,\dots t'_n\}$">. The action cannot be appropriate to
+the selection unless there is a permutation <IMG
+ WIDTH="56" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.gif"
+ ALT="$\sigma\in S_n$"> such that
+<!-- MATH
+ $t_{i}=t'_{\sigma(i)}$
+ -->
+<IMG
+ WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.gif"
+ ALT="$t_{i}=t'_{\sigma(i)}$"> for <IMG
+ WIDTH="76" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.gif"
+ ALT="$1\le i\le n$">.
+
+<P>
+In addition, the action may not be appropriate unless some condition
+on the selected objects is met. The information needed to check these
+conditions was stored in the <I>FE</I> by the <I>SM</I> via the
+<EM>properties</EM> argument of the <TT>create_</TT> message for each
+object.
+
+<P>
+If an action is appropriate, the <I>FE</I> must post a menu item for it,
+and send a corresponding message to the <I>SM</I> if that item is
+chosen. The text of the menu item will need to refer to various of the
+selected objects by <EM>name</EM>, and the message will refer to them by
+<EM>objectID</EM>. Now suppose the signature of the action is
+<!-- MATH
+ $\{t_1,\dots t_n\}$
+ -->
+<IMG
+ WIDTH="82" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.gif"
+ ALT="$\{t_1,\dots t_n\}$">, and that the selected objects can be indexed
+<!-- MATH
+ $\{O_1,\dots O_n\}$
+ -->
+<IMG
+ WIDTH="96" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.gif"
+ ALT="$\{O_1,\dots O_n\}$"> so that the <EM>typeID</EM> of <IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$O_i$"> is <IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.gif"
+ ALT="$t_i$">. We
+may consider an index <IMG
+ WIDTH="76" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.gif"
+ ALT="$1\le i\le n$"> to be a formal parameter of the
+action, and <IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.gif"
+ ALT="$O_i$"> to be the corresponding actual parameter.
+
+<P>
+The <I>SM</I> may refer to the <EM>name</EM> of the <IMG
+ WIDTH="10" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$i$">th actual parameter in
+<I>Hot</I> text with the symbol <TT>${name</TT><IMG
+ WIDTH="10" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$i$"><TT>}</TT>. It may refer
+to the <EM>objectID</EM> with the symbol <TT>${OID</TT><IMG
+ WIDTH="10" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$i$"><TT>}</TT>.
+
+<P>
+At last, we have the syntax of a menu definition message:
+
+<P>
+
+<BR>
+<BR>
+<code>#1</code> <EM>menu signature itemGroups</EM>
+<BR>
+<BR>
+
+<P>
+A <EM>menu</EM> is one of the symbols <TT>checkin</TT>, <TT>tools</TT>. It
+indicates under which toplevel workspace menu the given menu items are
+to be posted.
+
+<P>
+A <EM>signature</EM> has the form <TT>{</TT><EM>typeID</EM><TT>*}</TT>. The
+<EM>typeID</EM>s are sorted in increasing order. In this case
+<EM>typeID</EM> is not a keyword identifier.
+
+<P>
+An <EM>itemGroups</EM> has the form <TT>{</TT><EM>itemGroup</EM><TT>+}</TT>.
+ There are no keyword arguments at this level or below.
+
+<P>
+An <EM>itemGroup</EM> has the form <TT>{</TT><EM>condition</EM>
+<TT>{</TT><EM>item</EM><TT>+}}</TT>.
+
+<P>
+A <EM>condition</EM> is any string which can be accepted by the <TT>Tcl</TT> procedure <TT>expr</TT>. It is <I>Hot</I> text. It may contain
+substrings ``<TT>${OID</TT><IMG
+ WIDTH="10" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$i$"><TT>}</TT>''. Note that <TT>expr</TT> accepts
+the operators <TT>&amp;&amp;</TT>, <TT>||</TT>, <TT>!</TT>, <TT>==</TT>, <TT>!=</TT>, which
+have the same meaning and precedence as in <TT>C</TT>. It allows
+parentheses. It represents true and false by <TT>1</TT> and <TT>0</TT>.
+
+<P>
+An <EM>item</EM> has one the forms
+<EM>realItem</EM>, <TT>s</TT>, or
+<TT>{c</TT> <EM>itemText</EM> <TT>{</TT><EM>realItem</EM><TT>+}}</TT>.
+The <TT>s</TT> <EM>item</EM> is a menu item separator, and the <TT>{c...}</TT>
+<EM>item</EM> is a cascaded menu.
+
+<P>
+A <EM>realItem</EM> has the form
+<TT>{</TT><EM>itemText</EM> <EM>action</EM> <EM>message</EM><TT>}</TT>.
+
+<P>
+An <EM>itemText</EM> is <I>Hot</I> text, delimited by <TT>{}</TT>'s, and may
+contain substrings ``<TT>${name</TT><IMG
+ WIDTH="10" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$i$"><TT>}</TT>''. Example:
+<BR>
+<TT>{Is ${name1} trivial in [_name_ [_value_ parent(${OID1})]]?}</TT>.
+
+<P>
+An <EM>action</EM> is the name of one of a number of predefined
+procedures (documented in &#167;<A HREF="node60.html#predefined_procedures">2.3.2</A>) which is to
+be called before the <EM>message</EM> is sent to the <I>SM</I>. Such
+procedures usually have the side-effect of defining new variables
+which can be referenced in the <EM>message</EM> body. The <EM>action</EM>
+may be <TT>{}</TT>.
+
+<P>
+A <EM>message</EM> is <I>Hot</I> text delimited by <TT>{}</TT>'s, and may
+contain substrings ``<TT>${OID</TT><IMG
+ WIDTH="10" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.gif"
+ ALT="$i$"><TT>}</TT>'' and any other variable
+references which are valid as a result of the <EM>action</EM>. If the
+<EM>message</EM> is empty, i.e. <TT>{}</TT>, the menu item is posted but
+disabled.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

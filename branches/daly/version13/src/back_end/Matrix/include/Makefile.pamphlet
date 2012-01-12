@@ -1,0 +1,177 @@
+\documentclass{article}
+\usepackage{../../../../mnt/linux/bin/axiom}
+\begin{document}
+\title{src/backend/Matrix/include/Makefile}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Environment}
+<<environment>>=
+IN=${SRC}/backend/Matrix/include
+OUT=${INT}/include
+DOC=${MNT}/${SYS}/doc/src/backend/Matrix/include
+
+@
+\section{Code}
+\section{Char}
+<<Char.h (OUT from IN)>>=
+${OUT}/Char.h: ${IN}/Char.h.pamphlet
+	@echo 1 making ${OUT}/Char.h from ${IN}/Char.h.pamphlet
+	@${DOCUMENT} src Char.h ${OUT}
+
+@
+<<Char.h.dvi (DOC from IN)>>=
+${DOC}/Char.h.dvi: ${IN}/Char.h.pamphlet ${DOC}/axiom.sty
+	@echo 2 making ${DOC}/Char.h.dvi from ${IN}/Char.h.pamphlet 
+	@${DOCUMENT} dvi Char.h ${DOC} Char.h ${NOISE}
+
+@
+\section{GaussTransformation}
+<<GaussTransformation.h (OUT from IN)>>=
+${OUT}/GaussTransformation.h: ${IN}/GaussTransformation.h.pamphlet
+	@echo 3 making ${OUT}/GaussTransformation.h from ${IN}/GaussTransformation.h.pamphlet
+	@${DOCUMENT} src GaussTransformation.h ${OUT}
+
+@
+<<GaussTransformation.h.dvi (DOC from IN)>>=
+${DOC}/GaussTransformation.h.dvi: ${IN}/GaussTransformation.h.pamphlet ${DOC}/axiom.sty
+	@echo 4 making ${DOC}/GaussTransformation.h.dvi from ${IN}/GaussTransformation.h.pamphlet 
+	@${DOCUMENT} dvi GaussTransformation.h ${DOC} GaussTransformation.h ${NOISE}
+
+@
+\section{HomomorphismBuilder}
+<<HomomorphismBuilder.h (OUT from IN)>>=
+${OUT}/HomomorphismBuilder.h: ${IN}/HomomorphismBuilder.h.pamphlet
+	@echo 5 making ${OUT}/HomomorphismBuilder.h from ${IN}/HomomorphismBuilder.h.pamphlet
+	@${DOCUMENT} src HomomorphismBuilder.h ${OUT}
+
+@
+<<HomomorphismBuilder.h.dvi (DOC from IN)>>=
+${DOC}/HomomorphismBuilder.h.dvi: ${IN}/HomomorphismBuilder.h.pamphlet ${DOC}/axiom.sty
+	@echo 6 making ${DOC}/HomomorphismBuilder.h.dvi from ${IN}/HomomorphismBuilder.h.pamphlet 
+	@${DOCUMENT} dvi HomomorphismBuilder.h ${DOC} HomomorphismBuilder.h ${NOISE}
+
+@
+\section{MatrixComputations}
+<<MatrixComputations.h (OUT from IN)>>=
+${OUT}/MatrixComputations.h: ${IN}/MatrixComputations.h.pamphlet
+	@echo 7 making ${OUT}/MatrixComputations.h from ${IN}/MatrixComputations.h.pamphlet
+	@${DOCUMENT} src MatrixComputations.h ${OUT}
+
+@
+<<MatrixComputations.h.dvi (DOC from IN)>>=
+${DOC}/MatrixComputations.h.dvi: ${IN}/MatrixComputations.h.pamphlet ${DOC}/axiom.sty
+	@echo 8 making ${DOC}/MatrixComputations.h.dvi from ${IN}/MatrixComputations.h.pamphlet 
+	@${DOCUMENT} dvi MatrixComputations.h ${DOC} MatrixComputations.h ${NOISE}
+
+@
+\section{Matrix}
+<<Matrix.h (OUT from IN)>>=
+${OUT}/Matrix.h: ${IN}/Matrix.h.pamphlet
+	@echo 9 making ${OUT}/Matrix.h from ${IN}/Matrix.h.pamphlet
+	@${DOCUMENT} src Matrix.h ${OUT}
+
+@
+<<Matrix.h.dvi (DOC from IN)>>=
+${DOC}/Matrix.h.dvi: ${IN}/Matrix.h.pamphlet ${DOC}/axiom.sty
+	@echo 10 making ${DOC}/Matrix.h.dvi from ${IN}/Matrix.h.pamphlet 
+	@${DOCUMENT} dvi Matrix.h ${DOC} Matrix.h ${NOISE}
+
+@
+\section{Polynomial}
+<<Polynomial.h (OUT from IN)>>=
+${OUT}/Polynomial.h: ${IN}/Polynomial.h.pamphlet
+	@echo 11 making ${OUT}/Polynomial.h from ${IN}/Polynomial.h.pamphlet
+	@${DOCUMENT} src Polynomial.h ${OUT}
+
+@
+<<Polynomial.h.dvi (DOC from IN)>>=
+${DOC}/Polynomial.h.dvi: ${IN}/Polynomial.h.pamphlet ${DOC}/axiom.sty
+	@echo 12 making ${DOC}/Polynomial.h.dvi from ${IN}/Polynomial.h.pamphlet 
+	@${DOCUMENT} dvi Polynomial.h ${DOC} Polynomial.h ${NOISE}
+
+@
+\section{RandomMatrix}
+<<RandomMatrix.h (OUT from IN)>>=
+${OUT}/RandomMatrix.h: ${IN}/RandomMatrix.h.pamphlet
+	@echo 13 making ${OUT}/RandomMatrix.h from ${IN}/RandomMatrix.h.pamphlet
+	@${DOCUMENT} src RandomMatrix.h ${OUT}
+
+@
+<<RandomMatrix.h.dvi (DOC from IN)>>=
+${DOC}/RandomMatrix.h.dvi: ${IN}/RandomMatrix.h.pamphlet ${DOC}/axiom.sty
+	@echo 14 making ${DOC}/RandomMatrix.h.dvi from ${IN}/RandomMatrix.h.pamphlet 
+	@${DOCUMENT} dvi RandomMatrix.h ${DOC} RandomMatrix.h ${NOISE}
+
+@
+\section{RingParser}
+<<RingParser.h (OUT from IN)>>=
+${OUT}/RingParser.h: ${IN}/RingParser.h.pamphlet
+	@echo 15 making ${OUT}/RingParser.h from ${IN}/RingParser.h.pamphlet
+	@${DOCUMENT} src RingParser.h ${OUT}
+
+@
+<<RingParser.h.dvi (DOC from IN)>>=
+${DOC}/RingParser.h.dvi: ${IN}/RingParser.h.pamphlet ${DOC}/axiom.sty
+	@echo 16 making ${DOC}/RingParser.h.dvi from ${IN}/RingParser.h.pamphlet 
+	@${DOCUMENT} dvi RingParser.h ${DOC} RingParser.h ${NOISE}
+
+@
+\section{axiom.sty}
+<<axiom.sty (DOC from IN)>>=
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 17 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@${DOCUMENT} chunk "axiom.sty" ${SRC}/doc/axiom.sty ${DOC} axiom.sty
+ 
+@
+<<*>>=
+<<environment>>
+
+FILES= ${OUT}/Char.h ${OUT}/GaussTransformation.h \
+       ${OUT}/HomomorphismBuilder.h ${OUT}/MatrixComputations.h \
+       ${OUT}/Matrix.h ${OUT}/Polynomial.h \
+       ${OUT}/RandomMatrix.h ${OUT}/RingParser.h
+
+DOCFILES= ${DOC}/Char.h.dvi ${DOC}/GaussTransformation.h.dvi \
+          ${DOC}/HomomorphismBuilder.h.dvi ${DOC}/MatrixComputations.h.dvi \
+          ${DOC}/Matrix.h.dvi ${DOC}/Polynomial.h.dvi \
+          ${DOC}/RandomMatrix.h.dvi ${DOC}/RingParser.h.dvi
+
+all: ${FILES} ${DOCFILES}
+	@echo 18 finished ${IN}
+
+<<Char.h (OUT from IN)>>
+<<Char.h.dvi (DOC from IN)>>
+
+<<GaussTransformation.h (OUT from IN)>>
+<<GaussTransformation.h.dvi (DOC from IN)>>
+
+<<HomomorphismBuilder.h (OUT from IN)>>
+<<HomomorphismBuilder.h.dvi (DOC from IN)>>
+
+<<MatrixComputations.h (OUT from IN)>>
+<<MatrixComputations.h.dvi (DOC from IN)>>
+
+<<Matrix.h (OUT from IN)>>
+<<Matrix.h.dvi (DOC from IN)>>
+
+<<Polynomial.h (OUT from IN)>>
+<<Polynomial.h.dvi (DOC from IN)>>
+
+<<RandomMatrix.h (OUT from IN)>>
+<<RandomMatrix.h.dvi (DOC from IN)>>
+
+<<RingParser.h (OUT from IN)>>
+<<RingParser.h.dvi (DOC from IN)>>
+
+<<axiom.sty (DOC from IN)>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

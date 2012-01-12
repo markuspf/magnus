@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Levels of Error Checking: SAFETY switch</TITLE>
+<META NAME="description" CONTENT="Levels of Error Checking: SAFETY switch">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H2><A NAME="SECTION00231000000000000000">
+Levels of Error Checking: <TT>SAFETY</TT> switch</A>
+</H2>
+
+<P>
+There are currently 3 levels of run-time error checking which can be
+switched with the compiler flag <TT>SAFETY</TT>, defined in
+<TT>magnus/back_end/global/global.h</TT>.
+
+<P>
+The values of <TT>SAFETY</TT> currently defined mean:
+
+<P>
+
+<OL>
+<LI>Maximal efficiency and speed, no error checking at all;
+`garbage in -- garbage out'.
+
+<P>
+</LI>
+<LI>Simple, inexpensive (fast) error checking, such as array bounds.
+
+<P>
+</LI>
+<LI>More systematic and thorough error checking, tending among things to also
+capture semantic errors.
+
+<P>
+</LI>
+</OL>
+
+<P>
+We do not expect level 2 to catch all possible errors.
+
+<P>
+Trap class interface errors quietly wherever reasonable. For example,
+if an integer parameter <TT>size</TT> which suggests an initial hash table
+size should be of the form <IMG
+ WIDTH="39" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$2^{n-1}$">, but is not, just use the least such
+integer greater than <TT>size</TT>.
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

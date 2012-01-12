@@ -1,0 +1,75 @@
+# System dependent Makefile for the Intel/Linux platform
+
+ENV= MAG=${MAG} SYS=${SYS} SRC=${SRC} INC=${INC} INT=${INT} OBJ=${OBJ} \
+     TMP=${TMP} BIN=${BIN} MNT=${MNT} ZIPS=${ZIPS} \
+     CCFLAGS='${CCFLAGS}' INCLUDE='${INCLUDE}' NOISE=${NOISE} \
+     DOCUMENT=${DOCUMENT} TANGLE=${TANGLE} WEAVE=${WEAVE}
+
+all: src
+	@echo 23 Makefile.linux called
+	
+
+rootdirs:
+	@echo 1 checking directory structure
+	@mkdir -p ${INT}
+	@mkdir -p ${OBJ}/${SYS}
+	@mkdir -p ${TMP}
+	@mkdir -p ${BIN}
+	@cp -pr ${SRC}/scripts/* ${BIN}
+
+noweb:
+	@echo 2 making noweb
+	@mkdir -p ${TMP}
+	@mkdir -p ${OBJ}/noweb
+	@mkdir -p ${BIN}/lib
+	@mkdir -p ${BIN}/man
+	@mkdir -p ${BIN}/tex/inputs
+	@( cd ${OBJ}/noweb ; \
+	tar -zxf ${ZIPS}/noweb-2.10a.tgz ; \
+	cd ${OBJ}/noweb/src ; \
+	./awkname gawk ; \
+	cd ${OBJ}/noweb/src/c ; \
+	echo 3 applying patch zips/noweb.modules.c.patch ; \
+	patch <${ZIPS}/noweb.modules.c.patch ; \
+	cd ${OBJ}/noweb/src ; \
+	echo 4 applying patch zips/noweb.src.Makefile.patch ; \
+	patch <${ZIPS}/noweb.src.Makefile.patch ; \
+	cd ${OBJ}/noweb/src ; \
+	echo 5 applying patch zips/noweb.src.Makefile.2.patch ; \
+	patch <${ZIPS}/noweb.src.Makefile.2.patch ; \
+	cd ${OBJ}/noweb/src ; \
+	echo 6 making noweb, output redirected to ${TMP}/noweb.output ; \
+	${ENV} ${MAKE} all install >${TMP}/noweb.output )
+	@echo The file marks the fact that noweb has been made > noweb
+
+nowebclean:
+	@echo 8 cleaning ${OBJ}/noweb
+	@rm -rf ${OBJ}/noweb
+	@rm -f noweb
+
+src: rootdirs
+	@echo 11 making ${SRC}
+	@( cd src ; \
+	${DOCUMENT} src Makefile ; \
+	${DOCUMENT} dvi Makefile . Makefile ${NOISE} ; \
+	${ENV} ${MAKE} )
+
+srcclean:
+	@echo 12 cleaning ${OBJ}/${SYS}/lib
+	@rm -rf ${OBJ}/${SYS}/lib
+
+document: rootdirs
+	@echo 13 documenting files
+	@mkdir -p ${INT}/doc/lsp
+	@mkdir -p ${INT}/doc/src
+	@(cd src ; ${ENV} ${MAKE} document )
+
+clean: srcclean nowebclean
+	@echo 14 all subdirectories cleaned
+	@rm -f lastBuildDate
+	@rm -f *~
+	@rm -rf ${INT}
+	@rm -rf ${OBJ}
+	@rm -rf ${MNT}
+
+

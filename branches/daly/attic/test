@@ -1,0 +1,12 @@
+# Compile wrapper code (note the -fpic switch!)
+# Adjust the -I... (include directories) options as needed.
+g++ -c -fpic Magnus_wrap.c -I/usr/include/python1.5 -IElt/include\
+	-I general/include -IGroup/include -IMap/include -IMatrix/include -Iglobal \
+	-I/usr/local/include/g++-3 -Ilibg++/include -Igeneral/include
+
+
+# Link everything in one big shared library.
+# Adjust the -L... and -l... options as needed.
+# Note: The libraries should have been compiled with the -fpic switch.
+g++ -shared  Magnus_wrap.o -LGroup/lib -lGroup -Lgeneral/lib -lgeneral -Llibg++/lib -llibg++ -LElt/lib -lElt -LMap/lib -lMap -LMatrix/lib -lMatrix -LPolynomial/lib -lPolynomial -LFSA/lib -lFSA -LKB/lib -lKB -o Magnuscmodule.so
+

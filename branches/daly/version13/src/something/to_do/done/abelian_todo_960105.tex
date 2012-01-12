@@ -1,0 +1,454 @@
+From gilbert Thu Jan  4 19:27:15 1996
+Return-Path: <gilbert>
+Received: from lara.sci.ccny.cuny.edu ([134.74.120.10]) by jolly2.sci.ccny.cuny.edu (4.1/SMI-4.1-CCNY-Group Theory Cooperative)
+	id AA01576; Thu, 4 Jan 96 19:27:15 EST
+Date: Thu, 4 Jan 96 19:27:15 EST
+From: gilbert ( Gilbert Baumslag)
+Message-Id: <9601050027.AA01576@jolly2.sci.ccny.cuny.edu>
+To: bormotov@jolly2
+Status: R
+
+%\magnification=\magstep1
+\font\text=cmss10
+\hsize 4.75in
+\font\sm=cmssbx10
+\font\med=cmssbx10 scaled \magstep1
+\font\headofpage=cmss8
+\font\hof=cmbx7
+\def\subject{Menus}
+\def\proven{\vrule height 8pt width8pt depth0pt}
+\def\litem{\par\noindent
+               \hangindent=\parindent\ltextindent}
+\def\ltextindent#1{\hbox to \hangindent{#1\hss}\ignorespaces}
+\def\sp{\vskip 20 pt}
+\def\ni{\noindent}
+\def\ol#1{\overline{#1}}
+\def\wdt#1{\widetilde{#1}}
+\def\av{\big\arrowvert}
+\def\sc{\scriptstyle}
+\def\sss{\scriptscriptstyle}
+\def\ph{\varphi}
+\def\eps{\varepsilon}
+\def\rh{\varrho}
+\def\r#1{{\rm #1}}
+\def\la{\langle}
+\def\ra{\rangle}
+\def\lra{\longrightarrow}
+\def\lms{\longmapsto}
+\def\abs{\vskip 0 pt}
+\def\b{\bigskip}
+\def\m{\medskip}
+\headline=%{\ifnum\pageno>\titlep
+                {\vbox
+ {\line
+                     {\strut\headofpage\subject, Abelian groups  
+\hss\folio}
+                 \hrule}}
+           %\fi}
+\footline={\hss}
+%\baselineskip=16pt
+\overfullrule=0pt
+\phantom{}
+%\hrule
+\def\titlep{1}
+\def\chap{Chapter I}
+\pageno=1
+%\vskip 2 cm
+\centerline{\med   MENUS}
+%\b\b
+%\hrule
+\b\b
+
+\text
+\ni {\med 0. Startup}
+\b\m
+
+\ni {\tt Magnus session started at Sun Dec3 09:01:33 EST 1995 by gilbert 
+on kalman at}   should be replaced by a complete sentence: 
+\m\ni
+Magnus session started
+on Sunday, December 3, 09:01:33 EST 1995, by gilbert at kalman.
+\m\ni {\bf General comment.} All sentences should begin with capital 
+letters, be as complete as possible and end with a period,
+unless this turns out to be inappropriate for one reason or another,
+i.e., exceptions to the rule are permissible. I am only going to 
+detail some of them here.
+
+\b\b\hrule
+
+\b\b
+\ni {\med 1. Abelian groups}
+
+\b\m\ni
+{\tt 1.1. Check-in an abelian group.}
+
+\m\ni Checked in an abelian group A1 and asked
+for abelian invariants of A1. 
+
+\m\ni
+The session log reports: {\tt Let $A1=<a,b,c;a^2 b^2 c^2>$}
+
+\ni
+{\tt User defined abelian group}
+\m\ni This should be replaced by: 
+
+\m\ni User defined abelian group:
+$$ A1=<a,b,c;a^2 b^2 c^2>.$$
+
+\m\ni In my version, Magnus 1.0.0 beta, release date 9 November, 1995, 
+the following message came up in the Session Log:
+
+\m\ni{\tt Solved the word problem for A1: the presentation is
+one-relator} This sentence makes no sense here, since A1 is 
+not a one-relator group. This has probably been corrected.
+
+\m\ni The tools menu, when one has checked in an abelian group,
+should read as follows:
+
+Is A1 trivial?
+Find the order of A1
+Find the torsion-free rank of A1
+Find the order of the torsion subgroup of A1
+_______________________________________________________
+
+Find the cyclic decomposition of A1
+Find the cyclic decomposition of the
+p-primary components of A1
+________________________________________________________
+
+Compute the integral homology of A1
+________________________________________________________
+
+Delete selected objects and dependencies
+_________________________________________________________
+
+Synopsis
+_________________________________________________________
+
+
+\m\ni The heading of the associated problem window should now read:
+\m\ni{ Compute the cyclic decomposition} - note that the C in
+compute is now capitalised.
+\m\ni
+The reports in the log window of this "Compute the 
+cyclic decomposition of A1" window, and  in the Session Log, if
+applicable, should be corrected as follows: 
+
+\ni Problem 1 started.  - capitalise P and add a period.
+
+\ni   Problem 1 finished.  - capitalise P and add a period.
+
+\m\ni In the workspace the skull and cross-bones should
+be replaced, if possible, by a picture of Magnus; otherwise
+by a check-mark, or simply omitted altogether if nothing
+suitable can be found. The skull and cross-bones is inappropriate.
+
+\m\ni In the session log, the report should read:
+
+\ni  Found the cyclic decomposition of A1: $Z^2$.  
+(Note the capital F and the period.)
+
+...
+
+\ni Problem finished.
+
+\m\ni
+In typing in an abelian group presentation:
+$<a,b,c; a^2 b^2 c$\^{}$>$,
+the carrot on the last c in the relator should have a 2 
+accompanying it, and so {\tt Problem with check-in} 
+signalled an error. It should read:
+
+\m\ni Expected ...  here. (E is capitalised, ends with period.)
+
+\m\ni The accompanying help window  explains possible 
+ways of entering a presentation, one of which is 
+
+\m\ni $<a,b;[a,b]>$ - since the group was presented as an abelian group
+and since the instructions for presenting an abelian group expressly
+note  that it is unnecessary to put in commutativity relators,
+either this way of entering a presentation should be  be 
+omitted or else this help file, and perhaps the others as well, should
+be specially tailored to the task at hand (I favour the latter
+solution, but it may be too difficult).
+\b\m\ni
+{\tt 1.2. Check-in a word (in an abelian group).}
+
+\m\ni Checked in a word in an abelian group A1. 
+
+\m\ni The help menu is entirely inappropriate for checking
+in a word in an abelian group. I suggest suppressing it for
+the moment.
+
+\m\ni The tools menu, once we have checked in a word in
+an abelian group, should read as follows:
+
+Reduce w1 to its abelian form
+Find the inverse of w1, in abelian form
+________________________________________________
+
+Is w1 trivial?
+Find the order of w1
+Is an element of infinite order a proper power?
+Find the p-height of an element of p-power order
+Is the subgroup generated by w1 pure?
+_________________________________________________
+
+Find the canonical decomposition of w1
+_________________________________________________
+
+Delete selected objects and dependencies
+_________________________________________________
+
+Synopsis
+_________________________________________________
+
+In the tools menu for a word in an abelian group, the first
+item should read:
+
+\m\ni Find the canonical decompostion of w1
+
+\m\ni In the "view" of a given word w1, the message should read
+something like this, if this does not provoke additional work:
+
+\ni We use additive notation,  denoting the generators of
+the infinite cyclic summands in the canonical decomposition
+of an abelian group, by $f1, f2, \dots ,$, and those 
+of the finite cyclic summands, by $t1, t2, \dots , $.
+The canonical decomposition of  w1 is $w1 = 3 f1 + f2$ .
+These canonical generators are related to the given generators
+as follows:
+
+f1= ....
+f2= ...
+etc. 
+
+Notice that we have switched back to multiplicative
+notation again.
+
+
+\m\ni The session log should report: The canonical decomposition of
+w1 is $3 f1 + f2$ .
+
+\m\ni In answer to the question as to whether
+a word in an abelian group is trivial, the 
+Object View Log (and the Session Log) should report:
+
+\m\ni The canonical decomposition of w1 shows that it is non-trivial.
+
+\m\ni In answer to the question as to whether two abelian groups
+A1 and A2 are isomorphic. the session should report: A1 and A2 
+are isomorphic because they have the same invariants.
+
+{\tt Check-in two words in an abelian group}
+Compute the product w1 w2, in abelian form
+______________________________________________________________
+
+Is w1 = w2?
+Is w1 a proper power of w2?
+Is w2 a proper power of w1?
+______________________________________________________________
+
+Delete selected objects and dependencies
+______________________________________________________________
+
+Synopsis
+_______________________________________________________________
+
+{\tt 1.3. Check-in a subgroup (of an abelian group).}
+
+\m\ni  In checking in a subgroup of an abelian group, the help
+file in the dialog box should read as follows:
+\m\ni
+Enter the generators of the subgroup as words in the generators of
+the supergroup, separating them by commas and enclosing the list
+by {}s. For example, in the case of generators of a subgroup of an
+abelian group with generators a,b,c,
+$$\{ a^2 b^3, C^7, b^4 c^7\, B a^2}.$$
+(For more information about our notation for words, see the help file
+{\it words}.
+
+\m\ni The log messages after check-in for a subgroup should be:
+User defined subgroup 
+$$H1 = gp(a^5, a b c, c^4)$$
+of A1.
+\m\ni
+
+{\tt The menu items for a subgroup of an abelian group should
+be expanded as follows:}
+
+Is H1 trivial?
+Find the order of H1
+Find the torsion-free rank of H1
+Find the order of the torsion subgroup of H1
+_______________________________________________________
+
+Find the cyclic decomposition of H1
+
+________________________________________________________
+
+Is H1=A1?
+Find the index of H1 in A1
+Find a virtual complement of H1 in A1
+Is H1 pure in A1?
+________________________________________________________
+
+Delete selected objects and dependencies
+_________________________________________________________
+
+Synopsis
+_________________________________________________________
+
+{\tt If an element and a subgroup of an abelian group have
+been checked in, the tools menu should  be enlarged with:
+
+
+Is w1 in H1?
+Is a power of w1 in H1?
+(In both cases we need to express w1 as a product
+of the given generators of H1.)
+
+.................................................
+
+{\tt If two subgroups of an abelian group have been checked
+in, the tools menu should have the following additional items:
+
+Does H1 contain H2?
+Does H2 contain H1?
+Is H1=H2?
+____________________________________________________________
+
+Compute the join of H1 and H2
+Compute the intersection of H1 and H2
+______________________________________________________________
+
+{\tt 1.3. Check-in a map (of an abelian group).}
+\m\ni There are no checks or warnings in the check-in procedures
+for maps. The system readily accepts incomplete definitions.
+Perhaps the heading {\tt Define a map on A1} should
+read 
+
+\m\ni Define a map from A1 to A1
+
+\m\ni in order to allow for additional possibilities
+later. Having defined this map (keep in mind our
+discussion of yesterday, which menas certain tools will have
+to be deleted), we need a menu item:
+
+\m\ni Does m1 extend to a endomorphism
+
+\m\ni Notice the use of the word endomorphism. 
+If it does then additional tools should be provided,
+such as composition of endomorphisms and homomorphisms, 
+provided the ranges and domains match, check to see if
+an endomorphism is an automorphism, check to see if
+an automorphism is inner, computation of the inverse of
+an automorphism, check to see if an automorphism
+is of finite order, facility to compute image of an
+element under an endomorphism as well as an homomorphism,
+check to see if a homomorphism is onto, if a homomorphism
+is an isomorphism, computation of the inverse of an 
+isomorphism. Of course these things do not have to be
+implemented now, unless it is very easy and very fast, i.e.,
+one day. 
+
+\m\ni After checking in a word w1 the image of w1 under
+a homomorphism should be reported as:
+
+\m\ni $ w2 = a^4$, the image of w1 under the endomorphism m1
+(remove the word ``Let'').
+
+\m\ni
+{\tt Homology.} In the case of one-relator groups
+$$G =<X; r^e>,$$
+where $r$ is not a proper power and $e \geq 1$,  the integral
+homology groups take the following form:
+
+\item {1.} if e=1, then
+\itemitem {a.} $H_n(G)=0$ if $n>2$; 
+ \itemitem {b.} $H_2(G)=0$ if $r$ is not in the
+derived group of the ambient free group;
+\itemitem {c.} $H_2(G)=Z$ if $r$ is in the derived group of the ambient free group.
+\item {2.} if $e > 1$, then
+\itemitem {a.} $H_{2n-1}(G)=Z_e$ for $n>1$
+\itemitem {b.} $H_{2n}(G)=0 $ for $n>1$
+\itemitem {c.} $H_2(G)=0$ if $r$ is not in the derived group
+of the ambient free group.
+\itemitem {d.} $H_2(G)=Z_e$ if $r$ is in the derived group
+of the ambient free group.
+\par
+
+\m\ni
+Additionally, for one-relator groups, it is appropriate
+to report that a one-relator group is finite if and only if
+it comes as a one-generator group with the relator a power.
+
+*****************************************************************************
+\m\ni
+I want the help files to be chosen appropriately, i.e., for
+example the abelian groups help file will apply directly to
+abelian groups, etc.
+\m\ni
+When defining an abelian group, the help message should
+read as follows:
+\m\ni
+There is no need, in defining an abelian group, to include
+any commutativity relations (or relators) - the system
+automatically supplies such relations (relators). So, for
+example, <s,t> is a presentation of the free abvelian
+group of rank two, while <s,t; s^2=1> presents the direct 
+product of a group of order two with an infinite cyclic group. 
+Explicitly adding some commuting relations does no harm. So 
+the free abelian group of rank two can also be presented, when 
+checked in as an abelian group, in the form <s,t; [s,t]>.
+\m\ni
+I checked in A2 = <x,y;[x,y]> and Magnus reported that it had
+solved the word problem for A2, because the presentation was
+one-relator. This message has to be removed.
+\m\ni
+Having checked in an abelian group A2, I invoked the tool for
+computing the cyclic decomposition for A2. The report should
+read:
+
+The cyclic decomposition for A2 is:
+
+$$A2 = Z + Z.$$
+
+Many problems about A2, such as the order problem, the word
+problem and so on, can be solved using this decomposition,
+ 
+
+\m\ni 
+It is better, for the most part, not to put anything into the GIC 
+unless it is explicitly asked for.
+
+\m\ni
+When checking in a word in the generators of an abelian group,
+the help file is inappropriate. It should read: The usual notation
+for words can be used in working with abelian groups. There is no
+need to recast them into any particular form - the system will
+take care of everything.
+
+
+\m\ni
+The tools menu for a word in an abelian group should read:
+
+Find the canonical decomposition of w1
+
+Is w1 trivial in A1
+
+
+
+
+\m\ni
+
+
+\m\ni
+\end
+
+
+
+----- End Included Message -----
+
+
+

@@ -1,0 +1,17 @@
+###this is a test file by xuxw(xuxw76@yahoo.com)
+import Magnus
+m=Magnus.MatrixInteger(3)
+m1=Magnus.MatrixRational(3)
+m2=Magnus.Matrixdouble(3)
+a=Magnus.MatrixComputationsInteger( m) 
+b=Magnus.MatrixComputationsRational( m1) 
+c=Magnus.MatrixComputationsdouble( m2) 
+x=a.matrix()  ##freezing problem
+x=a.size()  
+x=a.isIdentity()  
+x=a.getDeterminant()
+x=a.detKnow()  
+x=a.isInvertibleMatrix()  
+a.invertMatrix()
+x=a.getInverseMatrix()  
+x=a.det()  

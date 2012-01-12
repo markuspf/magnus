@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/RandomAutomorphism.h}
+\author{Sergei Lioutikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "RandomNumbers.h"
+#include "FreeGroup.h"
+#include "Map.h"
+
+@
+\section{class RandomAutomorphism}
+\begin{list}{}
+\item generates random automorphisms for a free group.
+\item copy constructor does logical copy.
+\item this is an adoptation of the algorithm written by Roger Needham.
+\end{list}
+<<class RandomAutomorphism>>=
+class RandomAutomorphism
+{
+public:
+  RandomAutomorphism( const FreeGroup& F, int seed );
+  // Giving the same `seed' you obtain the same sequence of automorphisms.
+
+  ~RandomAutomorphism( );
+
+  VectorOf<Word> getGeneratingVector( int avgNumGens );
+  // `avgNumGens' gives the average number of Whitehead automorphisms to apply.
+
+  Map getAutomorphism( int avgnumGens );
+  // similar to `getGeneratingVector'.
+
+private:
+  FreeGroup theGroup;
+
+  int numberOfGroupGens;
+
+  NormalRandom numGensPicker;
+  UniformRandom typeGenPicker;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/RandomAutomorphism.h
+#ifndef _RANDOMAUTOMORPHISM_H_
+#define _RANDOMAUTOMORPHISM_H_
+
+<<license>>
+<<include>>
+<<class RandomAutomorphism>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

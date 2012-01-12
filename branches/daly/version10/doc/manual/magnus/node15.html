@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Testing Procedures</TITLE>
+<META NAME="description" CONTENT="Testing Procedures">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H1><A NAME="SECTION00240000000000000000">
+Testing Procedures</A>
+</H1>
+
+<P>
+This section describes the testing procedures for <SMALL>MAGNUS</SMALL>.
+Roughly, one may distinguish two levels of tests.
+
+<P>
+
+<UL>
+<LI>General `external' tests, which test the behaviour
+of the system or its components
+with respect to their external calling interfaces, viz.&nbsp;for classes
+their public methods.
+
+<P>
+</LI>
+<LI>Specific low-level tests, which may be more specialised in their
+way of verifying the internal functioning of (functions of) the
+system. For instance, if a <TT>SetOf</TT> class constructs hash tables,
+the implementer may desire or need to devise specific tests which
+verify the internal layout of the tables.
+
+<P>
+</LI>
+</UL>
+
+<P>
+The external tests (with as the need arises their associated test data
+sets) are mandatory, as these are necessary to know whether the system
+functions at all. Low level tests are a function of their necessity in
+the course of implementation and not an end in themselves. For these, the 
+guiding principle is to write them only as need dictates, for instance
+when debugging; but if writing some, then to keep these for possible
+reuse.
+
+<P>
+The aim is to 
+
+<P>
+
+<UL>
+<LI>build up a set of tests for <SMALL>MAGNUS</SMALL> concurrently
+to the development of the system;
+
+<P>
+</LI>
+<LI>organise this set as a reusable library of standard tests for
+the system.
+
+<P>
+</LI>
+</UL>
+
+<P>
+The reasons are the obvious:
+
+<P>
+
+<UL>
+<LI>Tests are onerous to devise and implement;
+
+<P>
+</LI>
+<LI>Better results are obtained by testing from the beginning onwards;
+
+<P>
+</LI>
+<LI>Tests need not be rebuilt from scratch to localise later bugs;
+
+<P>
+</LI>
+</UL>
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html300"
+  HREF="node16.html">External Interface Tests</A>
+<LI><A NAME="tex2html301"
+  HREF="node17.html">Low Level Tests</A>
+<UL>
+<LI><A NAME="tex2html302"
+  HREF="node18.html">General Principle</A>
+<LI><A NAME="tex2html303"
+  HREF="node19.html">Procedure</A>
+<LI><A NAME="tex2html304"
+  HREF="node20.html">Documentation</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+
+</BODY>
+</HTML>

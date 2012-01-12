@@ -1,0 +1,1101 @@
+\documentclass{article}
+\usepackage{../mnt/linux/bin/axiom}
+\begin{document}
+\title{no title}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Environment}
+<<environment>>=
+IN=${SRC}
+MID=${INT}
+OUT=${OBJ}/${SYS}
+DOC=${MNT}/${SYS}/doc/src
+BIN=${MNT}/${SYS}/bin
+
+ENV= MAG=${MAG} SYS=${SYS} SRC=${SRC} INC=${MID} INT=${INT} OBJ=${OBJ} \
+     TMP=${TMP} BIN=${BIN} MNT=${MNT} ZIPS=${ZIPS} \
+     CCFLAGS='${CCFLAGS}' INCLUDE='${INCLUDE}' NOISE=${NOISE} \
+     DOCUMENT=${DOCUMENT} TANGLE=${TANGLE} WEAVE=${WEAVE} 
+
+DIRS=includedir backenddir
+
+FILES= magnus sessionmanager theobjects objectsmith databasemanager fedata \
+       computationmanager outmessages gacpfororgsolver gaispartofbasis \
+       acconfig gaequationsolver config acga presentationproblems \
+       makerandompresentation sgrenumerator smenumerator wenumerator \
+       renumerator autoenumerator subgroupenumerator smlistiterator \
+       orconsequencesenumerator homenumerators listproblems
+
+BINFILES=${BIN}/magnus
+
+@
+\section{Andrews-Curtiss Configuration}
+<<acconfig>>=
+acconfig: ${MID}/ACConfig.h ${DOC}/acconfig.dvi ${OUT}/acconfig.o
+	echo 1 acconfig built
+
+<<ACConfig.h (MID from IN)>>
+<<acconfig.C (MID from IN)>>
+<<acconfig.o (OUT from MID)>>
+<<acconfig.dvi (DOC from IN)>>
+@
+\subsection{ACConfig.h}
+<<ACConfig.h (MID from IN)>>=
+${MID}/ACConfig.h: ${IN}/acconfig.pamphlet
+	@echo 2 making ${MID}/ACConfig.h from ${IN}/acconfig.pamphlet
+	@${DOCUMENT} chunk "ACConfig.h" acconfig ${MID} ACConfig.h
+
+@
+\subsection{acconfig}
+<<acconfig.C (MID from IN)>>=
+${MID}/acconfig.C: ${IN}/acconfig.pamphlet
+	@echo 3 making ${MID}/acconfig.C from ${IN}/acconfig.pamphlet
+	@${DOCUMENT} src acconfig ${MID} acconfig.C
+
+@
+<<acconfig.o (OUT from MID)>>=
+${OUT}/acconfig.o: ${MID}/acconfig.C
+	@echo 4 making ${OUT}/acconfig.o from ${MID}/acconfig.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/acconfig.o ${MID}/acconfig.C
+
+@
+<<acconfig.dvi (DOC from IN)>>=
+${DOC}/acconfig.dvi: ${IN}/acconfig.pamphlet ${DOC}/axiom.sty
+	@echo 5 making ${DOC}/acconfig.dvi from ${IN}/acconfig.pamphlet 
+	@${DOCUMENT} dvi acconfig ${DOC} acconfig ${NOISE}
+
+@
+\section{acga}
+<<acga>>=
+acga: ${MID}/ACGA.h ${DOC}/acga.dvi ${OUT}/acga.o
+	echo 6 acga built
+
+<<ACGA.h (MID from IN)>>
+<<acga.C (MID from IN)>>
+<<acga.o (OUT from MID)>>
+<<acga.dvi (DOC from IN)>>
+@
+\subsection{ACGA.h}
+<<ACGA.h (MID from IN)>>=
+${MID}/ACGA.h: ${IN}/acga.pamphlet
+	@echo 7 making ${MID}/ACGA.h from ${IN}/acga.pamphlet
+	@${DOCUMENT} chunk "ACGA.h" acga ${MID} ACGA.h
+
+@
+\subsection{acga}
+<<acga.C (MID from IN)>>=
+${MID}/acga.C: ${IN}/acga.pamphlet
+	@echo 8 making ${MID}/acga.C from ${IN}/acga.pamphlet
+	@${DOCUMENT} src acga ${MID} acga.C
+
+@
+<<acga.o (OUT from MID)>>=
+${OUT}/acga.o: ${MID}/acga.C
+	@echo 9 making ${OUT}/acga.o from ${MID}/acga.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/acga.o ${MID}/acga.C
+
+@
+<<acga.dvi (DOC from IN)>>=
+${DOC}/acga.dvi: ${IN}/acga.pamphlet ${DOC}/axiom.sty
+	@echo 10 making ${DOC}/acga.dvi from ${IN}/acga.pamphlet 
+	@${DOCUMENT} dvi acga ${DOC} acga ${NOISE}
+
+@
+\section{autoenumerator}
+<<autoenumerator>>=
+autoenumerator: ${MID}/AutoEnumerator.h ${DOC}/autoenumerator.dvi \
+                ${OUT}/autoenumerator.o
+	echo 11 autoenumerator built
+
+<<AutoEnumerator.h (MID from IN)>>
+<<autoenumerator.C (MID from IN)>>
+<<autoenumerator.o (OUT from MID)>>
+<<autoenumerator.dvi (DOC from IN)>>
+@
+\subsection{AutoEnumerator.h}
+<<AutoEnumerator.h (MID from IN)>>=
+${MID}/AutoEnumerator.h: ${IN}/autoenumerator.pamphlet
+	@echo 12 making ${MID}/AutoEnumerator.h from ${IN}/autoenumerator.pamphlet
+	@${DOCUMENT} chunk "AutoEnumerator.h" autoenumerator ${MID} AutoEnumerator.h
+
+@
+\subsection{autoenumerator}
+<<autoenumerator.C (MID from IN)>>=
+${MID}/autoenumerator.C: ${IN}/autoenumerator.pamphlet
+	@echo 13 making ${MID}/autoenumerator.C from ${IN}/autoenumerator.pamphlet
+	@${DOCUMENT} src autoenumerator ${MID} autoenumerator.C
+
+@
+<<autoenumerator.o (OUT from MID)>>=
+${OUT}/autoenumerator.o: ${MID}/autoenumerator.C
+	@echo 14 making ${OUT}/autoenumerator.o from ${MID}/autoenumerator.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/autoenumerator.o ${MID}/autoenumerator.C
+
+@
+<<autoenumerator.dvi (DOC from IN)>>=
+${DOC}/autoenumerator.dvi: ${IN}/autoenumerator.pamphlet ${DOC}/axiom.sty
+	@echo 15 making ${DOC}/autoenumerator.dvi from ${IN}/autoenumerator.pamphlet 
+	@${DOCUMENT} dvi autoenumerator ${DOC} autoenumerator ${NOISE}
+
+@
+\section{computation manager}
+<<computationmanager>>=
+computationmanager: ${MID}/ComputationManager.h ${DOC}/computationmanager.dvi \
+                    ${OUT}/computationmanager.o
+	echo 16 computationmanager built
+
+<<ComputationManager.h (MID from IN)>>
+<<computationmanager.C (MID from IN)>>
+<<computationmanager.o (OUT from MID)>>
+<<computationmanager.dvi (DOC from IN)>>
+@
+\subsection{ComputationManager.h}
+<<ComputationManager.h (MID from IN)>>=
+${MID}/ComputationManager.h: ${IN}/computationmanager.pamphlet
+	@echo 17 making ${MID}/ComputationManager.h from ${IN}/computationmanager.pamphlet
+	@${DOCUMENT} chunk "ComputationManager.h" computationmanager ${MID} ComputationManager.h
+
+@
+\subsection{computationmanager}
+<<computationmanager.C (MID from IN)>>=
+${MID}/computationmanager.C: ${IN}/computationmanager.pamphlet
+	@echo 18 making ${MID}/computationmanager.C from ${IN}/computationmanager.pamphlet
+	@${DOCUMENT} src computationmanager ${MID} computationmanager.C
+
+@
+<<computationmanager.o (OUT from MID)>>=
+${OUT}/computationmanager.o: ${MID}/computationmanager.C
+	@echo 19 making ${OUT}/computationmanager.o from ${MID}/computationmanager.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/computationmanager.o ${MID}/computationmanager.C
+
+@
+<<computationmanager.dvi (DOC from IN)>>=
+${DOC}/computationmanager.dvi: ${IN}/computationmanager.pamphlet ${DOC}/axiom.sty
+	@echo 20 making ${DOC}/computationmanager.dvi from ${IN}/computationmanager.pamphlet 
+	@${DOCUMENT} dvi computationmanager ${DOC} computationmanager ${NOISE}
+
+@
+\section{GHN Config}
+<<config>>=
+config: ${MID}/Config.h ${DOC}/config.dvi ${OUT}/config.o
+	echo 21 config built
+
+<<Config.h (MID from IN)>>
+<<config.C (MID from IN)>>
+<<config.o (OUT from MID)>>
+<<config.dvi (DOC from IN)>>
+@
+\subsection{Config.h}
+<<Config.h (MID from IN)>>=
+${MID}/Config.h: ${IN}/config.pamphlet
+	@echo 22 making ${MID}/Config.h from ${IN}/config.pamphlet
+	@${DOCUMENT} chunk "Config.h" config ${MID} Config.h
+
+@
+\subsection{config}
+<<config.C (MID from IN)>>=
+${MID}/config.C: ${IN}/config.pamphlet
+	@echo 23 making ${MID}/config.C from ${IN}/config.pamphlet
+	@${DOCUMENT} src config ${MID} config.C
+
+@
+<<config.o (OUT from MID)>>=
+${OUT}/config.o: ${MID}/config.C
+	@echo 24 making ${OUT}/config.o from ${MID}/config.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/config.o ${MID}/config.C
+
+@
+<<config.dvi (DOC from IN)>>=
+${DOC}/config.dvi: ${IN}/config.pamphlet ${DOC}/axiom.sty
+	@echo 25 making ${DOC}/config.dvi from ${IN}/config.pamphlet 
+	@${DOCUMENT} dvi config ${DOC} config ${NOISE}
+
+@
+\section{database manager}
+<<databasemanager>>=
+databasemanager: ${MID}/DatabaseManager.h ${DOC}/databasemanager.dvi \
+                 ${OUT}/databasemanager.o
+	echo 26 databasemanager built
+
+<<DatabaseManager.h (MID from IN)>>
+<<databasemanager.C (MID from IN)>>
+<<databasemanager.o (OUT from MID)>>
+<<databasemanager.dvi (DOC from IN)>>
+@
+\subsection{DatabaseManager.h}
+<<DatabaseManager.h (MID from IN)>>=
+${MID}/DatabaseManager.h: ${IN}/databasemanager.pamphlet
+	@echo 27 making ${MID}/DatabaseManager.h from ${IN}/databasemanager.pamphlet
+	@${DOCUMENT} chunk "DatabaseManager.h" databasemanager ${MID} DatabaseManager.h
+
+@
+\subsection{databasemanager}
+<<databasemanager.C (MID from IN)>>=
+${MID}/databasemanager.C: ${IN}/databasemanager.pamphlet
+	@echo 28 making ${MID}/databasemanager.C from ${IN}/databasemanager.pamphlet
+	@${DOCUMENT} src databasemanager ${MID} databasemanager.C
+
+@
+<<databasemanager.o (OUT from MID)>>=
+${OUT}/databasemanager.o: ${MID}/databasemanager.C
+	@echo 29 making ${OUT}/databasemanager.o from ${MID}/databasemanager.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/databasemanager.o ${MID}/databasemanager.C
+
+@
+<<databasemanager.dvi (DOC from IN)>>=
+${DOC}/databasemanager.dvi: ${IN}/databasemanager.pamphlet ${DOC}/axiom.sty
+	@echo 30 making ${DOC}/databasemanager.dvi from ${IN}/databasemanager.pamphlet 
+	@${DOCUMENT} dvi databasemanager ${DOC} databasemanager ${NOISE}
+
+@
+\section{Front End Data}
+<<fedata>>=
+fedata: ${MID}/FEData.h ${DOC}/fedata.dvi ${OUT}/fedata.o
+	echo 31 fedata built
+
+<<FEData.h (MID from IN)>>
+<<fedata.C (MID from IN)>>
+<<fedata.o (OUT from MID)>>
+<<fedata.dvi (DOC from IN)>>
+@
+\subsection{FEData.h}
+<<FEData.h (MID from IN)>>=
+${MID}/FEData.h: ${IN}/fedata.pamphlet
+	@echo 31 making ${MID}/FEData.h from ${IN}/fedata.pamphlet
+	@${DOCUMENT} chunk "FEData.h" fedata ${MID} FEData.h
+
+@
+\subsection{fedata}
+<<fedata.C (MID from IN)>>=
+${MID}/fedata.C: ${IN}/fedata.pamphlet
+	@echo 32 making ${MID}/fedata.C from ${IN}/fedata.pamphlet
+	@${DOCUMENT} src fedata ${MID} fedata.C
+
+@
+<<fedata.o (OUT from MID)>>=
+${OUT}/fedata.o: ${MID}/fedata.C
+	@echo 33 making ${OUT}/fedata.o from ${MID}/fedata.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/fedata.o ${MID}/fedata.C
+
+@
+<<fedata.dvi (DOC from IN)>>=
+${DOC}/fedata.dvi: ${IN}/fedata.pamphlet ${DOC}/axiom.sty
+	@echo 34 making ${DOC}/fedata.dvi from ${IN}/fedata.pamphlet 
+	@${DOCUMENT} dvi fedata ${DOC} fedata ${NOISE}
+
+@
+\section{Genetic Algorithm for One Relator Groups}
+<<gacpfororgsolver>>=
+gacpfororgsolver: ${MID}/GACPforORGSolver.h ${DOC}/gacpfororgsolver.dvi \
+                  ${OUT}/gacpfororgsolver.o
+	echo 35 gacpfororgsolver built
+
+<<GACPforORGSolver.h (MID from IN)>>
+<<gacpfororgsolver.C (MID from IN)>>
+<<gacpfororgsolver.o (OUT from MID)>>
+<<gacpfororgsolver.dvi (DOC from IN)>>
+@
+\subsection{GACPforORGSolver.h}
+<<GACPforORGSolver.h (MID from IN)>>=
+${MID}/GACPforORGSolver.h: ${IN}/gacpfororgsolver.pamphlet
+	@echo 36 making ${MID}/GACPforORGSolver.h from ${IN}/gacpfororgsolver.pamphlet
+	@${DOCUMENT} chunk "GACPforORGSolver.h" gacpfororgsolver ${MID} GACPforORGSolver.h
+
+@
+\subsection{gacpfororgsolver}
+<<gacpfororgsolver.C (MID from IN)>>=
+${MID}/gacpfororgsolver.C: ${IN}/gacpfororgsolver.pamphlet
+	@echo 37 making ${MID}/gacpfororgsolver.C from ${IN}/gacpfororgsolver.pamphlet
+	@${DOCUMENT} src gacpfororgsolver ${MID} gacpfororgsolver.C
+
+@
+<<gacpfororgsolver.o (OUT from MID)>>=
+${OUT}/gacpfororgsolver.o: ${MID}/gacpfororgsolver.C
+	@echo 38 making ${OUT}/gacpfororgsolver.o from ${MID}/gacpfororgsolver.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/gacpfororgsolver.o ${MID}/gacpfororgsolver.C
+
+@
+<<gacpfororgsolver.dvi (DOC from IN)>>=
+${DOC}/gacpfororgsolver.dvi: ${IN}/gacpfororgsolver.pamphlet ${DOC}/axiom.sty
+	@echo 39 making ${DOC}/gacpfororgsolver.dvi from ${IN}/gacpfororgsolver.pamphlet 
+	@${DOCUMENT} dvi gacpfororgsolver ${DOC} gacpfororgsolver ${NOISE}
+
+@
+\section{Genetic Algorithm Equation Solver}
+<<gaequationsolver>>=
+gaequationsolver: ${MID}/GAEquationSolver.h ${DOC}/gaequationsolver.dvi \
+                  ${OUT}/gaequationsolver.o
+	echo 40 gaequationsolver built
+
+<<GAEquationSolver.h (MID from IN)>>
+<<gaequationsolver.C (MID from IN)>>
+<<gaequationsolver.o (OUT from MID)>>
+<<gaequationsolver.dvi (DOC from IN)>>
+@
+\subsection{GAEquationSolver.h}
+<<GAEquationSolver.h (MID from IN)>>=
+${MID}/GAEquationSolver.h: ${IN}/gaequationsolver.pamphlet
+	@echo 41 making ${MID}/GAEquationSolver.h from ${IN}/gaequationsolver.pamphlet
+	@${DOCUMENT} chunk "GAEquationSolver.h" gaequationsolver ${MID} GAEquationSolver.h
+
+@
+\subsection{gaequationsolver}
+<<gaequationsolver.C (MID from IN)>>=
+${MID}/gaequationsolver.C: ${IN}/gaequationsolver.pamphlet
+	@echo 42 making ${MID}/gaequationsolver.C from ${IN}/gaequationsolver.pamphlet
+	@${DOCUMENT} src gaequationsolver ${MID} gaequationsolver.C
+
+@
+<<gaequationsolver.o (OUT from MID)>>=
+${OUT}/gaequationsolver.o: ${MID}/gaequationsolver.C
+	@echo 43 making ${OUT}/gaequationsolver.o from ${MID}/gaequationsolver.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/gaequationsolver.o ${MID}/gaequationsolver.C
+
+@
+<<gaequationsolver.dvi (DOC from IN)>>=
+${DOC}/gaequationsolver.dvi: ${IN}/gaequationsolver.pamphlet ${DOC}/axiom.sty
+	@echo 44 making ${DOC}/gaequationsolver.dvi from ${IN}/gaequationsolver.pamphlet 
+	@${DOCUMENT} dvi gaequationsolver ${DOC} gaequationsolver ${NOISE}
+
+@
+\section{Genetic Algorithm Is Part Of Basis}
+<<gaispartofbasis>>=
+gaispartofbasis: ${MID}/GAIsPartOfBasis.h ${DOC}/gaispartofbasis.dvi \
+                 ${OUT}/gaispartofbasis.o
+	echo 45 gaispartofbasis built
+
+<<GAIsPartOfBasis.h (MID from IN)>>
+<<gaispartofbasis.C (MID from IN)>>
+<<gaispartofbasis.o (OUT from MID)>>
+<<gaispartofbasis.dvi (DOC from IN)>>
+@
+\subsection{GAIsPartOfBasis.h}
+<<GAIsPartOfBasis.h (MID from IN)>>=
+${MID}/GAIsPartOfBasis.h: ${IN}/gaispartofbasis.pamphlet
+	@echo 46 making ${MID}/GAIsPartOfBasis.h from ${IN}/gaispartofbasis.pamphlet
+	@${DOCUMENT} chunk "GAIsPartOfBasis.h" gaispartofbasis ${MID} GAIsPartOfBasis.h
+
+@
+\subsection{gaispartofbasis}
+<<gaispartofbasis.C (MID from IN)>>=
+${MID}/gaispartofbasis.C: ${IN}/gaispartofbasis.pamphlet
+	@echo 47 making ${MID}/gaispartofbasis.C from ${IN}/gaispartofbasis.pamphlet
+	@${DOCUMENT} src gaispartofbasis ${MID} gaispartofbasis.C
+
+@
+<<gaispartofbasis.o (OUT from MID)>>=
+${OUT}/gaispartofbasis.o: ${MID}/gaispartofbasis.C
+	@echo 48 making ${OUT}/gaispartofbasis.o from ${MID}/gaispartofbasis.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/gaispartofbasis.o ${MID}/gaispartofbasis.C
+
+@
+<<gaispartofbasis.dvi (DOC from IN)>>=
+${DOC}/gaispartofbasis.dvi: ${IN}/gaispartofbasis.pamphlet ${DOC}/axiom.sty
+	@echo 49 making ${DOC}/gaispartofbasis.dvi from ${IN}/gaispartofbasis.pamphlet 
+	@${DOCUMENT} dvi gaispartofbasis ${DOC} gaispartofbasis ${NOISE}
+
+@
+\section{Homomorphism Enumerators}
+<<homenumerators>>=
+homenumerators: ${MID}/HomEnumerators.h ${DOC}/homenumerators.dvi \
+                ${OUT}/homenumerators.o
+	echo 50 homenumerators built
+
+<<HomEnumerators.h (MID from IN)>>
+<<homenumerators.C (MID from IN)>>
+<<homenumerators.o (OUT from MID)>>
+<<homenumerators.dvi (DOC from IN)>>
+@
+\subsection{HomEnumerators.h}
+<<HomEnumerators.h (MID from IN)>>=
+${MID}/HomEnumerators.h: ${IN}/homenumerators.pamphlet
+	@echo 51 making ${MID}/HomEnumerators.h from ${IN}/homenumerators.pamphlet
+	@${DOCUMENT} chunk "HomEnumerators.h" homenumerators ${MID} HomEnumerators.h
+
+@
+\subsection{homenumerators}
+<<homenumerators.C (MID from IN)>>=
+${MID}/homenumerators.C: ${IN}/homenumerators.pamphlet
+	@echo 52 making ${MID}/homenumerators.C from ${IN}/homenumerators.pamphlet
+	@${DOCUMENT} src homenumerators ${MID} homenumerators.C
+
+@
+<<homenumerators.o (OUT from MID)>>=
+${OUT}/homenumerators.o: ${MID}/homenumerators.C
+	@echo 53 making ${OUT}/homenumerators.o from ${MID}/homenumerators.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/homenumerators.o ${MID}/homenumerators.C
+
+@
+<<homenumerators.dvi (DOC from IN)>>=
+${DOC}/homenumerators.dvi: ${IN}/homenumerators.pamphlet ${DOC}/axiom.sty
+	@echo 54 making ${DOC}/homenumerators.dvi from ${IN}/homenumerators.pamphlet 
+	@${DOCUMENT} dvi homenumerators ${DOC} homenumerators ${NOISE}
+
+@
+\section{List Problems}
+<<listproblems>>=
+listproblems: ${MID}/ListProblems.h ${DOC}/listproblems.dvi \
+              ${OUT}/listproblems.o
+	echo 55 listproblems built
+
+<<ListProblems.h (MID from IN)>>
+<<listproblems.C (MID from IN)>>
+<<listproblems.o (OUT from MID)>>
+<<listproblems.dvi (DOC from IN)>>
+@
+\subsection{ListProblems.h}
+<<ListProblems.h (MID from IN)>>=
+${MID}/ListProblems.h: ${IN}/listproblems.pamphlet
+	@echo 56 making ${MID}/ListProblems.h from ${IN}/listproblems.pamphlet
+	@${DOCUMENT} chunk "ListProblems.h" listproblems ${MID} ListProblems.h
+
+@
+\subsection{listproblems}
+<<listproblems.C (MID from IN)>>=
+${MID}/listproblems.C: ${IN}/listproblems.pamphlet
+	@echo 57 making ${MID}/listproblems.C from ${IN}/listproblems.pamphlet
+	@${DOCUMENT} src listproblems ${MID} listproblems.C
+
+@
+<<listproblems.o (OUT from MID)>>=
+${OUT}/listproblems.o: ${MID}/listproblems.C
+	@echo 58 making ${OUT}/listproblems.o from ${MID}/listproblems.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/listproblems.o ${MID}/listproblems.C
+
+@
+<<listproblems.dvi (DOC from IN)>>=
+${DOC}/listproblems.dvi: ${IN}/listproblems.pamphlet ${DOC}/axiom.sty
+	@echo 59 making ${DOC}/listproblems.dvi from ${IN}/listproblems.pamphlet 
+	@${DOCUMENT} dvi listproblems ${DOC} listproblems ${NOISE}
+
+@
+\section{magnus}
+<<magnus>>=
+magnus: ${MID}/magnus.h ${DOC}/magnus.dvi ${OUT}/magnus.o
+	echo 60 magnus built
+
+<<magnus.h (MID from IN)>>
+<<magnus.C (MID from IN)>>
+<<magnus.o (OUT from MID)>>
+<<magnus.dvi (DOC from IN)>>
+<<magnus (BIN from OUT)>>
+@
+\subsection{magnus.h}
+<<magnus.h (MID from IN)>>=
+${MID}/magnus.h: ${IN}/magnus.pamphlet
+	@echo 61 making ${MID}/magnus.h from ${IN}/magnus.pamphlet
+	@${DOCUMENT} chunk "magnus.h" magnus ${MID} magnus.h
+
+@
+\subsection{magnus}
+<<magnus.C (MID from IN)>>=
+${MID}/magnus.C: ${IN}/magnus.pamphlet
+	@echo 62 making ${MID}/magnus.C from ${IN}/magnus.pamphlet
+	@${DOCUMENT} src magnus ${MID} magnus.C
+
+@
+<<magnus.o (OUT from MID)>>=
+${OUT}/magnus.o: ${MID}/magnus.C
+	@echo 63 making ${OUT}/magnus.o from ${MID}/magnus.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/magnus.o ${MID}/magnus.C
+
+@
+<<magnus.dvi (DOC from IN)>>=
+${DOC}/magnus.dvi: ${IN}/magnus.pamphlet ${DOC}/axiom.sty
+	@echo 64 making ${DOC}/magnus.dvi from ${IN}/magnus.pamphlet 
+	@${DOCUMENT} dvi magnus ${DOC} magnus ${NOISE}
+
+@
+<<magnus (BIN from OUT)>>=
+${BIN}/magnus: ${OUT}/magnus.o
+	@echo 65 making ${BIN}/magnus from ${OUT}/magnus.o
+	@(cd ${OUT} ; \
+	gcc ${CCFLAGS} ${INCLUDE} ${OFILES} -o magnus ${OUT}/magnus.o -lstdc++ ; \
+	cp magnus ${BIN} )
+
+@
+\section{Make Random Presentation}
+<<makerandompresentation>>=
+makerandompresentation: ${MID}/MakeRandomPresentation.h \
+            ${DOC}/makerandompresentation.dvi ${OUT}/makerandompresentation.o
+	echo 66 makerandompresentation built
+
+<<MakeRandomPresentation.h (MID from IN)>>
+<<makerandompresentation.C (MID from IN)>>
+<<makerandompresentation.o (OUT from MID)>>
+<<makerandompresentation.dvi (DOC from IN)>>
+@
+\subsection{MakeRandomPresentation.h}
+<<MakeRandomPresentation.h (MID from IN)>>=
+${MID}/MakeRandomPresentation.h: ${IN}/makerandompresentation.pamphlet
+	@echo 67 making ${MID}/MakeRandomPresentation.h from ${IN}/makerandompresentation.pamphlet
+	@${DOCUMENT} chunk "MakeRandomPresentation.h" makerandompresentation ${MID} MakeRandomPresentation.h
+
+@
+\subsection{makerandompresentation}
+<<makerandompresentation.C (MID from IN)>>=
+${MID}/makerandompresentation.C: ${IN}/makerandompresentation.pamphlet
+	@echo 68 making ${MID}/makerandompresentation.C from ${IN}/makerandompresentation.pamphlet
+	@${DOCUMENT} src makerandompresentation ${MID} makerandompresentation.C
+
+@
+<<makerandompresentation.o (OUT from MID)>>=
+${OUT}/makerandompresentation.o: ${MID}/makerandompresentation.C
+	@echo 69 making ${OUT}/makerandompresentation.o from ${MID}/makerandompresentation.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/makerandompresentation.o ${MID}/makerandompresentation.C
+
+@
+<<makerandompresentation.dvi (DOC from IN)>>=
+${DOC}/makerandompresentation.dvi: ${IN}/makerandompresentation.pamphlet ${DOC}/axiom.sty
+	@echo 70 making ${DOC}/makerandompresentation.dvi from ${IN}/makerandompresentation.pamphlet 
+	@${DOCUMENT} dvi makerandompresentation ${DOC} makerandompresentation ${NOISE}
+
+@
+\section{Menu Definitions}
+<<menudefns>>=
+menudefns: ${DOC}/menudefns.dvi ${OUT}/menudefns.o
+	echo 71 menudefns built
+
+<<menudefns.C (MID from IN)>>
+<<menudefns.o (OUT from MID)>>
+<<menudefns.dvi (DOC from IN)>>
+@
+\subsection{menudefns}
+<<menudefns.C (MID from IN)>>=
+${MID}/menudefns.C: ${IN}/menudefns.pamphlet
+	@echo 72 making ${MID}/menudefns.C from ${IN}/menudefns.pamphlet
+	@${DOCUMENT} src menudefns ${MID} menudefns.C
+
+@
+<<menudefns.o (OUT from MID)>>=
+${OUT}/menudefns.o: ${MID}/menudefns.C
+	@echo 73 making ${OUT}/menudefns.o from ${MID}/menudefns.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/menudefns.o ${MID}/menudefns.C
+
+@
+<<menudefns.dvi (DOC from IN)>>=
+${DOC}/menudefns.dvi: ${IN}/menudefns.pamphlet ${DOC}/axiom.sty
+	@echo 74 making ${DOC}/menudefns.dvi from ${IN}/menudefns.pamphlet 
+	@${DOCUMENT} dvi menudefns ${DOC} menudefns ${NOISE}
+
+@
+\section{The Object Smith}
+<<objectsmith>>=
+objectsmith: ${MID}/ObjectSmith.h ${DOC}/objectsmith.dvi ${OUT}/objectsmith.o
+	echo 75 objectsmith built
+
+<<ObjectSmith.h (MID from IN)>>
+<<objectsmith.C (MID from IN)>>
+<<objectsmith.o (OUT from MID)>>
+<<objectsmith.dvi (DOC from IN)>>
+@
+\subsection{ObjectSmith.h}
+<<ObjectSmith.h (MID from IN)>>=
+${MID}/ObjectSmith.h: ${IN}/objectsmith.pamphlet
+	@echo 76 making ${MID}/ObjectSmith.h from ${IN}/objectsmith.pamphlet
+	@${DOCUMENT} chunk "ObjectSmith.h" objectsmith ${MID} ObjectSmith.h
+
+@
+\subsection{objectsmith}
+<<objectsmith.C (MID from IN)>>=
+${MID}/objectsmith.C: ${IN}/objectsmith.pamphlet
+	@echo 77 making ${MID}/objectsmith.C from ${IN}/objectsmith.pamphlet
+	@${DOCUMENT} src objectsmith ${MID} objectsmith.C
+
+@
+<<objectsmith.o (OUT from MID)>>=
+${OUT}/objectsmith.o: ${MID}/objectsmith.C
+	@echo 78 making ${OUT}/objectsmith.o from ${MID}/objectsmith.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/objectsmith.o ${MID}/objectsmith.C
+
+@
+<<objectsmith.dvi (DOC from IN)>>=
+${DOC}/objectsmith.dvi: ${IN}/objectsmith.pamphlet ${DOC}/axiom.sty
+	@echo 79 making ${DOC}/objectsmith.dvi from ${IN}/objectsmith.pamphlet 
+	@${DOCUMENT} dvi objectsmith ${DOC} objectsmith ${NOISE}
+
+@
+\section{OR Consequences Enumerator}
+<<orconsequencesenumerator>>=
+orconsequencesenumerator: ${MID}/ORConsequencesEnumerator.h \
+           ${DOC}/orconsequencesenumerator.dvi \
+           ${OUT}/orconsequencesenumerator.o
+	echo 80 orconsequencesenumerator built
+
+<<ORConsequencesEnumerator.h (MID from IN)>>
+<<orconsequencesenumerator.C (MID from IN)>>
+<<orconsequencesenumerator.o (OUT from MID)>>
+<<orconsequencesenumerator.dvi (DOC from IN)>>
+@
+\subsection{ORConsequencesEnumerator.h}
+<<ORConsequencesEnumerator.h (MID from IN)>>=
+${MID}/ORConsequencesEnumerator.h: ${IN}/orconsequencesenumerator.pamphlet
+	@echo 81 making ${MID}/ORConsequencesEnumerator.h from ${IN}/orconsequencesenumerator.pamphlet
+	@${DOCUMENT} chunk "ORConsequencesEnumerator.h" orconsequencesenumerator ${MID} ORConsequencesEnumerator.h
+
+@
+\subsection{orconsequencesenumerator}
+<<orconsequencesenumerator.C (MID from IN)>>=
+${MID}/orconsequencesenumerator.C: ${IN}/orconsequencesenumerator.pamphlet
+	@echo 82 making ${MID}/orconsequencesenumerator.C from ${IN}/orconsequencesenumerator.pamphlet
+	@${DOCUMENT} src orconsequencesenumerator ${MID} orconsequencesenumerator.C
+
+@
+<<orconsequencesenumerator.o (OUT from MID)>>=
+${OUT}/orconsequencesenumerator.o: ${MID}/orconsequencesenumerator.C
+	@echo 83 making ${OUT}/orconsequencesenumerator.o from ${MID}/orconsequencesenumerator.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/orconsequencesenumerator.o ${MID}/orconsequencesenumerator.C
+
+@
+<<orconsequencesenumerator.dvi (DOC from IN)>>=
+${DOC}/orconsequencesenumerator.dvi: ${IN}/orconsequencesenumerator.pamphlet ${DOC}/axiom.sty
+	@echo 84 making ${DOC}/orconsequencesenumerator.dvi from ${IN}/orconsequencesenumerator.pamphlet 
+	@${DOCUMENT} dvi orconsequencesenumerator ${DOC} orconsequencesenumerator ${NOISE}
+
+@
+\section{outmessages}
+<<outmessages>>=
+outmessages: ${MID}/OutMessages.h ${DOC}/outmessages.dvi ${OUT}/outmessages.o
+	echo 85 outmessages built
+
+<<OutMessages.h (MID from IN)>>
+<<outmessages.C (MID from IN)>>
+<<outmessages.o (OUT from MID)>>
+<<outmessages.dvi (DOC from IN)>>
+@
+\subsection{OutMessages.h}
+<<OutMessages.h (MID from IN)>>=
+${MID}/OutMessages.h: ${IN}/outmessages.pamphlet
+	@echo 86 making ${MID}/OutMessages.h from ${IN}/outmessages.pamphlet
+	@${DOCUMENT} chunk "OutMessages.h" outmessages ${MID} OutMessages.h
+
+@
+\subsection{outmessages}
+<<outmessages.C (MID from IN)>>=
+${MID}/outmessages.C: ${IN}/outmessages.pamphlet
+	@echo 87 making ${MID}/outmessages.C from ${IN}/outmessages.pamphlet
+	@${DOCUMENT} src outmessages ${MID} outmessages.C
+
+@
+<<outmessages.o (OUT from MID)>>=
+${OUT}/outmessages.o: ${MID}/outmessages.C
+	@echo 88 making ${OUT}/outmessages.o from ${MID}/outmessages.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/outmessages.o ${MID}/outmessages.C
+
+@
+<<outmessages.dvi (DOC from IN)>>=
+${DOC}/outmessages.dvi: ${IN}/outmessages.pamphlet ${DOC}/axiom.sty
+	@echo 89 making ${DOC}/outmessages.dvi from ${IN}/outmessages.pamphlet 
+	@${DOCUMENT} dvi outmessages ${DOC} outmessages ${NOISE}
+
+@
+\section{Presentation Problems}
+<<presentationproblems>>=
+presentationproblems: ${MID}/PresentationProblems.h \
+          ${DOC}/presentationproblems.dvi ${OUT}/presentationproblems.o
+	echo 90 presentationproblems built
+
+<<PresentationProblems.h (MID from IN)>>
+<<presentationproblems.C (MID from IN)>>
+<<presentationproblems.o (OUT from MID)>>
+<<presentationproblems.dvi (DOC from IN)>>
+@
+\subsection{PresentationProblems.h}
+<<PresentationProblems.h (MID from IN)>>=
+${MID}/PresentationProblems.h: ${IN}/presentationproblems.pamphlet
+	@echo 91 making ${MID}/PresentationProblems.h from ${IN}/presentationproblems.pamphlet
+	@${DOCUMENT} chunk "PresentationProblems.h" presentationproblems ${MID} PresentationProblems.h
+
+@
+\subsection{presentationproblems}
+<<presentationproblems.C (MID from IN)>>=
+${MID}/presentationproblems.C: ${IN}/presentationproblems.pamphlet
+	@echo 92 making ${MID}/presentationproblems.C from ${IN}/presentationproblems.pamphlet
+	@${DOCUMENT} src presentationproblems ${MID} presentationproblems.C
+
+@
+<<presentationproblems.o (OUT from MID)>>=
+${OUT}/presentationproblems.o: ${MID}/presentationproblems.C
+	@echo 93 making ${OUT}/presentationproblems.o from ${MID}/presentationproblems.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/presentationproblems.o ${MID}/presentationproblems.C
+
+@
+<<presentationproblems.dvi (DOC from IN)>>=
+${DOC}/presentationproblems.dvi: ${IN}/presentationproblems.pamphlet ${DOC}/axiom.sty
+	@echo 94 making ${DOC}/presentationproblems.dvi from ${IN}/presentationproblems.pamphlet 
+	@${DOCUMENT} dvi presentationproblems ${DOC} presentationproblems ${NOISE}
+
+@
+\section{Relator Enumerator}
+<<renumerator>>=
+renumerator: ${MID}/REnumerator.h ${DOC}/renumerator.dvi ${OUT}/renumerator.o
+	echo 95 renumerator built
+
+<<REnumerator.h (MID from IN)>>
+<<renumerator.C (MID from IN)>>
+<<renumerator.o (OUT from MID)>>
+<<renumerator.dvi (DOC from IN)>>
+@
+\subsection{REnumerator.h}
+<<REnumerator.h (MID from IN)>>=
+${MID}/REnumerator.h: ${IN}/renumerator.pamphlet
+	@echo 96 making ${MID}/REnumerator.h from ${IN}/renumerator.pamphlet
+	@${DOCUMENT} chunk "REnumerator.h" renumerator ${MID} REnumerator.h
+
+@
+\subsection{renumerator}
+<<renumerator.C (MID from IN)>>=
+${MID}/renumerator.C: ${IN}/renumerator.pamphlet
+	@echo 97 making ${MID}/renumerator.C from ${IN}/renumerator.pamphlet
+	@${DOCUMENT} src renumerator ${MID} renumerator.C
+
+@
+<<renumerator.o (OUT from MID)>>=
+${OUT}/renumerator.o: ${MID}/renumerator.C
+	@echo 98 making ${OUT}/renumerator.o from ${MID}/renumerator.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/renumerator.o ${MID}/renumerator.C
+
+@
+<<renumerator.dvi (DOC from IN)>>=
+${DOC}/renumerator.dvi: ${IN}/renumerator.pamphlet ${DOC}/axiom.sty
+	@echo 99 making ${DOC}/renumerator.dvi from ${IN}/renumerator.pamphlet 
+	@${DOCUMENT} dvi renumerator ${DOC} renumerator ${NOISE}
+
+@
+\section{session manager}
+<<sessionmanager>>=
+sessionmanager: ${MID}/SessionManager.h ${DOC}/sessionmanager.dvi \
+                ${OUT}/sessionmanager.o
+	echo 100 sessionmanager built
+
+<<SessionManager.h (MID from IN)>>
+<<sessionmanager.C (MID from IN)>>
+<<sessionmanager.o (OUT from MID)>>
+<<sessionmanager.dvi (DOC from IN)>>
+@
+\subsection{SessionManager.h}
+<<SessionManager.h (MID from IN)>>=
+${MID}/SessionManager.h: ${IN}/sessionmanager.pamphlet
+	@echo 101 making ${MID}/SessionManager.h from ${IN}/sessionmanager.pamphlet
+	@${DOCUMENT} chunk "SessionManager.h" sessionmanager ${MID} SessionManager.h
+
+@
+\subsection{sessionmanager}
+<<sessionmanager.C (MID from IN)>>=
+${MID}/sessionmanager.C: ${IN}/sessionmanager.pamphlet
+	@echo 102 making ${MID}/sessionmanager.C from ${IN}/sessionmanager.pamphlet
+	@${DOCUMENT} src sessionmanager ${MID} sessionmanager.C
+
+@
+<<sessionmanager.o (OUT from MID)>>=
+${OUT}/sessionmanager.o: ${MID}/sessionmanager.C
+	@echo 103 making ${OUT}/sessionmanager.o from ${MID}/sessionmanager.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/sessionmanager.o ${MID}/sessionmanager.C
+
+@
+<<sessionmanager.dvi (DOC from IN)>>=
+${DOC}/sessionmanager.dvi: ${IN}/sessionmanager.pamphlet ${DOC}/axiom.sty
+	@echo 104 making ${DOC}/sessionmanager.dvi from ${IN}/sessionmanager.pamphlet 
+	@${DOCUMENT} dvi sessionmanager ${DOC} sessionmanager ${NOISE}
+
+@
+\section{SGR Enumerator}
+<<sgrenumerator>>=
+sgrenumerator: ${MID}/SGREnumerator.h ${DOC}/sgrenumerator.dvi \
+              ${OUT}/sgrenumerator.o
+	echo 105 sgrenumerator built
+
+<<SGREnumerator.h (MID from IN)>>
+<<sgrenumerator.C (MID from IN)>>
+<<sgrenumerator.o (OUT from MID)>>
+<<sgrenumerator.dvi (DOC from IN)>>
+@
+\subsection{SGREnumerator.h}
+<<SGREnumerator.h (MID from IN)>>=
+${MID}/SGREnumerator.h: ${IN}/sgrenumerator.pamphlet
+	@echo 106 making ${MID}/SGREnumerator.h from ${IN}/sgrenumerator.pamphlet
+	@${DOCUMENT} chunk "SGREnumerator.h" sgrenumerator ${MID} SGREnumerator.h
+
+@
+\subsection{sgrenumerator}
+<<sgrenumerator.C (MID from IN)>>=
+${MID}/sgrenumerator.C: ${IN}/sgrenumerator.pamphlet
+	@echo 107 making ${MID}/sgrenumerator.C from ${IN}/sgrenumerator.pamphlet
+	@${DOCUMENT} src sgrenumerator ${MID} sgrenumerator.C
+
+@
+<<sgrenumerator.o (OUT from MID)>>=
+${OUT}/sgrenumerator.o: ${MID}/sgrenumerator.C
+	@echo 108 making ${OUT}/sgrenumerator.o from ${MID}/sgrenumerator.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/sgrenumerator.o ${MID}/sgrenumerator.C
+
+@
+<<sgrenumerator.dvi (DOC from IN)>>=
+${DOC}/sgrenumerator.dvi: ${IN}/sgrenumerator.pamphlet ${DOC}/axiom.sty
+	@echo 109 making ${DOC}/sgrenumerator.dvi from ${IN}/sgrenumerator.pamphlet 
+	@${DOCUMENT} dvi sgrenumerator ${DOC} sgrenumerator ${NOISE}
+
+@
+\section{SM Enumerator}
+<<smenumerator>>=
+smenumerator: ${MID}/SMEnumerator.h ${DOC}/smenumerator.dvi \
+              ${OUT}/smenumerator.o
+	echo 110 smenumerator built
+
+<<SMEnumerator.h (MID from IN)>>
+<<smenumerator.C (MID from IN)>>
+<<smenumerator.o (OUT from MID)>>
+<<smenumerator.dvi (DOC from IN)>>
+@
+\subsection{SMEnumerator.h}
+<<SMEnumerator.h (MID from IN)>>=
+${MID}/SMEnumerator.h: ${IN}/smenumerator.pamphlet
+	@echo 111 making ${MID}/SMEnumerator.h from ${IN}/smenumerator.pamphlet
+	@${DOCUMENT} chunk "SMEnumerator.h" smenumerator ${MID} SMEnumerator.h
+
+@
+\subsection{smenumerator}
+<<smenumerator.C (MID from IN)>>=
+${MID}/smenumerator.C: ${IN}/smenumerator.pamphlet
+	@echo 112 making ${MID}/smenumerator.C from ${IN}/smenumerator.pamphlet
+	@${DOCUMENT} src smenumerator ${MID} smenumerator.C
+
+@
+<<smenumerator.o (OUT from MID)>>=
+${OUT}/smenumerator.o: ${MID}/smenumerator.C
+	@echo 113 making ${OUT}/smenumerator.o from ${MID}/smenumerator.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/smenumerator.o ${MID}/smenumerator.C
+
+@
+<<smenumerator.dvi (DOC from IN)>>=
+${DOC}/smenumerator.dvi: ${IN}/smenumerator.pamphlet ${DOC}/axiom.sty
+	@echo 114 making ${DOC}/smenumerator.dvi from ${IN}/smenumerator.pamphlet 
+	@${DOCUMENT} dvi smenumerator ${DOC} smenumerator ${NOISE}
+
+@
+\section{SM List Iterator}
+<<smlistiterator>>=
+smlistiterator: ${MID}/SMListIterator.h ${DOC}/smlistiterator.dvi \
+                ${OUT}/smlistiterator.o
+	echo 115 smlistiterator built
+
+<<SMListIterator.h (MID from IN)>>
+<<smlistiterator.C (MID from IN)>>
+<<smlistiterator.o (OUT from MID)>>
+<<smlistiterator.dvi (DOC from IN)>>
+@
+\subsection{SMListIterator.h}
+<<SMListIterator.h (MID from IN)>>=
+${MID}/SMListIterator.h: ${IN}/smlistiterator.pamphlet
+	@echo 116 making ${MID}/SMListIterator.h from ${IN}/smlistiterator.pamphlet
+	@${DOCUMENT} chunk "SMListIterator.h" smlistiterator ${MID} SMListIterator.h
+
+@
+\subsection{smlistiterator}
+<<smlistiterator.C (MID from IN)>>=
+${MID}/smlistiterator.C: ${IN}/smlistiterator.pamphlet
+	@echo 117 making ${MID}/smlistiterator.C from ${IN}/smlistiterator.pamphlet
+	@${DOCUMENT} src smlistiterator ${MID} smlistiterator.C
+
+@
+<<smlistiterator.o (OUT from MID)>>=
+${OUT}/smlistiterator.o: ${MID}/smlistiterator.C
+	@echo 118 making ${OUT}/smlistiterator.o from ${MID}/smlistiterator.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/smlistiterator.o ${MID}/smlistiterator.C
+
+@
+<<smlistiterator.dvi (DOC from IN)>>=
+${DOC}/smlistiterator.dvi: ${IN}/smlistiterator.pamphlet ${DOC}/axiom.sty
+	@echo 119 making ${DOC}/smlistiterator.dvi from ${IN}/smlistiterator.pamphlet 
+	@${DOCUMENT} dvi smlistiterator ${DOC} smlistiterator ${NOISE}
+
+@
+\section{Subgroup Enumerator}
+<<subgroupenumerator>>=
+subgroupenumerator: ${MID}/SubgroupEnumerator.h ${DOC}/subgroupenumerator.dvi \
+               ${OUT}/subgroupenumerator.o
+	echo 120 subgroupenumerator built
+
+<<SubgroupEnumerator.h (MID from IN)>>
+<<subgroupenumerator.C (MID from IN)>>
+<<subgroupenumerator.o (OUT from MID)>>
+<<subgroupenumerator.dvi (DOC from IN)>>
+@
+\subsection{SubgroupEnumerator.h}
+<<SubgroupEnumerator.h (MID from IN)>>=
+${MID}/SubgroupEnumerator.h: ${IN}/subgroupenumerator.pamphlet
+	@echo 121 making ${MID}/SubgroupEnumerator.h from ${IN}/subgroupenumerator.pamphlet
+	@${DOCUMENT} chunk "SubgroupEnumerator.h" subgroupenumerator ${MID} SubgroupEnumerator.h
+
+@
+\subsection{subgroupenumerator}
+<<subgroupenumerator.C (MID from IN)>>=
+${MID}/subgroupenumerator.C: ${IN}/subgroupenumerator.pamphlet
+	@echo 122 making ${MID}/subgroupenumerator.C from ${IN}/subgroupenumerator.pamphlet
+	@${DOCUMENT} src subgroupenumerator ${MID} subgroupenumerator.C
+
+@
+<<subgroupenumerator.o (OUT from MID)>>=
+${OUT}/subgroupenumerator.o: ${MID}/subgroupenumerator.C
+	@echo 123 making ${OUT}/subgroupenumerator.o from ${MID}/subgroupenumerator.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/subgroupenumerator.o ${MID}/subgroupenumerator.C
+
+@
+<<subgroupenumerator.dvi (DOC from IN)>>=
+${DOC}/subgroupenumerator.dvi: ${IN}/subgroupenumerator.pamphlet ${DOC}/axiom.sty
+	@echo 124 making ${DOC}/subgroupenumerator.dvi from ${IN}/subgroupenumerator.pamphlet 
+	@${DOCUMENT} dvi subgroupenumerator ${DOC} subgroupenumerator ${NOISE}
+
+@
+\section{the objects}
+<<theobjects>>=
+theobjects: ${MID}/TheObjects.h ${DOC}/theobjects.dvi ${OUT}/theobjects.o
+	echo 125 theobjects built
+
+<<TheObjects.h (MID from IN)>>
+<<theobjects.C (MID from IN)>>
+<<theobjects.o (OUT from MID)>>
+<<theobjects.dvi (DOC from IN)>>
+@
+\subsection{TheObjects.h}
+<<TheObjects.h (MID from IN)>>=
+${MID}/TheObjects.h: ${IN}/theobjects.pamphlet
+	@echo 126 making ${MID}/TheObjects.h from ${IN}/theobjects.pamphlet
+	@${DOCUMENT} chunk "TheObjects.h" theobjects ${MID} TheObjects.h
+
+@
+\subsection{theobjects}
+<<theobjects.C (MID from IN)>>=
+${MID}/theobjects.C: ${IN}/theobjects.pamphlet
+	@echo 127 making ${MID}/theobjects.C from ${IN}/theobjects.pamphlet
+	@${DOCUMENT} src theobjects ${MID} theobjects.C
+
+@
+<<theobjects.o (OUT from MID)>>=
+${OUT}/theobjects.o: ${MID}/theobjects.C
+	@echo 128 making ${OUT}/theobjects.o from ${MID}/theobjects.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/theobjects.o ${MID}/theobjects.C
+
+@
+<<theobjects.dvi (DOC from IN)>>=
+${DOC}/theobjects.dvi: ${IN}/theobjects.pamphlet ${DOC}/axiom.sty
+	@echo 129 making ${DOC}/theobjects.dvi from ${IN}/theobjects.pamphlet 
+	@${DOCUMENT} dvi theobjects ${DOC} theobjects ${NOISE}
+
+@
+\section{Word Enumerator}
+<<wenumerator>>=
+wenumerator: ${MID}/WEnumerator.h ${DOC}/wenumerator.dvi ${OUT}/wenumerator.o
+	echo 130 wenumerator built
+
+<<WEnumerator.h (MID from IN)>>
+<<wenumerator.C (MID from IN)>>
+<<wenumerator.o (OUT from MID)>>
+<<wenumerator.dvi (DOC from IN)>>
+@
+\subsection{WEnumerator.h}
+<<WEnumerator.h (MID from IN)>>=
+${MID}/WEnumerator.h: ${IN}/wenumerator.pamphlet
+	@echo 131 making ${MID}/WEnumerator.h from ${IN}/wenumerator.pamphlet
+	@${DOCUMENT} chunk "WEnumerator.h" wenumerator ${MID} WEnumerator.h
+
+@
+\subsection{wenumerator}
+<<wenumerator.C (MID from IN)>>=
+${MID}/wenumerator.C: ${IN}/wenumerator.pamphlet
+	@echo 132 making ${MID}/wenumerator.C from ${IN}/wenumerator.pamphlet
+	@${DOCUMENT} src wenumerator ${MID} wenumerator.C
+
+@
+<<wenumerator.o (OUT from MID)>>=
+${OUT}/wenumerator.o: ${MID}/wenumerator.C
+	@echo 133 making ${OUT}/wenumerator.o from ${MID}/wenumerator.C
+	@g++ ${CCFLAGS} ${INCLUDE} -c -o ${OUT}/wenumerator.o ${MID}/wenumerator.C
+
+@
+<<wenumerator.dvi (DOC from IN)>>=
+${DOC}/wenumerator.dvi: ${IN}/wenumerator.pamphlet ${DOC}/axiom.sty
+	@echo 134 making ${DOC}/wenumerator.dvi from ${IN}/wenumerator.pamphlet 
+	@${DOCUMENT} dvi wenumerator ${DOC} wenumerator ${NOISE}
+
+@
+\section{axiom.sty}
+<<axiom.sty (DOC from IN)>>=
+${DOC}/axiom.sty: ${SRC}/doc/axiom.sty.pamphlet
+	@ echo 135 making ${DOC}/axiom.sty from ${SRC}/doc/axiom.sty.pamphlet
+	@${DOCUMENT} chunk "axiom.sty" ${SRC}/doc/axiom.sty ${DOC} axiom.sty
+ 
+@
+\section{includedir}
+<<includedir>>=
+includedir:
+	@echo 136 making ${SRC}/include
+	@ mkdir -p ${SRC}/include
+	@ mkdir -p ${INT}/include
+	@ mkdir -p ${OBJ}/${SYS}/test
+	@ mkdir -p ${MNT}/${SYS}/doc/src/include
+	@( cd ${SRC}/include ; \
+	${DOCUMENT} src Makefile . Makefile ; \
+	${DOCUMENT} dvi Makefile . Makefile ${NOISE} ; \
+	${ENV} ${MAKE} )
+
+@
+\section{backenddir}
+<<backenddir>>=
+backenddir:
+	@echo 137 making ${SRC}/backend
+	@( cd backend ; \
+	${DOCUMENT} src Makefile . Makefile ; \
+	${DOCUMENT} dvi Makefile . Makefile ${NOISE} ; \
+	${ENV} ${MAKE} )
+
+@
+<<*>>=
+<<environment>>
+
+all: ${DIRS} ${FILES} ${BINFILES}
+	@echo 138 finished ${SRC}
+
+<<includedir>>
+<<backenddir>>
+
+<<acconfig>>
+<<acga>>
+<<autoenumerator>>
+<<computationmanager>>
+<<config>>
+<<databasemanager>>
+<<fedata>>
+<<gacpfororgsolver>>
+<<gaequationsolver>>
+<<gaispartofbasis>>
+<<homenumerators>>
+<<listproblems>>
+<<magnus>>
+<<makerandompresentation>>
+<<menudefns>>
+<<objectsmith>>
+<<orconsequencesenumerator>>
+<<outmessages>>
+<<presentationproblems>>
+<<renumerator>>
+<<sessionmanager>>
+<<sgrenumerator>>
+<<smenumerator>>
+<<smlistiterator>>
+<<subgroupenumerator>>
+<<theobjects>>
+<<wenumerator>>
+
+<<axiom.sty (DOC from IN)>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

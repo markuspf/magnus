@@ -1,0 +1,940 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/subgroupenumerator.pamphlet}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "SMEnumerator.h"
+#include "SMList.h"
+#include "Subgroup.h"
+#include "SMFPGroup.h"
+#include "OutMessages.h"
+#include "RandomNumbers.h"
+#include "SMListIterator.h" 
+
+@
+<<include.c>>=
+#include "SubgroupEnumerator.h"
+#include "SMEnumerator.h"
+#include "OutMessages.h"
+#include "SMFPGroup.h"
+#include "SMSubgroup.h"
+#include "viewStructure.h"
+#include "WordEnumerator.h"
+#include "FreeGroup.h"
+#include "SMWord.h"
+#include "conversions.h"
+#include "SMListIterator.h"
+
+@
+\section{class SGEnumeratorARCer}
+\subsection{SGEnumeratorARCer Constructor}
+<<SGEnumeratorARCer Constructor.h>>=
+  SGEnumeratorARCer( ComputationManager& boss,SMListData& d,
+		     const FreeGroup& group ) 
+    : EnumeratorARCer( boss, d ), 
+    theGroup(group),
+    numberOfAll(100),
+    enumerateAll( true ),
+    isNormalRandom( false ),
+    numberOfGenerators(1),
+    maxLength(100),
+    counter(0) { } 
+@
+\subsection{SGEnumeratorARCer::setEnumerateAll}
+<<SGEnumeratorARCer::setEnumerateAll.h>>=
+  void setEnumerateAll() { enumerateAll = true; }
+@
+\subsection{SGEnumeratorARCer::setEnumerateRandom}
+<<SGEnumeratorARCer::setEnumerateRandom.h>>=
+  void setEnumerateRandom() { enumerateAll = false; }
+@
+\subsection{SGEnumeratorARCer::setNormalRandom}
+<<SGEnumeratorARCer::setNormalRandom.h>>=
+  void setNormalRandom() { isNormalRandom = true; }
+@
+\subsection{SGEnumeratorARCer::setUniformRandom}
+<<SGEnumeratorARCer::setUniformRandom.h>>=
+  void setUniformRandom() { isNormalRandom = false; }
+@
+\subsection{SGEnumeratorARCer::setTotalNumber}
+<<SGEnumeratorARCer::setTotalNumber.h>>=
+  void setTotalNumber(int n) { numberOfAll = n; }
+@
+\subsection{SGEnumeratorARCer::setMaxLength}
+<<SGEnumeratorARCer::setMaxLength.h>>=
+  void setMaxLength(int n) { maxLength = n; }
+@
+\subsection{SGEnumeratorARCer::setNumberOfGens}
+<<SGEnumeratorARCer::setNumberOfGens.h>>=
+  void setNumberOfGens( int n) { numberOfGenerators = n; }
+@
+\subsection{SGEnumeratorARCer::writeResults}
+<<SGEnumeratorARCer::writeResults.h>>=
+  void writeResults( ostream& ostr ) 
+    {
+      ostr <  counter;
+      ostr < theData;
+    }
+@
+\subsection{SGEnumeratorARCer::readResults}
+<<SGEnumeratorARCer::readResults.h>>=
+  void readResults( istream& istr) 
+    {
+      istr > counter;
+      istr > theData;
+    }
+@
+\subsection{SGEnumeratorARCer::enumerate}
+<<SGEnumeratorARCer::enumerate.h>>=
+  void enumerate();
+@
+<<SGEnumeratorARCer::enumerate.c>>=
+void SGEnumeratorARCer::enumerate( )
+{
+  //file <<  "Sample : " << theSample << endl;
+  if (enumerateAll){
+    if ( numberOfGenerators == 1 )
+      enumerateAllSubgroups();
+    else {
+      WordEnumerator we(theGroup,numberOfGenerators);
+      for (we.reset();counter < numberOfAll; we.next()) {
+	if (submitSignalRecieved()){
+	  return;
+	}
+	
+	SetOf<Word> s = makeSetOf( we.getWords() );
+	// Extract trivial words
+	s -= Word();
+	// Submit if non-empty set
+	if ( s.cardinality() > 0 ) {
+	  counter++;
+	  theData << EnumWriteSetOfWords( s, theGroup) << "\n\n";
+	}
+      }
+    }
+  }else{
+    while (counter < numberOfAll) {
+      if (submitSignalRecieved()){
+	return;
+      }
+      SetOf<Word> sw;
+      for (int i1=0;i1<numberOfGenerators;i1++){
+	sw |= getRandomWord();
+      }
+      // Extract trivial words
+      sw -= Word();
+      // Submit if non-empty set      
+      if ( sw.cardinality() > 0 ) {
+	counter++;
+	theData << EnumWriteSetOfWords( sw, theGroup) << "\n\n";
+      }      
+    }
+  }
+}
+
+@
+\subsection{SGEnumeratorARCer::enumerateAllSubgroups}
+<<SGEnumeratorARCer::enumerateAllSubgroups.h>>=
+  void enumerateAllSubgroups( );
+@
+<<SGEnumeratorARCer::enumerateAllSubgroups.c>>=
+void SGEnumeratorARCer::enumerateAllSubgroups( ) {
+  for(;counter <numberOfAll; counter++){
+    Word w = theGroup.getN_thElement( counter);
+    if ( w.length() > 0 ) {
+      counter++;
+      SetOf<Word>  s;
+      s |= w;
+      theData << EnumWriteSetOfWords( s, theGroup) << "\n\n";
+    }      
+  }  
+}
+
+@
+\subsection{SGEnumeratorARCer::getRandomWord}
+<<SGEnumeratorARCer::getRandomWord.h>>=
+  Word getRandomWord() ;
+@
+<<SGEnumeratorARCer::getRandomWord.c>>=
+Word SGEnumeratorARCer::getRandomWord()  {
+  int numOfGenerators = theGroup.numberOfGenerators()*2;
+  int length = 0;
+  if ( !isNormalRandom ) {
+    length = ur.rand(1,maxLength);
+  } else {
+    while (length <=0 || length > maxLength)
+      length = nr.rand(maxLength/2,maxLength/2);
+  }
+  Word newWord;
+  for (int j=0;j<length;j++){
+    int g=0;
+    if ( !isNormalRandom ) {
+      g = ur.rand(1,numOfGenerators);
+    } else {
+      while (g <=0 || g > numOfGenerators)
+	g = nr.rand(numOfGenerators/2,numOfGenerators/2);
+    }
+    
+    if ( g > numOfGenerators/2 ) {
+      g = g - numOfGenerators/2;
+    } else {
+      g *= -1;
+    }
+    Generator newG(g);
+    newWord *= newG;
+  }
+  return newWord.cyclicallyReduce();
+}
+
+@
+\subsection{class SGEnumeratorARCer}
+<<class SGEnumeratorARCer>>=
+class SGEnumeratorARCer : public EnumeratorARCer
+{
+public:
+<<SGEnumeratorARCer Constructor.h>>
+<<SGEnumeratorARCer::setEnumerateAll.h>>
+<<SGEnumeratorARCer::setEnumerateRandom.h>>
+<<SGEnumeratorARCer::setNormalRandom.h>>
+<<SGEnumeratorARCer::setUniformRandom.h>>
+<<SGEnumeratorARCer::setTotalNumber.h>>
+<<SGEnumeratorARCer::setMaxLength.h>>
+<<SGEnumeratorARCer::setNumberOfGens.h>>
+<<SGEnumeratorARCer::writeResults.h>>
+<<SGEnumeratorARCer::readResults.h>>
+protected:
+<<SGEnumeratorARCer::enumerate.h>>
+private:
+<<SGEnumeratorARCer::enumerateAllSubgroups.h>>
+<<SGEnumeratorARCer::getRandomWord.h>>
+  FreeGroup theGroup;
+  bool enumerateAll;
+  bool isNormalRandom;
+  int numberOfGenerators;
+  int numberOfAll;
+  int maxLength;
+  int counter;
+  UniformRandom ur; 
+  NormalRandom nr; 
+};
+
+@
+\section{class SGEnumeratorProblem}
+\subsection{SGEnumeratorProblem Constructor}
+<<SGEnumeratorProblem Constructor.h>>=
+  SGEnumeratorProblem(SMFPGroup& );
+@
+<<SGEnumeratorProblem Constructor.c>>=
+SGEnumeratorProblem::SGEnumeratorProblem(SMFPGroup& b)
+  : EnumeratorProblem< Subgroup >( b ),
+    theGroup(b),
+    arcer( *this, theData,theGroup.getFreePreimage() )
+{ }
+
+@
+\subsection{SGEnumeratorProblem::viewStructure}
+<<SGEnumeratorProblem::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SGEnumeratorProblem::viewStructure.c>>=
+void SGEnumeratorProblem::viewStructure(ostream& ostr) const
+{
+   EnumertatorProblemView pv(oid(),"Subgroup enumerator",
+			     Text("Enumerate subgroups in ") +
+			     Name(theGroup) ,
+			     helpID("SGEnumeratorProblem",theGroup),
+			      Text("Sg en")
+			     );
+   pv.addParameter(
+    EditInteger("NTotal","Number of subgroups",1,100,0,1000000));
+   pv.addParameter(
+    EditInteger("NOfGens","Max. number of generators of a subgroup",
+                 1,10,0,1000000));
+   RadioButton rRB1("RBNormal","Enumerate using normal disribution");
+   RadioButton rRB2("RBUniform","Enumerate using uniform disribution");
+   rRB1.add(EditInteger("maxLNormal","Max. length of words",1,10,1,30000));
+   rRB2.add(EditInteger("maLUniform","Max. length of words",1,10,1,30000));
+   RadioButtonGroup randomRBG("RandomMethod");
+   randomRBG.add(rRB1);
+   randomRBG.add(rRB2);
+   RadioButton rb1("EnRandom","Enumerate randomly");
+   rb1.add(randomRBG);
+   RadioButtonGroup rbg("Method");
+   rbg.add(rb1);
+   RadioButton rb2("EnTotal","Enumerate totally");
+   rbg.add(rb2);
+   pv.addParameter(rbg);
+   pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			     "For the use of enumerator",40));
+   submit(ostr, pv);
+}
+
+@
+\subsection{SGEnumeratorProblem::takeControl}
+<<SGEnumeratorProblem::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SGEnumeratorProblem::takeControl.c>>=
+void SGEnumeratorProblem::takeControl( )
+{
+  if (freeARCs() > 0){
+    if (arcer.takeControl()){
+      adminSuspend();
+    return;	
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SGEnumeratorProblem::start}
+<<SGEnumeratorProblem::start.h>>=
+  void start( ) ;                // overrides ComputationManager  
+@
+<<SGEnumeratorProblem::start.c>>=
+void SGEnumeratorProblem::start( ) {              
+  // Set arcer parameters
+  int numOfGens = getParameters().getValue("NOfGens");
+   // Set sample word
+  arcer.setNumberOfGens( numOfGens );
+  // Set total number of subgroup to enumerate
+  int total = getParameters().getValue("NTotal");
+  arcer.setTotalNumber( total );
+  Chars t = getParameters().getValue("Method");
+  // Random enumeration
+  if (t == Chars("EnRandom")) {
+    arcer.setEnumerateRandom();
+    Chars t1 =  getParameters().getValue("RandomMethod");
+    int maxLength;
+    // Select normal or uniform enumeration is used
+    if ( t1 == Chars("RBNormal")){
+      arcer.setNormalRandom();
+      maxLength = getParameters().getValue("maxLNormal");
+    } else {
+      arcer.setUniformRandom();
+      maxLength = getParameters().getValue("maLUniform");
+    }
+    // Set maximal length of enumerated words
+    arcer.setMaxLength( maxLength );
+  }
+  else 
+    arcer.setEnumerateAll();
+  LogMessage msg1(*this,theGroup);
+  msg1 << Link(Chars( "Click here to see subgroups of ")+
+	       Text( Name(theGroup) ),
+	       "SGEnumerator",
+	       theData.getDataFileName(),true );
+  msg1.send();    
+}
+
+@
+\subsection{SGEnumeratorProblem::terminate}
+<<SGEnumeratorProblem::terminate.h>>=
+  void terminate( ) { }          // overrides ComputationManager
+@
+\subsection{SGEnumeratorProblem::resume}
+<<SGEnumeratorProblem::resume.h>>=
+  void resume( );                // overrides ComputationManager
+@
+<<SGEnumeratorProblem::resume.c>>=
+void SGEnumeratorProblem::resume( )
+{              
+   arcer.submitSignal();
+   // Set arcer parameters
+   int numOfGens = getParameters().getValue("NOfGens");
+   // Set sample word
+   arcer.setNumberOfGens( numOfGens );
+   // Set total number of words to enumerate
+   int total = getParameters().getValue("NTotal");
+   arcer.setTotalNumber( total );
+   Chars t = getParameters().getValue("Method");
+   // Random enumeration
+   if (t == Chars("EnRandom")) {
+     Chars t1 =  getParameters().getValue("RandomMethod");
+     int maxLength;
+     // Select normal or uniform enumeration is used
+     if ( t1 == Chars("RBNormal")) {
+       maxLength = getParameters().getValue("maxLNormal");
+     } else {
+       maxLength = getParameters().getValue("maLUniform");
+     }
+     // Set maximal length of enumerated words
+     arcer.setMaxLength( maxLength );
+   }
+}
+
+@
+\subsection{class SGEnumeratorProblem}
+<<class SGEnumeratorProblem>>=
+class SGEnumeratorProblem : public EnumeratorProblem< Subgroup >
+{
+public:
+<<SGEnumeratorProblem Constructor.h>>
+<<SGEnumeratorProblem::viewStructure.h>>
+<<SGEnumeratorProblem::takeControl.h>>
+<<SGEnumeratorProblem::start.h>>
+<<SGEnumeratorProblem::terminate.h>>
+<<SGEnumeratorProblem::resume.h>>
+private:
+  SMFPGroup& theGroup;
+  SGEnumeratorARCer arcer;
+};
+
+
+@
+\section{class IsSubgroupInListARCer}
+\subsection{IsSubgroupInListARCer Constructor}
+<<IsSubgroupInListARCer Constructor.h>>=
+  IsSubgroupInListARCer( ComputationManager& boss ) 
+  : ARCer( boss ), result(0) { } 
+@
+\subsection{IsSubgroupInListARCer Destructor}
+<<IsSubgroupInListARCer Destructor.h>>=
+  ~IsSubgroupInListARCer( ) { 
+    if (theIterator)
+      delete theIterator;
+  }
+@
+\subsection{IsSubgroupInListARCer::setArguments}
+<<IsSubgroupInListARCer::setArguments.h>>=
+  void setArguments( const SMList<Subgroup>&, const VectorOf<Word>&);
+@
+<<IsSubgroupInListARCer::setArguments.c>>=
+void IsSubgroupInListARCer::setArguments( const SMList<Subgroup>& l, 
+				      const VectorOf<Word>& s)
+{
+  theIterator = new SMListIterator<Subgroup>(l);
+  theSubgroup = s;
+}
+
+@
+\subsection{IsSubgroupInListARCer::isInList}
+<<IsSubgroupInListARCer::isInList.h>>=
+  bool isInList();
+@
+<<IsSubgroupInListARCer::isInList.c>>=
+bool IsSubgroupInListARCer::isInList() 
+{
+#if SAFETY > 0
+  if( !theIterator )
+    error( "bool IsSubgroupInListARCer::isInList() : "
+	   "fileIterator must be initialized first");
+#endif
+  return result;
+}
+
+@
+\subsection{IsSubgroupInListARCer::runComputation}
+<<IsSubgroupInListARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<IsSubgroupInListARCer::runComputation.c>>=
+void IsSubgroupInListARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( !theIterator )
+    error( "void IsSubgroupInListARCer::runComputation( ) : "
+	   "fileIterator must be initialized first");
+#endif
+  for (theIterator->reset();!theIterator->EOL();theIterator->nextCell()){
+    SetOf<Word> s1 = makeSetOf( theSubgroup );
+    SetOf<Word> s2 = makeSetOf( theIterator->getData().generators() );
+    if ( s1 == s2 ){
+      result = true;
+      return;
+    }
+  }
+  result = false;
+}
+
+@
+\subsection{IsSubgroupInListARCer::writeResults}
+<<IsSubgroupInListARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<IsSubgroupInListARCer::writeResults.c>>=
+void IsSubgroupInListARCer::writeResults( ostream& out ) 
+{
+  out < result;
+}
+
+@
+\subsection{IsSubgroupInListARCer::readResults}
+<<IsSubgroupInListARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<IsSubgroupInListARCer::readResults.c>>=
+void IsSubgroupInListARCer::readResults( istream& in )
+{
+  in > result;
+}
+
+@
+\subsection{class IsSubgroupInListARCer}
+<<class IsSubgroupInListARCer>>=
+class IsSubgroupInListARCer : public ARCer
+{
+public:
+<<IsSubgroupInListARCer Constructor.h>>
+<<IsSubgroupInListARCer Destructor.h>>
+<<IsSubgroupInListARCer::setArguments.h>>
+<<IsSubgroupInListARCer::isInList.h>>
+<<IsSubgroupInListARCer::runComputation.h>>
+<<IsSubgroupInListARCer::writeResults.h>>
+<<IsSubgroupInListARCer::readResults.h>>
+private:
+  SMListIterator<Subgroup>* theIterator;
+  VectorOf<Word> theSubgroup;
+  bool result;
+};
+
+@
+\section{class IsSubgroupInList}
+\subsection{IsSubgroupInList Constructor}
+<<IsSubgroupInList Constructor.h>>=
+  IsSubgroupInList( SMList<Subgroup>&, const class SMSubgroup& );
+@
+<<IsSubgroupInList Constructor.c>>=
+IsSubgroupInList::IsSubgroupInList(SMList<Subgroup>& sml,
+				   const SMSubgroup& sg)
+  : Supervisor( true ),
+    theList( sml ),
+    theSubgroup( sg ),
+    arcer(*this)
+{ 
+  arcer.setArguments(sml, sg.getSubgroup().generators() );
+}
+
+@
+\subsection{IsSubgroupInList::viewStructure}
+<<IsSubgroupInList::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<IsSubgroupInList::viewStructure.c>>=
+void IsSubgroupInList::viewStructure(ostream& ostr) const
+{
+  ProblemView pv( ostr, oid(),Text("Containment problem"),
+		  Text("Determine whether") + Name(theSubgroup)
+		  + Text("lies in") + Name(theList),
+		  helpID("IsSubgroupInList", 
+			 theList.getGroup()),
+		  Text(Name(theSubgroup)) + Text("is in") +
+		  Name(theList) + Text("?")
+		  );
+  pv.startItemGroup();
+  pv.add( Text("For the use of this problem"), ThisARCSlotID(), 50 );
+  pv.done();
+}
+
+@
+\subsection{IsSubgroupInList::takeControl}
+<<IsSubgroupInList::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<IsSubgroupInList::takeControl.c>>=
+void IsSubgroupInList::takeControl( )
+{
+  if (freeARCs() > 0){
+    if (arcer.takeControl()){
+      LogMessage msg( *this, theSubgroup );
+      msg << Name( theList );
+      if (arcer.isInList())
+	msg << " contains ";
+      else
+	msg << " does not contain ";
+      msg << Name( theSubgroup ) << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    } else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{IsSubgroupInList::start}
+<<IsSubgroupInList::start.h>>=
+  void start( ) { }            // overrides ComputationManager
+@
+\subsection{IsSubgroupInList::terminate}
+<<IsSubgroupInList::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class IsSubgroupInList}
+<<class IsSubgroupInList>>=
+class IsSubgroupInList  : public Supervisor
+{
+public:
+<<IsSubgroupInList Constructor.h>>
+<<IsSubgroupInList::viewStructure.h>>
+<<IsSubgroupInList::takeControl.h>>
+<<IsSubgroupInList::start.h>>
+<<IsSubgroupInList::terminate.h>>
+private:
+  const class SMSubgroup& theSubgroup;
+  SMList<Subgroup>& theList;
+  IsSubgroupInListARCer arcer;
+
+};
+
+@
+\section{class SGListExtractOfIndexARCer}
+\subsection{SGListExtractOfIndexARCer Constructor}
+<<SGListExtractOfIndexARCer Constructor.h>>=
+  SGListExtractOfIndexARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+    minIndex( 1 ), 
+    maxIndex( 0 ) { }
+@
+\subsection{SGListExtractOfIndexARCer Destructor}
+<<SGListExtractOfIndexARCer Destructor.h>>=
+  ~SGListExtractOfIndexARCer( ) { 
+    if (theIterator)
+      delete theIterator;
+  }
+@
+\subsection{SGListExtractOfIndexARCer::setArguments}
+<<SGListExtractOfIndexARCer::setArguments.h>>=
+  void setArguments( const SMList<Subgroup>&);
+@
+<<SGListExtractOfIndexARCer::setArguments.c>>=
+void SGListExtractOfIndexARCer::setArguments( const SMList<Subgroup>& l)
+{
+  theIterator  =  new SMListIterator<Subgroup>(l);
+  theGroup = &(l.getGroup());
+}
+
+@
+\subsection{SGListExtractOfIndexARCer::getData}
+<<SGListExtractOfIndexARCer::getData.h>>=
+  const SMListData& getData() const { return theData; }
+@
+\subsection{SGListExtractOfIndexARCer::setMinimalIndex}
+<<SGListExtractOfIndexARCer::setMinimalIndex.h>>=
+  void setMinimalIndex(int  min ) { minIndex = min; }
+@
+\subsection{SGListExtractOfIndexARCer::setMaximalIndex}
+<<SGListExtractOfIndexARCer::setMaximalIndex.h>>=
+  void setMaximalIndex(int  max ) { maxIndex = max; }
+@
+\subsection{SGListExtractOfIndexARCer::runComputation}
+<<SGListExtractOfIndexARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SGListExtractOfIndexARCer::runComputation.c>>=
+void SGListExtractOfIndexARCer::runComputation( )
+{
+#if SAFETY > 0
+  if( ! theIterator )
+    error( "void SGListExtractOgIndexARCer::runComputation( ) : "
+	   "fileIterator must be initialized first");
+#endif
+  int counter = 1;
+  theData.setWriteMode();
+  for (theIterator->reset();!theIterator->EOL();theIterator->nextCell()){
+    //while ( !theIterator->EOL() ) {
+    int index;
+    VectorOf<Word> v =  theIterator->getData().generators();
+    if (theGroup->getCheckinType() == SMFPGroup::FREE )
+      index = indexInFreeGroup( v );
+    else
+      index = indexInFPGroup( v );
+    bool print = false;
+    // if maximum index is infinite
+    if ( maxIndex == 0 ){
+      if ( index >= minIndex || index == 0)
+	print = true;
+    } else {
+      if ( index >= minIndex && index <= maxIndex )
+	print = true;
+    }
+    Chars charIndex;
+    if (index != 0)
+      charIndex = Chars( index );
+    else
+      charIndex = "infinite";
+    if ( print ){
+      theData << EnumWriteVectorOfWords( v, theGroup->getFPGroup() ) 
+	      << Chars("\nIndex: ") 
+	      << charIndex
+	      << Chars(".\n\n");
+      counter ++;
+    }
+    //theIterator->nextCell();
+  }
+  theData.closeCurrentMode();
+}
+
+@
+\subsection{SGListExtractOfIndexARCer::indexInFreeGroup}
+<<SGListExtractOfIndexARCer::indexInFreeGroup.h>>=
+  int indexInFreeGroup( const VectorOf<Word>& s )const;
+@
+<<SGListExtractOfIndexARCer::indexInFreeGroup.c>>=
+int SGListExtractOfIndexARCer::indexInFreeGroup( const VectorOf<Word>& g )const
+{
+  SGofFreeGroup s( theGroup->getFreePreimage(), g );
+  return s.findIndex();
+}
+
+@
+\subsection{SGListExtractOfIndexARCer::indexInFPGroup}
+<<SGListExtractOfIndexARCer::indexInFPGroup.h>>=
+  int indexInFPGroup( const VectorOf<Word>& s )const; 
+@
+<<SGListExtractOfIndexARCer::indexInFPGroup.c>>=
+int SGListExtractOfIndexARCer::indexInFPGroup( const VectorOf<Word>& s )const
+{
+  CosetEnumerator enumerator(theGroup->getFPGroup(),s);
+  return enumerator.enumerate();
+}
+
+@
+\subsection{SGListExtractOfIndexARCer::writeResults}
+<<SGListExtractOfIndexARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<SGListExtractOfIndexARCer::writeResults.c>>=
+void SGListExtractOfIndexARCer::writeResults( ostream& out ) 
+{
+  out < theData;
+}
+
+@
+\subsection{SGListExtractOfIndexARCer::readResults}
+<<SGListExtractOfIndexARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<SGListExtractOfIndexARCer::readResults.c>>=
+void SGListExtractOfIndexARCer::readResults( istream& in )
+{
+  in > theData;
+}
+
+@
+\subsection{class SGListExtractOfIndexARCer}
+<<class SGListExtractOfIndexARCer>>=
+class SGListExtractOfIndexARCer : public ARCer
+{
+public:
+<<SGListExtractOfIndexARCer Constructor.h>>
+<<SGListExtractOfIndexARCer Destructor.h>>
+<<SGListExtractOfIndexARCer::setArguments.h>>
+<<SGListExtractOfIndexARCer::getData.h>>
+<<SGListExtractOfIndexARCer::setMinimalIndex.h>>
+<<SGListExtractOfIndexARCer::setMaximalIndex.h>>
+<<SGListExtractOfIndexARCer::indexInFreeGroup.h>>
+<<SGListExtractOfIndexARCer::indexInFPGroup.h>>
+<<SGListExtractOfIndexARCer::runComputation.h>>
+<<SGListExtractOfIndexARCer::writeResults.h>>
+<<SGListExtractOfIndexARCer::readResults.h>>
+private:
+  SMListIterator<Subgroup>* theIterator;
+  SMListData theData;
+  const SMFPGroup* theGroup;
+  int minIndex; 
+  int maxIndex;
+};
+
+@
+\section{class SGListExtractOfIndex}
+\subsection{SGListExtractOfIndex Constructor}
+<<SGListExtractOfIndex Constructor.h>>=
+  SGListExtractOfIndex( SMList<Subgroup>& );
+@
+<<SGListExtractOfIndex Constructor.c>>=
+SGListExtractOfIndex::SGListExtractOfIndex(SMList<Subgroup>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    arcer(*this),
+    started( false )
+{ 
+  arcer.setArguments(sml);
+}
+
+@
+\subsection{SGListExtractOfIndex::viewStructure}
+<<SGListExtractOfIndex::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SGListExtractOfIndex::viewStructure.c>>=
+void SGListExtractOfIndex::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract subgroups of a given index from a list",
+			    Text("Extract subgroups of a given index from ") +
+			    Name( theList ) ,
+			    helpID("SGListExtractOfIndex",
+				   theList.getGroup()),
+			    Text("index sgs")
+			    );
+  pv.addParameter(EditInteger("minIndex","Minimal index ",0,1,1,30000));
+  pv.addParameter(
+    EditInteger("maxIndex","Maximal index (0 - infinite)",0,0,0,30000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of the problem",40));
+  //  RadioButton rRB1("ToFile","Extract to a file");
+  //  RadioButton rRB2("ToList","Extract to another list");
+  //  RadioButtonGroup extractRBG("ExtractTo");
+  //   extractRBG.add(rRB1);
+  //   extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  submit(ostr, pv);
+}
+
+@
+\subsection{SGListExtractOfIndex::takeControl}
+<<SGListExtractOfIndex::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SGListExtractOfIndex::takeControl.c>>=
+void SGListExtractOfIndex::takeControl( )
+{
+  if (freeARCs() > 0){
+    int min = getParameters().getValue("minIndex");
+    int max = getParameters().getValue("maxIndex");
+    Chars maxIndex;
+    if ( max == 0) 
+      maxIndex = "infinite";
+    else
+      maxIndex = Chars(max);
+    if (arcer.takeControl()){
+      SMList<Subgroup>* smo = 
+	new  SMList<Subgroup>(theList.getGroup(),
+			      arcer.getData(),
+			      Text("Subgroups of index from ") +
+			      Text(Chars(min)+Chars(" to ")+maxIndex+
+				   Chars(" in ")) +
+			      Name(theList)
+			      ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "SGEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SGListExtractOfIndex::start}
+<<SGListExtractOfIndex::start.h>>=
+  void start( );            // overrides ComputationManager
+@
+<<SGListExtractOfIndex::start.c>>=
+void SGListExtractOfIndex::start( ) {              
+  int min = getParameters().getValue("minIndex");
+  int max = getParameters().getValue("maxIndex");
+  arcer.setMinimalIndex(min);
+  arcer.setMaximalIndex(max);
+  Chars maxIndex;
+  if ( max == 0) 
+    maxIndex = "infinite";
+  else
+    maxIndex = Chars(max);
+  LogMessage msg( *this, theList );
+  msg << Link(Chars( "Click here to see subgroups of index from ") +
+	      Chars(min) +Chars(" to ") +
+	      maxIndex + Chars(" in ") +
+	      Text( Name( theList ) ),
+	      "SGEnumerator",
+	      arcer.getData().getDataFileName(),true );
+  
+  msg.send();   
+}
+
+@
+\subsection{SGListExtractOfIndex::terminate}
+<<SGListExtractOfIndex::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SGListExtractOfIndex}
+<<class SGListExtractOfIndex>>=
+class SGListExtractOfIndex  : public Supervisor
+{
+public:
+<<SGListExtractOfIndex Constructor.h>>
+<<SGListExtractOfIndex::viewStructure.h>>
+<<SGListExtractOfIndex::takeControl.h>>
+<<SGListExtractOfIndex::start.h>>
+<<SGListExtractOfIndex::terminate.h>>
+private:
+  SMList<Subgroup>& theList;
+  bool started;
+  SGListExtractOfIndexARCer arcer;
+};
+
+@
+\section{SubgroupEnumerator.h}
+<<SubgroupEnumerator.h>>=
+#ifndef _SubgroupEnumerator_H_
+#define _SubgroupEnumerator_H_
+
+<<include.h>>
+<<class SGEnumeratorARCer>>
+<<class SGEnumeratorProblem>>
+<<class IsSubgroupInListARCer>>
+<<class IsSubgroupInList>>
+<<class SGListExtractOfIndexARCer>>
+<<class SGListExtractOfIndex>>
+#endif
+@
+\section{subgroupenumerator.c}
+<<*>>=
+
+<<include.c>>
+<<SGEnumeratorARCer::enumerate.c>>
+<<SGEnumeratorARCer::enumerateAllSubgroups.c>>
+<<SGEnumeratorARCer::getRandomWord.c>>
+
+<<SGEnumeratorProblem Constructor.c>>
+<<SGEnumeratorProblem::viewStructure.c>>
+<<SGEnumeratorProblem::takeControl.c>>
+<<SGEnumeratorProblem::start.c>>
+<<SGEnumeratorProblem::resume.c>>
+
+<<IsSubgroupInListARCer::setArguments.c>>
+<<IsSubgroupInListARCer::isInList.c>>
+<<IsSubgroupInListARCer::runComputation.c>>
+<<IsSubgroupInListARCer::writeResults.c>>
+<<IsSubgroupInListARCer::readResults.c>>
+
+<<IsSubgroupInList Constructor.c>>
+<<IsSubgroupInList::viewStructure.c>>
+<<IsSubgroupInList::takeControl.c>>
+
+<<SGListExtractOfIndexARCer::setArguments.c>>
+<<SGListExtractOfIndexARCer::runComputation.c>>
+<<SGListExtractOfIndexARCer::indexInFreeGroup.c>>
+<<SGListExtractOfIndexARCer::indexInFPGroup.c>>
+<<SGListExtractOfIndexARCer::writeResults.c>>
+<<SGListExtractOfIndexARCer::readResults.c>>
+
+<<SGListExtractOfIndex Constructor.c>>
+<<SGListExtractOfIndex::viewStructure.c>>
+<<SGListExtractOfIndex::takeControl.c>>
+<<SGListExtractOfIndex::start.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

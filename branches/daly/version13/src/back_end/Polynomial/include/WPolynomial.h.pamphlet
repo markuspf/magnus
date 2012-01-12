@@ -1,0 +1,168 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Polynomial/include/WPolynomial.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Integer.h"
+#include "Rational.h"
+#include "RingParser.h"
+#include "IStreamPoll.h"
+#include "PBTree.h"
+
+@
+\section{class WMonomial}
+<<class WMonomial>>=
+template <class R> class WMonomial
+{
+  friend class WPolynomial<R>;
+public:
+  WMonomial( const char * );
+  WMonomial( R coef = 0, int numOfVars = 0, int *powersOfVars = NULL );
+  WMonomial( const WMonomial& );
+
+  ~WMonomial( ) 
+  {     
+    if( numberOfVariables > 0 )
+      delete [] powersOfVariables; 
+  }
+
+  bool operator == ( const WMonomial& ) const;
+  WMonomial& operator = ( const WMonomial& );
+  WMonomial operator - () const;
+  WMonomial operator * ( const WMonomial& ) const;
+  WMonomial operator + ( const WMonomial& ) const;
+  WMonomial& operator += ( const WMonomial& );
+  //bool operator < ( const WMonomial& M ) const { return compare(M) < 0; }
+  int compare( const WMonomial& ) const;
+  R getCoefficient( ) const { return theCoefficient; }
+  void setCoefficient( const R& c ) { theCoefficient = c; }
+  int getNumberOfVariables() const { return numberOfVariables; }
+  int getPowerOfVariable( int i ) const;
+  void setPowerOfVariable( int i, int v);
+
+  friend ostream& operator << ( ostream& ostr, const WMonomial& M )
+  {
+    M.printOn(ostr);
+    return ostr;
+  }
+
+  friend IStreamPoll operator >> ( istream& istr, WMonomial& M )
+  {
+    Chars errMesg;
+    M = M.readFrom(istr, errMesg);
+    return IStreamPoll( istr, errMesg );
+  }
+
+private:
+  R theCoefficient;
+  int numberOfVariables;
+  int *powersOfVariables;
+  void printOn( ostream& ) const;
+
+  WMonomial readFrom( istream& istr, Chars& errMesg )
+  {
+    WMonomialParser<R> P(istr);
+    return P.parseWMonomial(errMesg);
+  }
+
+#ifdef DEBUG
+  //  friend int main( );
+#endif
+};
+
+@
+\section{class WPolynomial}
+<<class WPolynomial>>=
+template <class R> 
+class WPolynomial : public PBTree< WMonomial<R>, WMonomial<R> >
+{
+public:
+  WPolynomial( ) : PBTree< WMonomial<R>, WMonomial<R> >( ) { }  
+  WPolynomial( const char*);
+  WPolynomial( const WMonomial<R>& );
+  WPolynomial( const WPolynomial& );
+  bool operator == ( const WPolynomial& ) const;
+  WPolynomial& operator = ( const WPolynomial& );
+  WPolynomial& operator += ( const WPolynomial& );
+  WPolynomial& operator -= ( const WPolynomial& );
+  WPolynomial& operator *= ( const WPolynomial& );
+  WPolynomial operator + ( const WPolynomial& ) const; 
+  WPolynomial operator - ( const WPolynomial& ) const; 
+  WPolynomial operator * ( const WPolynomial& ) const; 
+  WPolynomial operator - ( ) const;
+  bool isIdentity( ) const;
+
+  friend ostream& operator << ( ostream& ostr, const WPolynomial& P )
+  {
+    P.printOn(ostr);
+    return ostr;
+  }
+
+  friend IStreamPoll operator >> ( istream& istr, WPolynomial& P )
+  {
+    Chars errMesg;
+    P = P.readFrom(istr, errMesg);
+    return IStreamPoll( istr, errMesg );
+  }
+
+private:
+  void printOn( ostream& ) const;
+
+  WPolynomial readFrom( istream& istr, Chars& errMesg )
+  {
+    WPolynomialParser<R> P(istr);
+    return P.parseWPolynomial(errMesg);
+  }
+
+  virtual void theKeyIsFound( const WMonomial<R>& key, WMonomial<R>& value )
+  {
+    value += key;
+    if( value.getCoefficient() == 0 )
+      remove(value);
+    //R c = value.getCoefficient();
+    //value.setCoefficient( c + key.getCoefficient() ); 
+  } 
+
+#ifdef DEBUG
+//  friend int main( );
+#endif
+};
+
+@
+\section{struct WPolynomialIterator}
+<<struct WPolynomialIterator>>=
+template <class R> 
+struct WPolynomialIterator : public PBTreeIterator< WMonomial<R>, WMonomial<R> >
+{ 
+  WPolynomialIterator( const WPolynomial<R>& P )
+    : PBTreeIterator< WMonomial<R>, WMonomial<R> > ( P ) { }
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Polynomial/include/WPolynomial.h
+#ifndef _WPolynomial_H_
+#define _WPolynomial_H_
+
+<<license>>
+<<include>>
+<<class WMonomial>>
+<<class WPolynomial>>
+<<struct WPolynomialIterator>>
+#endif
+
+
+

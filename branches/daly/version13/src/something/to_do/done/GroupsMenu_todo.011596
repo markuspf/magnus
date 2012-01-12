@@ -1,0 +1,22 @@
+All groups
+
+Is A1 trivial?
+Is A1 finite? (!free)
+Is A1 abelian (except for abelian groups, !free)?
+Is A1 nilpotent? (!nilpotent, !free)
+Is A1 polycyclic? (!nilpotent, !abelian, !free)
+Is A1 metabelian (!free, !abelian, !2-nilpotent, metabelian)
+Is A1 metric small cancellation? (!metric small cancellation, !free)
+Is A1 a one-relator group? (!free, !one-relator)
+Is free (!free)
+_____________________________________________________________________
+
+Find the order of A1 (!free)
+Compute the cyclic decomposition of G1 abelianized (!abelian, !free)
+Compute the integral homology groups of G1 (!free)
+Compute the center of A1 (!abelian, !free)
+Find a finite rewriting system for G1 (!free)
+Find a short-lex automatic structure for G1
+___________________________________________________________________
+
+

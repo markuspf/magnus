@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Group/include/RandomMSCGroup.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "MSCGroup.h"
+#include "RandomNumbers.h"
+#include "NormalRandomWord.h"
+
+@
+\section{class RandomMSCGroup}
+<<class RandomMSCGroup>>=
+class RandomMSCGroup {
+public:
+
+  RandomMSCGroup ( 
+    int numOfGenerators, 
+    int generatorsSeed,
+    int meanLengthOfRelators, 
+    int lengthOfRelatorsStddev, 
+    int lengthOfRelatorsSeed, 
+    int meanNumberOfRelators, 
+    int numberOfRelatorsStddev, 
+    int numberOfRelatorsSeed
+  ) :
+    numOfGens ( numOfGenerators ), 
+    gensSeed ( generatorsSeed ),
+    meanLenOfRels ( meanLengthOfRelators ), 
+    lenOfRelsStddev ( lengthOfRelatorsStddev ),
+    lenOfRelsSeed ( lengthOfRelatorsSeed ),  
+    meanNumOfRels ( meanNumberOfRelators ), 
+    numOfRelsStddev ( numberOfRelatorsStddev ), 
+    numOfRelsSeed ( numberOfRelatorsSeed )
+  { }
+
+  FPGroup getRandomMSCGroup();
+  // This is non const functions.
+
+private:
+  int numOfGens;
+  int gensSeed;
+  int meanLenOfRels;
+  int lenOfRelsStddev;
+  int lenOfRelsSeed;
+  int meanNumOfRels;
+  int numOfRelsStddev;
+  NormalRandom numOfRelsSeed;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Group/include/RandomMSCGroup.h
+#ifndef _RANDOM_MSC_GROUP_H_
+#define _RANDOM_MSC_GROUP_H_
+
+<<license>>
+<<include>>
+<<class RandomMSCGroup>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

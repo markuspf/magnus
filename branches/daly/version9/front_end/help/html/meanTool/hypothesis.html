@@ -1,0 +1,742 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="description" content="meanTool">
+   <meta name="keywords" content="meanTool">
+   <meta name="resource-type" content="document">
+   <meta name="distribution" content="global">
+   <meta name="Generator" content="LaTeX2HTML v2K.1beta">
+   <meta http-equiv="Content-Style-Type" content="text/css">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (X11; U; Linux 2.4.7-10smp i686) [Netscape]">
+   <title>meanTool</title>
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<link REL="STYLESHEET" HREF="meanTool.css">
+</head>
+<body>
+&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<center><b>HYPOTHESIS TESTING FOR THE MEAN</b></center>
+
+<center><b>OF A ONE VARIABLE DATA SET</b></center>
+
+<center><b>(1) GENERAL THEORY OF HYPOTHESIS TESTING</b></center>
+
+<p>In that <b>estimation theory</b> we considered sampling from a population
+and then estimating parameter values from the computed sample information.
+We now discuss <b>statistical testing</b> or <b>hypothesis testing</b>.
+Much of the theoretical framework is the same as in estimation theory but
+the viewpoint is different. In hypothesis testing we begin with a claim
+or <b>hypothesis</b> about a population parameter and then test this claim
+by looking at sample information.
+<p>Suppose that standard guidelines say that the average time to complete
+a certain surgical procedure is 2 hours or 120 minutes. We take the claim
+of an average of 120 minutes as a <b>hypothesis</b> about the true population
+mean and we wish to test whether this is correct or not. Suppose further
+that a random sample of 25 of these surgical procedures had an average
+(sample average) completion time of 151 minutes. Then the observed evidence
+is that it actually takes longer than 120 minutes on average. Of course
+the difference between the theoretical avergae of 120 minutes and the observed
+value of 151 minutes may be soley due to random variation. If we use the
+computed sample mean of 151 minutes as evidence that either the claim that
+the population mean is 120 is correct or that the claim is too low this
+is an example of a <b>hypothesis testing procedure</b>. Essentially here
+we are looking at whether the observed value, 151 minutes, is far enough
+away from the hypothesized mean of 120 minutes to be evidence that 120
+is too low. The criteria used to determine in a scientific manner whether
+it is far enough away will be discussed below.
+<p>What is crucial in statistical hypothesis testing is that the general
+procedure is not to prove the hypothesis but rather <b>to attempt to disprove
+the hypothesis</b>. For this reason the hypotheses that we test in statistics
+are called <b>null hypotheses</b> because we are trying to null them or
+negate them. If we cannot null them or negate them we accept them. Null
+hypotheses are denoted by&nbsp;<img SRC="img102.gif" ALT="$ H_0$" BORDER=0 height=28 width=64 align=CENTER>
+and generally have the form<!-- MATH
+ \begin{displaymath}
+H_0: \theta = \theta_0
+\end{displaymath}
+ -->
+<center><img SRC="img103.gif" ALT="$\displaystyle H_0: \theta = \theta_0$" BORDER=0 height=29 width=127 align=CENTER></center>
+where&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+is a parameter and&nbsp;<img SRC="img104.gif" ALT="$ \theta_0$" BORDER=0 height=14 width=11 align=CENTER>
+is a particular value.
+<p>In the example involving the surgical procedure time the parameter being
+tested is the population mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+and the claim is that this mean is 120 minutes. Therefore for this test
+the null hypothesis is<!-- MATH
+ \begin{displaymath}
+H_0: \mu = 120.
+\end{displaymath}
+ -->
+<center><img SRC="img105.gif" ALT="$\displaystyle H_0: \mu = 120.$" BORDER=0 height=28 width=28 align=CENTER></center>
+EXAMPLE 6 Suppose we consider two different hospitals A and B and we wish
+to determine if the average per patient cost for a given procedure is the
+same in both hospitals. If we let&nbsp;<img SRC="img106.gif" ALT="$ \mu_A$" BORDER=0 height=29 width=81 align=CENTER>
+be the average per patient cost in hospital A and&nbsp;<img SRC="img107.gif" ALT="$ \mu_B$" BORDER=0 height=29 width=25 align=CENTER>
+be the average per patient cost in hospital B then the parameter being
+testing is&nbsp;<!-- MATH
+ $\mu_A - \mu_B$
+ --><img SRC="img108.gif" ALT="$ \mu_A - \mu_B$" BORDER=0 height=29 width=81 align=CENTER>
+the difference of the two means. The appropriate null hypothesis is then<!-- MATH
+ \begin{displaymath}
+H_0:\mu_A - \mu_B = 0
+\end{displaymath}
+ -->
+<center><img SRC="img109.gif" ALT="$\displaystyle H_0:\mu_A - \mu_B = 0$" BORDER=0 height=29 width=81 align=CENTER></center>
+a difference of 0 indicating no difference between the two hospitals.
+<br>&nbsp;
+<br>&nbsp;
+<p>To actually test a given null hypothesis we roughly proceed as follows:
+for an estimator statistic&nbsp;<img SRC="img14.gif" ALT="$ \th$" BORDER=0 height=14 width=4 align=BOTTOM>
+for&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+we have a cutoff value&nbsp;<img SRC="img110.gif" ALT="$ c$" BORDER=0 height=29 width=86 align=BOTTOM>.
+If&nbsp;<img SRC="img111.gif" ALT="$ \th >c$" BORDER=0 height=29 width=97 align=CENTER>
+we reject the null hypothesis while otherwise we accept it. Which estimator
+statistic to use, how the value of&nbsp;<img SRC="img110.gif" ALT="$ c$" BORDER=0 height=29 width=86 align=BOTTOM>
+is determined and how to actually carry out the analysis we will now discuss.
+<p>In testing a null hypothesis&nbsp;<!-- MATH
+ $H_0: \theta = \theta_0$
+ --><img SRC="img112.gif" ALT="$ H_0: \theta = \theta_0$" BORDER=0 height=14 width=14 align=CENTER>
+the idea is to attempt to disprove it or reject it. We must therefore have
+an <b>alternative hypothesis</b>, which we denote by&nbsp;<img SRC="img113.gif" ALT="$ H_1$" BORDER=0 height=29 width=14 align=CENTER>
+to accept if we do reject&nbsp;<img SRC="img102.gif" ALT="$ H_0$" BORDER=0 height=28 width=64 align=CENTER>.
+The alternative hypothesis can have one of three possible forms:<!-- MATH
+ \begin{displaymath}
+H_1: \theta \ne \theta_0
+\end{displaymath}
+ -->
+<center><img SRC="img114.gif" ALT="$\displaystyle H_1: \theta \ne \theta_0$" BORDER=0 height=29 width=41 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta > \theta_0
+\end{displaymath}
+ -->
+<center><img SRC="img115.gif" ALT="$\displaystyle H_1: \theta > \theta_0$" BORDER=0 height=29 width=14 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta < \theta_0.
+\end{displaymath}
+ -->
+<center><img SRC="img116.gif" ALT="$\displaystyle H_1: \theta < \theta_0.$" BORDER=0 height=29 width=37 align=CENTER></center>
+The first form is called a <b>two-sided alternative</b> while the second
+two forms are called <b>one-sided alternatives</b>. Usually the alternative
+hypothesis is what is really believed to be true in the test. The null
+hypothesis is set up in such a manner so that if it is rejected we arrive
+at the appropriate alternative.
+<p>EXAMPLE
+<p>In the test of surgical time we had the null hypothesis<!-- MATH
+ \begin{displaymath}
+H_0:\mu = 120.
+\end{displaymath}
+ -->
+<center><img SRC="img105.gif" ALT="$\displaystyle H_0: \mu = 120.$" BORDER=0 height=28 width=28 align=CENTER></center>
+The computed evidence is that this figure is too low or equivalently that
+the true mean is higher. Therefore in this case the appropriate alternative
+is<!-- MATH
+ \begin{displaymath}
+H_1: \mu > 120.
+\end{displaymath}
+ -->
+<center><img SRC="img117.gif" ALT="$\displaystyle H_1: \mu > 120.$" BORDER=0 height=29 width=33 align=CENTER></center>
+This is a one-sided alternative.
+<br>&nbsp;
+<br>&nbsp;
+<p>Once a null hypothesis and alternative hypothesis are chosen we have
+the following schematic situation (figure 1) which contains all the relevant
+information about statistical testing.
+<br>5.19 truein by 3.13truein (Hyptest1 scaled 850)
+<center>Figure 1 Hypothesis Testing</center>
+
+<p>A <b>type 1 error</b> is the error of rejecting a null hypothesis when
+it is really true. Here we randomly get a sample which refutes the null
+hypothesis even though the null hypothesis is true. The probability or
+risk of committing a type 1 error is called the <b>level of significance</b>
+or<!-- MATH
+ $\bold{\alpha}$
+ --><img SRC="img118.gif" ALT="$ \bold{\alpha}$" BORDER=0 height=28 width=8 align=BOTTOM>-<b>error</b>
+(alpha error). A <b>type 2 error</b> is the error of accepting a null hypothesis
+when it is really false. Here we randomly obtain a sample which backs up
+the null hypothesis even though the null hypothesis is false. The probability
+or risk of committing a type 1 error is called the&nbsp;<!-- MATH
+ $\bold{\beta}$
+ --><img SRC="img119.gif" ALT="$ \bold{\beta}$" BORDER=0 height=29 width=48 align=CENTER>-<b>error</b>
+(beta error). It is also called the
+<b>operating characteristic value</b>.
+The probability of not committing a type 2 error {the lower right hand
+box} is&nbsp;<img SRC="img120.gif" ALT="$ 1- \beta$" BORDER=0 height=14 width=22 align=CENTER>
+and is called the <b>power of the test</b>. If there are two possible tests
+for a hypothesis the more powerful test is the one with the higher power.
+The values of<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+and&nbsp;<img SRC="img121.gif" ALT="$ \beta$" BORDER=0 height=28 width=19 align=CENTER>
+are inversely related for a fixed sample size. That is if there is a small<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>,
+that is a small chance of making a type 1 error, there may be a larger&nbsp;<img SRC="img121.gif" ALT="$ \beta$" BORDER=0 height=28 width=19 align=CENTER>,
+or a larger chance of making a type 2 error. If we wish to maintain a small&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+and have a smaller<img SRC="img121.gif" ALT="$ \beta$" BORDER=0 height=28 width=19 align=CENTER>
+we must take a larger sample size. The relationship between&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+and&nbsp;<img SRC="img121.gif" ALT="$ \beta$" BORDER=0 height=28 width=19 align=CENTER>
+is analogous to the relationship between confidence and accuracy in an
+estimation procedure.
+<p>In setting up a criterion for accepting or rejecting a null hypothesis&nbsp;<img SRC="img102.gif" ALT="$ H_0$" BORDER=0 height=28 width=64 align=CENTER>
+we attempt to set the level of significance at a predetermined small value.
+In most practical testing this value is either 1% or 5% although any value
+can be used. For example if a test is conducted at a 5% level of significance
+this means that there is only a 5% chance of rejecting the null hypothesis
+if it is really true.
+<p>There is a nice analogy between the hypothesis testing framework and
+the framework of the criminal justice system in the United States. When
+a defendant goes into court the presumption is innocent until proven guilty.
+The burden of proof is all on the prosecution. Hence the defendants innocence
+is a null hypothesis while the alternative is the defendant's guilt. Therefore
+we have<!-- MATH
+ \begin{displaymath}
+H_O: \text{ Defendant is Inncoent}
+\end{displaymath}
+ -->
+<center><img SRC="img122.gif" ALT="$\displaystyle H_O:$" BORDER=0 height=14 width=50 align=CENTER>&nbsp;&nbsp;&nbsp;
+Defendant is Inncoent</center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \text{ Defendant is Guilty}.
+\end{displaymath}
+ -->
+<center><img SRC="img123.gif" ALT="$\displaystyle H_1:$" BORDER=0 height=14 width=49 align=CENTER>&nbsp;&nbsp;&nbsp;
+Defendant is Guilty<img SRC="img124.gif" ALT="$\displaystyle .$" BORDER=0 height=14 width=53 align=CENTER></center>
+Then there is the following schematic.
+<br>4.69truein by 2.18truein (Legal scaled 850)
+<center>Figure 2 Legal Analogy</center>
+
+<p>Hence in this legal analogy the&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>-error
+is convicting an inncoent defendant while the<img SRC="img121.gif" ALT="$ \beta$" BORDER=0 height=28 width=19 align=CENTER>-error
+is letting a guilty defendant go free. Historically the American legal
+system has been geared to making&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+as small as possible. What must be realized is that this follows the above
+theoretical model so that&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>
+and&nbsp;<img SRC="img121.gif" ALT="$ \beta$" BORDER=0 height=28 width=19 align=CENTER>
+are inversely related. In practical terms this means that anything that
+is done to make it harder to convict an innocent person will increase the
+probability of letting a guilty person go free. Conversely anything done
+to make it harder for a guilty person to go free will increase the probability
+of convicting an innocent person.
+<center><b>(2) GENERAL STATISTICAL TESTING PROCEDURE</b></center>
+For any statistical hypothesis test there is a five step procedure that
+is always followed. What will differ in this procedure in going from test
+to test is the type of test statistic used and the determination of critical
+regions. We will go over this procedure, do some examples and then in the
+rest of the chapter go over the particular types of tests most relevant
+to nursing and medical practice.
+<br>&nbsp;
+<br>&nbsp;
+<p>The <b>first step</b> in the testing procedure is to <b>formulate the
+null hypothesis<img SRC="img102.gif" ALT="$ H_0$" BORDER=0 height=28 width=64 align=CENTER></b>.
+As explained in section 6.1 this will usually have the form&nbsp;<!-- MATH
+ $\theta = \theta_0$
+ --><img SRC="img125.gif" ALT="$ \theta = \theta_0$" BORDER=0 height=28 width=51 align=CENTER>
+where&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+is a parameter and&nbsp;<img SRC="img104.gif" ALT="$ \theta_0$" BORDER=0 height=14 width=11 align=CENTER>
+is a particular value. Recall that we are not trying to prove this null
+hypothesis but rather to disprove it or reject it. If we cannot reject
+it it will be accepted.
+<br>&nbsp;
+<br>&nbsp;
+<p>The <b>second step</b> in the testing procedure is to <b>formulate the
+alternative hypothesis<img SRC="img113.gif" ALT="$ H_1$" BORDER=0 height=29 width=14 align=CENTER></b>
+which will be accepted if the null hypothesis is rejected. As explained
+in the last section the alternative hypothesis can have one of three possible
+forms:<!-- MATH
+ \begin{displaymath}
+H_1: \theta \ne \theta_0
+\end{displaymath}
+ -->
+<center><img SRC="img114.gif" ALT="$\displaystyle H_1: \theta \ne \theta_0$" BORDER=0 height=29 width=41 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta > \theta_0
+\end{displaymath}
+ -->
+<center><img SRC="img115.gif" ALT="$\displaystyle H_1: \theta > \theta_0$" BORDER=0 height=29 width=14 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta < \theta_0.
+\end{displaymath}
+ -->
+<center><img SRC="img116.gif" ALT="$\displaystyle H_1: \theta < \theta_0.$" BORDER=0 height=29 width=37 align=CENTER></center>
+The first form is called a <b>two-sided alternative</b> while the second
+two forms are called <b>one-sided alternatives</b>. The alternative hypothesis
+i usually what is really believed in the test. The null hypothesis is set
+up in such a manner so that if it is rejected we arrive at the appropriate
+alternative.
+<br>&nbsp;
+<br>&nbsp;
+<p>The <b>third step</b> in the testing procedure is to choose three things:
+a <b>level of significance</b>, a <b>sample size</b> and an <b>appropriate
+test statistic</b>.
+<p>The level of significance is the probability of making a type 1 error,
+that is the probability of rejecting the null hypothesis when it is true.
+It is chosen to be a small number, usually 1% or 5%, although any value
+can be used. If we reject at 1% value then we are 99% confident that we
+made the right decision.
+<p>The appropriate test statistic is a statistic whose sampling distribution
+depends upon the parameter being tested. We wish to find the cutoff value
+so that the probability of the observed value of the test statistic is
+low (less than the level of significance) if the null hypothesis is false.
+How we arrive at appropriate test statistics will be discussed in subsequent
+sections.
+<br>&nbsp;
+<br>&nbsp;
+<p>The <b>fourth step</b> in the testing procedure is to determine a <b>rejection
+region</b> or <b>critical region</b>. This region will serve as the cutoff
+for accepting or rejecting the null hypothesis. If the observed value of
+the test statistic falls in the rejection region the null hypothesis will
+be rejectedd. If the observed value of the test statistic doesn't fall
+in the rejection region then the null hypothesis will be accepted. The
+determination of the critical region will be based on the level of significance
+and the sampling distribution of the test statistic and will be determined
+so that the probability of a value of the test statistic falling the critical
+region is less than the level of significance. Again we will see how this
+is done for specific test statistics in subsequent sections.
+<br>&nbsp;
+<br>&nbsp;
+<p>The <b>fifth step</b> and final step in the testing procedure is to
+obtain sample results and a value for the test statistic. If the test results
+are in the rejection region the results are said to be <b>statistically
+significant</b> and the null hypothesis&nbsp;<img SRC="img102.gif" ALT="$ H_0$" BORDER=0 height=28 width=64 align=CENTER>
+is rejected in favor of the alternative&nbsp;<img SRC="img113.gif" ALT="$ H_1$" BORDER=0 height=29 width=14 align=CENTER>.
+If the test results are not in the rejection region then we say the results
+are
+<b>not statistically significant</b> and the null hypothesis&nbsp;<img SRC="img102.gif" ALT="$ H_0$" BORDER=0 height=28 width=64 align=CENTER>
+is accepted. Thus significant results lead to rejection of the null hypothesis
+while not significant results lead to acceptance of the null hypothesis.
+<p>Another concept is important relative to this fifth step. The <b>P-value</b>
+of the test results is the probability of obtaining a value of the test
+statistic more unusual that what was obtained, assuming the null hypothesis
+is true. If there is a level of significance&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>,
+then being in the rejection region is equivalent to having a P-value less
+than&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>.
+Hence the null hypothesis is rejected whenever the P-value is less than
+the given level of significance. Therefore we have the following two equivalent
+rejection criteria:
+<p><!-- MATH
+ $\hphantom{xx}$
+ --><img SRC="img126.gif" ALT="$ \hphantom{xx}$" BORDER=0 height=28 width=51 align=BOTTOM>
+(1) The value of the test statistic falls in the rejection region
+<p><!-- MATH
+ $\hphantom{xx}$
+ --><img SRC="img126.gif" ALT="$ \hphantom{xx}$" BORDER=0 height=28 width=51 align=BOTTOM>
+(2) The P-value of the test results are lower than the level of significance<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>.
+<p>The second criteria is important to note since many computer programs
+print the P-values. In using these programs the rejection regions don't
+have to be determined - just the computed P-values compared with the given&nbsp;<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM>.
+.
+<p>We now summarize the five step procedure and then do several examples.
+<br>&nbsp;
+<br>&nbsp;
+<center><b>FIVE STEP HYPOTHESIS TESTING PROCEDURE</b></center>
+
+<p><br><!-- MATH
+ $\hphantom{xx}$
+ --><img SRC="img126.gif" ALT="$ \hphantom{xx}$" BORDER=0 height=28 width=51 align=BOTTOM>
+<b>STEP ONE</b>: Formulate the null hypothesis:&nbsp;<!-- MATH
+ \begin{displaymath}
+H_0: \theta = \theta_0
+\end{displaymath}
+ -->
+<center><img SRC="img103.gif" ALT="$\displaystyle H_0: \theta = \theta_0$" BORDER=0 height=29 width=127 align=CENTER></center>
+where&nbsp;<img SRC="img12.gif" ALT="$ \theta$" BORDER=0 height=15 width=12 align=BOTTOM>
+is a parameter and&nbsp;<img SRC="img104.gif" ALT="$ \theta_0$" BORDER=0 height=14 width=11 align=CENTER>
+a particular value.
+<br>&nbsp;
+<p><!-- MATH
+ $\hphantom{xx}$
+ --><img SRC="img126.gif" ALT="$ \hphantom{xx}$" BORDER=0 height=28 width=51 align=BOTTOM>
+<b>STEP TWO</b>: Formulate the alternative hypothesis:<!-- MATH
+ \begin{displaymath}
+H_1: \theta \ne \theta_0 \text { or}
+\end{displaymath}
+ -->
+<center><img SRC="img114.gif" ALT="$\displaystyle H_1: \theta \ne \theta_0$" BORDER=0 height=29 width=41 align=CENTER><img SRC="img127.gif" ALT="$\displaystyle \text { or}$" BORDER=0 height=29 width=85 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta > \theta_0 \text { or}
+\end{displaymath}
+ -->
+<center><img SRC="img115.gif" ALT="$\displaystyle H_1: \theta > \theta_0$" BORDER=0 height=29 width=14 align=CENTER><img SRC="img127.gif" ALT="$\displaystyle \text { or}$" BORDER=0 height=29 width=85 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \theta < \theta_0.
+\end{displaymath}
+ -->
+<center><img SRC="img116.gif" ALT="$\displaystyle H_1: \theta < \theta_0.$" BORDER=0 height=29 width=37 align=CENTER></center>
+
+<p><!-- MATH
+ $\hphantom{xx}$
+ --><img SRC="img126.gif" ALT="$ \hphantom{xx}$" BORDER=0 height=28 width=51 align=BOTTOM>
+<b>STEP THREE</b>: Choose a <b>level of significance<img SRC="img35.gif" ALT="$ \alpha$" BORDER=0 height=14 width=14 align=BOTTOM></b>,
+a <b>sample size<img SRC="img9.gif" ALT="$ n$" BORDER=0 height=14 width=14 align=BOTTOM></b>
+and <b>an appropriate test statistic</b>.
+<br>&nbsp;
+<br>&nbsp;
+<p><!-- MATH
+ $\hphantom{xx}$
+ --><img SRC="img126.gif" ALT="$ \hphantom{xx}$" BORDER=0 height=28 width=51 align=BOTTOM>
+<b>STEP FOUR</b>: Based on the sampling distribution of the test statistic
+and the chosen level of significance determine a <b>rejection region</b>
+or <b>critical region</b>. The values not in the rejection region are called
+the <b>acceptance region</b>.
+<br>&nbsp;
+<br>&nbsp;
+<p><!-- MATH
+ $\hphantom{xx}$
+ --><img SRC="img126.gif" ALT="$ \hphantom{xx}$" BORDER=0 height=28 width=51 align=BOTTOM>
+<b>STEP FIVE</b>: Obtain test results and a value for the test statistic.
+<p><!-- MATH
+ $\hphantom{xxxxx}$
+ --><img SRC="img128.gif" ALT="$ \hphantom{xxxxx}$" BORDER=0 height=29 width=85 align=BOTTOM>
+(a) If the test results are in the rejection region the results are said
+to be <b>statistically significant</b> and the null hypothesis&nbsp;<img SRC="img102.gif" ALT="$ H_0$" BORDER=0 height=28 width=64 align=CENTER>
+is rejected in favor of the alternative&nbsp;<img SRC="img113.gif" ALT="$ H_1$" BORDER=0 height=29 width=14 align=CENTER>.
+This is equivalent to the P-value of the test results being lower than
+the level of significance.
+<p><!-- MATH
+ $\hphantom{xxxxx}$
+ --><img SRC="img128.gif" ALT="$ \hphantom{xxxxx}$" BORDER=0 height=29 width=85 align=BOTTOM>
+(b)If the test results are not in the rejection region then we say the
+results are
+<b>not statistically significant</b> and the null hypothesis&nbsp;<img SRC="img102.gif" ALT="$ H_0$" BORDER=0 height=28 width=64 align=CENTER>
+is accepted. This is equivalent to the P-value of the results being higher
+than the level of significance.
+<br>&nbsp;
+<br>&nbsp;
+<p>EXAMPLE It is claimed that the average production time for a certain
+produced item is 26 minutes. There is some evidence that it actually takes
+longer. To test the claim, 64 items were sampled. A sample average production
+time of&nbsp;<img SRC="img129.gif" ALT="$ \X = 27.5$" BORDER=0 height=14 width=56 align=BOTTOM>
+minutes with a standard deviation of&nbsp;<img SRC="img130.gif" ALT="$ s = 4.5$" BORDER=0 height=47 width=64 align=BOTTOM>
+minutes was computed. Is this enough evidence at a 5% level of significance
+to reject the claim.
+<p>Here the null hypothesis is&nbsp;<img SRC="img131.gif" ALT="$ \mu = 26$" BORDER=0 height=14 width=41 align=CENTER>
+matching the claim. We are interested in the fact that it actually takes
+longer so the alternative is&nbsp;<img SRC="img132.gif" ALT="$ \mu > 26$" BORDER=0 height=14 width=62 align=CENTER>.
+This is a one-sided alternative. Hence we have<!-- MATH
+ \begin{displaymath}
+H_0: \mu = 26
+\end{displaymath}
+ -->
+<center><img SRC="img133.gif" ALT="$\displaystyle H_0: \mu = 26$" BORDER=0 height=28 width=18 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu > 26
+\end{displaymath}
+ -->
+<center><img SRC="img134.gif" ALT="$\displaystyle H_1: \mu > 26$" BORDER=0 height=28 width=67 align=CENTER></center>
+This takes care of steps one and two.
+<p>The sample size is&nbsp;<img SRC="img63.gif" ALT="$ n = 64$" BORDER=0 height=14 width=51 align=BOTTOM>
+while the chosen level of significance is&nbsp;<!-- MATH
+ $\alpha = .05$
+ --><img SRC="img135.gif" ALT="$ \alpha = .05$" BORDER=0 height=28 width=105 align=BOTTOM>.
+An appropriate test statistic for testing hypotheses concerning means (see
+section 6.5) is&nbsp;<!-- MATH
+ \begin{displaymath}
+z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}.
+\end{displaymath}
+ -->
+<center><img SRC="img136.gif" ALT="$\displaystyle z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}.$" BORDER=0 height=28 width=51 align=CENTER></center>
+Recall from the last chapter that for large sample sizes the above statistic
+has an approximate normal distribution. This means that in step four we
+will use the normal distribution to determine the rejection region.
+<p>In figure 3 we see a normal distribution with a supposed mean of&nbsp;<img SRC="img131.gif" ALT="$ \mu = 26$" BORDER=0 height=14 width=41 align=CENTER>.
+This corresponds to a z-value of&nbsp;<img SRC="img137.gif" ALT="$ z = 0$" BORDER=0 height=49 width=155 align=BOTTOM>.
+Given the alternative&nbsp;<img SRC="img132.gif" ALT="$ \mu > 26$" BORDER=0 height=14 width=62 align=CENTER>
+it is clear that high values of the mean will lead to rejection. The 5%
+level tells us how high - only the highest 5% will lead to rejection. From
+the standard normal table we find (as in chapter four) that a z-value of&nbsp;<img SRC="img138.gif" ALT="$ z = 1.65$" BORDER=0 height=29 width=93 align=BOTTOM>
+cuts off the highest 5%. This is called the <b>critical z-value</b>, which
+we denote by&nbsp;<img SRC="img139.gif" ALT="$ z_c$" BORDER=0 height=28 width=21 align=CENTER>.
+Here then i&nbsp;<!-- MATH
+ $z_c = 1.65$
+ --><img SRC="img140.gif" ALT="$ z_c = 1.65$" BORDER=0 height=47 width=67 align=CENTER>.
+This is the cutoff above which there will be rejection. Notice that since
+the alternative is one-sided only one tail of the normal curve leads to
+rejection. Tests like this are then called <b>one-tailed tests</b>. If
+both tails led to rejection it would be called a <b>two-tailed test</b>.
+<br>3.56truein by 1.76truein (Reject1 scaled 850)
+<center>figure 3 Rejection Region</center>
+The sample results are:<!-- MATH
+ \begin{displaymath}
+\X = 27.5, s = 4.5 \text{ and } n = 64
+\end{displaymath}
+ -->
+<center><img SRC="img141.gif" ALT="$\displaystyle \X = 27.5, s = 4.5$" BORDER=0 height=47 width=65 align=CENTER>&nbsp;&nbsp;&nbsp;
+and&nbsp;<img SRC="img142.gif" ALT="$\displaystyle n = 64$" BORDER=0 height=29 width=85 align=CENTER></center>
+therefore the value of the test statistic is<!-- MATH
+ \begin{displaymath}
+z = \frac{27.5 - 26}{\frac{4.5}{8}} = 2.67.
+\end{displaymath}
+ -->
+<center><img SRC="img143.gif" ALT="$\displaystyle z = \frac{27.5 - 26}{\frac{4.5}{8}} = 2.67.$" BORDER=0 height=29 width=89 align=CENTER></center>
+This value falls in the rejection region and therefore the results are
+significant. It follows that the null hypothesis of&nbsp;<img SRC="img131.gif" ALT="$ \mu = 26$" BORDER=0 height=14 width=41 align=CENTER>
+is rejected in favor of the alternative&nbsp;<img SRC="img132.gif" ALT="$ \mu > 26$" BORDER=0 height=14 width=62 align=CENTER>.
+<p>The results would be reported in the following manner.
+<br>&nbsp;
+<p>At a 5% level the result were significant. Therefore the null hypothesis
+that the mean was 26 is rejected in favor of the alternative that the mean
+is greater than 26.
+<br>&nbsp;
+<br>&nbsp;
+<p>From A normal table we see that there is a probability of only .0037
+of obtaining a z-value of over 2.67. Hence the P-value of the above test
+results is .0037. This is below&nbsp;<!-- MATH
+ $\alpha = .05$
+ --><img SRC="img135.gif" ALT="$ \alpha = .05$" BORDER=0 height=28 width=105 align=BOTTOM>.
+Again using the P-value criterion the null hypothesis would be rejected
+since the P-value is lower than the chosen level.
+<br>&nbsp;
+<br>&nbsp;
+<p>It should be clear from this example that the testing procedure is rather
+straightforward once an appropriate test statistic and its sampling distribution
+is known. Therefore what must be done now is to describe the important
+testing situations together with the appropriate corresponding test statistics.
+<br>&nbsp;
+<br>&nbsp;
+<center><b>(3) OVERVIEW OF PARAMETRIC TESTING</b></center>
+
+<p>In most practical testing situations there are three population parameters
+that may be of interest:
+<b>means</b>, <b>standard deviations</b> and <b>proportions</b>.
+Hypotheses on these parameters can be tested in several different ways.
+<p>In a <b>one-sample test</b>, the value of the parameter is tested against
+some predetermined standard or target value. The sample results in a single
+sample are used to either accept of reject that standard. Both examples
+in the previous section were one sample tests.
+<p>In a <b>two-sample test</b>, independent samples from two different
+populations are used to determine comparisons between the parameters of
+the two populations. For example in comparing whether the completion time
+of two surgical procedures differs between hospital A and hospital B independent
+samples would be drawn from each and then compared.
+<p>In <b>multiple sample tests</b> parameters from many different populations
+are tested in one test.
+<p>Therefore there are nine basic situations which the statistical analyst
+must be acquainted with: one sample, two sample and multiple sample for
+means; one sample, two sample and multiple sample for standard deviations;
+and one sample, two sample and multiple sample for proportions. Within
+each of these nine basic situations testing may differ depending on whether
+large or small samples are drawn. The analyst must be acquainted with this
+also. The chart in figure 4 gives an overview picture of this parametric
+testing.
+<br>5.64truein by 3.64truein (ParamBox scaled 850)
+<center>figure 4 Parametric Testing Overview</center>
+
+<p>Tests of means are generally called <b>t-tests</b> because they use
+the t-distribution. Multiple sample tests of means fall into what are called
+<b>analysis of variance</b> or <b>ANOVA</b> procedures. One sample tests
+of standard deviations use the chi-square distribution while two sample
+and multiple sample tests for standard deviations use the F-distribution
+and are called <b>F-tests</b>. One and two sample tests of proportions
+are called
+<b>p-tests </b>and are usually based on the normal distribution.
+Multiple sample tests use the chi-square distribution and will be discussed
+in the next chapter. Multiple sample procedures can also be used for two
+sample testing.
+<br>&nbsp;
+<br>&nbsp;
+<center><b>(3) HYPTHESIS TESTS FOR A SINGLE MEAN</b></center>
+
+<p>The mean&nbsp;<img SRC="img2.gif" ALT="$ \mu$" BORDER=0 height=28 width=14 align=CENTER>
+of a population is the most common parameter tested. We now consider one
+sample tests of means. Two sample tests of means are handled under two
+variable data sets while multiple sample tests of means will be hndled
+under mutliple variable data sets.
+<p>In a <b>one sample test of means</b> we are testing null hypotheses
+of the form<!-- MATH
+ \begin{displaymath}
+H_0: \mu = \mu_0 \tag 1
+\end{displaymath}
+ -->
+<center><img SRC="img144.gif" ALT="$\displaystyle H_0: \mu = \mu_0 \tag 1$" BORDER=0 height=14 width=51 align=CENTER></center>
+against some alternative.&nbsp;<img SRC="img145.gif" ALT="$ \mu_0$" BORDER=0 height=47 width=59 align=CENTER>
+is a given value and can be thought of as some standard or target value.
+As for estimation, testing means is handled somewhat differently for small
+samples than for large samples. In the latter case the central limit theorem
+allows us to always use the normal distribution and not be concerned with
+the actual distribution of the parent population. In the small sample case
+we must assume that the parent population is itself normal and the t-distribution
+is used. For this reason tests of means are referred to as <b>t-tests</b>.
+<p>If a large sample can be drawn, that is a sample of over 30, then the
+appropriate test statistic for testing a null hypothesis of the form 1
+is<!-- MATH
+ \begin{displaymath}
+z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}} \tag 2
+\end{displaymath}
+ -->
+<center><img SRC="img146.gif" ALT="$\displaystyle z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}} \tag 2$" BORDER=0 height=28 width=80 align=CENTER></center>
+Recall from the last chapter that for large sample sizes this test statistic
+has an approximate normal distribution. This means that to determine the
+rejection region we will use the normal distribution.
+<p>If a large sample is not drawn, that is the sample size is under 30,
+then the appropriate test statistic for testing a null hypothesis of the
+form (1) is<!-- MATH
+ \begin{displaymath}
+t = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}\tag 3
+\end{displaymath}
+ -->
+<center><img SRC="img147.gif" ALT="$\displaystyle t = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}\tag 3$" BORDER=0 height=28 width=101 align=CENTER></center>
+Recall from the notes on confidence intervals that if the parent population
+is normal this test statistic has a t-distribution with n-1 degreees of
+freedom. This means that to determine the rejection region win this case
+a t-distribution will be used. Hence in the small sample case we must make
+the assumption that the parent population is itself normal. There are no
+general procedures to handle small sample tests of means for non-normal
+parent popualtions. However the t-test is <b>fairly robust</b>. Recall
+that this means that the t-test works reasonably well as long as the parent
+population is not too far from being normal - that is not too skewed. We
+illustrate these tests with some examples.
+<p>EXAMPLE
+<p>An insurance company uses as a standard 90 days between paid treatments
+for a certain chronic condition. An advocacy group felt that this was too
+long between treatments. 81 patients with this ailment were sampled and
+monitored by a physician group to determine the time required between treatments.
+A sample mean of 86 days was computed with a standard deviation of 10.3
+days. Is this evidence at a 5% level that the insurance company's target
+is too high?
+<p>Here the null hypothesis is the insurance company standard while the
+alternative is that the true mean is actually less than this.&nbsp;<!-- MATH
+ \begin{displaymath}
+H_0: \mu = 90
+\end{displaymath}
+ -->
+<center><img SRC="img148.gif" ALT="$\displaystyle H_0: \mu = 90$" BORDER=0 height=28 width=55 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu < 90.
+\end{displaymath}
+ -->
+<center><img SRC="img149.gif" ALT="$\displaystyle H_1: \mu < 90.$" BORDER=0 height=49 width=155 align=CENTER></center>
+Since&nbsp;<img SRC="img150.gif" ALT="$ n = 81$" BORDER=0 height=28 width=51 align=BOTTOM>
+this is a <b>large sample procedure</b> and the appropriate test statistic
+is (2)<!-- MATH
+ \begin{displaymath}
+z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}
+\end{displaymath}
+ -->
+<center><img SRC="img151.gif" ALT="$\displaystyle z = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}$" BORDER=0 height=28 width=51 align=CENTER></center>
+which has a normal distribution. Since this is a large sample we don't
+have to worry about the underlying parent population distribution.
+<p>The rejection region based on the normal distribution is pictured in
+figure 5
+<br>3.81truein by 1.82truein (Reject3 scaled 850)
+<center>figure 5 Rejection Region</center>
+
+<p>The critical z-value is&nbsp;<!-- MATH
+ $z_c = -1.65$
+ --><img SRC="img152.gif" ALT="$ z_c = -1.65$" BORDER=0 height=29 width=76 align=CENTER>.
+The value is negative because this is a one-tailed test with the rejection
+region being below the mean.
+<p>The sample results are:<!-- MATH
+ \begin{displaymath}
+\X = 86, s = 10.3 \text{ and } n = 81.
+\end{displaymath}
+ -->
+<center><img SRC="img153.gif" ALT="$\displaystyle \X = 86, s = 10.3$" BORDER=0 height=29 width=81 align=CENTER>&nbsp;&nbsp;&nbsp;
+and&nbsp;<img SRC="img154.gif" ALT="$\displaystyle n = 81.$" BORDER=0 height=14 width=43 align=CENTER></center>
+Therefore the value of the test statistic is<!-- MATH
+ \begin{displaymath}
+z = \frac{86-90}{\frac{10.3}{9}} = -3.50.
+\end{displaymath}
+ -->
+<center><img SRC="img155.gif" ALT="$\displaystyle z = \frac{86-90}{\frac{10.3}{9}} = -3.50.$" BORDER=0 height=47 width=57 align=CENTER></center>
+This value falls in the rejection region and therefore the results are
+significant. It follows that the null hypothesis of&nbsp;<img SRC="img156.gif" ALT="$ \mu = 90$" BORDER=0 height=28 width=128 align=CENTER>
+is rejected in favor of the alternative&nbsp;<img SRC="img157.gif" ALT="$ \mu < 90$" BORDER=0 height=28 width=97 align=CENTER>.
+<p>The results would be reported in the following manner.
+<br>&nbsp;
+<p>At a 5% level the result were significant. Therefore the null hypothesis
+that the mean was 90 is rejected in favor of the alternative that the mean
+is less than 90.
+<p>From this we can conclude that the evidence is that the insurance companies
+accepted time is too long.
+<br>&nbsp;
+<br>&nbsp;
+<p>From the normal table we see that there is a probability of under .001
+of obtaining a z-value of over -3.50. Hence the P-value of the above test
+results is less than .001. This is below&nbsp;<!-- MATH
+ $\alpha =
+.05$
+ --><img SRC="img135.gif" ALT="$ \alpha = .05$" BORDER=0 height=28 width=105 align=BOTTOM>.
+Again using the P-value criterion the null hypothesis would be rejected
+since the P-value is lower than the chosen level.
+<br>&nbsp;
+<br>&nbsp;
+<p>EXAMPLE
+<p>An cereal company wants to advertise that its cereal has 2 grams of
+fat per serving. The FTC is going to test this to determine whether to
+allow the advertising. 9 servings of this cereal were sampled and analyzed
+for fat content. A sample mean of 2.3 grams was computed with a standard
+deviation of 1.2 grams. Is this evidence at a 5% level that the fat content
+on average is higher than the company's claim? Should they be allowed to
+advertise the 2 gram figure.
+<p>Here the null hypothesis is the company claim while the alternative
+is that the true mean is actually more than this.&nbsp;<!-- MATH
+ \begin{displaymath}
+H_0: \mu = 2
+\end{displaymath}
+ -->
+<center><img SRC="img158.gif" ALT="$\displaystyle H_0: \mu = 2$" BORDER=0 height=28 width=43 align=CENTER></center>
+<!-- MATH
+ \begin{displaymath}
+H_1: \mu > 2.
+\end{displaymath}
+ -->
+<center><img SRC="img159.gif" ALT="$\displaystyle H_1: \mu > 2.$" BORDER=0 height=49 width=139 align=CENTER></center>
+Since&nbsp;<img SRC="img160.gif" ALT="$ n = 9$" BORDER=0 height=28 width=43 align=BOTTOM>
+this is a <b>small sample procedure</b> and the appropriate test statistic
+is 6.5.3<!-- MATH
+ \begin{displaymath}
+t = \frac{\X - \mu}{\frac{s}{\sqrt{n}}}
+\end{displaymath}
+ -->
+<br>which has a t-distribution with 8 degrees of freedom. Since this is
+a small sample we must make the assumption that the underlying parent population
+distribution is normal. If there is evidence that this is not true then
+this procedure cannot be used. The rejection region would then be determined
+from the t-distribution.
+<p>The rejection region based on the t-distribution is pictured in figure
+6
+<br>4.43truein by 2.06truein (Reject4 scaled 850)
+<center>figure 6 Rejection Region</center>
+The critical t-value is&nbsp;<!-- MATH
+ $t_c = t_{.05,8} = 1.860$
+ -->.
+<p>The sample results are:<!-- MATH
+ \begin{displaymath}
+\X = 2.3, s = 1.2 \text{ and } n = 9
+\end{displaymath}
+ -->
+<center>&nbsp;&nbsp;&nbsp; and</center>
+and therefore the value of the test statistic is<!-- MATH
+ \begin{displaymath}
+z = \frac{2.3-2}{\frac{1.2}{3}} = 0.75.
+\end{displaymath}
+ -->
+<br>This value falls in the acceptance region and therefore the results
+are not significant. It follows that the null hypothesis of is accepted
+<p>The results would be reported in the following manner.
+<br>&nbsp;
+<p>At a 5% level the result were not significant. Therefore the null hypothesis
+that the mean was 2 is accepted.
+<p>From this we can conclude that the evidence is such that the company
+should be able to advertise its claim.
+<br>&nbsp;
+<br>&nbsp;
+<p>Note that in conducting these tests using MAGNUSSTAT the P-values will
+be computed automatically and the appropriate decision ( accept or reject)
+based on the user defined level of significance will be presented in the
+output box.
+<br>
+<hr>
+</body>
+</html>

@@ -1,0 +1,24 @@
+1. OR groups, word problem. Nuzhno tvoju rabotajushhuju realizaciju
+vstavit' vmesto Dionovskoj v "Extend to Hom Problem"
+(ExtendToHomProblem.C).
+
+Status: fixed, need to check
+
+
+2. Compute an integral homology of G1. Programma vrode by rabotaet, vo
+vsjakom sluchae vo mnogih proverennyh sluchajah. No ARCi tam do sih
+por starye. Nuzhno peredelat' pod ExternalARCer.
+
+Status: in progress
+
+
+3. Conjugacy problem for a finitely presented groups. Both methods
+there have to be reworked using ARCers. Note: the graph method is
+probably buggy. If you find the group that crashes it please let me
+know.
+
+Status: to be sent
+
+
+4. 
+

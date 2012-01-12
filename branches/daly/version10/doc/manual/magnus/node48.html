@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Utility class PresentationParser</TITLE>
+<META NAME="description" CONTENT="Utility class PresentationParser">
+<META NAME="keywords" CONTENT="magnus">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="magnus.css">
+
+</HEAD>
+
+<BODY >
+
+<H3><A NAME="SECTION00314500000000000000"></A><A NAME="presentationparser"></A>
+<BR>
+Utility class <TT>PresentationParser</TT>
+</H3>
+
+<P>
+<BR>
+<BR><EM>What and Where
+<BR>
+<BR></EM>
+
+<P>
+The class
+<BR><TT>class PresentationParser : public WordParser</TT>
+<BR>
+is defined in <TT>magnus/back_end/Group/include/PresentationParser.h</TT>.
+<BR>
+It provides facilities for reading a presentation from a stream.
+
+<P>
+<BR>
+<BR><EM>Special Notes
+<BR>
+<BR></EM>
+
+<P>
+Here is the presentation grammar:
+
+<P>
+<PRE>
+Literals are delimited by ''.
+The symbols ., *, +, -, |, ?, [, ], (, and ) are part of regular expressions
+unless quoted.
+
+&lt;whitespace&gt;     ::= ' ' | '\t' | '\n' | '#'.*'\n'
+&lt;index&gt;          ::= 0 | [1-9]+[0-9]*
+&lt;integer&gt;        ::= &lt;index&gt; | -&lt;index&gt;
+&lt;generator&gt;      ::= [a-zA-Z]+&lt;index&gt;?
+&lt;atom&gt;           ::= '1' | &lt;generator&gt; | '('&lt;word&gt;')' |
+                     '['&lt;word&gt;','&lt;word&gt;(','&lt;word&gt;)*']'
+&lt;term&gt;           ::= &lt;atom&gt;('^'&lt;atom&gt;)* | &lt;term&gt;'^'&lt;integer&gt;
+&lt;word&gt;           ::= &lt;term&gt;('*'&lt;term&gt;)* | &lt;term&gt;(&lt;whitespace&gt;&lt;term&gt;)*
+&lt;relator&gt;        ::= &lt;word&gt;('='&lt;word&gt;)?
+&lt;generator list&gt; ::= (&lt;generator&gt;(','&lt;generator&gt;)*)?
+&lt;word list&gt;      ::= &lt;word&gt;(','&lt;word list&gt;)?
+&lt;relator list&gt;   ::= &lt;word&gt;('='&lt;word&gt;)* |
+                     (&lt;word&gt;('='&lt;word&gt;)*(','&lt;word&gt;('='&lt;word&gt;)*)?)?
+&lt;FPGroup&gt;        ::= '&lt;'&lt;generator list&gt;('|' | ';' | ':')&lt;relator list&gt;'&gt;' |
+                     '&lt;'&lt;generator list&gt;'&gt;'
+
+- whitespace may occur anywhere except within lexemes.
+
+Semantic conventions:
+
+- x^y is y^-1 x y.
+- ^ is left-associative, so a^t^2 is (a^t)^2.
+- [x,y] is x^-1 y^-1 x y.
+- [x1, x2, ..., xn] is left-normed: [[x1,x2], x3, ..., xn].
+- Given the print name of a generator, the print name of its inverse
+  has each character changed to the opposite case.
+  Thus aB2^-1 is the same as Ab2.
+</PRE>
+
+<P>
+<BR><HR>
+
+</BODY>
+</HTML>

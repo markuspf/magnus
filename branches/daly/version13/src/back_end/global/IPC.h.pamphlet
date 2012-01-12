@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/IPC.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{Output Operators}
+<<Output Operators>>=
+inline ostream& operator < ( ostream& ostr, int n )
+{
+  ostr << n << ' ';
+  return ostr;
+}
+
+inline ostream& operator < ( ostream& ostr, unsigned int n )
+{
+  ostr << n << ' ';
+  return ostr;
+}
+
+inline ostream& operator < ( ostream& ostr, short n )
+{
+  ostr << n << ' ';
+  return ostr;
+}
+
+inline ostream& operator < ( ostream& ostr, long n )
+{
+  ostr << n << ' ';
+  return ostr;
+}
+
+inline ostream& operator < ( ostream& ostr, bool b )
+{
+  ostr << b << ' ';
+  return ostr;
+}
+
+inline ostream& operator < ( ostream& ostr, char c )
+{
+  ostr << c << ' ';
+  return ostr;
+}
+
+inline ostream& operator < ( ostream& ostr, const char *s )
+{
+  ostr << s << ' ';
+  return ostr;
+}
+
+inline ostream& operator < ( ostream& ostr, const double d )
+{
+  ostr << d << ' ';
+  return ostr;
+}
+
+@
+\section{Input Operators}
+<<Input Operators>>=
+inline istream& operator > ( istream& istr, int& n )
+{
+  istr >> n;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, unsigned int& n )
+{
+  istr >> n;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, short& n )
+{
+  istr >> n;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, long& n )
+{
+  istr >> n;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, bool& b )
+{
+  istr >> b;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, char& c )
+{
+  istr >> c;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, char* s )
+{
+  istr >> s;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, double d )
+{
+  istr >> d;
+  return istr;
+}
+
+inline istream& operator > ( istream& istr, void* p )
+{
+//  istr >> s;
+  return istr;
+}
+//@db this function shouldn't be used at all, it just shuts the compiler up. 
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/IPC.h
+#ifndef _IPC_H_
+#define _IPC_H_
+
+<<license>>
+<<Output Operators>>
+<<Input Operators>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

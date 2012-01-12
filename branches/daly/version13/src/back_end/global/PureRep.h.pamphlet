@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/global/PureRep.h}
+\author{Stephane Collart}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "RefCounter.h"
+
+@
+\section{struct PureRep}
+This class is a `pure object representation' class, encapsulating the
+reference counter part of the representation. Normally it serves as
+the root base of a hierarchy of representations with virtual
+functions.
+
+Usage:
+
+Use as a private base class of representations wrapped with
+BaseObjectOf; make BaseObjectOf a friend; give the class
+a protected ctor Class(Rep*) : BaseObjectOf(Rep*)
+
+<<struct PureRep>>=
+struct PureRep : public RefCounter {
+public :
+  // default ctor provided by compiler (initialises ref count)
+  // copy ctor provided by compiler (resets ref count)
+
+  virtual ~PureRep( ) { }
+  // make the destructor virtual to ensure that each derived representation
+  // gets deleted as what it really is
+
+  virtual PureRep* clone( ) const = 0;
+  // Should be implemented as a member which gives a new `deep-copy'
+  // by each representation derived from this; normally, by making it
+  // new CopyConstrutor(*this) with CopyConstructor doing `deep-dopy'
+  // (`' because it is enough for the copy constructor to do logical
+  // deep copy).
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/global/PureRep.h
+#ifndef _PURE_REP_H_
+#define _PURE_REP_H_
+
+<<license>>
+<<include>>
+<<struct PureRep>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

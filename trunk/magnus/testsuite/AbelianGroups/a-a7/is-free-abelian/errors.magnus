@@ -1,0 +1,7 @@
+FrontEnd --> BackEnd :  -2 0 A1 < a,a^7 ;  >
+FrontEnd --> BackEnd :  -1 2 0 A1
+FrontEnd --> BackEnd :  -2 26 0
+FrontEnd --> BackEnd :  -1 2 2 {A1 free ?}
+FrontEnd --> BackEnd :  2 1 1 15
+FrontEnd --> BackEnd :  2 2
+FrontEnd --> BackEnd :  -1 0

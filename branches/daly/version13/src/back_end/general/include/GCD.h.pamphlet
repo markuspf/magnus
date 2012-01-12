@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/general/include/GCD.h}
+\author{Eugene Paderin, Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{GCD.h}
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/general/include/GCD.h
+#ifndef _GCD_H_
+#define _GCD_H_
+
+<<license>>
+
+int GCD(int a, int b);
+// the greatest common divisor
+
+int GCD(int a, int b, int& p, int& q);
+//for given a, b finds the greatest common divisor and p, q 
+//such that p*a + q*b = gcd(a,b).
+
+
+int LCM(int a, int b);
+// the least common multiplier
+
+
+#endif
+
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,274 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/SMEquation.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "AlgebraicObject.h"
+#include "SMFPGroup.h"
+#include "Word.h"
+#include "QEqnSolutions.h"
+#include "BaseProperties.h"
+#include "InformationCenter.h"
+
+@
+\section{Equation Information Center}
+\subsection{class AllBasicSolutionsProperty}
+<<class AllBasicSolutionsProperty>>=
+class AllBasicSolutionsProperty : public NoDataProperty {
+public:
+  AllBasicSolutionsProperty() : NoDataProperty() {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "AllBasicSolutions"; }
+protected:
+  GenericProperty* clone() const { 
+    return new AllBasicSolutionsProperty(*this); 
+  }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class AllRegStabGeneratorsProperty}
+<<class AllRegStabGeneratorsProperty>>=
+class AllRegStabGeneratorsProperty : public NoDataProperty {
+public:
+  AllRegStabGeneratorsProperty() : NoDataProperty() {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "AllRegStabGenerators"; }
+protected:
+  GenericProperty* clone() const { 
+    return new AllRegStabGeneratorsProperty(*this); 
+  }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class BasicSolutionsProperty}
+<<class BasicSolutionsProperty>>=
+class BasicSolutionsProperty : public ListOfEndomorphismProperty {
+public:
+  BasicSolutionsProperty(const ListOf<Endomorphism>& data, 
+			 const Chars& descr = "" )
+    : ListOfEndomorphismProperty(data, descr) {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "BasicSolutions"; }
+protected:
+  GenericProperty* clone() const { return new BasicSolutionsProperty(*this); }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class RegStabGeneratorsProperty}
+<<class RegStabGeneratorsProperty>>=
+class RegStabGeneratorsProperty : public ListOfAutomorphismProperty {
+public:
+  RegStabGeneratorsProperty(const ListOf<Automorphism>& data, 
+			    const Chars& descr = "" ) 
+    : ListOfAutomorphismProperty(data, descr) {}
+  PropertyType actualType()   const { return type(); }
+  static PropertyType type() { return theTypeID; }
+  Chars propertyName() const { return "RegStabGenerators"; }
+protected:
+  GenericProperty* clone() const { 
+    return new RegStabGeneratorsProperty(*this); 
+  }
+private:
+  static const PropertyType theTypeID;
+};
+
+@
+\subsection{class EIC}
+<<class EIC>>=
+class EIC : public InformationCenter, protected FEData
+{
+public:
+  EIC(OID group_oid);
+  ~EIC( );
+
+  void putHaveAllBasicSolutions( bool found );
+  void putHaveAllRegStabGenerators( bool found );
+  void addBasicSolutions( const ListOf<Endomorphism>& basicSolutions );
+  void addRegStabGenerators( const ListOf<Automorphism>& regStabGens );
+  void putIsSolvedInAbelianization() {
+    solvedInAbelian = yes;
+  }
+  
+  void putHaveSolutionsInAbelianization( bool sol ) { 
+    haveSolInAbelian = sol; 
+  }  
+
+  bool isSolved() const { 
+    return haveAllBasicSolutions() && haveAllRegStabGenerators(); 
+  }
+
+  bool haveAllBasicSolutions( ) const;
+  bool haveAllRegStabGenerators( ) const;
+  Trichotomy haveBasicSolutions() const;
+  bool isSolvedInAbelianization() const { 
+    return solvedInAbelian; 
+  }
+  
+  bool haveSolutionsInAbelianization( ) const { 
+    return haveSolInAbelian; 
+  }
+
+  ListOf<Endomorphism> getBasicSolutions( ) const;
+  Trichotomy haveRegStabGenerators() const;
+  ListOf<Automorphism> getRegStabGenerators( ) const;
+
+private:
+  EIC(const EIC&); // Disable copying
+
+  OID equationOID;
+  // Need this for composing messages about what has been found.
+
+  ListOf<Endomorphism> theBasicSolutions; // known basic solutions.
+  ListOf<Automorphism> theRegStabGenerators; // known generators of RegStab.
+  bool foundAllBasicSolutions;
+  bool foundAllRegStabGenerators;
+  bool solvedInAbelian;
+  bool haveSolInAbelian;
+};
+
+@
+\subsection{class SMEquation}
+<<class SMEquation>>=
+class SMEquation : public AlgebraicObject
+{
+public:
+  SMEquation( SMFPGroup& G, FreeGroup F, const Word w, int nvar, 
+	      const Chars heritage);
+
+  SMEquation(SMFPGroup& G) : AlgebraicObject(""), theGroup(G), eic( oid() ) { }
+
+  Word getWord( ) const { return theWord; };
+
+  SMFPGroup& getParent( ) const { return theGroup; };
+
+  const FreeGroup& getFreeGroup( ) const { return theFreeGroup; };
+
+  int numberOfVariables( ) const { return numOfVar; };
+
+        InformationCenter* infoCenter()       { return &eic; }
+  const InformationCenter* infoCenter() const { return &eic; }
+
+  static const char* type( ) { return "SMEquation"; };
+
+  const char* typeID( ) const { return type(); };        // overrides SMObject
+
+  const IconID iconID( ) const { return IconID::equation; };
+  // overrides SMObject
+
+  void viewStructure(ostream& ostr) const;              // overrides SMObject
+  void printProperties(ostream& ostr) const;            // overrides SMObject
+  void printDefinition(ostream& ostr) const;            // overrides SMObject
+
+public:
+  EIC eic; 
+
+protected:
+  void readMessage(istream&) { };                     // overrides SMObject
+
+private:
+  SMFPGroup& theGroup;
+  // The group that this equation is over.
+
+  FreeGroup theFreeGroup;
+  // The free group generated by theGroup's generators, along with the
+  // variables.
+
+  Word theWord;
+  // A Word in theFreeGroup, represents the equation.
+
+  int numOfVar;
+  // a number of variables
+
+};
+
+@
+\subsection{class SMEquation2}
+temporary class SMEquation2
+<<class SMEquation2>>=
+class SMEquation2 : public AlgebraicObject
+{
+public:
+  SMEquation2( SMFPGroup& G, FreeGroup F, const Word w, int nvar, 
+	       const Chars heritage);
+
+  SMEquation2(SMFPGroup& G) : AlgebraicObject(""), theGroup(G), eic( oid() ) { }
+
+  Word getWord( ) const { return theWord; };
+  SMFPGroup& getParent( ) const { return theGroup; };
+  const FreeGroup& getFreeGroup( ) const { return theFreeGroup; };
+  int numberOfVariables( ) const { return numOfVar; };
+
+  static const char* type( ) { return "SMEquation2"; };
+  const char* typeID( ) const { return type(); };        // overrides SMObject
+  const IconID iconID( ) const { return IconID::equation; };
+  // overrides SMObject
+  void viewStructure(ostream& ostr) const;              // overrides SMObject
+  void printProperties(ostream& ostr) const;            // overrides SMObject
+  void printDefinition(ostream& ostr) const;            // overrides SMObject
+
+public:
+  EIC eic; 
+
+protected:
+  void readMessage(istream&) { };                     // overrides SMObject
+
+private:
+  SMFPGroup& theGroup;
+  // The group that this equation is over.
+
+  FreeGroup theFreeGroup;
+  // The free group generated by theGroup's generators, along with the
+  // variables.
+
+  Word theWord;
+  // A Word in theFreeGroup, represents the equation.
+
+  int numOfVar;
+  // a number of variables
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/SMEquation.h
+#ifndef _SMEQUATION_H_
+#define _SMEQUATION_H_
+
+<<license>>
+<<include>>
+<<class AllBasicSolutionsProperty>>
+<<class AllRegStabGeneratorsProperty>>
+<<class BasicSolutionsProperty>>
+<<class RegStabGeneratorsProperty>>
+<<class EIC>>
+<<class SMEquation>>
+<<class SMEquation2>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

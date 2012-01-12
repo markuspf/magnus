@@ -1,0 +1,187 @@
+12/17 
+
+From Ilya.
+
+
+1.
+From ilya Sun Dec 17 16:39:14 1995
+Date: Sun, 17 Dec 95 16:39:13 EST
+From: ilya (Ilya Kapovich)
+To: bormotov
+Content-Length: 888
+
+User defined finitely presented group:
+G1 = < x, y ; x^y = x^2 >.
+
+
+Solved the word problem for G1: the presentation is one-relator
+
+User defined word in the generators of G1:
+w1 = x.
+User defined word in the generators of G1:
+w2 = x^8.
+
+Problem_3 started
+Sun Dec 17 16:30:19 EST 1995
+
+Problem_3 suspended
+Sun Dec 17 16:30:31 EST 1995
+
+Problem_3 resumed
+Sun Dec 17 16:30:34 EST 1995
+
+Problem_3 resumed
+Sun Dec 17 16:30:35 EST 1995
+
+Problem_3 suspended
+Sun Dec 17 16:30:44 EST 1995
+
+Problem_3 resumed
+Sun Dec 17 16:30:51 EST 1995
+
+w1 and w2 are conjugate: w1 ? = ? w2, where ? = x y x y
+
+Problem_3 finished
+Sun Dec 17 16:30:52 EST 1995
+
+User defined word in the generators of G1:
+w4 = x^2 y x y X^8 Y X Y X.
+
+
+Checked in Problem_4
+
+Problem_4 started
+Sun Dec 17 16:35:46 EST 1995
+
+w4 is not trivial in G1 : according to the Magnus breakdown
+
+Problem_4 finished
+Sun Dec 17 16:35:46 EST 1995
+
+
+
+2.
+From ilya Sun Dec 17 16:58:31 1995
+Date: Sun, 17 Dec 95 16:58:31 EST
+From: ilya (Ilya Kapovich)
+To: bormotov
+Content-Length: 323
+
+User defined finitely presented group:
+G1 = < x, y, t ; t x t^-1 = y^2, t y t^-1 = x^2 >.
+User defined word in the generators of G1:
+w1 = x.
+
+
+User defined word in the generators of G1:
+w2 = x^4.
+Are w2 and w1 conjugate in G1 ?
+
+Checked in Problem_1
+
+Problem_1 started
+Sun Dec 17 16:55:44 EST 1995
+
+=> Session manager quit
+
+
+
+
+3.
+From ilya Thu Dec 21 16:07:55 1995
+Date: Thu, 21 Dec 95 16:07:54 EST
+From: ilya (Ilya Kapovich)
+To: bormotov
+Content-Length: 2372
+
+Magnus 1.0.0 beta
+release date: 9 November 1995
+Copyright (C) 1995 The New York Group Theory Cooperative
+Magnus comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it under certain conditions; choose `Show GNU General Public License' in the `Help' menu for details.
+
+See `Release Notes' in the `Help' menu for information about this version of Magnus.
+
+
+Magnus session started on
+Thu Dec 21 15:56:55 EST 1995
+by ilya at zebra.
+
+Session Manager started.
+
+Bootstrap complete.
+
+User defined finitely presented group:
+G1 = < x, y, z ; x^2=1, z^2=1, y^2=1 >.
+
+
+Have a fast solution of the word problem for G1: by Dehn's algorithm
+
+G1 is infinite: by a lemma of D. Bormotov, D. Pechkin on C'(1/6) groups
+
+The presentation of G1 is C'(00)
+
+The system requires a confluent rewriting system for G1 before it can start to compute its homology.
+
+Checked in Problem_1
+
+Problem_1 started
+Thu Dec 21 16:00:22 EST 1995
+
+Started Rutgers Knuth-Bendix Package, reference number 7, with lenlex ordering (the specific ordering is not yet accessible; we're working on it!)
+
+The rkbp with reference number 7 has succeeded
+
+Have a confluent rewrite system for G1, discovered by the Rutgers Knuth-Bendix Package, Version 1.25
+
+G1 is infinite: by counting the language of irreducible words
+
+Have a fast solution of the word problem for G1: the confluent rewrite system
+
+Dimension 2 integral homology: Z^0
+
+Problem_1 finished
+Thu Dec 21 16:00:24 EST 1995
+
+Checked in Problem_2
+
+Warning: Magnus currently executes the Rutgers Knuth-Bendix Package *synchronously*. This means that Magnus will appear to freeze if rkbp takes a long time to respond. We are working on an asynchronous version.
+
+Problem_2 started
+Thu Dec 21 16:01:06 EST 1995
+
+Problem_2 finished
+Thu Dec 21 16:01:06 EST 1995
+
+Checked in Problem_3
+
+Problem_3 started
+Thu Dec 21 16:01:25 EST 1995
+
+found the invariants of G1 abelianized:  Z_2 x Z_2 x Z_2
+
+Problem_3 finished
+Thu Dec 21 16:01:25 EST 1995
+
+Checked in Problem_4
+
+Problem_4 started
+Thu Dec 21 16:01:43 EST 1995
+
+Dimension 3 integral homology: Z^0 x Z_2 x Z_2 x Z_2
+
+Problem_4 finished
+Thu Dec 21 16:01:43 EST 1995
+
+User defined finitely presented group:
+G2 = < x, y ; x^2=1, y^2=1  >.
+
+
+Checked in Problem_5
+
+The presentation of G1 is C'(00)
+
+# When I tried to select "Try to determine the order of G1", the dialog box did not appear
+
+
+

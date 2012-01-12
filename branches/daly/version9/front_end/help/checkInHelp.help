@@ -1,0 +1,45 @@
+@@About Variable Data Sets
+
+  A data set is a collection of numbers.  These numbers generally represent a set of measurements such as heights, weights, time, stress etc.  These will usually consist of a random
+sample from some continuous population.  A typical example would be
+            4.8, 8.9, 3.7, 6.6, 5.9
+                                                        
+Analysis of a data set usually includes determining the descriptive measures of the data, such as the mean and standard deviation and then using these calculations to infer population
+measures. 
+ 
+CAISS-STAT allows the user to enter a data set in several different ways.  These are
+     From the screen - string or list format
+     From the screen - spreadsheet format
+     From an existing file
+     From the CAISS-STAT database
+ 
+         @For more information click here@html/DescriptionOfOneVariableDataSet.html::Description of One Variable DataSet@
+
+
+@@Check-in in Spreadsheet Format
+
+   A one variable data set can also be inputted via a spreadsheet format. When the user chooses spreadsheet format a spreadsheet will appear.  For a one variable data set the user will input the data into the first column of the spreadsheet. 
+
+
+      @For further information click here@html/oneVariableDataset/SpreadSheet.html::Checking as Spreadsheet Format@
+
+@@Check-in in String Format
+
+   A data set is a collection of numbers.  These numbers generally represent a set of measurements such as heights, weights, time, stress etc.  These will usually consist of a random sample from some continuous population.  In entering from the screen in string or list format  the user would enter the data one after another separated by commas.  For example
+
+4.8, 8.9, 3.7, 6.6, 5.9
+
+   For two variable dataset, enter data from the first population in the first screen then data from the second population in the second screen.
+
+
+
+@@Check-in from an Existing File
+ 
+     The user can also import an existing file to be checked in as a CAISS-STAT
+one variable data set.
+
+
+@@Check-in from the CAISS-STAT Database
+
+  CAISS-STAT contains a built-in database of one-variable data sets that can be
+used for exploration and analysis.

@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/SMPermutation.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Permutation.h"
+#include "AlgebraicObject.h"
+
+@
+\subsection{class SMPermutation}
+<<class SMPermutation>>=
+class SMPermutation : public AlgebraicObject
+{
+public:
+  SMPermutation( Permutation perm, const Chars heritage );
+  SMPermutation( ) : AlgebraicObject("")
+  { }
+
+  Permutation getPermutation( ) const { return thePermutation; }
+  static const char* type( ) { return "SMPermutation"; }
+  const char* typeID( ) const { return type(); }        // overrides SMObject
+  const IconID iconID( ) const { return IconID::permutation; }  
+  // overrides SMObject
+  void viewStructure(ostream& ostr) const;              // overrides SMObject
+  void printProperties(ostream& ostr) const;            // overrides SMObject
+  void printDefinition(ostream& ostr) const;            // overrides SMObject
+
+protected:
+  void readMessage(istream&) { }                        // overrides SMObject
+
+private:
+  Permutation thePermutation;
+ 
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/SMPermutation.h
+#ifndef _SMPermutation_H_
+#define _SMPermutation_H_
+
+<<license>>
+<<include>>
+<<class SMPermutation>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

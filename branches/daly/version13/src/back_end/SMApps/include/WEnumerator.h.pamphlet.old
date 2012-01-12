@@ -1,0 +1,237 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/WEnumerator.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SMEnumerator.h"
+#include "File.h"
+#include "Word.h"
+#include "SMFPGroup.h"
+#include "OutMessages.h"
+#include "RandomNumbers.h"
+
+@
+\section{class WordEnumeratorARCer}
+<<class WordEnumeratorARCer>>=
+class WordEnumeratorARCer : public EnumeratorARCer
+{
+public:
+  WordEnumeratorARCer( ComputationManager& boss,const FreeGroup& group ) 
+    : EnumeratorARCer( boss ), 
+    theGroup(group),
+    numberOfAll(100),
+    enumerateAll( true ),
+    isNormalRandom( false ),
+    numberOfsampleGenerators(1),
+    maxLength(100),
+    counter(0) { } 
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  // Inherited from EnumeratorARCer:
+  // void runComputation( );
+  void setEnumerateAll() { enumerateAll = true; }
+  void setEnumerateRandom() { enumerateAll = false; }
+  void setNormalRandom() { isNormalRandom = true; }
+  void setUniformRandom() { isNormalRandom = false; }
+  void setTotalNumber(int n) { numberOfAll = n; }
+  void setMaxLength(int n) { maxLength = n; }
+  void setSample(Word w) { 
+    theSample = w; 
+    numberOfsampleGenerators = ord(w.maxOccurringGenerator());
+  }
+  
+  Chars getFileName() const  { return file.getFileName(); }
+
+  void writeResults( ostream& ostr ) 
+    {
+      ostr <  counter;
+    }
+
+  void readResults( istream& istr) 
+    {
+      istr > counter;
+    }
+  
+protected:
+  void enumerate();
+
+private:
+  void enumerateAllWords( );
+  Word getRandomWord() ;
+  FreeGroup theGroup;
+  File file;
+  bool enumerateAll;
+  bool isNormalRandom;
+  int numberOfsampleGenerators;
+  int numberOfAll;
+  int maxLength;
+  int counter;
+  Word theSample;
+  UniformRandom ur; 
+  NormalRandom nr; 
+};
+
+@
+\section{class WordEnumeratorProblem}
+<<class WordEnumeratorProblem>>=
+class WordEnumeratorProblem : public EnumeratorProblem< Word >
+{
+public:
+  WordEnumeratorProblem(SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  Chars getDataFileName() const { return arcer.getFileName(); }
+  void takeControl( );         // overrides ComputationManager
+  void start( ) ;                // overrides ComputationManager  
+  void terminate( ) { }          // overrides ComputationManager
+  void resume( );                // overrides ComputationManager
+   
+private:
+  SMFPGroup& theGroup;
+  WordEnumeratorARCer arcer;
+};
+
+@
+\section{class IsWordInListARCer}
+<<class IsWordInListARCer>>=
+class IsWordInListARCer : public ARCer
+{
+public:
+  IsWordInListARCer( ComputationManager& boss ) 
+  : ARCer( boss ), result(0) { } 
+  
+  ~IsWordInListARCer( ) { 
+  }
+ 
+  void setArguments( const Chars&, const Word& ,const FPGroup&);
+  
+  // Inherited from ARCer:
+  // bool takeControl( );
+  
+  bool isInList();
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  Chars fileName;
+  Word theWord;
+  FPGroup theGroup;
+  bool result;
+};
+
+@
+\section{class IsWordInList}
+<<class IsWordInList>>=
+class IsWordInList  : public Supervisor
+{
+public:
+  IsWordInList( SMList<Word>&, const class SMWord& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  const class SMWord& theWord;
+  SMList<Word>& theList;
+  IsWordInListARCer arcer;
+};
+
+@
+\section{class WordsOfLengthARCer}
+<<class WordsOfLengthARCer>>=
+class WordsOfLengthARCer : public ARCer
+{
+public:
+  WordsOfLengthARCer( ComputationManager& boss ) 
+    : ARCer( boss ), 
+    minLength( 1 ),
+    maxLength( 30000 ) { } 
+  
+  ~WordsOfLengthARCer( ) { 
+  }
+ 
+  void setArguments( const Chars&, const FPGroup&);
+  Chars getFileName() const { return file.getFileName(); }
+  void setMinimalLength(int  min ) { minLength = min; }
+  void setMaximalLength(int  max ) { maxLength = max; }
+ 
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  Chars fileName;
+  int minLength;
+  int maxLength;
+  FPGroup theGroup;
+  File file;
+};
+
+@
+\section{class WordsOfLength}
+<<class WordsOfLength>>=
+class WordsOfLength  : public Supervisor
+{
+public:
+  WordsOfLength( SMList<Word>& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+
+  void start( ) {
+    // Set minimal length
+    int min = getParameters().getValue("minL");
+    arcer.setMinimalLength( min );
+    
+    // Set maximal length
+    int max = getParameters().getValue("maxL");
+    arcer.setMaximalLength( max );
+    
+  }            // overrides ComputationManager
+
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  SMList<Word>& theList;
+  bool started;
+  WordsOfLengthARCer arcer;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/WEnumerator.h
+#ifndef _WEnumerator_H_
+#define _WEnumerator_H_
+
+<<license>>
+<<include>>
+<<class WordEnumeratorARCer>>
+<<class WordEnumeratorProblem>>
+<<class IsWordInListARCer>>
+<<class IsWordInList>>
+<<class WordsOfLengthARCer>>
+<<class WordsOfLength>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

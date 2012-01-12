@@ -1,0 +1,2 @@
+    Magnus Inventory  
+ HNN extensions: Algorithms involving maps and subgroups 

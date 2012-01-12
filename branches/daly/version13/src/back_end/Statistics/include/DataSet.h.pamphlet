@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Statistics/include/DataSet.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "IStreamPoll.h"
+#include "Set.h"
+
+@
+\section{class DataSet}
+We don't know yet if SetOf<double> is enough here, or we should use
+class template, i.e. DataSet<type>
+<<class DataSet>>=
+class DataSet
+{
+public:
+  DataSet( ) { }
+  DataSet( SetOf<double> set ) : theSet( set ) { }
+  SetOf<double> getSet() const { return theSet; }
+  int cardinality( ) const { return theSet.cardinality(); }
+  double mean( ) const;
+  double deviation( ) const;
+  
+  friend ostream& operator << ( ostream& ostr, const DataSet& set )
+  {
+    ostr << set.theSet << endl;
+    return ostr;
+  }
+  
+  friend IStreamPoll operator >> ( istream& istr, DataSet& set )
+  {
+    Chars errMsg;
+    set.readFrom(istr, errMsg);
+    return IStreamPoll(istr, errMsg);
+  }
+
+private:
+  void eatWhite( istream& istr, int& pos );
+  void readFrom( istream& istr, Chars& errMsg );
+  SetOf<double> theSet;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Statistics/include/DataSet.h
+#ifndef _DataSet_H_
+#define _DataSet_H_
+
+<<license>>
+<<include>>
+<<class DataSet>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

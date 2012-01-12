@@ -1,0 +1,118 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/ACE.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Supervisor.h"
+#include "SMSubgroup.h"
+
+@
+\section{class ACEArcer}
+<<class ACEArcer>>=
+class ACEArcer : public ARCer
+{
+public:
+  ACEArcer( ComputationManager& );
+  ~ACEArcer( ) { }
+  void setArguments( FPGroup g, VectorOf<Word> sg );
+  void setTime( int t ) { iTime = t; }
+  void setWorkspace( int w ) { iWS = w; }
+  void setDifficulty( Chars d ) { rDiff = d; }
+  void setExtra( Chars e ) { cExtra = e; }
+  //BlackBox& getBB() { return ace; }
+  Chars getFileName( ) { return in.getFileName(); }
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  FPGroup theGroup;
+  VectorOf<Word> theSubgroup;
+  //BlackBox ace;
+  File in;
+
+  // ACE parameters
+  int iTime, iWS;
+  Chars rDiff, cExtra;
+};
+
+@
+\section{class ACECM}
+<<class ACECM>>=
+class ACECM : public ComputationManager
+{
+public:
+  ACECM( class ACEProblem& );
+  bool isFinished() const { return bFinished; }
+  void takeControl( );         // overrides ComputationManager
+  ACEArcer& getArcer( ) { return arcer; }
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  ACEArcer arcer;
+  const SMSubgroup& theSubgroup;
+  bool linkHasBeenSent;
+  bool bFinished;
+  //File file;
+};
+
+@
+\section{class ACEProblem}
+<<class ACEProblem>>=
+class ACEProblem : public Supervisor
+{
+public:
+  ACEProblem(const class SMSubgroup& sg);
+
+  ACEProblem(class SMFPGroup& g);
+  // No subgroup - for example, use this when running ACE to find the order 
+  // of the whole group.
+
+  const class SMFPGroup& getGroup( ) const { return theGroup; }
+  const class SMSubgroup& getSubgroup( ) const { return theSubgroup; }
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );             // overrides ComputationManager
+  void terminate( ) { }      // overrides ComputationManager
+
+private:
+  const SMFPGroup& theGroup;
+  const SMSubgroup& theSubgroup;
+  Subordinate<ACEProblem, ACECM> ace;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/ACE.h
+#ifndef _ACE_H_
+#define _ACE_H_
+
+<<license>>
+<<include>>
+<<class ACEArcer>>
+<<class ACECM>>
+<<class ACEProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

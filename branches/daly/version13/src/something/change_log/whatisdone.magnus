@@ -1,0 +1,175 @@
+Version 1.0.1 beta.
+
+01/19/96
+
+1. When I started to work with general problem objects, suddenly
+   I found many strange things (bugs) which was happening in
+   Word Problem Window for Finitely Presented Groups. Sometimes
+   I wasn't be able to suspend, resume and even terminate the
+   computation. Preventing the appearence such problems in my
+   future problem classes (IsTrivial, IsAbelian, etc.) I decided
+   to spend some time and make some investigation the nature of
+   these bugs. And I found the reason. These are not Front End bugs, 
+   not Session Manager bugs, they aren't our bugs at all ! They
+   are TCL bugs ! Now I know it exactly. I fixed some these bugs
+   ( fixed means that I avoided them), but not all, and not
+   completely. Some of them requires long ivnestigation and
+   thoroughly peering into documentation, and I'm not sure that
+   it will be enough. Roger K. told me recently that our version  
+   of TCL/Tk contains a lot of terrible bugs, and there are new
+   version of this products without them, maybe they are the
+   same bugs which I found ? I'm going to speak with Roger about
+   this on Monday, maybe the changing of TCL version will solve
+   all our problems. It also can eat some time (I don't know how
+   much ? ), because now under new version Magnus crashes 
+   immediately.
+
+
+01/20/96
+
+1. MSC Group. New menu items are implemened:
+
+   Find the order of G1.
+   Is G1 trivial ?
+   Is G1 finite ?
+   Is G1 abelian ?
+
+2. One Relator Group. New menu items are implemened:
+
+   Is G1 trivial ?
+
+3. Abelian Rank Problem using matrix over rational numbers was
+   included into Order Problem Object.
+
+
+01/21/96
+
+1. I found a bug in PO (problem object) "WordProblem": it tried to put
+   answer when you terminated the calculation and the answer wasn't
+   ready yet. The bug is fixed.
+
+2. New IPC (Interporcess Communication) design was done ( It was
+   necessary for long time working algoritms). Headers IPC.h,
+   ExtendedIPC.h provide all necessary IPc tools for C-types. Also I
+   provided such tools for most useable classes: Generator, Word,
+   Vector, Set, etc. Other tools I will do when they'll be needed,
+   i.e. when some Front End Problem Object will asc me about this.
+   Now the IPC interface is completely clear and convienent, after I
+   will made the new version of Magnus, everyone will be able to
+   provide such tools for one's classes very swiftly and easyly.
+	
+   Unfortunately, this work was very difficult, because gcc 2.6.3
+   template bugs really object to do it. I've spend half of day
+   again only to avoid them. O my god ! When I will have time to
+   change the version of this stupid compiler ! 
+   
+01/22/96 
+
+1. I implemented general problem object "Is Trivial ?" for groups,
+   it contains these computation managers:
+
+   Abelian:
+
+     "Compute abelian invariants of A1"
+
+   Nilpotent:
+   
+     "Is abelianization of G1 trivial ?"
+
+   FP: 
+   
+     "Is abelianization of G1 trivial ?"
+     "Enumerate normal closure of relations"
+     "Seek a rewriting system for G1"	
+     "Seek a ShortLex automatic structure for G1"
+
+   Small Cancelation: fast checking
+   One Relator: fast checking
+
+   
+   For each kind of group I provided Fast Preliminary Checkings(FPC):
+	
+   a) FPS which get information from the GIC: 
+
+        Is the group small cancelation ?
+        Is the group one relator ?
+        
+   a) FPS which compute information themselves and often report it 
+      to the GIC: 
+
+        Is the group small cancelation ?
+	Is the number of relators < the number of generators ?
+        
+
+2. I made Magnus version 1.0.1 beta.
+
+
+Version 1.0.2 beta.
+
+01/23/96
+
+1. I fixed preliminary checkings in "IsTrivial" Problem Window: now
+   they are called only	for FP Group.
+
+2. I made the implementation of class ORChecking, somewhere all its
+   members will be moved to class OneRelatorGroup, when we will have
+   it. Now ORChecking already contains couple of algorithms:
+
+   Is the group trivial ?
+   Is the group abelian ?
+   Is the group finite ?
+   Compute the order of the group.
+  
+3. Also I provided necessary interface classes for this four problems
+   for One Relator Groups, i.e. they are included in Front End
+   already.
+
+4. I rewrote tools menus (when you highlight some group ) for all
+   groups in accordance with Gilbert's notes.
+
+
+01/24/96
+
+1. I fixed incorrect allocation of ARCs in interface classes for
+   Automatic Structure, now everything is ok here.
+
+2. Implemented new back end algorithm "Is Free ?" for One Relator
+   Groups. It uses Whitehead Stuff.
+
+
+Version 1.0.3 beta.
+
+01/29/96
+
+1. Is free ?
+   Is finite ?
+   Is trivial ?
+   Is abelian ?
+   Compute the order
+
+
+Version 1.0.4 beta.
+
+1. I implemented new algorithms for free groups:
+ 	
+     Find the n-th element of a free group.
+     Are H1 and H2 conjugate ? ( implemented for SubgroupGraph and
+       SGOfFreeGroup both )
+
+2. I included new algorithms for free groups into Front End:
+
+     Find the n-th element of a free group.
+     Is w1 a proper power in G1 ?
+     Compute the maximal root of w1 in G1.
+     Is w1 in the commutator subgroup of G1 ?
+     Are H1 and H2 equal ?
+     Are H1 and H2 conjugate ?
+
+
+Version 1.0.5 beta.
+
+02/02/96
+
+1. Implemented "Is G1 abelian ?" for nilpotent groups.
+
+2. 

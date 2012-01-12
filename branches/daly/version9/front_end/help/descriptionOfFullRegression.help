@@ -1,0 +1,12 @@
+@@Description of Full Regression Analysis
+
+THE FULL REGRESSION ANALYSIS TOOL
+
+  The Full Regression Analysis Tool will compute the standard regression analysis diagnostics. These will include finding the regression parameters, the is the regression slope and the regression intercept for the fitted regression line. Further computed will be the standard error of regression, the coefficient of determination and the correlation coefficient. To use the regression analysis tools the data must be paired data (Xi,Yi). If the samples are not the same size an error message will be outputted. 
+
+
+            @For further information click here@html/fullRegression/index.html::Description of Full Regression@   
+
+
+
+

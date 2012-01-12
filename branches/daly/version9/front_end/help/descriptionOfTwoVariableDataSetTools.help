@@ -1,0 +1,49 @@
+@@Description of Two Variable Data Set Tools
+
+CAISS_STAT has the following tools for use with a two-variable data set.
+It also has the ability to generate random samples from the given two 
+variable data set. The two variable data set tools
+are subdivided into tools for independent populations and tools
+ for correlated populations. The tools for correlated populations 
+are listed under regression analysis.  In this case of correlated
+populations and regression analysis the sample size from each population 
+must be the same. The available tools are:
+     
+    Independent populations
+
+    Full Data Analysis
+
+    Data Summaries
+
+    Graphical Analysis
+
+    Goodness of Fit
+
+    Comparison of Means
+
+    Comparison of Variances
+
+    Non-parametric Tests
+
+    Report
+
+   Regression Analysis
+
+    Full Regression Analysis
+
+    Graphical Analysis
+
+    Prediction and Parameter Testing
+
+    Residual Analysis
+
+    Alternate Models
+
+    Correlation Analysis
+
+    Report
+
+
+         @For more information click here@html/twoVariableDataset/DescriptionOfTwoVariableDatasetTools.html::Description of Two Variable DataSet Tools@
+
+

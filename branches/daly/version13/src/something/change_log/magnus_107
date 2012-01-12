@@ -1,0 +1,13 @@
+Magnus Version 1.0.7
+
+1. COPYRIGHT menu item is fixed.
+
+2. Abelian group menu is cleaned up.
+
+3. Pull-down menu items was moved apart a little bit.
+
+4. Implemented new dialog in tcl script which allows to enter
+   arbitrary set of words. Using this dialog I wrote new interface
+   classes for Make menu item "Make a quptient".
+
+

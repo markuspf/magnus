@@ -1,0 +1,347 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/acconfig.pamphlet}
+\author{Alexei Miasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "global.h"
+#include <values.h>
+
+@
+<<include.c>>=
+#include "Chars.h"
+#include "ACConfig.h"
+
+@
+\section{class ACConfig}
+\subsection{ACConfig Constructor}
+<<ACConfig Constructor.h>>=
+  ACConfig( int pop = 50, int gen = MAXINT, int fit_scale = 1, 
+	    int cross_prob = 70, int mut_prob = 85, int elit = true, 
+	    int penalty = 0, int cross_type = 1,
+	    int mut_app_prob = 30, int mut_insert_prob = 20,
+	    int mut_delete_prob = 20,
+	    int mut_change_prob = 10,
+	    int mut_permute_prob = 20,
+	    int use_sum_fit = 1,
+	    int num_min = 1000,
+	    int us_w = 1
+	    );
+@
+<<ACConfig Constructor.c>>=
+ACConfig::ACConfig( int pop, int gen, int fit_scale, 
+		    int cross_prob, int mut_prob, int elit, 
+		    int penalty, int cross_type,
+		    int mut_app_prob, int mut_insert_prob,
+		    int mut_delete_prob,
+		    int mut_change_prob,
+		    int mut_permute_prob,
+		    int use_sum_fit,
+		    int num_min,
+		    int us_w
+		    )
+  : population( pop ),
+    generations( gen ),
+    fitness_scale( fit_scale ),
+    crossover_prob( cross_prob ),
+    mutation_prob( mut_prob ),
+    elittest( elit ),
+    penalty_rate( penalty ),
+    crossover_type( cross_type ),
+    mutation_app_prob( mut_app_prob ),
+    mutation_insert_prob( mut_insert_prob ),
+    mutation_delete_prob( mut_delete_prob ),
+    mutation_change_prob( mut_change_prob ),
+    mutation_permute_prob( mut_permute_prob ),
+    use_sum_fitness(use_sum_fit),
+    num_min_after( num_min ),
+    use_whitehead( us_w )
+{  
+  float mut_sum = 
+    mutation_app_prob +
+    mutation_insert_prob +
+    mutation_delete_prob +
+    mutation_change_prob +
+    mutation_permute_prob;
+  
+  if ( mut_sum != 100 )
+    error("Sum of chances of different kinds of mutations must be 100"
+	  " please check your configuration file.");
+}
+  
+@
+\subsection{ACConfig::readFrom}
+<<ACConfig::readFrom.h>>=
+  void readFrom( istream& istr );
+@
+<<ACConfig::readFrom.c>>=
+void ACConfig::readFrom( istream& istr )
+{
+  while( !istr.eof() ) {
+    char s[500],c;
+    istr.get(s,499,'\n');
+    istr.get(c);
+    if( strlen(s) == 0 || s[0] == '#' ) continue;
+    istrstream in(s);
+    char var[100];
+    int value;
+    in.get(var,99,':');
+    in.get(c);
+    in >> value;
+    setVariable(var,value);
+  }
+}
+
+@
+\subsection{ACConfig::setVariable}
+used by readFrom() to set variables
+<<ACConfig::setVariable.h>>=
+  void setVariable( const char*, int );
+@
+<<ACConfig::setVariable.c>>=
+void ACConfig::setVariable( const char* varName, int value )
+{
+  // get rid of all spaces
+  char s[100];
+  int vnLen = strlen(varName), j = 0;
+  for( int i = 0; i < vnLen; ++i )
+    if( varName[i] != ' ' )
+      s[j++] = varName[i];
+  s[j] = 0;
+  Chars name(s);
+  if( name == Chars("Population") )
+    population = value;
+  else if( name == Chars("Generations") )
+    generations = value;
+  else if ( name == Chars("UseFitnessScale") )
+    fitness_scale = value;
+  else if ( name == Chars("CrossoverChance") )
+    crossover_prob = value;
+  else if ( name == Chars("MutationChance") )
+    mutation_prob = value;
+  else if ( name == Chars("UseElittestSelection") )
+    elittest = value;
+  else if ( name == Chars("PenaltyRate") )
+    penalty_rate = value;
+  else if ( name == Chars("CrossoverType") )
+    crossover_type = value;
+  else if ( name == Chars("MutationAppendChance") )
+    mutation_app_prob = value;
+  else if ( name == Chars("MutationInsertChance") )
+    mutation_insert_prob = value;
+  else if ( name == Chars("MutationDeleteChance") )
+    mutation_delete_prob = value;
+  else if ( name == Chars("MutationChangeChance") )
+    mutation_change_prob = value;
+  else if ( name == Chars("MutationPermuteChance") )
+    mutation_permute_prob = value;
+  else if ( name == Chars("UseSumFitnessFunction") )
+    use_sum_fitness = value;
+  else if ( name == Chars("MinimizeAfter") )
+    num_min_after = value;
+  else if ( name == Chars("UseWhitehead") )
+    use_whitehead = value;
+  else
+    error(Chars("void GHNConfig::setVariable( const char*, int ) : ") +
+	  "unknown variable" + varName + ".");
+}
+
+@
+\subsection{ACConfig::printOn}
+<<ACConfig::printOn.h>>=
+  void printOn( ostream& ostr ) const;
+@
+<<ACConfig::printOn.c>>=
+void ACConfig::printOn( ostream& ostr ) const
+{
+  ostr << "Population : " << population << endl
+       << "Generations : " << generations << endl
+       << "UseFitnessScale : " << fitness_scale << endl
+       << "CrossoverChance : " << crossover_prob << endl
+       << "MutationChance : " << mutation_prob << endl
+       << "UseElittestSelection : " << elittest << endl
+       << "PenaltyRate : " << penalty_rate << endl
+       << "CrossoverType : " << crossover_type << endl
+       << "MutationAppendChance : " << mutation_app_prob << endl
+       << "MutationInsertChance : " << mutation_insert_prob << endl
+       << "MutationDeleteChance : " << mutation_delete_prob << endl
+       << "MutationChangeChance : " << mutation_change_prob << endl
+       << "MutationPermuteChance : " << mutation_permute_prob << endl
+       << "UseSumFitnessFunction : " << use_sum_fitness << endl
+       << "MinimizeAfter : "   <<   num_min_after << endl
+       <<  "UseWhitehead : " <<   use_whitehead;
+}
+
+@
+\subsection{ACConfig::populationSize}
+<<ACConfig::populationSize.h>>=
+  int populationSize() const { return population; }
+@
+\subsection{ACConfig::numOfGenerations.h}
+<<ACConfig::numOfGenerations.h>>=
+  int numOfGenerations() const { return generations;}
+@
+\subsection{ACConfig::haveFitnessScaling}
+<<ACConfig::haveFitnessScaling.h>>=
+  bool haveFitnessScaling() const { return fitness_scale; }
+@
+\subsection{ACConfig::useSumFitness}
+<<ACConfig::useSumFitness.h>>=
+  bool useSumFitness() const { return use_sum_fitness; }
+@
+\subsection{ACConfig::chanceOfCrossover}
+<<ACConfig::chanceOfCrossover.h>>=
+  double chanceOfCrossover( ) const { return double(crossover_prob)/100; }
+@
+\subsection{ACConfig::chanceOfMutation}
+<<ACConfig::chanceOfMutation.h>>=
+  double chanceOfMutation( ) const { return double(mutation_prob)/100; }
+@
+\subsection{ACConfig::numOfElitistSelection}
+<<ACConfig::numOfElitistSelection.h>>=
+  int numOfElitistSelection( ) const { return elittest; }
+@
+\subsection{ACConfig::penaltyRate}
+<<ACConfig::penaltyRate.h>>=
+  int penaltyRate() const { return penalty_rate; }
+@
+\subsection{ACConfig::crossoverType}
+<<ACConfig::crossoverType.h>>=
+  int crossoverType() const { return crossover_type; }
+@
+\subsection{ACConfig::chanceOfMutationAppend}
+<<ACConfig::chanceOfMutationAppend.h>>=
+  double chanceOfMutationAppend( ) const { 
+    return double(mutation_app_prob)/100; 
+  }
+@
+\subsection{ACConfig::chanceOfMutationInsert}
+<<ACConfig::chanceOfMutationInsert.h>>=
+  double chanceOfMutationInsert( ) const { 
+    return double(mutation_insert_prob)/100; 
+  }
+@
+\subsection{ACConfig::chanceOfMutationDelete}
+<<ACConfig::chanceOfMutationDelete.h>>=
+  double chanceOfMutationDelete( ) const { 
+    return double(mutation_delete_prob)/100; 
+  }
+@
+\subsection{ACConfig::chanceOfMutationChange}
+<<ACConfig::chanceOfMutationChange.h>>=
+  double chanceOfMutationChange( ) const { 
+    return double(mutation_change_prob)/100; 
+  }
+@
+\subsection{ACConfig::chanceOfMutationPermute}
+<<ACConfig::chanceOfMutationPermute.h>>=
+  double chanceOfMutationPermute() const{
+    return double(mutation_permute_prob)/100; 
+  }
+@
+\subsection{ACConfig::numMinmizeAfterOf}
+<<ACConfig::numMinmizeAfterOf.h>>=
+  int numMinmizeAfterOf() const {
+    return num_min_after;
+  }
+@
+\subsection{ACConfig::useWhitehead}
+<<ACConfig::useWhitehead.h>>=
+  bool useWhitehead() const {
+    return use_whitehead;
+  }
+@
+\subsection{ACConfig operator input}
+<<ACConfig operator input.h>>=
+  friend ostream& operator << ( ostream& ostr, const ACConfig& C )
+  {
+    C.printOn(ostr);
+    return ostr;
+  }
+@
+\subsection{ACConfig operator output}
+<<ACConfig operator output.h>>=
+  friend istream& operator >> ( istream& istr, ACConfig& C )
+  {
+    C.readFrom(istr);
+    return istr;
+  }
+@
+\subsection{class ACConfig}
+<<class ACConfig>>=
+class ACConfig
+{
+public:
+<<ACConfig Constructor.h>>
+<<ACConfig::populationSize.h>>
+<<ACConfig::numOfGenerations.h>>
+<<ACConfig::haveFitnessScaling.h>>
+<<ACConfig::useSumFitness.h>>
+<<ACConfig::chanceOfCrossover.h>>
+<<ACConfig::chanceOfMutation.h>>
+<<ACConfig::numOfElitistSelection.h>>
+<<ACConfig::penaltyRate.h>>
+<<ACConfig::crossoverType.h>>
+<<ACConfig::chanceOfMutationAppend.h>>
+<<ACConfig::chanceOfMutationInsert.h>>
+<<ACConfig::chanceOfMutationDelete.h>>
+<<ACConfig::chanceOfMutationChange.h>>
+<<ACConfig::chanceOfMutationPermute.h>>
+<<ACConfig::numMinmizeAfterOf.h>>
+<<ACConfig::useWhitehead.h>>
+<<ACConfig operator input.h>>
+<<ACConfig operator output.h>>
+private:
+<<ACConfig::readFrom.h>>
+<<ACConfig::printOn.h>>
+<<ACConfig::setVariable.h>>
+
+  int population;
+  int generations;
+  int fitness_scale;
+  int crossover_prob; 
+  int mutation_prob;
+  int elittest; 
+  int penalty_rate;
+  int crossover_type;
+  int mutation_app_prob;
+  int mutation_insert_prob;
+  int mutation_delete_prob;
+  int mutation_change_prob;
+  int mutation_permute_prob;
+  int use_sum_fitness;
+  int num_min_after;
+  int use_whitehead;
+};
+
+@
+\section{ACConfig.h}
+<<ACConfig.h>>=
+#ifndef _ACConfig_H_
+#define _ACConfig_H_
+
+<<include.h>>
+<<class ACConfig>>
+#endif
+@
+\section{ACConfig.C}
+<<*>>=
+
+<<include.c>>
+<<ACConfig Constructor.c>>
+<<ACConfig::readFrom.c>>
+<<ACConfig::setVariable.c>>
+<<ACConfig::printOn.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

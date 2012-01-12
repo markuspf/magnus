@@ -1,0 +1,50 @@
+The running time for the heapsort: d - arity of the heap, time is in
+seconds, the array contained 1 million numbers in reversed order, namely
+999999, 999998, ..., 0:
+
+d = 2    time elapsed: 5.32379
+d = 3    time elapsed: 4.1964
+d = 4    time elapsed: 3.84316   Almost the best time
+d = 5    time elapsed: 4.06552
+d = 6    time elapsed: 4.02322
+d = 7    time elapsed: 3.98241
+d = 8    time elapsed: 3.96183
+d = 9    time elapsed: 3.84183   The best time
+d = 10   time elapsed: 3.89611
+d = 11   time elapsed: 3.94848
+d = 12   time elapsed: 3.93113
+d = 13   time elapsed: 3.89231
+d = 14   time elapsed: 3.86574
+d = 15   time elapsed: 3.94964
+d = 16   time elapsed: 4.06111
+d = 17   time elapsed: 4.14261
+d = 18   time elapsed: 4.23587
+d = 19   time elapsed: 4.32212
+d = 20   time elapsed: 4.40752
+
+
+Same experiment except that the array is filled with random values
+from 0 to 999999 (d = 4 is the best):
+
+d = 2    time elapsed: 6.27961
+d = 3    time elapsed: 4.9043
+d = 4    time elapsed: 4.5854    The best time
+d = 5    time elapsed: 4.78812
+d = 6    time elapsed: 4.69766
+d = 7    time elapsed: 4.69784
+d = 8    time elapsed: 4.72515
+d = 9    time elapsed: 4.69892
+d = 10   time elapsed: 4.73021
+d = 11   time elapsed: 4.80352
+d = 12   time elapsed: 4.88424
+d = 13   time elapsed: 4.895
+d = 14   time elapsed: 4.9285
+d = 15   time elapsed: 4.98603
+d = 16   time elapsed: 5.08718
+d = 17   time elapsed: 5.1766
+d = 18   time elapsed: 5.27417
+d = 19   time elapsed: 5.36267
+d = 20   time elapsed: 5.47293
+
+
+

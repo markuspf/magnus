@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/CommutatorsChecker.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "SMFPGroup.h"
+#include "ARCer.h"
+
+@
+\section{class CommutatorsChecker}
+<<class CommutatorsChecker>>=
+class CommutatorsChecker
+{
+public:
+  CommutatorsChecker( class SMFPGroup& group, int length );
+
+  CommutatorsChecker( class SMFPGroup& group, int length,
+		      const VectorOf<Word>& V );
+  
+  Trichotomy areTrivial( );
+  Chars getExplanation( ) { return explanation; }
+
+  friend ostream& operator < ( ostream& ostr, const CommutatorsChecker& o )
+  {
+    ostr < o.triedAbelianization < o.explanation;
+    return ostr;
+  }
+  
+  friend istream& operator > ( istream& istr, CommutatorsChecker& o )
+  {
+    istr > o.triedAbelianization > o.explanation;
+    return istr;
+  }
+
+private:
+  FPGroup G;
+  class GIC& gic;
+  class GCM& gcm;
+  int theLength;
+  VectorOf<Word> generators;
+  bool triedAbelianization;
+  Chars explanation;
+};
+
+@
+\section{class CommutatorsCheckerARCer}
+<<class CommutatorsCheckerARCer>>=
+class CommutatorsCheckerARCer : public ARCer
+{
+public:
+  CommutatorsCheckerARCer( ComputationManager& boss ) 
+    : ARCer( boss ), retValue( dontknow ) { } 
+
+  void setArguments( CommutatorsChecker* );
+  Trichotomy getRetValue() { return retValue; }
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  CommutatorsChecker* theChecker;
+  Trichotomy retValue;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/CommutatorsChecker.h
+#ifndef _CommutatorsChecker_h_
+#define _CommutatorsChecker_h_
+
+<<license>>
+<<include>>
+<<class CommutatorsChecker>>
+<<class CommutatorsCheckerARCer>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

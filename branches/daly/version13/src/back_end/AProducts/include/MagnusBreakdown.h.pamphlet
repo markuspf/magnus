@@ -1,0 +1,179 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/AProducts/include/MagnusBreakdown.h}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "OneRelatorGroup.h"
+#include "HNNExtOfORGroup.h"
+#include "AbelianWord.h"
+#include "Map.h"
+#include "SuperGen.h"
+#include "Range.h"
+#include "Automorphism.h"
+
+@
+\section{class MagnusBreakdown}
+<<class MagnusBreakdown>>=
+class MagnusBreakdown
+{
+public:
+  MagnusBreakdown( const OneRelatorGroup& G );
+    
+  // No default constructor, but it can be easily arranged by
+  // combining default FPGroup constructor and previsious one.
+
+  // Copy constructor and operator = provided by compiler
+
+  OneRelatorGroup getORGroup() const { return theORGroup; }
+  // Returns a current node of Magnus breakdown.
+
+  HNNExtOfORGroup getHNNPresentation() const;
+  // The caller should call `findHNNPresentation' before 
+  // and checks a presentation to be existed, 
+  // otherwise this function causes error.
+
+  int numberOfUsedGenerators() const { return (stable.exponent()==0 ? 1 : 2); }
+
+  Generator stableGenerator() const { return stable.generator(); }
+
+  bool hasAccompGenerator() const { 
+    return (stable.exponent() == 0 ? false : true ); 
+  }
+
+  Generator accompGenerator() const;
+
+  ListOf<Generator> getGeneratorsWithZeroExpSum() const { 
+    return theGeneratorsWithZeroExpSum;
+  }
+  
+  ListOf<Generator> getGeneratorsWithNonzeroExpSum() const {
+    return theGeneratorsWithNonzeroExpSum;
+  }
+
+  ListOf<Generator> getDefaultBreakdownGenerators() const;
+
+  int getExponentSumOf( const Generator& g ) const {
+    return exponentsOfOldGenerators[ abs(ord(g))-1 ];
+  }
+
+  Word rewriteWordInOldGenerators( const Word& w ) const; 
+
+  Word rewriteWordInNewGenerators( const Word& w ) const;
+
+  Automorphism embeddingOfORGroups( ) const { return theEmbeddingOfORGroups; }
+
+  Map toHNNPresentation( ) const { return mapToHNN; }
+
+  Map toORGroup( ) const { return mapToORGroup; }
+
+  int numberOfOldGenerators( ) const { return theNumberOfOldGenerators; }
+  int numberOfNewGenerators( ) const { return theNumberOfNewGenerators; }
+
+  VectorOf<Range> getSubscriptsTable() const { return subscriptsOfGenerator; }
+  
+  Generator adjoinSubscript(const Generator& oldGen, int subscript) const;
+  Generator extractSubscript(const Generator& newGen, int& subscript) const;
+  // @dp NOTE: these procedures work with the bigger one-relator group.
+
+  Trichotomy hasHNNPresentation() const { return haveHNNPresentation; }
+  // `no' means the node is a (terminal) list. 
+  // `dontknow' means the node is not investigated yet.
+
+  bool findHNNPresentation();
+  // Does one step of Magnus breakdown.
+
+  bool findHNNPresentation( const Generator& stableGen );
+
+  bool findHNNPresentation( const Generator& stableGen, 
+			    const Generator& accompGen );
+
+  void printOn( ostream& ostr ) const;
+
+  MagnusBreakdown *readFrom( istream& istr ) const;
+
+  void debugPrint( ostream& ostr ) const;
+
+protected:
+  void makeHNNPresentation( );
+  bool chooseStableGenerator( );
+  void makeSubscriptsTable( );
+  void makeEmbedding();
+  void makeTranslationTables();
+
+  OneRelatorGroup	theORGroup;
+  int			theNumberOfOldGenerators;
+  ListOf<Generator>	theGeneratorsWithZeroExpSum;
+  ListOf<Generator>	theGeneratorsWithNonzeroExpSum;
+  VectorOf<int>		exponentsOfOldGenerators;
+
+  OneRelatorGroup	theLargerORGroup;
+  HNNExtOfORGroup	theHNNPresentation;
+  bool			haveHNNPresentation;
+  Automorphism		theEmbeddingOfORGroups;
+  Map			mapToHNN;
+  Map			mapToORGroup;
+  SuperGen		stable, accomp;
+  Generator		stableNewGen;
+  int			theNumberOfNewGenerators;
+  VectorOf<Chars>	theNamesOfNewGenerators;
+  VectorOf<Range>	subscriptsOfGenerator;
+  VectorOf<int>		toNewGens;
+  VectorOf<int>		toOldGens;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/AProducts/include/MagnusBreakdown.h
+#ifndef _MAGNUS_BREAKDOWN_H_
+#define _MAGNUS_BREAKDOWN_H_
+
+<<license>>
+<<include>>
+<<class MagnusBreakdown>>
+
+ProductOfRelatorConjugates liftUpProduct( 
+  const ProductOfRelatorConjugates& mProduct, 
+  const MagnusBreakdown& M, const OneRelatorGroup& G 
+);
+
+inline HNNExtOfORGroup MagnusBreakdown::getHNNPresentation() const 
+{
+#if SAFETY > 0
+  if( !haveHNNPresentation )
+    error("Called MagnusBreakdown::getHNNPresentation() "
+	  "when HNN presentation does not exist.");
+#endif
+  return theHNNPresentation;
+}
+
+inline Generator MagnusBreakdown::accompGenerator() const 
+{
+#if SAFETY > 0
+  if( stable.exponent() == 0 )
+    error("MagnusBreakdown::accompGenerator(): Calling for "
+	  "an accompanying generator when it is not defined.");
+#endif
+  return accomp.generator();
+}
+
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

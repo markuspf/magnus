@@ -1,0 +1,259 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/orconsequencesenumerator.pamphlet}
+\author{The Magnus Team}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "OneRelatorGroup.h"
+#include "Supervisor.h"
+#include "SMSubgroup.h"
+#include "SMEnumerator.h"
+#include "File.h"
+
+@
+<<include.c>>=
+#include "ORConsequencesEnumerator.h"
+#include "SMFPGroup.h"
+#include "Subgroup.h"
+#include "OneRelatorGroup.h"
+#include "SetOfWordsChecker.h"
+#include "OutMessages.h"
+#include "viewStructure.h"
+
+@
+\section{class ORConsequencesEnumeratorARCer}
+\subsection{ORConsequencesEnumeratorARCer Constructor}
+<<ORConsequencesEnumeratorARCer Constructor.h>>=
+  ORConsequencesEnumeratorARCer( ComputationManager& boss,SMListData& d,
+				 const OneRelatorGroup& g ) 
+    : EnumeratorARCer( boss, d ),
+      theEnumerator( g ),   
+      theGroup( g ),
+      counter( 1 ),
+      numberOfAll( 100 ){ } 
+  
+@
+\subsection{ORConsequencesEnumeratorARCer::getFileName}
+<<ORConsequencesEnumeratorARCer::getFileName.h>>=
+  Chars getFileName() const {return file.getFileName();}
+@
+\subsection{ORConsequencesEnumeratorARCer::setNumberOfAll}
+<<ORConsequencesEnumeratorARCer::setNumberOfAll.h>>=
+  void setNumberOfAll( int n ) { numberOfAll = n; }
+@
+\subsection{ORConsequencesEnumeratorARCer::writeResults}
+<<ORConsequencesEnumeratorARCer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<ORConsequencesEnumeratorARCer::writeResults.c>>=
+void ORConsequencesEnumeratorARCer::writeResults( ostream& out ) 
+{
+  out < theEnumerator < counter;
+}
+
+@
+\subsection{ORConsequencesEnumeratorARCer::readResults}
+<<ORConsequencesEnumeratorARCer::readResults.h>>=
+  void readResults( istream& );
+@
+<<ORConsequencesEnumeratorARCer::readResults.c>>=
+void ORConsequencesEnumeratorARCer::readResults( istream& in )
+{
+  in > theEnumerator > counter;
+}
+
+@
+\subsection{ORConsequencesEnumeratorARCer::enumerate}
+<<ORConsequencesEnumeratorARCer::enumerate.h>>=
+  void enumerate();
+@
+<<ORConsequencesEnumeratorARCer::enumerate.c>>=
+void ORConsequencesEnumeratorARCer::enumerate()
+{
+  while ( counter <= numberOfAll ) {
+    // returns if terminate was called in parent process
+    if (submitSignalRecieved()){
+      return;
+    }
+    file << counter << ": ";
+    theGroup.printWord( file, theEnumerator.word() );
+    file << endl << endl;
+    theEnumerator.advance();
+    counter++;
+  } 
+}
+
+@
+\subsection{class ORConsequencesEnumeratorARCer}
+<<class ORConsequencesEnumeratorARCer.h>>=
+class ORConsequencesEnumeratorARCer : public EnumeratorARCer
+{
+public:
+<<ORConsequencesEnumeratorARCer Constructor.h>>
+<<ORConsequencesEnumeratorARCer::getFileName.h>>
+<<ORConsequencesEnumeratorARCer::setNumberOfAll.h>>
+<<ORConsequencesEnumeratorARCer::writeResults.h>>
+<<ORConsequencesEnumeratorARCer::readResults.h>>
+protected:
+<<ORConsequencesEnumeratorARCer::enumerate.h>>
+private:
+  EnumeratorOfConsequences theEnumerator;
+  OneRelatorGroup theGroup;
+  File file;
+  int counter;
+  int numberOfAll;
+};
+
+@
+\section{class ORConsequencesEnumerator}
+\subsection{ORConsequencesEnumerator Constructor}
+<<ORConsequencesEnumerator Constructor.h>>=
+  ORConsequencesEnumerator( SMFPGroup&);
+@
+<<ORConsequencesEnumerator Constructor.c>>=
+ORConsequencesEnumerator::ORConsequencesEnumerator(SMFPGroup& s)
+  : EnumeratorProblem< Word >( s ),
+    arcer(*this, theData, OneRelatorGroup( s.getFPGroup().namesOfGenerators(),
+				  s.gic.getOneRelator()
+				  ) ),
+    theSMFPGroup(s),
+    started( false )
+{ }
+
+@
+\subsection{ORConsequencesEnumerator::viewStructure}
+<<ORConsequencesEnumerator::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<ORConsequencesEnumerator::viewStructure.c>>=
+void ORConsequencesEnumerator::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv( oid(), "Consequences enumerator",
+	     Text("Enumerate all consequences of the relator of the group")
+	     + Name(theSMFPGroup),
+	     helpID( "ConsequencesEnumerator", theSMFPGroup ), 
+	     Text( "ConseqEnum" )
+	     );
+  pv.addParameter(
+    EditInteger("numberOfAll","Number of relators",1,100,0,1000000));
+  pv.addProblem( Subproblem("Sp1",ThisARCSlotID(),
+			    "For the use of this enumerator",50));
+  submit(ostr, pv);
+}
+
+@
+\subsection{ORConsequencesEnumerator::getGroup}
+<<ORConsequencesEnumerator::getGroup.h>>=
+  class SMFPGroup& getGroup() const { return theSMFPGroup;}
+@
+\subsection{ORConsequencesEnumerator::takeControl}
+<<ORConsequencesEnumerator::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<ORConsequencesEnumerator::takeControl.c>>=
+void ORConsequencesEnumerator::takeControl( )
+{
+  if ( freeARCs() > 0 ) {
+    if (!started){
+      LogMessage msg( *this, theSMFPGroup );
+      
+      msg << Link( Chars("Click here to see all consequences of the"
+			 " relator of ") +
+		   Text( Name(theSMFPGroup) ) ,
+		   "ConsequencesEnumerator", arcer.getFileName(), 
+		   true
+		   ) 
+	  << ".";
+      msg.send();
+      started = true;
+    }
+    if (arcer.takeControl()){
+      adminSuspend();
+      return;	
+    }
+    usedOneARC();
+  }
+}
+
+@
+\subsection{ORConsequencesEnumerator::getDataFileName}
+<<ORConsequencesEnumerator::getDataFileName.h>>=
+  Chars getDataFileName() const { return arcer.getFileName(); }
+@
+\subsection{ORConsequencesEnumerator::start}
+<<ORConsequencesEnumerator::start.h>>=
+  void start( ) {       // overrides ComputationManager
+    int totalNum = getParameters().getValue("numberOfAll");
+    arcer.setNumberOfAll( totalNum );
+  }       
+@
+\subsection{ORConsequencesEnumerator::terminate}
+<<ORConsequencesEnumerator::terminate.h>>=
+  void terminate( ) { }       // overrides ComputationManager
+@
+\subsection{ORConsequencesEnumerator::resume}
+<<ORConsequencesEnumerator::resume.h>>=
+  void resume() {
+    arcer.submitSignal();
+    int totalNum = getParameters().getValue("numberOfAll");
+    arcer.setNumberOfAll( totalNum );
+  }
+@
+\subsection{class ORConsequencesEnumerator}
+<<class ORConsequencesEnumerator.h>>=
+class ORConsequencesEnumerator : public  EnumeratorProblem< Word >
+{
+public:
+<<ORConsequencesEnumerator Constructor.h>>
+<<ORConsequencesEnumerator::viewStructure.h>>
+<<ORConsequencesEnumerator::getGroup.h>>
+<<ORConsequencesEnumerator::takeControl.h>>
+<<ORConsequencesEnumerator::getDataFileName.h>>
+<<ORConsequencesEnumerator::start.h>>
+<<ORConsequencesEnumerator::terminate.h>>
+<<ORConsequencesEnumerator::resume.h>>
+private:
+  SMFPGroup& theSMFPGroup;
+  ORConsequencesEnumeratorARCer arcer;
+  bool started;
+};
+
+@
+\section{license}
+Copyright (C) 1994 The New York Group Theory Cooperative
+See magnus/doc/COPYRIGHT for the full notice.
+\section{ORConsequencesEnumerator.h}
+<<ORConsequencesEnumerator.h>>=
+// src/orconsequencesenumerator.pamphlet
+#ifndef _OR_CONS_ENUMERATOR_H_
+#define _OR_CONS_ENUMERATOR_H_
+
+<<include.h>>
+<<class ORConsequencesEnumeratorARCer.h>>
+<<class ORConsequencesEnumerator.h>>
+#endif
+@
+\section{ORConsequencesEnumerator.c}
+<<*>>=
+
+<<include.c>>
+<<ORConsequencesEnumeratorARCer::writeResults.c>>
+<<ORConsequencesEnumeratorARCer::readResults.c>>
+<<ORConsequencesEnumeratorARCer::enumerate.c>>
+
+<<ORConsequencesEnumerator Constructor.c>>
+<<ORConsequencesEnumerator::takeControl.c>>
+<<ORConsequencesEnumerator::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

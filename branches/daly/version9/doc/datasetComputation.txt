@@ -1,0 +1,148 @@
+about data set computations.
+
+define a new SMDatasetComputation.
+
+assimulate SMDataset
+
+how to do it?
+such as FullAnalysis
+    Menu1<SMBaseOfDataSet> M( Menu::TOOLs );
+
+    M.add(ReadSMFullAnalysis(), Text("full analysis of") + Name(1),
+	  DefineFullAnalysis());
+
+struct ReadSMComputation : public Ctor1<SMComputation,SMBaseOfDataset>, protected FEData
+{
+  Ctor* copy( ) const { return new ReadSMComputation; }             // overrides Ctor1
+  SMObject* construct(SMObject* a1, Chars&, istream&) const; // overrides Ctor1
+};
+
+SMObject* ReadSMComputation::construct(SMObject* a1, Chars& name, istream& istr) const
+{
+  SMFPGroup& parent = *(SMFPGroup*)a1;
+  return new SMComputation( parent, name,defination,LogMsg);
+}
+
+
+class SMComputation : public AlgebraicObject
+{
+public:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Constructors:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  SMWord(SMFPGroup& G, const Word w, const Chars heritage);
+
+  SMWord(SMFPGroup& G) : AlgebraicObject(""), theGroup(G), 
+    wic( oid() ),theWCM ( 0 )
+    { }
+  //@rn Bogus ctor; see `But no' comment in Menu.h.
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Accessors:                                                          //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  Word getWord( ) const { return theWord; }
+
+  SMFPGroup& getParent( ) const { return theGroup; }
+
+  WCM& wcm() const { return *theWCM; }
+
+        InformationCenter* infoCenter()       { return &wic; }
+  const InformationCenter* infoCenter() const { return &wic; }
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Front End Interfacing:                                              //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  static const char* type( ) { return "SMWord"; }
+
+  const char* typeID( ) const { return type(); }        // overrides SMObject
+
+  const IconID iconID( ) const { return IconID::elt; }  // overrides SMObject
+
+  void viewStructure(ostream& ostr) const;              // overrides SMObject
+
+  void printProperties(ostream& ostr) const;            // overrides SMObject
+
+  void printDefinition(ostream& ostr) const;            // overrides SMObject
+
+  WIC wic;
+
+protected:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Restricted Access:                                                  //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  void readMessage(istream&) { }                        // overrides SMObject
+
+
+private:
+
+  /////////////////////////////////////////////////////////////////////////
+  //                                                                     //
+  // Data Members:                                                       //
+  //                                                                     //
+  /////////////////////////////////////////////////////////////////////////
+
+  SMFPGroup& theGroup;
+
+  const Word theWord;
+ 
+  WCM* theWCM;
+};
+
+such as Graphic Analysis
+  (can not change parameters)nt_end/magnus $MAGNUSCURRENTHOME/front_end/magnus.old
+fi
+
+sed $SEDSCRIPT < $MAGNUSCURRENTHOME/front_end/magnus.in > $MAGNUSCURRENTHOME/front_end/magnus
+
+chmod ug+x $MAGNUSCURRENTHOME/front_end/magnus
+
+echo "$MAGNUSCURRENTHOME/front_end/magnus created."
+chmod 777 $MAGNUSCURRENTHOME
+chmod 777 $MAGNUSCURRENTHOME/back_end/SessionManager/test/bin/tmp
+
+echo
+
+echo "Configuration complete."
+
+exit 0
+h [expr ceil(double($maxValue - $startpoint) / $cell)]
+     } else {
+       set cell [$w.frameParamCell.entryCell get]
+       set width [$w.frameParamWidth.entryWidth get]
+       set startpoint [$w.frameParamStart.entryStart get]
+    }
+    switch $graphicType {
+         H {
+            drawHistogram $cell $width $startpoint $defination $w
+         }
+         F {
+            drawFrequencygram $cell $width $startpoint $defination $w
+         }
+         C {
+            drawCompgram $cell $width $startpoint $defination $w
+         }
+#frequency summary
+         S {
+            drawFrequencyTable $cell $width $startpoint $defination $w
+         }
+#percentage summary
+         P {
+            drawPercentageTable $cell $width $startpoint $defination $w
+         }
+    }
+}
+

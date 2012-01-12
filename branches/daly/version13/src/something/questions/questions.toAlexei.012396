@@ -1,0 +1,20 @@
+1. Is trivial for free groups doesn't make sence, right ?
+
+2. Is A1 metabelian ? Not for 2-nilpotent ??? For nilpotent ?
+
+3. Is A1 metric small cancellation? What about abelian and nilpotent ?
+   What if some nilpotent group will have big rank ?
+
+4. I added the item "Is G1 hyperbolic ?" for !free and !MSC, is it
+   correct ?
+
+5. For Nilpotent Groups I can use origin set of relators (without 
+   commutators) when I want to compute the abelianization.
+
+6. What text exactly should be in homology item ?  Compute the
+   integral homology groups of G1 ? (Sometimes we ask about
+   dimension.)
+
+7. In General Order Problem shoud I include Rewriting System and 
+   Automatic Structure ?
+

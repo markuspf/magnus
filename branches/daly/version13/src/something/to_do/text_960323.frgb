@@ -1,0 +1,71 @@
+From gilbert@rio Sat Mar 23 10:25 EST 1996
+Date: Sat, 23 Mar 1996 10:25:23 -0500
+From: gilbert@rio ( Gilbert Baumslag)
+
+Questions about subgroups:
+
+Is H1 trivial
+Compute the order of H1
+Compute the torsion-free rank of H1
+Compute the order of the torsion subgroup of H1
+_________________________________________________
+
+Is H1 = A2
+Find the index of H1 in A2
+Find a virtual complement of H1 in A2
+Is H1 isolated in A2
+Is H1 pure in A2
+_____________________________________________________
+
+
+****
+In the isomorphism problem, the answer should be: A1 and A2
+are not isomorphic - they have different torsion-free ranks.
+
+
+****
+The message that comes up when dealing with an abelian group
+should read:
+
+The cyclic decomposition allows one to solve a number of algorithmic problems,
+for example the word problem, the order problem and so on. In working with 
+such a decomposition, we use additive notation, denoting the generators 
+of the infinite cyclic summands in the canonical decomposition of an 
+abelian group, by f_1, f_2, .. , and those of the finite cyclic summands, 
+by t_1, t_2, ... . The orders of t_1, t_2, ... are arranged so that the order
+of t_1 divides that of t_2, the order of t_2 divides that of t_3, ... and 
+so on.
+
+__________________________________________________________________________
+
+When one asks Magnus whether a map from the generators of an abelian group
+into the group itself defines a homomorphism, the answer that comes up should
+read: m1 does not extend to a homomorphism: this follows from the fact
+that the images of the given generators do not satisfy the defining relations
+of A1. Same is true for a map from A1 to A2. 
+
+When a map does extend to a homomorphism, has been fixed for finitely
+presented groups, but what about abelian groups?
+
+___________________________________________________________________________
+
+In using Make, in Define a set of words, the Instruction should read:
+
+Enter a set of additional relators.
+
+The Quick Help should read:
+
+Enter the additional relators as words in the generators of the ...
+(add "additional")
+
+
+When checking whether two words are equal, one needs to say  ... follows from
+their canonical decompositions.
+*******************
+
+We also need here various questions involving homomorphisms, how to
+compute their composition, whether they are surjections, equal and
+so on including all of the stuff we talked about for orindary homomorphisms
+of one group into another.
+
+____________________________________________________________________________

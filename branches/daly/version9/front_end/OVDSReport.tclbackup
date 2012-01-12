@@ -1,0 +1,445 @@
+proc createOVDSReport { message Parameters } {
+  set message "$message \{$Parameters\}"
+  postToLog $message
+  eval [concat toSessionManager "\"$message\""]
+}
+
+proc OVDSReportAnalysisDialog_OK {w title message} {
+  global fullAnalysis dataSummary graphicalAnalysis meanAnalysis
+  global varianceAnalysis fitAnalysis
+  if { [$w.frame.analysisType get]=="F"} {
+      set reportForm "{F} {d} {g} {m} {v} {f}"
+  } else {
+      set reportForm ""
+      if {$fullAnalysis=="1" } {
+          lappend reportForm {F}
+      }
+      if {$dataSummary=="1" } {
+          lappend reportForm {d}
+      }
+      if {$graphicalAnalysis=="1" } {
+          lappend reportForm {g}
+      }
+      if {$meanAnalysis=="1" } {
+          lappend reportForm {m}
+      }
+      if {$varianceAnalysis=="1" } {
+          lappend reportForm {v}
+      }
+      if {$fitAnalysis=="1" } {
+          lappend reportForm {f}
+      }
+  }
+  destroy $w
+  handleOVDSReportParameters $message $reportForm 0 ""
+}
+
+proc getDataSummaryParametersDialog_ok {w message lForms step prevParameters  } {
+     set cell [$w.frameParamCell.entryCell get]
+     set width [$w.frameParamWidth.entryWidth get]
+     set startpoint [$w.frameParamStart.entryStart get]
+     set type [$w.frame.graphicType get]
+     set curParameters "d \{$type $cell $width $startpoint\}"
+     lappend prevParameters $curParameters
+     destroy $w
+     handleOVDSReportParameters $message $lForms [expr $step+1] $prevParameters
+}
+ 
+proc getDataSummaryParametersDialog {message lForms step prevParameters  } {
+  global A tcl_path
+  set w [uniqueDialogName]
+  toplevel $w
+  eval wm title $w "\"Data Summary Parameters\""
+  makeSummaryViewMenu $w 1
+  frame $w.frame -relief raised -bd 2
+
+  #save the graphic type in this hidden entry
+  entry $w.frame.graphicType -width 1 -relief sunken
+  setGramType $w S
+
+  pack $w.frame -fill x
+
+  # The control panel:
+  #cell,width,startpoint
+  makeControlPanel $w
+
+  # ok button
+  frame $w.frame3 -relief raised -bd 2
+  set f $w.frame3
+  button $f.ok -text Next -state active -width 11 \
+     -command "getDataSummaryParametersDialog_ok $w \"$message\" {$lForms} $step {$prevParameters} "
+
+  pack $f.ok -side left -padx 2m -pady 1m
+  pack $w.frame3 -side top -fill x
+}
+
+proc getGraphicalParametersDialog_ok {w message lForms step prevParameters  } {
+     set cell [$w.frameParamCell.entryCell get]
+     set width [$w.frameParamWidth.entryWidth get]
+     set startpoint [$w.frameParamStart.entryStart get]
+     set type [$w.frame.graphicType get]
+     set curParameters "g \{$type $cell $width $startpoint\}"
+     lappend prevParameters $curParameters
+     destroy $w
+     handleOVDSReportParameters $message $lForms [expr $step+1] $prevParameters
+}
+
+proc getGraphicalParametersDialog {message lForms step prevParameters} {
+  global A tcl_path
+  set w [uniqueDialogName]
+  toplevel $w
+  eval wm title $w "\"Graphical Analysis Parameters\""
+  makeGraphicViewMenu $w 1
+  frame $w.frame -relief raised -bd 2
+
+  #save the graphic type in this hidden entry
+  entry $w.frame.graphicType -width 1 -relief sunken
+  setGramType $w H
+  pack $w.frame -fill x
+
+  # The control panel:
+  #cell,width,startpoint
+  makeControlPanel $w
+
+  # ok button
+  frame $w.frame3 -relief raised -bd 2
+  set f $w.frame3
+  button $f.ok -text Next -state active -width 11 \
+     -command "getGraphicalParametersDialog_ok $w \"$message\" {$lForms} $step {$prevParameters} "
+
+  pack $f.ok -side left -padx 2m -pady 1m
+  pack $w.frame3 -side top -fill x
+}
+
+proc getMeanParametersDialog_OK {w message lForms step prevParameters} {
+  global MuType
+  set MU0 0 
+  set MUType 0
+  set type [$w.frame.analysisType get]
+  set level [$w.frameDef.frame.textLevel get]
+  if {[regexp {^([0]?[.][0-9]*)$} $level]==0} {
+     alert "You must give a value of level between 0 and 1"
+     return
+  }
+  if { $type == "H" } {
+     set MU0 [$w.frameHypo.frame.nullHypo get]
+   if {[regexp {^([-]?[0-9]*[.]?[0-9]*)$} $MU0]==0} {
+       alert "You must give a value of MU0"
+       return
+    }
+    set MUType $MuType
+  }
+
+  destroy $w
+  set curParameters "m \{ $type $MU0 $level $MUType \}"
+  lappend prevParameters $curParameters
+  handleOVDSReportParameters $message $lForms [expr $step+1] $prevParameters
+}
+
+proc getVarianceParametersDialog_OK {w message lForms step prevParameters} {
+  global MuType
+  set MU0 0 
+  set MUType 0
+  set type [$w.frame.analysisType get]
+  set level [$w.frameDef.frame.textLevel get]
+  if {[regexp {^([0]?[.][0-9]*)$} $level]==0} {
+     alert "You must give a value of level between 0 and 1"
+     return
+  }
+  if { $type == "H" } {
+     set MU0 [$w.frameHypo.frame.nullHypo get]
+   if {[regexp {^([-]?[0-9]*[.]?[0-9]*)$} $MU0]==0} {
+       alert "You must give a value of MU0"
+       return
+    }
+    set MUType $MuType
+  }
+
+  destroy $w
+  set curParameters "v \{ $type $MU0 $level $MUType \}"
+  lappend prevParameters $curParameters
+  handleOVDSReportParameters $message $lForms [expr $step+1] $prevParameters
+}
+
+# m{type(H,C) MU0 level MUType(0 1 2) } 
+proc getMeanParametersDialog {message lForms step prevParameters} {
+  # create the widgets
+  set w [DataSetMeanAnalysisControlDialog "Mean Analysis Parameters"]
+
+  # Make Next buttons
+  frame $w.frameBtn -relief raised -bd 2
+  frame $w.frameBtn.frame -relief flat
+
+  button $w.frameBtn.frame.ok -relief raised -bd 2 -text "Next" -width 8 \
+	  -command "getMeanParametersDialog_OK $w \"$message\" {$lForms} $step {$prevParameters}"
+  
+  pack $w.frameBtn.frame.ok -side right \
+    -expand 1 -padx 3m -pady 3m -ipady 1m
+  pack $w.frameBtn.frame -fill x
+}
+
+# v{type(H,C) MU0 level MUType } 
+proc getVarianceParametersDialog {message lForms step prevParameters} {
+  # create the widgets
+  set w [DataSetVarianceAnalysisControlDialog "Variance Analysis Parameters"]
+
+  # Make Next buttons
+  frame $w.frameBtn -relief raised -bd 2
+  frame $w.frameBtn.frame -relief flat
+
+  button $w.frameBtn.frame.ok -relief raised -bd 2 -text "Next" -width 8 \
+	  -command "getVarianceParametersDialog_OK $w \"$message\" {$lForms} $step {$prevParameters}"
+  
+  pack $w.frameBtn.frame.ok -side right \
+    -expand 1 -padx 3m -pady 3m -ipady 1m
+  pack $w.frameBtn.frame -fill x
+}
+
+proc getFitnessParametersDialog_OK  {w message lForms step prevParameters} {
+  global MuType
+  set level [$w.frameDef.frame.textLevel get]
+   if {[regexp {^([0]?[.][0-9]*)$} $level]==0} {
+    alert "You must give a value of level between 0 and 1"
+    return
+  }
+  destroy $w
+  set curParameters "f \{ $MuType $level \}"
+  lappend prevParameters $curParameters
+  handleOVDSReportParameters $message $lForms [expr $step+1] $prevParameters
+}
+
+# f{type(1 2 3) level } 
+proc getFitnessParametersDialog {message lForms step prevParameters} {
+   set w [defineGoodnessOfFitControlDialog "Goodness of Fit Parameters" 1]
+   # Make Next buttons
+   frame $w.frameBtn -relief raised -bd 2
+   frame $w.frameBtn.frame -relief flat
+
+   button $w.frameBtn.frame.ok -relief raised -bd 2 -text "Next" -width 8 \
+	  -command "getFitnessParametersDialog_OK $w \"$message\" {$lForms} $step {$prevParameters}"
+  
+   pack $w.frameBtn.frame.ok -side right \
+         -expand 1 -padx 3m -pady 3m -ipady 1m
+   pack $w.frameBtn.frame -fill x
+   pack $w.frameBtn -fill x
+
+}
+
+proc handleOVDSReportParameters {message lForms step prevParameters} {
+   if {$step==[llength $lForms]} {
+      createOVDSReport $message $prevParameters
+   } else {
+      set formType [lindex $lForms $step]
+      switch $formType {
+         F {
+             set curParameters  "F { }"
+             lappend preParameters $curParameters
+             handleOVDSReportParameters $message $lForms [expr $step+1] $preParameters
+         }
+         d {
+             getDataSummaryParametersDialog $message $lForms $step $prevParameters
+         }
+         g {
+             getGraphicalParametersDialog $message $lForms $step $prevParameters
+         }
+         m {
+             getMeanParametersDialog $message $lForms $step $prevParameters
+         }
+         v {
+             getVarianceParametersDialog $message $lForms $step $prevParameters
+         }
+         f {
+             getFitnessParametersDialog $message $lForms $step $prevParameters
+         }
+      }
+   }
+}
+
+proc setOVDSReportAnalysisType { w type } {
+  set reportType $type
+  setEntryValue $w.frame.analysisType $type
+  if { $reportType == "F" } {
+    $w.choiceFrm.fullAnalysis configure -state disabled
+    $w.choiceFrm.dataSummary  configure -state disabled
+    $w.choiceFrm.graphicalAnalysis   configure -state disabled
+    $w.choiceFrm.meanAnalysis   configure -state disabled
+    $w.choiceFrm.varianceAnalysis   configure -state disabled
+    $w.choiceFrm.fitAnalysis   configure -state disabled
+    
+  } else {
+    $w.choiceFrm.fullAnalysis  configure -state normal
+    $w.choiceFrm.dataSummary  configure -state normal
+    $w.choiceFrm.graphicalAnalysis   configure -state normal
+    $w.choiceFrm.meanAnalysis   configure -state normal
+    $w.choiceFrm.varianceAnalysis  configure -state normal
+    $w.choiceFrm.fitAnalysis   configure -state normal
+ }
+}
+
+proc MakeOVDSReportAnalysisMenu { w } {
+  frame $w.mbar -relief raised -bd 2
+  menubutton $w.mbar.analysisType -text { Type } -menu $w.mbar.analysisType.menu
+  menubutton $w.mbar.help -text Help -menu $w.mbar.help.menu
+
+  pack $w.mbar.analysisType -side left
+  pack $w.mbar.help -side right
+
+  menu $w.mbar.analysisType.menu 
+    $w.mbar.analysisType.menu add command -label "Full Report" \
+      -command "setOVDSReportAnalysisType $w F"
+
+    $w.mbar.analysisType.menu add command -label "Partial Report" \
+      -command "setOVDSReportAnalysisType $w P"
+
+  menu $w.mbar.help.menu
+    $w.mbar.help.menu add command -label "about Dataset Report" \
+      -command "showHelp {OVDSReport::How Dataset Report Works}"
+  pack $w.mbar -side top -fill x
+
+}
+
+proc defineOVDSReportAnalysisDialog {title message} {
+
+  # $message is the SM message template
+  # $dialog is the name of the calling proc
+  # $title is the dialog window title
+  global tcl_path
+  set w [uniqueDialogName]
+  toplevel $w
+  wm title $w $title
+  wm iconname $w "Dialog"
+  #@db wm minsize $w 200 200
+  # Make menus
+  MakeOVDSReportAnalysisMenu $w
+
+  frame $w.frame -relief raised -bd 2
+  # save report type
+  entry $w.frame.analysisType 
+  setEntryValue $w.frame.analysisType "P"
+  label $w.frame.descr -fg blue -bitmap @$tcl_path/bitmaps/analysis.xbm -text "Dataset Report:"
+  pack $w.frame.descr -side top
+  pack $w.frame -side top
+  # make choice buttons
+  frame $w.choiceFrm -relief raised -bd 2
+  checkbutton $w.choiceFrm.fullAnalysis -text "Full Analysis"
+  checkbutton $w.choiceFrm.dataSummary  -text "Data Summary"
+  checkbutton $w.choiceFrm.graphicalAnalysis  -text "Graphical Analysis"
+  checkbutton $w.choiceFrm.meanAnalysis  -text "Mean Analysis"
+  checkbutton $w.choiceFrm.varianceAnalysis  -text "cariance Analysis"
+  checkbutton $w.choiceFrm.fitAnalysis  -text "Goodness of Fit"
+  pack $w.choiceFrm.fullAnalysis -side top
+  pack $w.choiceFrm.dataSummary -side top
+  pack $w.choiceFrm.graphicalAnalysis -side top
+  pack $w.choiceFrm.meanAnalysis -side top
+  pack $w.choiceFrm.varianceAnalysis -side top
+  pack $w.choiceFrm.fitAnalysis -side top
+  pack $w.choiceFrm -side top
+  # Make OK and Cancel buttons
+
+  frame $w.frameBtn -relief raised -bd 2
+  frame $w.frameBtn.frame -relief flat
+  button $w.frameBtn.frame.cancel -relief raised -bd 2 -text "Cancel" -width 8\
+         -command "destroy $w"
+  set title "compare variance analysis"
+  button $w.frameBtn.frame.ok -relief raised -bd 2 -text "Ok" -width 8 \
+	  -command "OVDSReportAnalysisDialog_OK $w \{$title\} \{$message\}"
+  
+  pack $w.frameBtn.frame.ok $w.frameBtn.frame.cancel -side left\
+    -expand 1 -padx 3m -pady 3m -ipady 1m
+  pack $w.frameBtn.frame.cancel -side right
+  pack $w.frameBtn.frame -side top -fill x
+  pack $w.frameBtn -side top -fill x
+}
+
+##  {type cell width startpoint} 
+
+proc drawSummaryReport { w strDef summaryParam } {
+   set type [lindex $summaryParam 0]
+   set cell [lindex $summaryParam 1]
+   set width [lindex $summaryParam 2]
+   set startpoint [lindex $summaryParam 3]
+   frame $w.graphframe.summaryFrame -relief flat -bd 2
+   drawGraghOnFrame  $type $cell $width $startpoint $strDef $w.graphframe.summaryFrame 
+   pack $w.graphframe.summaryFrame -side left -fill x
+}
+
+## {type cell width startpoint} 
+proc drawGraphicalReport { w strDef summaryParam } {
+   set type [lindex $summaryParam 0]
+   set cell [lindex $summaryParam 1]
+   set width [lindex $summaryParam 2]
+   set startpoint [lindex $summaryParam 3]
+   frame $w.graphframe.graphicalFrame -relief flat -bd 2
+   drawGraghOnFrame $type $cell $width $startpoint $strDef $w.graphframe.graphicalFrame 
+   pack $w.graphframe.graphicalFrame -side left -fill x
+}
+
+proc ODVSReportView {viewID} {
+  set iconID [get_viewIcon $viewID]
+  set strDef [get_objectDefinition $iconID]
+  set strDef [lindex $strDef 0]
+  set parameters [get_viewParameter $viewID]
+  set summaryParam [lindex $parameters 0]
+  set graphicalParam [lindex $parameters 1]
+  set w [uniqueDialogName]
+  toplevel $w
+  eval wm title $w "\"[get_viewTitle $viewID]\""
+  eval wm iconname $w "\"[get_viewTitle $viewID]\""
+  eval set banner "\"[get_viewBanner $viewID]\""
+# datasummary and graphical
+  frame $w.graphframe -relief flat -bd 2
+ if { [llength $summaryParam]==4 } {
+     drawSummaryReport $w $strDef $summaryParam
+  }
+ if { [llength $graphicalParam]==4 } {
+     drawGraphicalReport $w $strDef $graphicalParam
+  }
+  pack $w.graphframe -side top -fill both -expand 1
+# The log:
+  postToLog $parameters
+  frame $w.frame1 -relief raised -bd 2
+  frame $w.frame1.frame -relief flat
+  label $w.frame1.label -text "Report"
+  pack $w.frame1.label -side top -anchor nw
+  pack $w.frame1.frame -side top -fill both -expand 1 -padx 2m -pady 1m
+  pack $w.frame1 -fill both -expand 1
+
+# log text
+  frame $w.frame4 -relief raised -bd 2
+  frame $w.frame4.frame -relief flat
+  text $w.frame4.frame.log -relief sunken -bd 2 -height 15 -width 30 \
+    -wrap word -yscrollcommand "$w.frame4.frame.s set"
+  scrollbar $w.frame4.frame.s -relief sunken \
+    -command "$w.frame4.frame.log yview"
+  pack $w.frame4.frame.log -side left -fill both -expand 1
+  pack $w.frame4.frame.s -side right -fill y
+  pack $w.frame4.frame -side top -fill both -expand 1 -padx 2m -pady 1m
+  pack $w.frame4 -fill both -expand 1
+  viewLogInsert $w.frame4.frame.log [get_viewLog $viewID]
+
+# ok button
+  frame $w.frame3 -relief raised -bd 2
+  set f $w.frame3
+
+  button $f.cancel -text Close -state active -width 11 \
+    -command "problem_Cancel $w $viewID"
+
+  button $f.ok -text Print -state active -width 11 \
+     -command "printOVDSReport $w"
+
+  pack $f.ok -side left -padx 2m -pady 1m
+
+  pack $f.cancel -side right -padx 2m -pady 1m
+
+  pack $w.frame3 -side top -fill x
+
+  wm protocol $w WM_DELETE_WINDOW  "problem_Cancel $w $viewID"
+
+  return $w
+}
+
+proc printOVDSReport { w } {
+  $w.frame4.test postscript -file xxwtest1.ps -width 300 -height 300
+  $w.frame4.test.b postscript output  xxwtest2.ps
+  
+}

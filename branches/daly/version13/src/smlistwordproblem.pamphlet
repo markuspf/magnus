@@ -1,0 +1,1053 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/smlistwordproblem.pamphlet}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "Supervisor.h"
+#include "SMEnumerator.h"
+#include "SMList.h"
+#include "File.h"
+#include "Word.h"
+#include "SMFPGroup.h"
+#include "OutMessages.h"
+#include "RandomNumbers.h"
+#include "ListProblems.h"
+#include "SMListIterator.h"
+
+@
+<<include.c>>=
+#include "SMListWordProblem.h"
+#include "SMEnumerator.h"
+#include "OutMessages.h"
+#include "SMFPGroup.h"
+#include "viewStructure.h"
+#include "SetOfWordsChecker.h"
+#include "FreeGroup.h"
+#include "SMWord.h"
+#include "SMList.h"
+#include "SMListIterator.h"
+#include "GAWP.h"
+
+@
+\section{class SMListGeneticWPArcer}
+\subsection{SMListGeneticWPArcer Constructor}
+<<SMListGeneticWPArcer Constructor.h>>=
+  SMListGeneticWPArcer( ComputationManager& );
+@
+<<SMListGeneticWPArcer Constructor.c>>=
+SMListGeneticWPArcer::SMListGeneticWPArcer( ComputationManager& boss )
+  : ARCer( boss ), theList( NULL ), theIterator( NULL )
+{ } 
+
+@
+\subsection{SMListGeneticWPArcer Destructor}
+<<SMListGeneticWPArcer Destructor.h>>=
+  ~SMListGeneticWPArcer( ) { }
+@
+\subsection{SMListGeneticWPArcer::setArguments}
+<<SMListGeneticWPArcer::setArguments.h>>=
+  void setArguments( SMList<Word>* );
+@
+<<SMListGeneticWPArcer::setArguments.c>>=
+void SMListGeneticWPArcer::setArguments( SMList<Word>* l )
+{
+  if ( theIterator )
+    delete theIterator;
+  theIterator  =  new SMListIterator<Word>(*l);
+  theList = l;
+}
+
+@
+\subsection{SMListGeneticWPArcer::runComputation}
+<<SMListGeneticWPArcer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListGeneticWPArcer::runComputation.c>>=
+void SMListGeneticWPArcer::runComputation( ) 
+{
+  GHNConfig c;
+  GAWP2 gawp(theList->getGroup().getFPGroup(),c);
+  
+  int bLength = theList->lic().numberOfElements();
+  for ( int counter = 0; counter < bLength; counter ++ ){
+    if ( theList->lic().getTrivialStatus(counter) == dontknow ){
+      theList->lic().setTrivialStatus( counter,
+				       gawp.isTrivial(theIterator->getData()),
+				       GIC::GENETIC);
+    }
+    theIterator->nextCell();
+  }
+}
+
+@
+\subsection{SMListGeneticWPArcer::writeResults}
+<<SMListGeneticWPArcer::writeResults.h>>=
+  void writeResults( ostream& );
+@
+<<SMListGeneticWPArcer::writeResults.c>>=
+void  SMListGeneticWPArcer::writeResults( ostream& out )
+{
+}
+
+@
+\subsection{SMListGeneticWPArcer::readResults}
+<<SMListGeneticWPArcer::readResults.h>>=
+  void readResults( istream& );
+@
+<<SMListGeneticWPArcer::readResults.c>>=
+void SMListGeneticWPArcer::readResults( istream& in )
+{
+}
+
+@
+\subsection{class SMListGeneticWPArcer}
+<<class SMListGeneticWPArcer>>=
+class SMListGeneticWPArcer : public ARCer
+{
+public:
+<<SMListGeneticWPArcer Constructor.h>>
+<<SMListGeneticWPArcer Destructor.h>>
+<<SMListGeneticWPArcer::setArguments.h>>
+<<SMListGeneticWPArcer::runComputation.h>>
+<<SMListGeneticWPArcer::writeResults.h>>
+<<SMListGeneticWPArcer::readResults.h>>
+private:
+  SMListIterator<Word>* theIterator;
+  SMList<Word>* theList;
+};
+
+@
+\section{class SMListGeneticWPCM}
+\subsection{SMListGeneticWPCM Constructor}
+<<SMListGeneticWPCM Constructor.h>>=
+  SMListGeneticWPCM( class SMListSupervisor& sms );
+@
+<<SMListGeneticWPCM Constructor.c>>=
+SMListGeneticWPCM::SMListGeneticWPCM( SMListSupervisor& sms )
+  : arcer( *this )
+{
+ arcer.setArguments( &(sms.getList()) );
+ adminStart();
+}
+
+@
+\subsection{SMListGeneticWPCM::takeControl}
+<<SMListGeneticWPCM::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListGeneticWPCM::takeControl.c>>=
+void SMListGeneticWPCM::takeControl( )
+{
+  if ( freeARCs() > 0 ) {
+    if( arcer.takeControl() ) {
+      adminTerminate();
+      return;
+    }
+    else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListGeneticWPCM::start}
+<<SMListGeneticWPCM::start.h>>=
+  void start( );              // overrides ComputationManager
+@
+<<SMListGeneticWPCM::start.c>>=
+void SMListGeneticWPCM::start( ) { }
+
+@
+\subsection{SMListGeneticWPCM::terminate}
+<<SMListGeneticWPCM::terminate.h>>=
+  void terminate( );          // overrides ComputationManager
+@
+<<SMListGeneticWPCM::terminate.c>>=
+void SMListGeneticWPCM::terminate( )
+{
+}
+
+@
+\subsection{class SMListGeneticWPCM}
+<<class SMListGeneticWPCM>>=
+class SMListGeneticWPCM : public ComputationManager
+{
+public:
+<<SMListGeneticWPCM Constructor.h>>
+<<SMListGeneticWPCM::takeControl.h>>
+<<SMListGeneticWPCM::start.h>>
+<<SMListGeneticWPCM::terminate.h>>
+private:
+  SMListGeneticWPArcer arcer;
+};
+
+@
+\section{class SMListWPCheckARCer}
+\subsection{SMListWPCheckARCer Constructor}
+<<SMListWPCheckARCer Constructor.h>>=
+  SMListWPCheckARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+      theIterator( NULL ),
+      theGroup( NULL ) { } 
+@
+\subsection{SMListWPCheckARCer::setArguments}
+<<SMListWPCheckARCer::setArguments.h>>=
+  void setArguments( SMList<Word>*, const SMFPGroup*  );
+@
+<<SMListWPCheckARCer::setArguments.c>>=
+void SMListWPCheckARCer::setArguments( SMList<Word>* l,
+				      const SMFPGroup* g)
+{
+  if ( theIterator )
+    delete theIterator;
+  theIterator  =  new SMListIterator<Word>(*l);
+  theGroup = g;
+  theList = l;
+}
+ 
+@
+\subsection{SMListWPCheckARCer::runComputation}
+<<SMListWPCheckARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListWPCheckARCer::runComputation.c>>=
+void SMListWPCheckARCer::runComputation( )
+{
+  int bLength = theList->lic().numberOfElements();
+  for ( int counter = 0; counter < bLength; counter ++ ){
+    if ( theList->lic().getTrivialStatus(counter) == dontknow ){
+      // we don't have free groups in set checker ?????
+      // so I'm checking it separately
+      if ( theGroup->getCheckinType() == SMFPGroup::FREE ){
+	FreeGroup F = theGroup->getFreePreimage();
+	theList->lic().setTrivialStatus( counter, 
+					 F.wordProblem(theIterator->getData()),
+					 GIC::FREE );
+      } else {
+	// for others call standart checker
+	SetOfWordsChecker theChecker( theIterator->getData(), *theGroup );
+	Trichotomy isTrivial = theChecker.isTrivial();
+	theList->lic().setTrivialStatus( counter,isTrivial,
+					 theChecker.getAlgorithm() );
+      }
+    }
+    theIterator->nextCell();
+  }
+  
+}
+
+@
+\subsection{SMListWPCheckARCer::writeResults}
+<<SMListWPCheckARCer::writeResults.h>>=
+  void writeResults( ostream& ) { };
+@
+\subsection{SMListWPCheckARCer::readResults}
+<<SMListWPCheckARCer::readResults.h>>=
+  void readResults( istream& ) { };
+@
+\subsection{class SMListWPCheckARCer}
+<<class SMListWPCheckARCer>>=
+class SMListWPCheckARCer : public ARCer
+{
+public:
+<<SMListWPCheckARCer Constructor.h>>
+<<SMListWPCheckARCer::setArguments.h>>
+<<SMListWPCheckARCer::runComputation.h>>
+<<SMListWPCheckARCer::writeResults.h>>
+<<SMListWPCheckARCer::readResults.h>>
+private:
+  SMListIterator<Word>* theIterator;
+  const class SMFPGroup* theGroup;
+  class SMList<Word>* theList;
+};
+
+@
+\section{class SMListWPCheckComputation}
+\subsection{SMListWPCheckComputation Constructor}
+<<SMListWPCheckComputation Constructor.h>>=
+  SMListWPCheckComputation( SMListSupervisor& );
+@
+<<SMListWPCheckComputation Constructor.c>>=
+SMListWPCheckComputation::SMListWPCheckComputation(SMListSupervisor& sms)
+  : theList( sms.getList() ),
+    arcer( *this ),
+    started( false )
+{ 
+  adminStart();
+}
+
+@
+\subsection{SMListWPCheckComputation Destructor}
+<<SMListWPCheckComputation Destructor.h>>=
+  ~SMListWPCheckComputation(); 
+@
+<<SMListWPCheckComputation Destructor.c>>=
+SMListWPCheckComputation::~SMListWPCheckComputation() {}
+
+@
+\subsection{SMListWPCheckComputation::takeControl}
+<<SMListWPCheckComputation::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListWPCheckComputation::takeControl.c>>=
+void SMListWPCheckComputation::takeControl( )
+{
+  if (freeARCs() > 0){
+    if ( ! started ){
+      arcer.setArguments( &theList, &(theList.getGroup()) );
+      started = true;
+    }
+    if ( arcer.takeControl() ){
+      //      arcer.runComputation();
+      started = false;
+      if ( theList.lic().IsTrivialChecked() ) {
+	adminTerminate();
+	return;
+      }
+    }else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListWPCheckComputation::start}
+<<SMListWPCheckComputation::start.h>>=
+  void start( ) { }
+@
+\subsection{SMListWPCheckComputation::terminate}
+<<SMListWPCheckComputation::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListWPCheckComputation}
+<<class SMListWPCheckComputation>>=
+class SMListWPCheckComputation  : public ComputationManager
+{
+public:
+<<SMListWPCheckComputation Constructor.h>>
+<<SMListWPCheckComputation Destructor.h>>
+<<SMListWPCheckComputation::takeControl.h>>
+<<SMListWPCheckComputation::start.h>>
+<<SMListWPCheckComputation::terminate.h>>
+private:
+  SMList<Word>& theList;
+  bool started;
+  SMListWPCheckARCer arcer;
+};
+
+@
+\section{class SMListWPPrinResultArcer}
+\subsection{SMListWPPrinResultArcer Constructor}
+<<SMListWPPrinResultArcer Constructor.h>>=
+  SMListWPPrinResultArcer( ComputationManager& b) :
+    ARCer( b ),
+    theList( NULL ) { }
+@
+\subsection{SMListWPPrinResultArcer Destructor}
+<<SMListWPPrinResultArcer Destructor.h>>=
+  ~SMListWPPrinResultArcer( ) { }
+@
+\subsection{SMListWPPrinResultArcer::setArguments}
+<<SMListWPPrinResultArcer::setArguments.h>>=
+  void setArguments( SMList<Word>* );
+@
+<<SMListWPPrinResultArcer::setArguments.c>>=
+void SMListWPPrinResultArcer::setArguments( SMList<Word>* l )
+{
+  theList = l;
+}
+
+@
+\subsection{SMListWPPrinResultArcer::getFileOfNonTrivial}
+<<SMListWPPrinResultArcer::getFileOfNonTrivial.h>>=
+  Chars getFileOfNonTrivial() const { return fileOfNonTrivial.getFileName(); }
+@
+\subsection{SMListWPPrinResultArcer::getTrivialData}
+<<SMListWPPrinResultArcer::getTrivialData.h>>=
+  const SMListData& getTrivialData() const { return trivialData; }
+@
+\subsection{SMListWPPrinResultArcer::runComputation}
+<<SMListWPPrinResultArcer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListWPPrinResultArcer::runComputation.c>>=
+void SMListWPPrinResultArcer::runComputation( )
+{
+  int bLength = theList->lic().numberOfElements();
+  char* printStatus = new char[bLength];
+  for ( int i = 0; i<bLength; i++)
+    printStatus[i] = 0;
+  int tCounter = 1;
+  int ntCounter = 1;
+  bool allPrinted = false;
+  FPGroup fpGroup = theList->getGroup().getFPGroup();
+  trivialData.setWriteMode();
+  while ( !allPrinted ){
+    allPrinted = true;
+    SMListIterator<Word>  I( *theList );
+    for ( int counter = 0; counter < bLength; counter ++, I.nextCell() ){
+      GIC::AlgorithmID theAl = GIC::NONE;
+      Chars explanation;
+      Trichotomy result( dontknow );
+      if ( ( result = 
+	     theList->lic().getTrivialStatus( counter, theAl, explanation ) )
+	   != dontknow ) {
+	if ( printStatus[counter] == 0 ){
+	  if ( result == yes ) {
+	    trivialData  << EnumWriteWord( I.getData( ), fpGroup )
+			 << Chars("\n") << explanation 
+			 << Chars("\n\n");
+	    tCounter++;
+	    printStatus[counter] = 1;
+	  } else {
+	    fileOfNonTrivial << ntCounter << ": " 
+			     << EnumWriteWord( I.getData( ), fpGroup )
+			     << endl << explanation 
+			     << endl << endl;
+	    printStatus[counter] = 1;
+	    ntCounter++;
+	  }
+	}
+      } else
+	allPrinted = false;
+    }
+  }  
+  trivialData.closeCurrentMode(); 
+  delete [] printStatus;
+}
+
+@
+\subsection{SMListWPPrinResultArcer::writeResults}
+<<SMListWPPrinResultArcer::writeResults.h>>=
+  void writeResults( ostream& o ) { o < trivialData;}
+@
+\subsection{SMListWPPrinResultArcer::readResults}
+<<SMListWPPrinResultArcer::readResults.h>>=
+  void readResults( istream& i ) { i > trivialData; }
+@
+\subsection{class SMListWPPrinResultArcer}
+<<class SMListWPPrinResultArcer>>=
+class SMListWPPrinResultArcer : public ARCer
+{
+public:
+<<SMListWPPrinResultArcer Constructor.h>>
+<<SMListWPPrinResultArcer Destructor.h>>
+<<SMListWPPrinResultArcer::setArguments.h>>
+<<SMListWPPrinResultArcer::getFileOfNonTrivial.h>>
+<<SMListWPPrinResultArcer::getTrivialData.h>>
+<<SMListWPPrinResultArcer::runComputation.h>>
+<<SMListWPPrinResultArcer::writeResults.h>>
+<<SMListWPPrinResultArcer::readResults.h>>
+private:
+  SMList<Word>* theList;
+  File fileOfNonTrivial;
+  SMListData trivialData;
+};
+
+@
+\section{class SMListExtractTrivialWords}
+\subsection{SMListExtractTrivialWords Constructor}
+<<SMListExtractTrivialWords Constructor.h>>=
+  SMListExtractTrivialWords( SMList<Word>& );
+@
+<<SMListExtractTrivialWords Constructor.c>>=
+SMListExtractTrivialWords::SMListExtractTrivialWords(SMList<Word>& sml)
+  : SMListSupervisor( sml ),
+    abelianInvariants( *this, sml.getGroup().gcm().abelianInvariants ),
+    checker( *this ),
+    genetic( *this ),
+    normalClosure( *this, sml.getGroup().gcm().normalClosure ),
+    kbSupervisor( *this, sml.getGroup().gcm().kbSupervisor ),
+    agSupervisor( *this, sml.getGroup().gcm().agSupervisor ),
+    arcer(*this )
+{
+  arcer.setArguments( &sml );
+}
+
+@
+\subsection{SMListExtractTrivialWords Destructor}
+<<SMListExtractTrivialWords Destructor.h>>=
+  ~SMListExtractTrivialWords() {}
+@
+\subsection{SMListExtractTrivialWords::viewStructure}
+<<SMListExtractTrivialWords::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SMListExtractTrivialWords::viewStructure.c>>=
+void SMListExtractTrivialWords::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract trivial words from a list",
+			    Text("Extract trivial words from ") +
+			    Name( theList ) ,
+			    helpID("SMListExtractTrivialWords",
+				   theList.getGroup()),
+			    Text("trivial words")
+			    );
+  //  RadioButton rRB1("ToFile","Extract to a file");
+  //  RadioButton rRB2("ToList","Extract to another list");
+  //  RadioButtonGroup extractRBG("ExtractTo");
+  //  extractRBG.add(rRB1);
+  //  extractRBG.add(rRB2);
+  //  pv.addParameter(extractRBG);
+  if (theList.getGroup().getCheckinType() == SMFPGroup::FP ) {
+    if ( ! theList.getGroup().gic.haveCyclicDecomposition() ) 
+      pv.addProblem(Subproblem("SpA",abelianInvariants.arcSlotID(),
+			       Text("Compute abelian invariants of") + 
+			       Name( Parent( theList ) ),
+			       15)
+		    );
+    if ( ! theList.getGroup().gic.haveFastWordProblem() ) {
+      pv.addProblem( Subproblem("Sp1",normalClosure.arcSlotID(),
+				Text("Enumerate normal closure of relators"),
+				50));
+      pv.addProblem( Subproblem("Sp2",kbSupervisor.arcSlotID(),
+				Text("Seek a rewriting system for") +
+				Name( theList.getGroup() ),
+			      50));
+      pv.addProblem( Subproblem("Sp3",agSupervisor.arcSlotID(),
+			Text("Seek a ShortLex automatic structure for") +
+			Name( theList.getGroup() ),
+			50));
+      pv.addProblem( Subproblem("Sp4",genetic.arcSlotID(),
+				Text("Run genetic algorithm"),
+				50));
+     }
+  }
+  if (theList.getGroup().getCheckinType() == SMFPGroup::FP == SMFPGroup::FP ||
+      theList.getGroup().getCheckinType() == SMFPGroup::FP == SMFPGroup::FREE)
+  {
+    pv.addProblem( Subproblem("Sp5",checker.arcSlotID(),
+			      "Extract trivial words",40));
+  }
+  pv.addProblem( Subproblem("Sp6",ThisARCSlotID(),
+			    "For the use of this problem",50));
+  submit(ostr, pv);
+}
+
+@
+\subsection{SMListExtractTrivialWords::takeControl}
+<<SMListExtractTrivialWords::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListExtractTrivialWords::takeControl.c>>=
+void SMListExtractTrivialWords::takeControl( )
+{
+  
+  if (freeARCs() > 0){
+    if ( arcer.takeControl() ){
+      SMList<Word>* smo = 
+	new  SMList<Word>(theList.getGroup(),
+			  arcer.getTrivialData(),
+			  Text("Trivial words from") + Name(theList) 
+			  ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "WEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    } else 
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListExtractTrivialWords::finished}
+<<SMListExtractTrivialWords::finished.h>>=
+  bool finished( );
+@
+\subsection{SMListExtractTrivialWords::start}
+<<SMListExtractTrivialWords::start.h>>=
+  void start( ); 
+@
+<<SMListExtractTrivialWords::start.c>>=
+void SMListExtractTrivialWords::start( )
+{
+  LogMessage msg( *this, theList );
+  msg << Link(Chars( "Click here to see trivial words in ")+
+	      Text( Name( theList ) ),
+	      "WEnumerator",
+	      arcer.getTrivialData().getDataFileName(),true );
+  msg.send();
+  LogMessage msg1( *this, theList );
+  msg1 << Link(Chars( "Click here to see non-trivial words in ")+
+	      Text( Name( theList ) ),
+	      "WEnumerator",
+	      arcer.getFileOfNonTrivial(),true );
+  msg1.send();
+}
+
+@
+\subsection{SMListExtractTrivialWords::terminate}
+<<SMListExtractTrivialWords::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListExtractTrivialWords}
+<<class SMListExtractTrivialWords>>=
+class SMListExtractTrivialWords  : public SMListSupervisor
+{
+public:
+<<SMListExtractTrivialWords Constructor.h>>
+<<SMListExtractTrivialWords Destructor.h>>
+<<SMListExtractTrivialWords::viewStructure.h>>
+<<SMListExtractTrivialWords::takeControl.h>>
+<<SMListExtractTrivialWords::finished.h>>
+<<SMListExtractTrivialWords::start.h>>
+<<SMListExtractTrivialWords::terminate.h>>
+private:
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate normalClosure;
+  Subordinate<SMListExtractTrivialWords, SMListGeneticWPCM> genetic;
+  Subordinate<SMListExtractTrivialWords, SMListWPCheckComputation> checker;
+  SMListWPPrinResultArcer arcer;
+};
+
+@
+\section{class SMListWordIsCentralARCer}
+\subsection{SMListWordIsCentralARCer Constructor}
+<<SMListWordIsCentralARCer Constructor.h>>=
+  SMListWordIsCentralARCer( ComputationManager& boss );
+@
+<<SMListWordIsCentralARCer Constructor.c>>=
+SMListWordIsCentralARCer::SMListWordIsCentralARCer( ComputationManager& boss )
+  : ARCer( boss ), theList( NULL ), theIterator( NULL ), 
+  tCounter( 1 ), ntCounter( 1 )
+{ } 
+
+@
+\subsection{SMListWordIsCentralARCer::setArguments}
+<<SMListWordIsCentralARCer::setArguments.h>>=
+  void setArguments( SMList<Word>*);
+@
+<<SMListWordIsCentralARCer::setArguments.c>>=
+void SMListWordIsCentralARCer::setArguments( SMList<Word>* l )
+{
+  if ( theIterator )
+    delete theIterator;
+  theIterator  =  new SMListIterator<Word>(*l);
+  theList = l;
+}
+
+@
+\subsection{SMListWordIsCentralARCer::runComputation}
+<<SMListWordIsCentralARCer::runComputation.h>>=
+  void runComputation( );
+@
+<<SMListWordIsCentralARCer::runComputation.c>>=
+void SMListWordIsCentralARCer::runComputation( ) 
+{
+  int bLength = theList->lic().numberOfElements();
+  centralData.setWriteMode();
+  for ( int counter = 0; counter < bLength; counter ++ ){
+    if ( theList->lic().getIsCentralStatus(counter) == dontknow ){
+      // Make all commutators and check are they trivial or not 
+      SetOf<Word> comms;
+      FPGroup fpGroup = theList->getGroup().getFPGroup(); 
+      int numOfGens = fpGroup.numberOfGenerators();
+      Word w = theIterator->getData();
+      for( int i = 0; i < numOfGens; ++i ) {
+	Word gen = Word(Generator(i+1));
+	comms |= (w.inverse() * gen.inverse() * w * gen).freelyReduce();
+      }
+      SetOfWordsChecker theChecker( comms, theList->getGroup() );
+      Trichotomy isTrivial = theChecker.isTrivial();
+      theList->lic().setIsCentralStatus( counter, isTrivial,
+					 theChecker.getAlgorithm() );
+      if ( isTrivial == yes ) {
+	centralData   << EnumWriteWord( w,fpGroup )
+		      << Chars("\n") << theChecker.getExplanation() 
+		      << Chars("\n\n\n");
+	tCounter++;
+      } 
+      if ( isTrivial == no ) {
+	fileOfNonCentral << ntCounter << ": " 
+			 << EnumWriteWord( w,fpGroup )
+			 << endl << theChecker.getExplanation() 
+			 << endl << endl <<endl;
+	ntCounter++;
+      }
+    }
+    theIterator->nextCell();
+  }
+  centralData.closeCurrentMode(); 
+}
+
+@
+\subsection{SMListWordIsCentralARCer::writeResults}
+<<SMListWordIsCentralARCer::writeResults.h>>=
+  void writeResults( ostream& o ) { 
+    o < tCounter; 
+    o < ntCounter;
+    o < centralData;
+  };
+@
+\subsection{SMListWordIsCentralARCer::readResults}
+<<SMListWordIsCentralARCer::readResults.h>>=
+  void readResults( istream& i ) { 
+    i > tCounter; 
+    i > ntCounter;
+    i > centralData;
+  };
+@
+\subsection{SMListWordIsCentralARCer::getFileOfNonCentral}
+<<SMListWordIsCentralARCer::getFileOfNonCentral.h>>=
+  Chars getFileOfNonCentral() const { return fileOfNonCentral.getFileName(); }
+@
+\subsection{SMListWordIsCentralARCer::getCentralData}
+<<SMListWordIsCentralARCer::getCentralData.h>>=
+  const SMListData& getCentralData() const { return centralData; }
+@
+\subsection{class SMListWordIsCentralARCer}
+<<class SMListWordIsCentralARCer>>=
+class SMListWordIsCentralARCer : public ARCer
+{
+public:
+<<SMListWordIsCentralARCer Constructor.h>>
+<<SMListWordIsCentralARCer::setArguments.h>>
+<<SMListWordIsCentralARCer::runComputation.h>>
+<<SMListWordIsCentralARCer::writeResults.h>>
+<<SMListWordIsCentralARCer::readResults.h>>
+<<SMListWordIsCentralARCer::getFileOfNonCentral.h>>
+<<SMListWordIsCentralARCer::getCentralData.h>>
+private:
+  SMListIterator<Word>* theIterator;
+  const class SMFPGroup* theGroup;
+  class SMList<Word>* theList;
+  File fileOfNonCentral;
+  SMListData centralData;
+  int tCounter;
+  int ntCounter;
+};
+
+@
+\section{class SMListWordIsCentralComputation}
+\subsection{SMListWordIsCentralComputation Constructor}
+<<SMListWordIsCentralComputation Constructor.h>>=
+  SMListWordIsCentralComputation( class SMListExtractCentralWords& );
+@
+<<SMListWordIsCentralComputation Constructor.c>>=
+SMListWordIsCentralComputation::
+SMListWordIsCentralComputation( SMListExtractCentralWords& sms )
+  : theList( sms.getList() ),
+    arcer( *this ),
+    started( false )
+{ 
+  adminStart();
+}
+
+@
+\subsection{SMListWordIsCentralComputation Destructor}
+<<SMListWordIsCentralComputation Destructor.h>>=
+  ~SMListWordIsCentralComputation(); 
+@
+<<SMListWordIsCentralComputation Destructor.c>>=
+SMListWordIsCentralComputation::~SMListWordIsCentralComputation() {}
+
+@
+\subsection{SMListWordIsCentralComputation::getFileOfNonCentral}
+<<SMListWordIsCentralComputation::getFileOfNonCentral.h>>=
+  Chars getFileOfNonCentral() const { return arcer.getFileOfNonCentral(); }
+@
+\subsection{SMListWordIsCentralComputation::getCentralData}
+<<SMListWordIsCentralComputation::getCentralData.h>>=
+  const SMListData& getCentralData() const { return arcer.getCentralData(); }
+@
+\subsection{SMListWordIsCentralComputation::takeControl}
+<<SMListWordIsCentralComputation::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListWordIsCentralComputation::takeControl.c>>=
+void SMListWordIsCentralComputation::takeControl( )
+{
+  if (freeARCs() > 0){
+    if ( ! started ){
+      arcer.setArguments( &theList );
+      started = true;
+    }
+    if ( arcer.takeControl() ){
+      //    arcer.runComputation();
+      started = false;
+      if ( theList.lic().IsCentralChecked() ) {
+	theList.lic().putIsCentralFiles(
+                         arcer.getCentralData().getDataFileName(),
+			 arcer.getFileOfNonCentral() );
+	adminTerminate();
+	return;
+      }
+    }else
+      usedOneARC();
+  }
+}
+
+@
+\subsection{SMListWordIsCentralComputation::start}
+<<SMListWordIsCentralComputation::start.h>>=
+  void start( ) { }
+@
+\subsection{SMListWordIsCentralComputation::terminate}
+<<SMListWordIsCentralComputation::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListWordIsCentralComputation}
+<<class SMListWordIsCentralComputation>>=
+class SMListWordIsCentralComputation  : public ComputationManager
+{
+public:
+<<SMListWordIsCentralComputation Constructor.h>>
+<<SMListWordIsCentralComputation Destructor.h>>
+<<SMListWordIsCentralComputation::getFileOfNonCentral.h>>
+<<SMListWordIsCentralComputation::getCentralData.h>>
+<<SMListWordIsCentralComputation::takeControl.h>>
+<<SMListWordIsCentralComputation::start.h>>
+<<SMListWordIsCentralComputation::terminate.h>>
+private:
+  SMList<Word>& theList;
+  bool started;
+  SMListWordIsCentralARCer arcer;
+};
+
+@
+\section{class SMListExtractCentralWords}
+\subsection{SMListExtractCentralWords Constructor}
+<<SMListExtractCentralWords Constructor.h>>=
+  SMListExtractCentralWords( SMList<Word>& );
+@
+<<SMListExtractCentralWords Constructor.c>>=
+SMListExtractCentralWords::SMListExtractCentralWords(SMList<Word>& sml)
+  : Supervisor( true ),
+    theList( sml ),
+    abelianInvariants( *this, sml.getGroup().gcm().abelianInvariants ),
+    checker( *this ),
+    normalClosure( *this, sml.getGroup().gcm().normalClosure ),
+    kbSupervisor( *this, sml.getGroup().gcm().kbSupervisor ),
+    agSupervisor( *this, sml.getGroup().gcm().agSupervisor )
+{ 
+  if ( sml.lic().IsCentralChecked() )
+    resultIsFast();
+}
+
+@
+\subsection{SMListExtractCentralWords Destructor}
+<<SMListExtractCentralWords Destructor.h>>=
+  ~SMListExtractCentralWords() {}
+@
+\subsection{SMListExtractCentralWords::viewStructure}
+<<SMListExtractCentralWords::viewStructure.h>>=
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+@
+<<SMListExtractCentralWords::viewStructure.c>>=
+void SMListExtractCentralWords::viewStructure(ostream& ostr) const
+{
+  EnumertatorProblemView pv(oid(),"Extract central words from a list",
+			    Text("Extract central words from ") +
+			    Name( theList ) ,
+			    helpID("SMListExtractCentralWords",
+				   theList.getGroup()),
+			    Text("cent words")
+			    );
+  if (theList.getGroup().getCheckinType() == SMFPGroup::FP ) {
+    if ( ! theList.getGroup().gic.haveCyclicDecomposition() ) 
+      pv.addProblem(Subproblem("SpA",abelianInvariants.arcSlotID(),
+			       Text("Compute abelian invariants of") + 
+			       Name( Parent( theList ) ),
+			       15)
+		    );
+    if ( ! theList.getGroup().gic.haveFastWordProblem() ) {
+      pv.addProblem( Subproblem("Sp2",normalClosure.arcSlotID(),
+				Text("Enumerate normal closure of relators"),
+				50));
+      pv.addProblem( Subproblem("Sp2",kbSupervisor.arcSlotID(),
+				Text("Seek a rewriting system for") +
+				Name( theList.getGroup() ),
+				50));
+      pv.addProblem( Subproblem("Sp2",agSupervisor.arcSlotID(),
+			Text("Seek a ShortLex automatic structure for") +
+			Name( theList.getGroup() ),
+			50));
+    }
+  }
+  if ( ! theList.lic().IsCentralChecked() )
+    pv.addProblem( Subproblem("Sp1",checker.arcSlotID(),
+			      "Extract central words",40));
+  submit(ostr, pv);
+}
+
+@
+\subsection{SMListExtractCentralWords::takeControl}
+<<SMListExtractCentralWords::takeControl.h>>=
+  void takeControl( );         // overrides ComputationManager
+@
+<<SMListExtractCentralWords::takeControl.c>>=
+void SMListExtractCentralWords::takeControl( )
+{
+  if ( fastResult() ) {
+    LogMessage msg( *this, theList );
+    msg << Link(Chars( "Click here to see central words in ")+
+		Text( Name( theList ) ),
+		"WEnumerator",
+		theList.lic().getListOfCentral() );
+    msg.send();
+    LogMessage msg1( *this, theList );
+    msg1 << Link(Chars( "Click here to see non-central words in ")+
+		 Text( Name( theList ) ),
+		 "WEnumerator",
+		theList.lic().getListOfNonCentral() );
+    msg1.send();   
+  } else {
+    if ( theList.lic().IsCentralChecked() ) {
+      SMList<Word>* smo = 
+	new  SMList<Word>(theList.getGroup(),
+			  checker->getCentralData(),
+			  Text("Central words from") + Name(theList) 
+			  ); 
+      ListOf<OID> dependencies( smo->getGroup() );
+      CheckinMessage( *smo, "", dependencies ).send();
+      LogMessage msg( *smo );
+      msg << Link( Chars("Click here to see the contents of ") + 
+		   Text( Name( *smo) ),
+		   "WEnumerator",
+		   smo->getData().getDataFileName() 
+		   );
+      msg << ".";
+      msg.send();
+      adminTerminate();
+      return;
+    }
+  }
+}
+
+@
+\subsection{SMListExtractCentralWords::getList}
+<<SMListExtractCentralWords::getList.h>>=
+  SMList<Word>& getList() { return theList; }
+@
+\subsection{SMListExtractCentralWords::start}
+<<SMListExtractCentralWords::start.h>>=
+  void start( ); 
+@
+<<SMListExtractCentralWords::start.c>>=
+void SMListExtractCentralWords::start( )
+{
+  if ( !fastResult() ) {
+    LogMessage msg( *this, theList );
+    msg << Link(Chars( "Click here to see central words in ")+
+		Text( Name( theList ) ),
+		"WEnumerator",
+		checker->getCentralData().getDataFileName(),true );
+    msg.send();
+    LogMessage msg1( *this, theList );
+    msg1 << Link(Chars( "Click here to see non-central words in ")+
+		 Text( Name( theList ) ),
+		 "WEnumerator",
+		 checker->getFileOfNonCentral(),true );
+    msg1.send();
+  }
+}
+
+@
+\subsection{SMListExtractCentralWords::terminate}
+<<SMListExtractCentralWords::terminate.h>>=
+  void terminate( ) { }        // overrides ComputationManager
+@
+\subsection{class SMListExtractCentralWords}
+<<class SMListExtractCentralWords>>=
+class SMListExtractCentralWords  : public Supervisor
+{
+public:
+<<SMListExtractCentralWords Constructor.h>>
+<<SMListExtractCentralWords Destructor.h>>
+<<SMListExtractCentralWords::viewStructure.h>>
+<<SMListExtractCentralWords::takeControl.h>>
+<<SMListExtractCentralWords::getList.h>>
+<<SMListExtractCentralWords::start.h>>
+<<SMListExtractCentralWords::terminate.h>>
+private:
+  SMList<Word>& theList;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate kbSupervisor;
+  MirrorSubordinate agSupervisor;
+  MirrorSubordinate normalClosure;
+  Subordinate<SMListExtractCentralWords,SMListWordIsCentralComputation> 
+      checker;
+};
+
+@
+\section{SMListWordProblem.h}
+<<SMListWordProblem.h>>=
+#ifndef _SMLIST_WORD_PROBLEM_H_
+#define _SMLIST_WORD_PROBLEM_H_
+
+<<include.h>>
+<<class SMListGeneticWPArcer>>
+<<class SMListGeneticWPCM>>
+<<class SMListWPCheckARCer>>
+<<class SMListWPCheckComputation>>
+<<class SMListWPPrinResultArcer>>
+<<class SMListExtractTrivialWords>>
+<<class SMListWordIsCentralARCer>>
+<<class SMListWordIsCentralComputation>>
+<<class SMListExtractCentralWords>>
+#endif
+@
+\section{smlistwordproblem.c}
+<<*>>=
+
+<<include.c>>
+<<SMListGeneticWPArcer Constructor.c>>
+<<SMListGeneticWPArcer::setArguments.c>>
+<<SMListGeneticWPArcer::runComputation.c>>
+<<SMListGeneticWPArcer::writeResults.c>>
+<<SMListGeneticWPArcer::readResults.c>>
+
+<<SMListGeneticWPCM Constructor.c>>
+<<SMListGeneticWPCM::terminate.c>>
+<<SMListGeneticWPCM::start.c>>
+<<SMListGeneticWPCM::takeControl.c>>
+
+<<SMListWPCheckARCer::setArguments.c>>
+<<SMListWPCheckARCer::runComputation.c>>
+
+<<SMListWPCheckComputation Constructor.c>>
+<<SMListWPCheckComputation Destructor.c>>
+<<SMListWPCheckComputation::takeControl.c>>
+
+<<SMListWPPrinResultArcer::setArguments.c>>
+<<SMListWPPrinResultArcer::runComputation.c>>
+
+<<SMListExtractTrivialWords Constructor.c>>
+<<SMListExtractTrivialWords::start.c>>
+<<SMListExtractTrivialWords::takeControl.c>>
+<<SMListExtractTrivialWords::viewStructure.c>>
+
+<<SMListWordIsCentralARCer Constructor.c>>
+<<SMListWordIsCentralARCer::setArguments.c>>
+<<SMListWordIsCentralARCer::runComputation.c>>
+
+<<SMListWordIsCentralComputation Constructor.c>>
+<<SMListWordIsCentralComputation Destructor.c>>
+<<SMListWordIsCentralComputation::takeControl.c>>
+
+<<SMListExtractCentralWords Constructor.c>>
+<<SMListExtractCentralWords::start.c>>
+<<SMListExtractCentralWords::takeControl.c>>
+<<SMListExtractCentralWords::viewStructure.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

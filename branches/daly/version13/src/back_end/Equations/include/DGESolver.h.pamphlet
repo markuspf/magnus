@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Equations/include/DGESolver.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "FreeGroup.h"
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/Equations/include/DGESolver.h
+#ifndef _DGESolver_h_
+#define _DGESolver_h_
+
+<<license>>
+<<include>>
+
+<<class DGESolver>>
+\section{class DGESolver}
+<<class DGESolver>>=
+class DGESolver
+{
+public:
+  DGESolver( FreeGroup F, VectorOf<Chars> vNames, Word eq );
+  ~DGESolver( );
+
+  bool getSolution( const Word& u, Map& solution );
+  // returns a solution for equation eq = u
+
+private:
+  void defineRange( int curVar );
+  // defines range for the variable and its inverse
+
+  bool pickNextValue( int curVar );
+  // tries to pick sutable value for curVar and its inverse
+
+  bool findInverseOf( Word u, int p, int q, int& first, int& last );
+  // finds inverse of u in w[p,q] and returns its coordinates in first and last
+ 
+  struct VarInfo { bool isTrivial; int first, last, firstP, lastP; };
+  // first and last - positions in u
+  // firstP and lastP - possible range for the variable
+
+  FreeGroup theGroup;
+  VectorOf<Chars> varNames;
+  int numOfVars, numOfConsts;
+  Word equation, w;
+  int wLen, eqLen;
+  VarInfo *varInfo;    // current substitution
+  VarInfo *invVarInfo; 
+  // info about the inverses of the variables; isTrivial is not used here
+  VectorOf<int> buffer;
+  // filled with current value of the variables; used define variables range 
+  VectorOf<int> invVarPos; // positions of the inverses in the equation
+};
+
+@
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+
+
+
+
+

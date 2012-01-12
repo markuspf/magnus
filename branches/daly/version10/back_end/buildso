@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# Sooner or later, this will probably end up in the Makefile...
+
+# Peter Brinkmann, 05/18/2001
+# brinkman@math.uiuc.edu
+
+
+# Create SWIG wrapper code and Python shadow classes
+# Adjust the -I... (include directories) options as needed.
+swig -c++ -python -shadow -make_default -Iswig -IElt/swig \
+	 -IGroup/swig -Iglobal/swig -Igeneral/swig -IEquations/swig \
+         -IMap/swig -IKB/swig -IMatrix/swig -INilpotentGroup/swig \
+         -IGenetic/swig -IAProducts/swig -ISubgroup/swig -ITodd-Coxeter/swig \
+         -IFSA/swig Magnus.i
+
+
+# Compile wrapper code (note the -fpic switch!)
+# Adjust the -I... (include directories) options as needed.
+g++ -c -fpic Magnus_wrap.c -I/apps/Python/include/python2.1 -IElt/include \
+	-Igeneral/include -IGroup/include -IMap/include -IMatrix/include -Iglobal \
+	-I/usr/local/include/g++-3 -Ilibg++/include -IGenetic/include \
+        -IEquations/include -IKB/include -IFSA/include -INilpotentGroup/include \
+        -IAProducts/include -ISubgroup/include -ITodd-Coxeter/include
+
+
+# Link everything in one big shared library.
+# Adjust the -L... and -l... options as needed.
+# Note: The libraries should have been compiled with the -fpic switch.
+g++ -shared  Magnus_wrap.o -LNilpotentGroup/lib -lNilpotentGroup -LGenetic/lib -lGenetic -LSubgroup/lib -lSubgroup -LTodd-Coxeter/lib -lTodd-Coxeter -LAProducts/lib -lAProducts  -LEquations/lib -lEquations -LSubgroup/lib -lSubgroup -LGroup/lib -lGroup -LKB/lib -lKB -LFSA/lib -lFSA -LMap/lib -lMap -LMatrix/lib -lMatrix -Lgeneral/lib -lgeneral -LElt/lib -lElt -Lgeneral/lib -lgeneral  -LPolynomial/lib -lPolynomial -Llibg++/lib -llibg++ -o Magnuscmodule.so
+

@@ -1,0 +1,1223 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/fedata.pamphlet}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include <iostream.h>
+#include "Chars.h"
+#include "OID.h"
+#include "ARCSlotID.h"
+
+@
+<<include.c>>=
+#include "FEData.h"
+#include "SMObject.h"
+
+@
+\section{class FEData}
+\subsection{Introduction}
+  The following discussion is addressed to maintainers; users of class
+FEData may wish to skip to the `Usage' section.
+
+\subsection{Overview of Requirements}
+The Magnus Front End (FE) must be able to reflect the state of the
+Session Manager (SM). For modularity, the FE should know as little as
+possible about the SM data it manipulates.
+
+Therefore, we predefine a small number of events, in response to
+which the FE is to take some action which reflects the SM's state. The
+SM describes to the FE what to do in each event, via a simple message
+protocol.  The descriptions may refer to elements of a `blind'
+database, which is stored by the FE and kept up to date by the SM.
+
+The FE must know nothing about the database except how to store and
+extract data. Programmers in the SM layer should know nothing about
+the database except its semantics in a given event.
+
+The classes wrapped in class FEData form the programmer's interface
+between the SM and the database.
+
+\subsection{Terminology}
+
+The database is an associative array, where the keys and data can be
+arbitrary strings. Exactly what strings are used is, of course,
+hidden by the FEData classes.
+
+A `Key' may be constant or variable. When constant, it typically
+consists of an object id supplied by the programmer, and a key
+descriptor which is hidden from the programmer. When variable, it
+typically consists of the index of a formal variable supplied by the
+programmer, and the key descriptor. The latter allows database
+references to be specified for events in advance, and later evaluated
+in a context in which the formal variables have values. This is
+tricky; see the discussion of menus, below.
+
+A `Datum' is the value returned by the database for a given key. It
+is always constant, and is typically a boolean value, an object id, or
+a string such as an object's name.  A Datum is represented only
+conceptually by FEData (i.e., not as a class), since it exists only in
+the FE. The programmer specifies a Datum via a Key.
+
+An `Expression' is built up from Keys via operators like `==', [[`&&']],
+and `!'. Thus an Expression may be variable or constant.
+
+A `Name' is an Expression which contains another Expression, where
+the latter evaluates to an object id.
+
+\subsection{Events}
+
+These are the events for which the FE must take action which depends
+on the database:
+\begin{list}{}
+\item  1) There is new data to be stored.
+
+The SM must supply a constant Key, and a constant Expression
+(which may be a simple value) to become the Datum. For example, the SM
+may announce that `the parent group of word <object-id> is
+<object-id>'.  The `parent group' part is resolved as a key
+descriptor, the first object id becomes part of the Key, and the
+second object id is the Datum.
+
+\item 2) The SM wishes to display textual data.
+
+In this case, the SM knows exactly which objects it wants to talk
+about, so it can supply their object id's. SM programmers must be able
+to embed constant Names in text.
+
+\item 3) A new workspace object has been created.
+
+The view description for the object may contain text which refers
+to various objects by name. These objects are known when the new one
+is created, so the situation is as in 2).
+
+\item 4) The workspace selection has changed.
+
+<To Appear>
+\end{list}
+\subsection{Usage}
+
+<To Appear>
+
+This stuff was too quickly hacked, and needs more thought. In
+particular, the ! operator does not work properly; e.g., the
+expression ( !  IsAuto(...) ) is spuriously false when there
+is no `auto' key stored at all in the FE.
+
+\subsection{struct ExpressionRep}
+\subsubsection{constructor}
+<<ExpressionRep constructor.h>>=
+	 ExpressionRep( ) : refs( 1 ) { }
+@
+\subsubsection{destructor}
+<<ExpressionRep destructor>>=
+	 virtual ~ExpressionRep( ) { }
+@
+\subsubsection{gimme}
+<<ExpressionRep gimme.h>>=
+	 ExpressionRep* gimme( ) {
+		++refs;
+		return this;
+	 }
+@
+\subsubsection{getHence}
+<<ExpressionRep getHence.h>>=
+	 void getHence( ) {
+		if ( ! --refs ) { delete this; }
+	 }
+@
+\subsubsection{printOn}
+<<ExpressionRep printOn.h>>=
+	 virtual void printOn(ostream& ostr) const = 0;
+@
+\subsubsection{refs}
+<<ExpressionRep refs>>=
+	 int refs;
+@
+\subsubsection{struct ExpressionRep}
+<<struct ExpressionRep>>=
+  struct ExpressionRep
+  {
+<<ExpressionRep constructor.h>>
+<<ExpressionRep destructor>>
+<<ExpressionRep gimme.h>>
+<<ExpressionRep getHence.h>>
+<<ExpressionRep printOn.h>>
+<<ExpressionRep refs>>
+  };
+
+@
+\subsection{struct KeyRep}
+\subsubsection{constructors}
+<<KeyRep constructor1.h>>=
+	 KeyRep(int i);  // Stupid special case
+@
+<<KeyRep constructor1.c>>=
+FEData::KeyRep::KeyRep(int i)
+  : index( i ), text( 0 ), isConstant( true ), subExpression( 0 )
+{ }
+
+@
+<<KeyRep constructor2.h>>=
+	 KeyRep(int i, const char* t);
+@
+<<KeyRep constructor2.c>>=
+FEData::KeyRep::KeyRep(int i, const char* t)
+  : index( i ), text( t ), isConstant( false ), subExpression( 0 )
+{ }
+
+@
+<<KeyRep constructor3.h>>=
+	 KeyRep(OID oid, const char* t);
+@
+<<KeyRep constructor3.c>>=
+FEData::KeyRep::KeyRep(OID oid, const char* t)
+  : index( oid.unwrap() ), text( t ), isConstant( true ), subExpression( 0 )
+{ }
+
+@
+<<KeyRep constructor4.h>>=
+	 KeyRep(ExpressionRep* se, const char* t);
+@
+<<KeyRep constructor4.c>>=
+FEData::KeyRep::KeyRep(ExpressionRep* se, const char* t)
+  : text( t ), subExpression( se )
+{ }
+
+@
+\subsubsection{destructor}
+<<KeyRep destructor.h>>=
+	 ~KeyRep( ) { if ( subExpression ) subExpression->getHence(); }
+@
+\subsubsection{printOn}
+<<KeyRep printOn.h>>=
+	 void printOn(ostream& ostr) const;        // overrides ExpressionRep
+@
+<<KeyRep printOn.c>>=
+void FEData::KeyRep::printOn(ostream& ostr) const
+{
+  if ( subExpression ) {
+	 ostr << "$A(";
+	 subExpression->printOn( ostr );
+	 ostr << ',' << text << ')';
+  } else if ( isConstant ) {
+	 if ( text == 0 )
+		ostr << index;
+	 else
+		ostr << "$A(" << index << ',' << text << ')';
+  } else {
+	 if ( text == 0 )
+		ostr << "$x" << index;
+	 else
+		ostr << "$A($x" << index << ',' << text << ')';
+  }
+}
+
+@
+\subsubsection{index}
+<<KeyRep index.h>>=
+	 const int index;
+@
+\subsubsection{text}
+<<KeyRep text.h>>=
+	 const char* text;
+@
+\subsubsection{isConstant}
+<<KeyRep isConstant.h>>=
+	 bool isConstant;
+@
+\subsubsection{subExpression}
+<<KeyRep subExpression.h>>=
+	 ExpressionRep* subExpression;
+@
+\subsubsection{struct KeyRep}
+<<struct KeyRep : public ExpressionRep>>=
+  struct KeyRep : public ExpressionRep
+  {
+<<KeyRep constructor1.h>>
+<<KeyRep constructor2.h>>
+<<KeyRep constructor3.h>>
+<<KeyRep constructor4.h>>
+<<KeyRep destructor.h>>
+<<KeyRep printOn.h>>
+<<KeyRep index.h>>
+<<KeyRep text.h>>
+<<KeyRep isConstant.h>>
+<<KeyRep subExpression.h>>
+  };
+@
+\subsection{struct JoinRep}
+\subsubsection{constructor}
+<<JoinRep constructor.h>>=
+	 JoinRep(ExpressionRep* a1, ExpressionRep* a2, const char* j);
+@
+<<JoinRep constructor.c>>=
+FEData::JoinRep::JoinRep(FEData::ExpressionRep* a1,
+			 FEData::ExpressionRep* a2,
+			 const char* j	 )
+  : lhs(a1), rhs(a2), junctor(j)
+{ }
+
+@
+\subsubsection{destructor}
+<<JoinRep destructor.h>>=
+	 ~JoinRep( );
+@
+<<JoinRep destructor.c>>=
+FEData::JoinRep::~JoinRep( )
+{
+  lhs->getHence();
+  rhs->getHence();
+}
+
+@
+\subsubsection{printOn}
+<<JoinRep printOn.h>>=
+	 void printOn(ostream& ostr) const;         // overrides ExpressionRep
+@
+<<JoinRep printOn.c>>=
+void FEData::JoinRep::printOn(ostream& ostr) const
+{
+  ostr << '(';
+  lhs->printOn( ostr );
+  ostr << junctor;
+  rhs->printOn( ostr );
+  ostr << ')';
+}
+
+@
+\subsubsection{lhs}
+<<JoinRep lhs.h>>=
+	 ExpressionRep* lhs;
+@
+\subsubsection{rhs}
+<<JoinRep rhs.h>>=
+	 ExpressionRep* rhs;
+@
+\subsubsection{junctor}
+<<JoinRep junctor.h>>=
+	 const char* junctor;  // Always static data
+@
+\subsubsection{struct JoinRep}
+<<struct JoinRep : public ExpressionRep>>=
+  struct JoinRep : public ExpressionRep
+  {
+<<JoinRep constructor.h>>
+<<JoinRep destructor.h>>
+<<JoinRep printOn.h>> 
+<<JoinRep lhs.h>>
+<<JoinRep rhs.h>>
+<<JoinRep junctor.h>>
+  };
+
+@
+\subsection{struct NotRep}
+\subsubsection{constructor}
+<<NotRep constructor.h>>=
+	 NotRep(ExpressionRep* a);
+@
+<<NotRep constructor.c>>=
+FEData::NotRep::NotRep(FEData::ExpressionRep* a) : expr(a) { }
+
+@
+\subsubsection{destructor}
+<<NotRep destructor.h>>=
+	 ~NotRep( );
+@
+<<NotRep destructor.c>>=
+FEData::NotRep::~NotRep( )
+{
+ expr->getHence();
+}
+
+@
+\subsubsection{printOn}
+<<NotRep printOn.h>>=
+	 void printOn(ostream& ostr) const;         // overrides ExpressionRep
+@
+<<NotRep printOn.c>>=
+void FEData::NotRep::printOn(ostream& ostr) const
+{
+  ostr << '!';
+  expr->printOn( ostr );
+}
+
+@
+\subsubsection{expr}
+<<NotRep expr.h>>=
+	 ExpressionRep* expr;
+@
+\subsubsection{struct NotRep}
+<<struct NotRep : public ExpressionRep>>=
+  struct NotRep : public ExpressionRep
+  {
+<<NotRep constructor.h>>
+<<NotRep destructor.h>>
+<<NotRep printOn.h>>
+<<NotRep expr.h>>
+  };
+
+@
+\subsection{struct NameRep}
+\subsubsection{contructor}
+<<NameRep constructor.h>>=
+	 NameRep(ExpressionRep* a);
+@
+<<NameRep constructor.c>>=
+FEData::NameRep::NameRep(FEData::ExpressionRep* a) : expr(a) { }
+
+@
+\subsubsection{destructor}
+<<NameRep destructor.h>>=
+	 ~NameRep( );
+@
+<<NameRep destructor.c>>=
+FEData::NameRep::~NameRep( )
+{
+ expr->getHence();
+}
+
+@
+\subsubsection{printOn}
+<<NameRep printOn.h>>=
+	 void printOn(ostream& ostr) const;         // overrides ExpressionRep
+@
+<<NameRep printOn.c>>=
+void FEData::NameRep::printOn(ostream& ostr) const
+{
+  ostr << "$A(";
+  expr->printOn( ostr );
+  ostr << ",name)";
+}
+
+@
+\subsubsection{expr}
+<<NameRep expr.h>>=
+	 ExpressionRep* expr;
+@
+\subsubsection{struct NameRep}
+<<struct NameRep : public ExpressionRep>>=
+  struct NameRep : public ExpressionRep
+  {
+<<NameRep constructor.h>>
+<<NameRep destructor.h>>
+<<NameRep printOn.h>>
+<<NameRep expr.h>>
+  };
+
+@
+\subsection{struct SubjectRep}
+\subsubsection{constructor}
+<<SubjectRep constructor.h>>=
+    SubjectRep( Chars sub ) : subject( sub ) { } 
+@
+\subsubsection{destructor}
+<<SubjectRep destructor.h>>=
+    ~SubjectRep( ) { }
+@
+\subsubsection{printOn}
+overrides ExpressionRep
+<<SubjectRep printOn.h>>=
+    void printOn(ostream& ostr) const; 
+@
+<<SubjectRep printOn.c>>=
+void FEData::SubjectRep::printOn(ostream& ostr) const
+{
+  ostr << "$subject==\"" << subject << "\"";
+}
+
+@
+\subsubsection{subject}
+<<SubjectRep subject.h>>=
+    Chars subject;
+@
+\subsubsection{struct SubjectRep}
+<<struct SubjectRep : public ExpressionRep>>=
+  struct SubjectRep : public ExpressionRep
+  {
+<<SubjectRep constructor.h>>
+<<SubjectRep destructor.h>>
+<<SubjectRep printOn.h>>
+<<SubjectRep subject.h>>
+  };
+
+@
+\subsection{class Expression}
+\subsubsection{constructor}
+The hackery is getting rather thick; 
+this is a quicky to allow storage
+of, e.g., enum values as data.
+<<Expression constructor1.h>>=
+	 Expression(int i) : theRep( new KeyRep( i ) ) { }
+@	 
+<<Expression constructor2.h>>=
+	 Expression( const Expression& E ) {
+		theRep = E.theRep->gimme();
+	 }
+@
+Call this ONLY when rep.refs already has the right value!
+<<Expression constructor3.h>>=
+	 Expression( ExpressionRep* rep ) : theRep( rep ) { }
+@
+\subsubsection{destructor}
+<<Expression destructor.h>>=
+	 ~Expression( ) { theRep->getHence(); }
+@
+\subsubsection{operator equalequal}
+<<Expression equalequal.h>>=
+	 Expression operator == ( const Expression& E ) const {
+		return join( E, "==" );
+	 }
+@
+\subsubsection{operator notequal}
+<<Expression notequal.h>>=
+	 Expression operator != ( const Expression& E ) const {
+		return join( E, "!=" );
+	 }
+@
+\subsubsection{operator andand}
+<<Expression andand.h>>=
+	 Expression operator && ( const Expression& E ) const {
+		return join( E, "&&" );
+	 }
+@
+\subsubsection{operator oror}
+<<Expression oror.h>>=
+	 Expression operator || ( const Expression& E ) const {
+		return join( E, "||" );
+	 }
+@
+\subsubsection{operator not}
+<<Expression not.h>>=
+	 Expression operator ! ( ) const {
+		return Expression( new NotRep( theRep->gimme() ) );
+	 }
+@
+\subsubsection{operator greaterthan}
+<<Expression greaterthan.h>>=
+	 Expression operator > ( const Expression& E ) const {
+		return join( E, ">" );
+	 }
+@
+\subsubsection{operator greaterequal}
+<<Expression greaterequal.h>>=
+	 Expression operator >= ( const Expression& E ) const {
+		return join( E, ">=" );
+	 }
+@
+\subsubsection{operator lessthan}
+<<Expression lessthan.h>>=
+	 Expression operator < ( const Expression& E ) const {
+		return join( E, "<" );
+	 }
+@
+\subsubsection{operator lessequal}
+<<Expression lessequal.h>>=
+	 Expression operator <= ( const Expression& E ) const {
+		return join( E, "<=" );
+	 }
+@
+\subsubsection{operator output}
+<<Expression output.h>>=
+    friend ostream& operator << ( ostream& ostr, const Expression& E);
+@
+<<Expression output.c>>=
+ostream& operator << ( ostream& ostr, const FEData::Expression& E)
+{
+  E.theRep->printOn( ostr );
+  return ostr;
+}
+@
+\subsubsection{theRep}
+Public on purpose...
+<<Expression theRep.h>>=
+	 ExpressionRep* theRep;
+@
+\subsubsection{join}
+<<Expression join.h>>=
+	 Expression join( const Expression& E, const char* junctor ) const;
+@
+<<Expression join.c>>=
+FEData::Expression
+FEData::Expression::join(const FEData::Expression& E, 
+                         const char* junctor) const
+{
+  return
+   Expression( new JoinRep( theRep->gimme(), E.theRep->gimme(), junctor ) );
+}
+
+@
+\subsubsection{class Expression}
+<<class Expression>>=
+  class Expression
+  {
+  public:
+<<Expression constructor1.h>>
+<<Expression constructor2.h>>
+<<Expression constructor3.h>>
+<<Expression destructor.h>>
+<<Expression equalequal.h>>
+<<Expression notequal.h>>
+<<Expression andand.h>>
+<<Expression oror.h>>
+<<Expression not.h>>
+<<Expression greaterthan.h>>
+<<Expression greaterequal.h>>
+<<Expression lessthan.h>>
+<<Expression lessequal.h>>
+<<Expression output.h>>
+<<Expression theRep.h>>
+  private:
+<<Expression join.h>>
+  };
+
+@
+\subsection{class Key}
+\subsubsection{constructors}
+<<Key constructor1.h>>=
+	 Key( const Key& K ) : Expression( K.theRep->gimme() ) { }
+@
+<<Key constructor2.h>>=
+	 Key(int i) : Expression( new KeyRep( i ) ) { } 
+@
+<<Key constructor3.h>>=
+	 Key(int i, const char* t) : Expression( new KeyRep( i, t ) ) { }
+@
+<<Key constructor4.h>>=
+	 Key(OID oid, const char* t) : Expression( new KeyRep( oid, t ) ) { }
+@
+<<Key constructor5.h>>=
+	 Key(const Key& K, const char* t)
+	   : Expression( new KeyRep( K.theRep->gimme(), t ) )
+	 { }
+@
+\subsubsection{class Key}
+<<class Key : public Expression>>=
+  class Key : public Expression
+  {
+  public:
+<<Key constructor1.h>>
+  protected:
+<<Key constructor2.h>>
+<<Key constructor3.h>>
+<<Key constructor4.h>>
+<<Key constructor5.h>>
+  };
+
+@
+\subsection{struct DataPair}
+\subsubsection{constructor}
+<<DataPair constructor.h>>=
+	 DataPair( const Key& key, const Expression& datum )
+      : theKey( key ), theDatum( datum )
+	 { }
+@
+\subsubsection{operator equalequal}
+<<DataPair operator equalequal.h>>=
+	 bool operator == (const DataPair& dp) const { return false; }
+@
+\subsubsection{operator equal}
+<<DataPair operator equal.h>>=
+	 DataPair& operator = (const DataPair& dp);
+@
+<<DataPair operator equal.c>>=
+FEData::DataPair& FEData::DataPair::operator = (const FEData::DataPair& dp)
+{
+  theKey = dp.theKey;
+  theDatum = dp.theDatum;
+}
+
+@
+\subsubsection{operator output}
+<<DataPair operator output.h>>=
+    friend ostream& operator << ( ostream& ostr, const DataPair& dp);
+@
+<<DataPair operator output.c>>=
+ostream& operator << ( ostream& ostr, const FEData::DataPair& dp)
+{
+  ostr << "{ key {" << dp.theKey << "} datum {" << dp.theDatum << "}} ";
+  return ostr;
+}
+
+@
+\subsubsection{theKey}
+<<DataPair theKey.h>>=
+	 Key theKey;
+@
+\subsubsection{theDatum}
+<<DataPair theDatum.h>>=
+	 Expression theDatum;
+@
+\subsubsection{struct DataPair}
+<<struct DataPair>>=
+  struct DataPair
+  {
+<<DataPair constructor.h>>
+<<DataPair operator equalequal.h>>
+<<DataPair operator equal.h>>
+<<DataPair operator output.h>>
+  private:
+<<DataPair theKey.h>>
+<<DataPair theDatum.h>>
+  };
+
+@
+\subsection{struct Text}
+\subsubsection{constructor}
+<<Text constructor1.h>>=
+         Text(const char* t = "");
+@
+<<Text constructor1.c>>=
+FEData::Text::Text(const char* t)
+{
+  ostrstr << t;
+}
+
+@
+<<Text constructor2.h>>=
+         Text(const Expression& E);
+@
+<<Text constructor2.c>>=
+FEData::Text::Text(const Expression& E)
+{
+  ostrstr << E;
+}
+
+@
+A Text is to be passed only by reference, so this is hidden and
+not to be implemented. Also, unnecessary parenthesizing results
+in a `passing reference to temp' warning which must not be ignored.
+<<Text constructor3.h>>=
+	 Text(const Text&);
+@
+\subsubsection{Chars}
+<<Text Chars.h>>=
+	 operator Chars( ) const;
+@
+<<Text Chars.c>>=
+FEData::Text::operator Chars( ) const
+{
+  ostrstream& o = (ostrstream&)ostrstr;  // Cast away const-ness.
+  o << ends;
+  Chars result( o.str() );
+  o.freeze(0);
+  return result;
+}
+
+@
+\subsubsection{operator plus}
+<<Text operator plus1.h>>=
+	 Text& operator + (const Text& t);
+@
+<<Text operator plus1.c>>=
+FEData::Text& FEData::Text::operator + (const FEData::Text& t)
+{
+  ostrstr << ' ' << t;
+  return *this;
+}
+
+@
+<<Text operator plus2.h>>=
+	 Text& operator + (const Expression& E);
+@
+<<Text operator plus2.c>>=
+FEData::Text& FEData::Text::operator + (const FEData::Expression& E)
+{
+  ostrstr << ' ' << E;
+  return *this;
+}
+
+@
+\subsubsection{operator output}
+<<Text operator output.h>>=
+    friend ostream& operator << (ostream& ostr, const Text& t);
+@
+<<Text operator output.c>>=
+ostream& operator << (ostream& ostr, const FEData::Text& t)
+{
+  ostrstream& o = (ostrstream&)t.ostrstr;  // Cast away const-ness.
+  o << ends;
+  ostr << o.str();
+  o.freeze(0);
+  return ostr;
+}
+
+@
+\subsubsection{ostrstr}
+<<Text ostrstr.h>>=
+	 ostrstream ostrstr;
+@
+\subsubsection{struct Text}
+<<struct Text>>=
+  struct Text
+  {
+<<Text constructor1.h>>
+<<Text constructor2.h>>
+<<Text Chars.h>>
+<<Text operator plus1.h>>
+<<Text operator plus2.h>>
+<<Text operator output.h>>
+  private:
+<<Text constructor3.h>>
+<<Text ostrstr.h>>
+  };
+
+@
+\subsection{struct True}
+\subsubsection{constructor}
+<<True constructor.h>>=
+	 True( ) : Key( 1 ) { }
+@
+\subsubsection{struct True}
+<<struct True : public Key>>=
+  struct True : public Key
+  {
+<<True constructor.h>>
+  };
+
+@
+\subsection{struct False}
+\subsubsection{constructor}
+<<False constructor.h>>=
+	 False( ) : Key( 0 ) { }
+@
+\subsubsection{struct False}
+<<struct False : public Key>>=
+  struct False : public Key
+  {
+<<False constructor.h>>
+  };
+
+@
+\subsection{struct Object}
+\subsubsection{constructor}
+<<Object constructor1.h>>=
+	 Object(int i) : Key( i, 0 ) { }
+@
+Semantic pact with KeyRep: text == 0 => not a real key
+<<Object constructor2.h>>=
+	 Object(OID o) : Key( o, 0 ) { }
+@
+\subsubsection{struct Object}
+<<struct Object : public Key>>=
+  struct Object : public Key
+  {
+<<Object constructor1.h>>
+<<Object constructor2.h>>
+  };
+
+@
+\subsection{struct CheckinType}
+<<CheckinType constructor1.h>>=
+	 CheckinType(int i) : Key( i, "checkin_type" ) { }
+@
+<<CheckinType constructor2.h>>=
+	 CheckinType(OID o) : Key( o, "checkin_type" ) { }
+@
+<<CheckinType constructor3.h>>=
+	 CheckinType(const Key& K) : Key( K, "checkin_type" ) { }
+@
+\subsubsection{struct CheckinType}
+<<struct CheckinType : public Key>>=
+  struct CheckinType : public Key
+  {
+<<CheckinType constructor1.h>>
+<<CheckinType constructor2.h>>
+<<CheckinType constructor3.h>>
+  };
+
+@
+
+\subsection{struct IsHomo}
+Many menus and ARC slots are conditional, based purely on how the
+selected objects were checked in (e.g., a group checked in as an
+abelian group, not an FP group which is discovered to be
+abelian).  Thus, this allows for associating, e.g., an enum
+(type) value with an object, when and only when it is created,
+and for subsequently using the value to choose the right menu item.
+
+However, some menu items cannot make sense unless some piece of
+information is known. For example, `Extend <a free group> by <a map>'
+must not be posted unless the map is known to be an automorphism of
+the group. Thus, in as few cases as we can get away with (to
+stave off utter insanity), we dynamically update the FE database
+with such crucial information when it is discovered. The following
+provide the interface:
+\subsubsection{constructor}
+<<IsHomo constructor1.h>>=
+	 IsHomo(int i) : Key( i, "homo" ) { }
+@
+<<IsHomo constructor2.h>>=
+	 IsHomo(OID o) : Key( o, "homo" ) { }
+@
+@
+\subsubsection{struct IsHomo}
+<<struct IsHomo : public Key>>=
+  struct IsHomo : public Key
+  {
+<<IsHomo constructor1.h>>
+<<IsHomo constructor2.h>>
+  };
+  
+  
+@
+\subsection{struct IsIso}
+\subsubsection{constructor}
+<<IsIso constructor1.h>>=
+	 IsIso(int i) : Key( i, "iso" ) { }
+@
+<<IsIso constructor2.h>>=
+	 IsIso(OID o) : Key( o, "iso" ) { }
+@
+\subsubsection{struct IsIso}
+<<struct IsIso : public Key>>=
+  struct IsIso : public Key
+  {
+<<IsIso constructor1.h>>
+<<IsIso constructor2.h>>
+  };
+  
+@
+\subsection{struct IsAuto}
+\subsubsection{contructor}
+<<IsAuto contructor1.h>>=
+	 IsAuto(int i) : Key( i, "auto" ) { }
+@
+<<IsAuto constructor2.h>>=
+	 IsAuto(OID o) : Key( o, "auto" ) { }
+@
+\subsubsection{struct IsAuto}
+<<struct IsAuto : public Key>>=
+  struct IsAuto : public Key
+  {
+<<IsAuto contructor1.h>>
+<<IsAuto constructor2.h>>
+  };
+
+@
+\subsection{struct Parent}
+The following are for static properties of algebraic objects which
+ are needed to determine whether a menu item, etc., should be posted.
+\subsubsection{constructor}
+<<Parent constructor1.h>>=
+	 Parent(int i) : Key( i, "parent" ) { }
+@
+<<Parent constructor2.h>>=
+	 Parent(OID o) : Key( o, "parent" ) { }
+@
+\subsubsection{struct Parent}
+<<struct Parent : public Key>>=
+  struct Parent : public Key
+  {
+<<Parent constructor1.h>>
+<<Parent constructor2.h>>
+  };
+
+@
+\subsection{struct ParentGroup}
+\subsubsection{constructor}
+<<ParentGroup constructor1.h>>=
+	 ParentGroup(int i) : Key( Parent(i), "parent" ) { }
+@
+<<ParentGroup constructor2.h>>=
+	 ParentGroup(OID o) : Key( Parent(o), "parent" ) { }
+@
+\subsubsection{struct ParentGroup}
+<<struct ParentGroup : public Key>>=
+  struct ParentGroup : public Key
+  {
+<<ParentGroup constructor1.h>>
+<<ParentGroup constructor2.h>>
+  };
+  
+@
+\subsection{struct Domain}
+\subsubsection{constructor}
+<<Domain constructor1.h>>=
+	 Domain(int i) : Key( i, "domain" ) { }
+@
+<<Domain constructor2.h>>=
+	 Domain(OID o) : Key( o, "domain" ) { }
+@
+\subsubsection{struct Domain}
+<<struct Domain : public Key>>=
+  struct Domain : public Key
+  {
+<<Domain constructor1.h>>
+<<Domain constructor2.h>>
+  };
+
+@
+\subsection{struct Range}
+\subsubsection{constructor}
+<<Range constructor1.h>>=
+	 Range(int i) : Key( i, "range" ) { }
+@
+<<Range constructor2.h>>=
+	 Range(OID o) : Key( o, "range" ) { }
+@
+\subsubsection{struct Range}
+<<struct Range : public Key>>=
+  struct Range : public Key
+  {
+<<Range constructor1.h>>
+<<Range constructor2.h>>
+  };
+  
+@
+\subsection{struct Oid}
+\subsubsection{constructor}
+<<Oid constructor1.h>>=
+	 Oid(int i) : Key( i, "oid" ) { }
+@
+<<Oid constructor2.h>>=
+	 Oid(OID o) : Key( o, "oid" ) { }
+@
+\subsubsection{struct Oid}
+<<struct Oid : public Key>>=
+  struct Oid : public Key
+  {
+<<Oid constructor1.h>>
+<<Oid constructor2.h>>
+  };
+
+@
+\subsection{struct Name}
+\subsubsection{constructor}
+<<Name constructor1.h>>=
+	 Name(int i);
+@
+<<Name constructor1.c>>=
+FEData::Name::Name(int i)
+  : Expression( new NameRep( Object( i ).theRep->gimme() ) )
+{ }
+
+@
+<<Name constructor2.h>>=
+	 Name(OID o);
+@
+<<Name constructor2.c>>=
+FEData::Name::Name(OID o)
+  : Expression( new NameRep( Object( o ).theRep->gimme() ) )
+{ }
+
+@
+<<Name constructor3.h>>=
+	 Name(const Expression& E);
+@
+<<Name constructor3.c>>=
+FEData::Name::Name(const FEData::Expression& E)
+  : Expression( new NameRep( E.theRep->gimme() ) )
+{ }
+
+@
+\subsubsection{struct Name}
+<<struct Name : public Expression>>=
+  struct Name : public Expression
+  {
+<<Name constructor1.h>>
+<<Name constructor2.h>>
+<<Name constructor3.h>>
+  };
+
+@
+\subsection{struct Subject}
+\subsubsection{constructor}
+<<Subject constructor.h>>=
+    Subject( Chars sub );
+@
+<<Subject constructor.c>>=
+FEData::Subject::Subject( Chars sub )
+  : Expression( new SubjectRep( sub ) )
+{ }
+
+@
+\subsubsection{struct Subject}
+<<struct Subject : public Expression>>=
+  struct Subject : public Expression
+  {
+<<Subject constructor.h>>
+  };
+
+@
+\subsection{struct Link}
+\subsubsection{constructor}
+<<Link constructor.h>>=
+    Link( const Chars& text, const Chars& problemName,
+	  const Chars& fileName, bool isDynamic = false );
+@
+<<Link constructor.c>>=
+FEData::Link::Link( const Chars& text, const Chars& problemName,
+		    const Chars& fileName, bool isDynamic )
+  : Text( Chars("@") + text + "@" + problemName + "@" + fileName + "@"
+	  + (isDynamic ? "1" : "0") + "@" )
+{ }
+
+@
+\subsubsection{struct Link}
+<<struct Link : public Text>>=
+  struct Link : public Text
+  {
+<<Link constructor.h>>
+  };
+
+@
+\subsection{struct SubProblemName}
+\subsubsection{constructor}
+<<SubProblemName constructor.h>>=
+    SubProblemName( OID oid, ARCSlotID asi ) 
+      : theOid( oid.unwrap() ), theAsi( asi.unwrap() ) 
+    { }
+@
+\subsubsection{operator output}
+<<SubProblemName output.h>>=
+    friend ostream& operator << ( ostream& ostr, const SubProblemName& n ) {
+      ostr << "[get_subProblemName " << n.theOid << " " << n.theAsi << "]";
+      return ostr;
+    }
+@ 
+\subsubsection{theOid}
+<<SubProblemName theOid.h>>=
+    int theOid;
+@
+\subsubsection{theAsi}
+<<SubProblemName theAsi.h>>=
+    int theAsi;
+@
+\subsubsection{struct SubProblemName}
+<<struct SubProblemName>>=
+  struct SubProblemName
+  {
+<<SubProblemName constructor.h>>
+<<SubProblemName output.h>>
+  private:
+<<SubProblemName theOid.h>>
+<<SubProblemName theAsi.h>>
+  };
+
+@
+\subsection{struct Banner}
+\subsubsection{constructor}
+<<Banner constructor.h>>=
+    Banner( OID oid ) 
+      : theOid( oid.unwrap() )
+    { }
+@
+\subsubsection{operator output}
+<<Banner operator output.h>>=
+    friend ostream& operator << ( ostream& ostr, const Banner& b ) {
+      ostr << "[get_viewBanner " << b.theOid << " " << "]";
+      return ostr;
+    }
+@ 
+\subsubsection{theOid}
+<<Banner theOid.h>>=
+    int theOid;
+@
+\subsubsection{struct Banner}
+<<struct Banner>>=
+  struct Banner
+  {
+<<Banner constructor.h>>
+<<Banner operator output.h>>
+  private:
+<<Banner theOid.h>>
+  };
+
+@
+\subsection{class FEData}
+<<class FEData>>=
+class FEData
+{
+private:
+<<struct ExpressionRep>>
+<<struct KeyRep : public ExpressionRep>>
+<<struct JoinRep : public ExpressionRep>>
+<<struct NotRep : public ExpressionRep>>
+<<struct NameRep : public ExpressionRep>>
+<<struct SubjectRep : public ExpressionRep>>
+public: //protected:
+<<class Expression>>
+<<class Key : public Expression>>
+<<struct DataPair>>
+<<struct Text>>
+<<struct True : public Key>>
+<<struct False : public Key>>
+<<struct Object : public Key>>
+<<struct CheckinType : public Key>>
+<<struct IsHomo : public Key>>
+<<struct IsIso : public Key>>
+<<struct IsAuto : public Key>>
+<<struct Parent : public Key>>
+<<struct ParentGroup : public Key>>
+<<struct Domain : public Key>>
+<<struct Range : public Key>>
+<<struct Oid : public Key>>
+<<struct Name : public Expression>>
+<<struct Link : public Text>>
+<<struct SubProblemName>>
+<<struct Subject : public Expression>>
+<<struct Banner>>
+};
+
+@
+\section{license}
+Copyright (C) 1994-2004 The New York Group Theory Cooperative
+See license/NYGTC for the full notice
+\section{Include File}
+<<FEData.h>>=
+// src/backend/SessionManager/include/FEData.h
+#ifndef _FEDATA_H_
+#define _FEDATA_H_
+
+<<include.h>>
+<<class FEData>>
+#endif
+@
+\section{Code}
+<<*>>=
+<<include.c>>
+<<KeyRep constructor1.c>>
+<<KeyRep constructor2.c>>
+<<KeyRep constructor3.c>>
+<<KeyRep constructor4.c>>
+<<KeyRep printOn.c>>
+<<JoinRep constructor.c>>
+<<JoinRep destructor.c>>
+<<JoinRep printOn.c>>
+<<NotRep constructor.c>>
+<<NotRep destructor.c>>
+<<NotRep printOn.c>>
+<<NameRep constructor.c>>
+<<NameRep destructor.c>>
+<<NameRep printOn.c>>
+<<SubjectRep printOn.c>>
+<<Expression output.c>>
+<<Expression join.c>>
+<<DataPair operator equal.c>>
+<<DataPair operator output.c>>
+<<Text constructor1.c>>
+<<Text constructor2.c>>
+<<Text Chars.c>>
+<<Text operator plus1.c>>
+<<Text operator plus2.c>>
+<<Text operator output.c>>
+<<Name constructor1.c>>
+<<Name constructor2.c>>
+<<Name constructor3.c>>
+<<Subject constructor.c>>
+<<Link constructor.c>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}
+

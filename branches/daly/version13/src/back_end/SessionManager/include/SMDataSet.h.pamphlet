@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/SMDataSet.h}
+\author{Dmitry Bormotov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "DataSet.h"
+#include "AlgebraicObject.h"
+
+@
+\subsection{class SMDataSet}
+<<class SMDataSet>>=
+class SMDataSet : public AlgebraicObject
+{
+public:
+  SMDataSet( const DataSet& S, const Chars heritage);
+  SMDataSet( ) : AlgebraicObject("")
+  { }
+
+  DataSet getSet( ) const { return theSet; }
+
+  static const char* type( ) { return "SMDataSet"; }
+  const char* typeID( ) const { return type(); }          // overrides SMObject
+
+  const IconID iconID( ) const { return IconID::DataSet; }
+  // overrides SMObject
+  // @db need to change the ID later
+
+  void viewStructure(ostream& ostr) const;                // overrides SMObject
+  void printProperties(ostream& ostr) const;              // overrides SMObject
+  void printDefinition(ostream& ostr) const;              // overrides SMObject
+
+protected:
+  void readMessage(istream&) { }                        // overrides SMObject
+
+private:
+  DataSet theSet;
+
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/SMDataSet.h
+#ifndef _SMDataSet_H_
+#define _SMDataSet_H_
+
+<<license>>
+<<include>>
+<<class SMDataSet>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

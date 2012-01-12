@@ -1,0 +1,220 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/roulette.pamphlet}
+\author{Scott Robert Ladd}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include.h>>=
+#include "RandomNumbers.h"
+
+@
+\section{class RouletteWheel}
+\subsection{RouletteWheel Constructor}
+<<RouletteWheel Constructor.h.1>>=
+  RouletteWheel(size_t sz, FType * weights = NULL, int seed = 0 );
+@
+<<RouletteWheel Constructor.c.1>>=
+template < class FType> 
+ RouletteWheel<FType>::RouletteWheel(size_t  sz, FType * weights, int seed) 
+{
+ if( seed != 0 )
+   G = UniformRandom(seed);
+  size_t i;
+  N = sz;
+  T = FType(0);
+  W = new FType [N];
+  //if (W == NULL) throw RW_Except();
+  if (weights == NULL)
+  {
+    for (i = 0; i < N; ++i)
+    {
+       W[i] = FType(1);
+       T   += FType(1);
+     }
+   }
+   else
+   {
+     for (i = 0; i < N; ++i)
+     {
+       W[i] = AbsVal(weights[i]);
+       T   += AbsVal(weights[i]);
+     }
+   }
+ }
+
+@
+<<RouletteWheel Constructor.h.2>>=
+  RouletteWheel(const RouletteWheel & rw);
+@
+<<RouletteWheel Constructor.c.2>>=
+// copy constructor
+template < class FType >
+ inline RouletteWheel<FType>::RouletteWheel(const RouletteWheel & rw)
+ {
+   Copy(rw);
+ }
+
+@
+\subsection{RouletteWheel Destructor}
+<<RouletteWheel Destructor.h>>=
+  ~RouletteWheel();
+@
+<<RouletteWheel Destructor.c>>=
+template < class FType >
+ RouletteWheel<FType>::~RouletteWheel()
+ {
+   delete [] W;
+ }
+
+@
+\subsection{RouletteWheel operator}
+<<RouletteWheel operator assign.h>>=
+  void operator =(const RouletteWheel & rw);
+@
+<<RouletteWheel operator assign.c>>=
+template < class FType >
+ inline void RouletteWheel<FType>::operator =(const RouletteWheel & rw)
+ {
+   delete [] W;
+   Copy(rw);
+ }
+
+@
+\subsection{RouletteWheel::Change}
+change the weight of an entry
+<<RouletteWheel::Change.h>>=
+  FType Change(size_t i, FType weight);
+@
+<<RouletteWheel::Change.c>>=
+template < class FType >
+ FType RouletteWheel<FType>::Change(size_t i, FType weight)
+ {
+   if (i >= N)
+      return FType(-1);
+   T -= W[i];
+   T += weight;
+   FType res = W[i];
+   W[i] = weight;
+   return res;
+ }
+
+@
+\subsection{RouletteWheel::GetSize}
+interrogation function
+<<RouletteWheel::GetSize.h>>=
+  size_t GetSize() { return N; }
+@
+\subsection{RouletteWheel::GetWeight}
+<<RouletteWheel::GetWeight.h>>=
+  FType GetWeight(size_t i);
+@
+<<RouletteWheel::GetWeight.c>>=
+template < class FType >
+ inline FType RouletteWheel<FType>::GetWeight(size_t i)
+ {
+   return (i < N) ? W[i] : FType(-1);
+ }
+
+@
+\subsection{RouletteWheel::GetIndex}
+retrieve a random index
+<<RouletteWheel::GetIndex.h>>=
+  size_t GetIndex();
+@
+<<RouletteWheel::GetIndex.c>>=
+template < class FType >
+ size_t RouletteWheel<FType>::GetIndex()
+ {
+   FType s  = FType(G.rand() * T);
+   size_t i = 0;
+   while ((i < N) && (s > W[i]))
+   {
+     s -= W[i];
+     ++i;
+   }
+   return i;
+ }
+
+@
+\subsection{RouletteWheel::AbsVal}
+internal absolute value of a float
+<<RouletteWheel::AbsVal.h>>=
+  FType AbsVal(FType f)
+  {
+   if (f < FType(0.0))
+     return -f;
+   else
+     return f;
+   }
+@
+\subsection{RouletteWheel::Copy}
+internal copy function
+<<RouletteWheel::Copy.h>>=
+  void Copy(const RouletteWheel & rw);
+
+@
+template < class FType>
+ void RouletteWheel<FType>::Copy(const RouletteWheel & rw)
+ {
+   T = rw.T;
+   N = rw.N;
+   W = new FType [N];
+   //if (W == NULL) throw RW_Except();
+   memcpy(W,rw.W,sizeof(FType) * N);
+ }
+
+@
+\subsection{class RouletteWheel}
+<<class RouletteWheel>>=
+template < class FType >  class RouletteWheel
+{
+public:
+<<RouletteWheel Constructor.h.1>>
+<<RouletteWheel Constructor.h.2>>
+<<RouletteWheel Destructor.h>>
+<<RouletteWheel operator assign.h>>
+<<RouletteWheel::Change.h>>
+<<RouletteWheel::GetSize.h>>
+<<RouletteWheel::GetWeight.h>>
+<<RouletteWheel::GetIndex.h>>
+protected:
+  size_t  N;
+  FType * W; // array of weights
+  FType T; // total weight of all indexes
+  UniformRandom G; // shared random deviate generator
+private:
+<<RouletteWheel::AbsVal.h>>
+<<RouletteWheel::Copy.h>>
+};
+@
+\section{License}
+Copyright 1995 by Scott Robert Ladd. All rights reserved.
+\section{Roulette.h}
+<<Roulette.h>>=
+#ifndef FORGE_ROULETTE_H
+#define FORGE_ROULETTE_H
+
+<<include.h>>
+//class RW_Except { };
+<<class RouletteWheel>>
+
+<<RouletteWheel Constructor.c.1>>
+<<RouletteWheel Constructor.c.2>>
+<<RouletteWheel operator assign.c>>
+<<RouletteWheel Destructor.c>>
+<<RouletteWheel::Change.c>>
+<<RouletteWheel::GetWeight.c>>
+<<RouletteWheel::GetIndex.c>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

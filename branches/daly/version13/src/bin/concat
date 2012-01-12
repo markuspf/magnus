@@ -1,0 +1,28 @@
+#!/bin/sh
+
+##
+##   $Id: concat,v 1.1 1998/05/14 19:50:01 bormotov Exp $
+##
+
+## Copyright (C) 1997 The New York Group Theory Cooperative
+## See magnus/doc/COPYRIGHT for the full notice.
+
+## Contents: Concatenate all given source files with C-preprocessor 
+##           directives `#line' to separate the ones to stdout.
+##           General purpose to make huge hierarchies like SMApps,
+##           SessionManager, Group, etc.
+##
+## Principal Author: Dmitry Pechkin
+##
+## Status: Useable.
+##
+## Revision History:
+##
+## Next implementation steps:
+##
+
+for i in $* 
+do
+  echo "#line 1 " \"$i\"
+  cat < $i
+done

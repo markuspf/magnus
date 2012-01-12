@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SessionManager/include/ObjectFactory.h}
+\author{Dmitry Pechkin}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\subsection{class ObjectFactory}
+<<class ObjectFactory>>=
+class ObjectFactory {
+public:
+  virtual class SMObject* factory() const = 0;
+};
+
+class SymmetricGroupFactory : public ObjectFactory {
+public:
+  SymmetricGroupFactory( int num ) : n(num) {}
+  class SMObject* factory() const;
+private:
+  int n;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994-2004 The New York Group Theory Cooperative
+// See license/NYGTC for the full notice
+@
+<<*>>=
+// src/backend/SessionManager/include/ObjectFactory.h
+#ifndef _OBJECTFACTORY_H_
+#define _OBJECTFACTORY_H_
+
+<<license>>
+<<class ObjectFactory>>
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

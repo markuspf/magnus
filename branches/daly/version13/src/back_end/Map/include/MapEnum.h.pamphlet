@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/Map/include/MapEnum.h}
+\author{Roger Needham}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Map.h"
+
+@
+\section{class IntTuples}
+Objects in this class enumerate all tuples of non-negative integers.
+Pass the length of tuple desired, and the starting radius in the
+taxicab metric.
+<<class IntTuples>>=
+class IntTuples
+{
+public:
+  IntTuples(const int tupleLength, const int startRadius = 1);
+  // tupleLength >= 1, startRadius >= 1
+
+  ~IntTuples( ) { delete [] tuple; }
+
+  const int* nextTuple( );
+  // You know how long the tuple is.
+  // This retains custody of the int*.
+
+private:
+  int r;
+  // Current radius, i.e., for n == 2:
+  //
+  // . . .           . . .           * . .
+  // . . . r == 0,   * . . r == 1,   . * . r == 2, etc.
+  // * . .           . * .           . . *
+  //
+  // Notice that the entries in a tuple add up to r.
+
+  int* tuple;
+  // The tuple we return.
+
+  int* end;
+  // Points to last entry of tuple
+
+  int* sp;
+  // The `stack' pointer.
+};
+
+@
+\section{class MapEnum}
+<<class MapEnum>>=
+class MapEnum
+{
+public:
+  MapEnum(const FGGroup& domain, const FGGroup& range, int radius = 1);
+
+  Map nextMap(int jump = 1);
+
+private:
+  Word kthWord(int k, int n);
+  // Returns the kth freely reduced word on n semigroup generators.
+
+  int domainRank;
+  int rangeRank;
+
+  const FGGroup& theDomain;
+  const FGGroup& theRange;
+
+  IntTuples theTuples;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1998 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+
+@
+<<*>>=
+// src/backend/Map/include/MapEnum.h
+#ifndef _MAP_ENUM_H_
+#define _MAP_ENUM_H_
+
+<<license>>
+<<include>>
+<<class IntTuples>>
+<<class MapEnum>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

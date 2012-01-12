@@ -1,0 +1,138 @@
+cd libg++; make all
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/libg++'
+make -f ../global/compile.mk all
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/libg++'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/libg++'
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/libg++'
+cd general; make all
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/general'
+make -f ../global/compile.mk all
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/general'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/general'
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/general'
+cd Statistics; make all
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+make -f ../global/compile.mk all
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+cd SMApps; make catlib
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+rm -f src/SA.C; ../../bin/concat src/fastProblems.C src/DataProblems.C src/menuDefns.C src/OVDSFullDataAnalysisProblem.C src/OVDSGraphicalAnalysisProblem.C src/OVDSGoodnessOfFitProblem.C src/OVDSAnalysisOfMeanProblem.C src/OVDSAnalysisOfVarianceProblem.C src/OVDSFurtherAnalysisProblem.C src/OVDSReportProblem.C src/OVDSComparisionWithMeanProblem.C src/OVDSComputationOfAnIntervalProblem.C src/OVDSComparisionWithVarianceProblem.C src/OVDSDataSummaryProblem.C > src/SA.C
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+cd SessionManager; make catlib
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+rm -f src/SM1.C; ../../bin/concat src/ComputationManager.C src/FEData.C src/DCM.C src/Menu.C src/ObjectSmith.C src/OutMessages.C src/ResourceManager.C src/SessionManager.C src/Supervisor.C src/TheObjects.C src/viewStructure.C src/ARCer.C src/ViewContents.C src/SMObject.C src/ConstructSampleFromDataSet.C > src/SM1.C
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+cd SessionManager; make magnus
+make[1]: Entering directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+cd ../libg++; make -f Makefile -f ../global/compile.mk lib
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/libg++'
+make[2]: Nothing to be done for `lib'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/libg++'
+cd ../general; make -f Makefile -f ../global/compile.mk lib
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/general'
+make[2]: Nothing to be done for `lib'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/general'
+cd ../Statistics; make -f Makefile -f ../global/compile.mk lib
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+make[2]: Nothing to be done for `lib'.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/Statistics'
+cd ../SMApps; make -f Makefile -f ../global/compile.mk lib
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+make[2]: *** Warning: File `src/obj/SA.d' has modification time in the future (2002-04-01 17:18:06 > 2002-04-01 17:10:22)
+if [ ! -d src/obj ]; then mkdir src/obj; fi
+/bin/sh -ec 'g++ -MM -I../global -Iinclude -I../SessionManager/include -I../Statistics/include -I../general/include -I../libg++/include src/SA.C | sed "s:SA.o:src/obj/& src/obj/SA.d:g"' > src/obj/SA.d
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+make[2]: *** Warning: File `src/obj/SA.d' has modification time in the future (2002-04-01 17:20:41 > 2002-04-01 17:10:23)
+g++ -DHAVE_UNISTD_H -DDEBUG -g -DSAFETY=2 -I../global -Iinclude -I../SessionManager/include -I../Statistics/include -I../general/include -I../libg++/include -c src/SA.C -o src/obj/SA.o
+if [ ! -d lib ]; then mkdir lib; fi
+ar cr lib/libSMApps.a src/obj/SA.o
+ranlib lib/libSMApps.a
+make[2]: warning:  Clock skew detected.  Your build may be incomplete.
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SMApps'
+make -f ../global/compile.mk magnus
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make[2]: *** Warning: File `src/obj/magnus.d' has modification time in the future (2002-04-01 17:18:11 > 2002-04-01 17:10:27)
+if [ ! -d src/obj ]; then mkdir src/obj; fi
+/bin/sh -ec 'g++ -MM -I../global -Iinclude -I../SMApps/include -I../Statistics/include -I../general/include -I../libg++/include src/SM1.C | sed "s:SM1.o:src/obj/& src/obj/SM1.d:g"' > src/obj/SM1.d
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make[2]: Entering directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make[2]: *** Warning: File `src/obj/magnus.d' has modification time in the future (2002-04-01 17:18:11 > 2002-04-01 17:10:27)
+g++ -DHAVE_UNISTD_H -DDEBUG -g -DSAFETY=2 -I../global -Iinclude -I../SMApps/include -I../Statistics/include -I../general/include -I../libg++/include -c src/SM1.C -o src/obj/SM1.o
+if [ ! -d lib ]; then mkdir lib; fi
+ar cr lib/libSessionManager.a src/obj/DIC.o src/obj/SMRandomDataSet.o src/obj/SM1.o src/obj/DatabaseManager.o src/obj/Property.o src/obj/BaseProperties.o src/obj/registerProperties.o src/obj/ObjectFactory.o src/obj/hacks.o src/obj/SMBaseOfDataSet.o src/obj/SMDataSetComputation.o src/obj/SMDataSetComputationProblems.o src/obj/SMDataSetTVComputationProblems.o
+ranlib lib/libSessionManager.a
+g++ src/obj/magnus.o -L../SessionManager/lib -L../SMApps/lib -L../Statistics/lib -L../general/lib -L../libg++/lib -lSessionManager -lSMApps -lStatistics -lgeneral -llibg++  -lnsl -ldl  -lm -static -o test/bin/magnus
+../SessionManager/lib/libSessionManager.a(SM1.o): In function `ObjectOf<GenericRep>::~ObjectOf(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../global/ObjectOf.h(.bss+0xb0): multiple definition of `m_Level'
+src/obj/magnus.o(.bss+0x0):/home/users/xuxw/mymagnus/back_end/SessionManager/test/magnus.C: first defined here
+../SessionManager/lib/libSessionManager.a(SM1.o): In function `ObjectOf<GenericRep>::~ObjectOf(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../global/ObjectOf.h(.bss+0xb8): multiple definition of `m_Type'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SM1.o): In function `ObjectOf<GenericRep>::~ObjectOf(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../global/ObjectOf.h(.bss+0xc0): multiple definition of `m_MU0'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SM1.o): In function `ObjectOf<GenericRep>::~ObjectOf(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../global/ObjectOf.h(.bss+0xc8): multiple definition of `m_MU0Type'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SM1.o): In function `ObjectOf<GenericRep>::~ObjectOf(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../global/ObjectOf.h(.bss+0xc9): multiple definition of `m_EqualAssumed'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x0): multiple definition of `m_Level'
+src/obj/magnus.o(.bss+0x0):/home/users/xuxw/mymagnus/back_end/SessionManager/test/magnus.C: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x8): multiple definition of `m_Type'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x10): multiple definition of `m_MU0'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x18): multiple definition of `m_MU0Type'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x19): multiple definition of `m_EqualAssumed'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetTVComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x0): multiple definition of `m_Level'
+src/obj/magnus.o(.bss+0x0):/home/users/xuxw/mymagnus/back_end/SessionManager/test/magnus.C: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetTVComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x8): multiple definition of `m_Type'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetTVComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x10): multiple definition of `m_MU0'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetTVComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x18): multiple definition of `m_MU0Type'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SMDataSetTVComputationProblems.o): In function `VectorRep<VectorOf<double> >::~VectorRep(void)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/../general/include/Vector.h(.bss+0x19): multiple definition of `m_EqualAssumed'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SMApps/lib/libSMApps.a(SA.o): In function `Ctor type_info function':
+/home/users/xuxw/mymagnus/back_end/SMApps/../SessionManager/include/Menu.h(.bss+0x0): multiple definition of `m_Level'
+src/obj/magnus.o(.bss+0x0):/home/users/xuxw/mymagnus/back_end/SessionManager/test/magnus.C: first defined here
+../SMApps/lib/libSMApps.a(SA.o): In function `Ctor type_info function':
+/home/users/xuxw/mymagnus/back_end/SMApps/../SessionManager/include/Menu.h(.bss+0x8): multiple definition of `m_Type'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SMApps/lib/libSMApps.a(SA.o): In function `Ctor type_info function':
+/home/users/xuxw/mymagnus/back_end/SMApps/../SessionManager/include/Menu.h(.bss+0x10): multiple definition of `m_MU0'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SMApps/lib/libSMApps.a(SA.o): In function `Ctor type_info function':
+/home/users/xuxw/mymagnus/back_end/SMApps/../SessionManager/include/Menu.h(.bss+0x18): multiple definition of `m_MU0Type'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SMApps/lib/libSMApps.a(SA.o): In function `Ctor type_info function':
+/home/users/xuxw/mymagnus/back_end/SMApps/../SessionManager/include/Menu.h(.bss+0x19): multiple definition of `m_EqualAssumed'
+src/obj/magnus.o:/home/users/xuxw/mymagnus/back_end/SessionManager/include/Menu.h:466: first defined here
+../SessionManager/lib/libSessionManager.a(SM1.o): In function `ExternalARCer::ExternalARCer(ComputationManager &, char const *, int)':
+/home/users/xuxw/mymagnus/back_end/SessionManager/src/ARCer.C:127: the use of `tempnam' is dangerous, better use `mkstemp'
+collect2: ld returned 1 exit status
+make[2]: *** [test/bin/magnus] Error 1
+make[2]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make[1]: *** [magnus] Error 2
+make[1]: Leaving directory `/home/users/xuxw/mymagnus/back_end/SessionManager'
+make: *** [all] Error 2

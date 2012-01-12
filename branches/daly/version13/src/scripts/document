@@ -1,0 +1,147 @@
+#!/bin/sh
+if [ "$MAGNUS" = "" ] ; then
+  echo D1 document ERROR You must set the SPAD shell variable
+  echo it should look like: "(path)/mnt/(system)"
+  exit 0
+fi
+latex=`which latex`
+if [ "$latex" = "" ] ; then
+  echo D2 document ERROR You must install latex first
+  exit 0
+fi
+notangle=$MAGNUS/bin/notangle
+noweave=$MAGNUS/bin/noweave
+
+# command strings of length 5
+if [ "$#" = "5" ]; then
+ if [ "$1" = "chunk" ]; then
+# "syntax: document chunk chunkname infile outdir outfile"
+#  echo D3 making $4/$5 from from $3.pamphlet using chunk $2
+  $notangle -t8 -R$2 $3.pamphlet >$4/$5
+  exit 0
+ fi
+ if [ "$1" = "dvi" ]; then
+# "syntax: document dvi infile outdir outfile redirect"
+#  echo D4 making $3/$4.dvi from $2.pamphlet with output to $5
+  $noweave -delay $2.pamphlet >$3/$4.tex
+  ( cd $3 
+    $latex --interaction nonstopmode $4.tex >$5
+    $latex --interaction nonstopmode $4.tex >$5
+    rm -f $4~
+    rm -f $4.pamphlet~
+    rm -f $4.log
+    rm -f $4.tex
+    rm -f $4.toc
+    rm -f $4.aux )
+  exit 0 
+ fi
+ exit 0 
+fi
+
+# command strings of length 4
+if [ "$#" = "4" ]; then
+ if [ "$1" = "src" ]; then
+# "syntax: document src infile outdir outfile"
+#  echo D5 making $3/$4 from $2.pamphlet
+  $notangle -t8 $2.pamphlet >$3/$4
+  exit 0
+ fi
+ if [ "$1" = "dvi" ]; then
+# "syntax: document dvi infile outdir outfile"
+#  echo D6 making $3/$4.dvi from $2.pamphlet
+  $noweave -delay $2.pamphlet >$3/$4.tex
+  ( cd $3 
+    $latex --interaction nonstopmode $4.tex 
+    $latex --interaction nonstopmode $4.tex 
+    rm -f $4~
+    rm -f $4.pamphlet~
+    rm -f $4.log
+    rm -f $4.tex
+    rm -f $4.toc
+    rm -f $4.aux )
+  exit 0 
+ fi
+fi
+
+# command strings of length 3
+if [ "$#" = "3" ]; then
+ if [ "$1" = "src" ]; then
+# "syntax: document src infile outdir "
+#  echo D7 making $3/$2 from $2.pamphlet
+  $notangle -t8 $2.pamphlet >$3/$2
+  exit 0
+ fi
+fi
+
+# command strings of length 2
+if [ "$#" = "2" ]; then
+ if [ "$1" = "src" ]; then
+# "syntax: document src infile "
+#  echo D8 making $2 from $2.pamphlet
+  $notangle -t8 $2.pamphlet >$2
+  exit 0
+ fi
+ if [ "$1" = "dvi" ]; then
+ # "syntax: document dvi infile "
+#   echo D9 making $2.dvi from $2.pamphlet
+   $noweave -delay $2.pamphlet >$2.tex
+   $latex --interaction nonstopmode $2.tex 
+   $latex --interaction nonstopmode $2.tex 
+   rm -f $2~
+   rm -f $2.pamphlet~
+   rm -f $2.log
+   rm -f $2.tex
+   rm -f $2.toc
+   rm -f $2.aux
+   exit 0
+ fi
+fi
+
+# command strings of length 1
+if [ "$#" = "1" ]; then
+# "syntax: document infile "
+#  echo D10 making $1 from $1.pamphlet
+  $notangle -t8 $1.pamphlet >$1
+  $noweave -delay $1.pamphlet >$1.tex
+  $latex --interaction nonstopmode $1.tex 
+  $latex --interaction nonstopmode $1.tex 
+  rm -f $1~
+  rm -f $1.pamphlet~
+  rm -f $1.log
+  rm -f $1.tex
+  rm -f $1.toc
+  rm -f $1.aux
+  exit 0
+fi
+
+echo "syntax: document [src|chunk|dvi] infile indir outfile [redirect]"
+echo NOTE: infile is assumed to be named infile.pamphlet
+echo Note that some possible combination of arguments are invalid.
+echo
+echo example commands are:
+echo 
+echo document infile
+echo notangle infile.pamphlet and outputs to infile
+echo noweave infile.pamphlet, runs tex, cleans up
+echo 
+echo document src infile
+echo notangle infile.pamphlet and outputs to infile
+echo 
+echo document dvi infile
+echo notangle infile.pamphlet and outputs to infile.dvi
+echo 
+echo document src infile outdir
+echo notangle infile.pamphlet and outputs to outdir/infile
+echo 
+echo document src infile /tmp/bar outfile
+echo notangle infile.pamphlet and outputs to /tmp/bar/outfile
+echo 
+echo document dvi Makefile /tmp/bar Makefile
+echo noweave Makefile.pamphlet, then runs tex, then cleans up junk
+echo 
+echo document chunk \"my name\" bigfile /tmp/bar chunkfile
+echo notangle -t8 -Rmy name bigfile.pamphlet outputs to /tmp/bar/chunkfile
+echo 
+echo document dvi Makefile /tmp/bar Makefile /tmp/nonoise
+echo noweave Makefile.pamphlet, then runs tex quietly, then cleans up junk
+

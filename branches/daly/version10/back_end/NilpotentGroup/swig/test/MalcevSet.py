@@ -1,0 +1,21 @@
+###this is a test file by xuxw(xuxw76@yahoo.com)
+import Magnus
+w1=Magnus.Word()
+w2=Magnus.Word()
+pw1=Magnus.PolyWord()
+pw2=Magnus.PolyWord()
+a=Magnus.MalcevSet()
+b=MalcevSetFromVector([w1,w2], const NGCollector& nc);
+x=a.cardinality() 
+x=a.isMalcevBasis() 
+x=a.isNormalClosure() 
+a.makeFull()  
+x=a.normalClosure() 
+x=a.mapToQuotient(1) 
+x=a.contains(w1) 
+x=a.decomposeWord(pw1, pw2) 
+x=a.getWords() 
+x=a.getCommutatorWords() 
+x=a.getPolyWords() 
+a.printOn()
+

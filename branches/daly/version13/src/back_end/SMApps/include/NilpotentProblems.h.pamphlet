@@ -1,0 +1,593 @@
+\documentclass{article}
+\usepackage{axiom}
+\begin{document}
+\title{src/backend/SMApps/include/NilpotentProblems.h}
+\author{Roger Needham, Dmitry Bormotov, Alexei Myasnikov}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\eject
+\tableofcontents
+\eject
+\section{include}
+<<include>>=
+#include "Integer.h"
+#include "Supervisor.h"
+#include "ComputationManager.h"
+#include "NilpotentQuotients.h"
+#include "NilpotentGroup.h"
+#include "List.h"
+#include "ARCer.h"
+
+@
+\section{class NGOrderOfEltProblemARCer}
+This is specialized for the moment to work only on the specific class of
+a group which was checked in as nilpotent. It can, in principle, work
+on any nilpotent quotient of any FP group.
+<<class NGOrderOfEltProblemARCer>>=
+class NGOrderOfEltProblemARCer : public ARCer
+{
+public:
+  NGOrderOfEltProblemARCer( ComputationManager& boss ) 
+    : ARCer( boss ), theNG( 0 ) { } 
+
+  void setArguments( const NilpotentGroup&, const Word& );
+
+  Integer getOrder() const { return retValue; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  const NilpotentGroup* theNG;
+  Integer retValue;
+  Word theWord;
+};
+
+@
+\section{class NGorderOfEltProblem}
+<<class NGorderOfEltProblem>>=
+class NGorderOfEltProblem : public Supervisor
+{
+public:
+  NGorderOfEltProblem( class SMWord& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+  class GIC& theGIC;
+  MirrorSubordinate computeBasis;
+  NGOrderOfEltProblemARCer arcer;
+  bool started;
+};
+
+@
+\section{class NGHirschNumberProblem}
+<<class NGHirschNumberProblem>>=
+class NGHirschNumberProblem : public Supervisor
+{
+public:
+  NGHirschNumberProblem( class SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  class GIC& theGIC;
+  MirrorSubordinate computeBasis;
+};
+
+@
+\section{class NGcomputeLCSQuotientsProblem}
+<<class NGcomputeLCSQuotientsProblem>>=
+class NGcomputeLCSQuotientsProblem : public Supervisor
+{
+public:
+  NGcomputeLCSQuotientsProblem( class SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  class GIC& theGIC;
+  MirrorSubordinate computeBasis;
+  MirrorSubordinate computeLCSQuotientsComp;
+};
+
+@
+\section{class NGcomputeNClassProblem}
+<<class NGcomputeNClassProblem>>=
+class NGcomputeNClassProblem : public Supervisor
+{
+public:
+  NGcomputeNClassProblem( class SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  class GIC& theGIC;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate computeBasis;
+  //MirrorSubordinate computeLCSQuotientsComp;
+};
+
+@
+\section{class NGisFreeNilpotentProblem}
+<<class NGisFreeNilpotentProblem>>=
+class NGisFreeNilpotentProblem : public Supervisor
+{
+public:
+  NGisFreeNilpotentProblem( class SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  class GIC& theGIC;
+  MirrorSubordinate abelianInvariants;
+  MirrorSubordinate computeBasis;
+  //MirrorSubordinate computeLCSQuotientsComp;
+  Trichotomy answer;
+  int freeRank, freeClass;
+};
+
+@
+\section{class NGdecomposeWordProblem}
+<<class NGdecomposeWordProblem>>=
+class NGdecomposeWordProblem : public Supervisor
+{
+public:
+  NGdecomposeWordProblem( class SMWord& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+  class WIC& theWIC;
+  MirrorSubordinate computeBasis;
+  MirrorSubordinate ngDecomposeWord;
+};
+
+@
+\section{class NGisWordInCommutatorSGProblem}
+<<class NGisWordInCommutatorSGProblem>>=
+class NGisWordInCommutatorSGProblem : public Supervisor
+{
+public:
+  NGisWordInCommutatorSGProblem( class SMWord& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+  class GIC& theGIC;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class NGweightOfWordARCer}
+<<class NGweightOfWordARCer>>=
+class NGweightOfWordARCer : public ARCer
+{
+public:
+  NGweightOfWordARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theNG(NULL) { } 
+  
+  ~NGweightOfWordARCer() { delete theNG; }
+
+  void setArguments( const NilpotentGroup&, const Word& );
+  int getWeight() { return weight; }
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  NilpotentGroup* theNG;
+  int weight;
+  Word theWord;
+};
+
+@
+\section{class NGweightOfWordProblem}
+<<class NGweightOfWordProblem>>=
+class NGweightOfWordProblem : public Supervisor
+{
+public:
+  NGweightOfWordProblem( class SMWord& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMWord& theWord;
+  class WIC& theWIC;
+  MirrorSubordinate computeBasis;
+  //MirrorSubordinate computeLCSQuotientsComp;
+  bool started;
+  int weight;
+  NGweightOfWordARCer arcer;
+};
+
+@
+\section{class NGorderOfTorsionSubgroupProblem}
+<<class NGorderOfTorsionSubgroupProblem>>=
+class NGorderOfTorsionSubgroupProblem : public Supervisor
+{
+public:
+  NGorderOfTorsionSubgroupProblem( class SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMFPGroup& theGroup;
+  class GIC& theGIC;
+  MirrorSubordinate computeBasis;
+  //MirrorSubordinate computeLCSQuotientsComp;
+  Integer order;
+};
+
+@
+\section{class NGbuildPresentationProblem}
+<<class NGbuildPresentationProblem>>=
+class NGbuildPresentationProblem : public Supervisor
+{
+public:
+  NGbuildPresentationProblem(class SMFPGroup& group);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  NGPresentationARCer arcer;
+  class SMFPGroup& theGroup;
+  MirrorSubordinate computeBasis;
+  bool started;
+};
+
+@
+\section{class NGAutoIsIAAut}
+<<class NGAutoIsIAAut>>=
+class NGAutoIsIAAut : public Supervisor
+{
+public:
+  NGAutoIsIAAut( class SMMap& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { }            // overrides ComputationManager
+  void terminate( ) { }        // overrides ComputationManager
+
+private:
+  class SMMap& theMap;
+  class GIC& theGIC;
+  MirrorSubordinate abelianInvariants;
+};
+
+@
+\section{class NGisCentralARCer}
+<<class NGisCentralARCer>>=
+class NGisCentralARCer : public ARCer
+{
+public:
+  NGisCentralARCer( ComputationManager& boss ) 
+    : ARCer( boss ),theNG( 0 ),theAnswer(dontknow) { } 
+  
+  ~NGisCentralARCer( ) { delete theNG; }
+
+  void setArguments(const NilpotentGroup& NG, const Word& theWord );
+  Trichotomy getAnswer() const { return theAnswer;}
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+  
+private:
+  NilpotentGroup* theNG;
+  Word theWord;
+  Trichotomy theAnswer;
+};
+
+@
+\section{class NGisCentralProblem}
+<<class NGisCentralProblem>>=
+class NGisCentralProblem : public Supervisor
+{
+public:
+  NGisCentralProblem( class SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  NGisCentralARCer arcer;
+  MirrorSubordinate   computeBasis;
+  class SMWord& theWord;
+  Trichotomy answer;
+  bool started;
+};
+
+@
+\section{class NGMaximalRootARCer}
+<<class NGMaximalRootARCer>>=
+class NGMaximalRootARCer : public ARCer
+{
+public:
+  NGMaximalRootARCer( ComputationManager& boss ) 
+    : ARCer( boss ), NG( 0 ), thePower(0) { } 
+
+  ~NGMaximalRootARCer( ) { delete NG; } 
+
+  void setArguments( const NilpotentGroup& group, const Word& w);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  int getPower() const;
+  Word getRoot() const;
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  NilpotentGroup* NG;
+  int thePower;
+  Word theRoot;
+  Word theWord;
+};
+
+@
+\section{class NGMaximalRootProblem}
+<<class NGMaximalRootProblem>>=
+class NGMaximalRootProblem : public Supervisor
+{
+public:
+  NGMaximalRootProblem( class SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  NGMaximalRootARCer arcer;
+  MirrorSubordinate computeBasis;
+  class SMWord& theWord;
+  bool started;
+};
+
+@
+\section{class NGIsProperPower}
+<<class NGIsProperPower>>=
+class NGIsProperPower : public Supervisor
+{
+public:
+  NGIsProperPower( class SMWord& w);
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( );              // overrides ComputationManager
+  void terminate( );          // overrides ComputationManager
+
+private:
+  NGMaximalRootARCer arcer;
+  MirrorSubordinate computeBasis;
+  class SMWord& theWord;
+  bool started;
+};
+
+@
+\section{class NGInverseAutoARCer}
+<<class NGInverseAutoARCer>>=
+class NGInverseAutoARCer : public ARCer
+{
+public:
+  NGInverseAutoARCer( ComputationManager& boss ) 
+    : ARCer( boss ), NG( 0 ), result(0) { } 
+
+  ~NGInverseAutoARCer( ) { delete NG; } 
+
+  void setArguments( const NilpotentGroup& group, const VectorOf<Word>& image);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  const VectorOf<Word> getInverse() const {return result;}
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  NilpotentGroup* NG;
+  VectorOf<Word> theImages;
+  VectorOf<Word> result;
+};
+
+@
+\section{class NGInverseAuto}
+<<class NGInverseAuto>>=
+class NGInverseAuto  : public Supervisor
+{
+public:
+  NGInverseAuto(const class SMHomomorphism& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  const class SMHomomorphism& theAuto;
+  NGInverseAutoARCer arcer;
+};
+
+@
+\section{class NGcentralizerARCer}
+<<class NGcentralizerARCer>>=
+class NGcentralizerARCer : public ARCer
+{
+public:
+  NGcentralizerARCer( ComputationManager& boss ) 
+    : ARCer( boss ), NG( 0 ), result(0) { } 
+
+  ~NGcentralizerARCer( ) { delete NG; } 
+
+  void setArguments( const NilpotentGroup& group, const Word& w);
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  const VectorOf<Word>& getCentralizer() const;
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  NilpotentGroup* NG;
+  Word theWord;
+  VectorOf<Word> result;
+};
+
+@
+\section{class NGcentralizer}
+<<class NGcentralizer>>=
+class NGcentralizer  : public Supervisor
+{
+public:
+  NGcentralizer( class SMWord& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  NGcentralizerARCer arcer;
+  MirrorSubordinate computeBasis;
+  class SMWord& theWord;
+  bool started;
+};
+
+@
+\section{class NGIsomorphismARCer}
+<<class NGIsomorphismARCer>>=
+class NGIsomorphismARCer : public ARCer
+{
+public:
+  NGIsomorphismARCer( ComputationManager& boss ) 
+    : ARCer( boss ),
+      g1( ),
+      g2( ),
+      ans(dontknow)
+    { } 
+
+  void setArguments( const FPGroup& gr1 , const FPGroup& gr2 , 
+		     int n1 , int n2 );
+
+  // Inherited from ARCer:
+  // bool takeControl( );
+
+  Trichotomy getAnswer() const
+    {
+      return ans;
+    }
+  
+  void runComputation( );
+  void writeResults( ostream& );
+  void readResults( istream& );
+
+private:
+  FPGroup g1;
+  FPGroup g2;
+  int nc1;
+  int nc2;
+  Trichotomy ans;
+};
+
+@
+\section{class NGIsomorphismProblem}
+<<class NGIsomorphismProblem>>=
+class NGIsomorphismProblem  : public ComputationManager
+{
+public:
+  NGIsomorphismProblem( class SMFPGroup& , class SMFPGroup& );
+  void viewStructure(ostream& ostr) const;  // overrides SMObject
+  void takeControl( );         // overrides ComputationManager
+  void start( ) { };          // overrides ComputationManager
+  void terminate( ) { };      // overrides ComputationManager
+
+private:
+  NGIsomorphismARCer arcer;
+  SMFPGroup& theGroup1;
+  SMFPGroup& theGroup2;
+
+  int flag;
+};
+
+@
+\section{license}
+<<license>>=
+// Copyright (C) 1994 The New York Group Theory Cooperative
+// See magnus/doc/COPYRIGHT for the full notice.
+@
+<<*>>=
+// src/backend/SMApps/include/NilpotentProblems.h
+#ifndef _NILPOTENTPROBLEMS_H_
+#define _NILPOTENTPROBLEMS_H_
+
+<<license>>
+<<include>>
+<<class NGOrderOfEltProblemARCer>>
+<<class NGorderOfEltProblem>>
+<<class NGHirschNumberProblem>>
+<<class NGcomputeLCSQuotientsProblem>>
+<<class NGcomputeNClassProblem>>
+<<class NGisFreeNilpotentProblem>>
+<<class NGdecomposeWordProblem>>
+<<class NGisWordInCommutatorSGProblem>>
+<<class NGweightOfWordARCer>>
+<<class NGweightOfWordProblem>>
+<<class NGorderOfTorsionSubgroupProblem>>
+<<class NGbuildPresentationProblem>>
+<<class NGAutoIsIAAut>>
+<<class NGisCentralARCer>>
+<<class NGisCentralProblem>>
+<<class NGMaximalRootARCer>>
+<<class NGMaximalRootProblem>>
+<<class NGIsProperPower>>
+<<class NGInverseAutoARCer>>
+<<class NGInverseAuto>>
+<<class NGcentralizerARCer>>
+<<class NGcentralizer>>
+<<class NGIsomorphismARCer>>
+<<class NGIsomorphismProblem>>
+#endif
+@
+\eject
+\begin{thebibliography}{99}
+\bibitem{1} nothing
+\end{thebibliography}
+\end{document}

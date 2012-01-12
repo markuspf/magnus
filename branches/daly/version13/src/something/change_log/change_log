@@ -1,0 +1,179 @@
+Magnus 1.3.3.
+
+1. This Magnus version contans Whitehead stuff for an arbitrary set of
+words, for convienence in case of a free group I provided a separate
+object SetOfWords which has to be constructed to run Whitehead.
+
+2. The general problem object "Is abelian ?" is implemented in case of
+a finitely presented group.
+
+3. The general problem object "Is nilpotent ?" is implemented in case
+of a finitely presented group. After couple of experiments I've
+understood that in case when nilpotency class is too big the ARCs are
+big too, so this problem object requires additional ARCing and cannot
+be considered as complete now.
+
+
+Magnus 1.4.0
+
+
+There was a small revolution inside the Session Manager which has solved
+a couple of difficult general problems and allowed to implement
+computation managers in more proper and convienent way.
+
+
+FPGroups:
+
+The rewriting of the class WordProblem and implementing auxiliary classes
+such as CommutatorIterator, CommutatorChecker, CommutatorCheckerARCer,
+SetOfWordsChecker made possible to implement new FPGroup stuff:
+
+  Is a subgroup abelian ?
+  Is a subgroup nilpotent ?
+  Is an element central ?
+  Is a subgroup central ?
+  Are elements equal ?
+  Is an element of finite order ?
+
+These computation managers was reimplemented completely:
+
+  Word problem
+  Is a group nilpotent ?
+  ( Earlier  ARCs was too big if a nilpotency class was more than 4, 
+    now it's fixed )
+
+The algorithms for subgroup membership problem and couple of problem which
+depend on it are too bad. It looks like Vladimir has pretty nice idea how
+to solve this problem, so probably we should adjourn this until the idea
+would be proved.
+
+
+Abelian Groups:
+
+These computation managers was rewritten:
+
+  Is a word in a subgroup ?
+  Is a subgroup equal to the whole group ?
+  Does a subgroup contain another subgroup ?
+
+Now the cyclic decomposition of the factor group computes only once,
+and if that happens, Magnus answers immediately.
+
+Some new stuff was implemented:  
+
+  Compute the index of a subgroup
+  Is a subgroup isolated ?
+
+Other abelian algorithms require presentation for a subgroup, and I need
+to have a discussion with Aleksei about this.
+
+
+Bugs fixed:
+
+1. @gb & @db:
+>Extend to homomorphism problem, nilp. case, Magnus worked infinitely in 
+>many cases.
+
+Fixed.
+
+2. @rk:
+>	With the following group inputted as abelian:
+>< a,b,c,d; a^2 = b^3 c^3, b^5 = c^7 d^ 7, c^11 = d^13 a^13, d^17 = a^19 b^19 >
+>
+>Magnus gives order of group |A1|= 20564.
+>
+>Input a word: w1 = a^3 b^3 c^3 d^3.  Magnus gives order of w1 = 20564.
+>
+>So, I input subgroup: H1 =< a^3 b^3 c^3 d^3 >. 
+>
+>Magnus says H1 = A1.
+>
+>Now: A2 = <a,b,c,d; a^3 b^3 c^3 d^3>.
+>
+>Are A1 and A2 isomorphic?  Magnus says no.
+>
+>Now set w2 = a^13 b^13 c^13 d^13. Order w2= 20564.
+>
+>same results with H2 =<w2>.
+>
+>H2 = A1, H2 not Isomorphic to A1.
+>
+>It seem that with any n, such that 2 does not divide n,  
+>Hn = <a^n b^n c^n d^n> = A1 !!!!!!
+>and further Hn !~= A1
+
+I cannot see anything wrong in this long explanation, the cyclic
+decomposition of the group is Z^20564, so the results look correct.
+
+
+
+Magnus Version 1.4.1.
+
+
+1. New Amalgamated Product stuff was incorporated into Magnus.
+
+2. New implementation:
+
+   Is a subgroup abelian ?
+
+ Cyclic case only:
+
+   Compute the centralizer of an element.
+
+   Are words conjugate ?
+
+   Compute the maximal root of an element.
+
+   Is an element a proper power ?
+
+   Is an element a proper power of second element ? 
+   (this algorithm was temporary commented out because it was buggy)
+
+Mess and bugs:
+
+1. @db:
+
+> In a process of constructing am amalgamated product, the product will be
+>< G2 * G1; S2 = S1 > rather than < G1 * G2; S1 = S2 >
+
+Fixed.
+
+
+2. @ig & @db:
+
+> The rewriting system algorithm for a finitely presented group doesn't
+>work correctly when the group has empty set of relators.
+
+ Fixed. Such group will be checked in Magnus as a free group, so it'll be
+better for an end user, and fix this bug. This means that all problem
+objects which use rewriting system will be fixed as well, so this simple
+solution kills about 30 bugs at one shot !
+
+
+3. @db:
+> After making a quotient of amalgamated product, the presentation is not
+>changed and new added relators don't appear on a screen.
+
+Fixed.
+
+
+4. @gb:
+>Remove the word "Alert" from the title of help box for amalgamated
+>products.
+
+Changed to "Information". The text appearing in the help box was also
+fixed.
+
+
+5. @db:
+> For algorithms involving two objects the order of the objects in the main
+>menu didn't match the order in according problem window, it could confuse
+>an end user and sometimes even cause wrong result to appear (for example
+>for subgroup containment problem).
+
+The order of objects was fixed for following algorithms:
+
+  WordsAreEqual
+  ConjugacyProblem
+  IsEltAProperPowerOfSecond
+  AbelianSGContainmentProblem

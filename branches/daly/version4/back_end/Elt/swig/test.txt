@@ -1,0 +1,42 @@
+/*
+
+Word.i
+$Id$
+
+This interface file declares wrappers for most of the methods of the class
+Word. This file illustrates some of the techniques
+for dealing with
+	- overloaded methods: Python doesn't have overloaded methods, but
+	the workaround is to use the '%name' directive as in the case of
+	the constructor WordFromList
+	- overloaded operators: Look at the special Python functions that
+	are defined with the '%addmethods' directive.
+
+Compare this file to the header file Word.h to get an idea how to proceed
+from .h to .i files.
+
+Peter Brinkmann, 05/18/2001
+brinkman@math.uiuc.edu
+*/
+
+%module Magnus
+
+%{
+#include "Word.h"
+%}
+
+
+// class Genref;
+
+class Word {
+
+public:  
+
+///////////////////////////////////////////////////////////////////////
+//                                                                   //
+// Constructors:                                                     //
+//                                                                   //
+///////////////////////////////////////////////////////////////////////
+
+  Word( );
+}
